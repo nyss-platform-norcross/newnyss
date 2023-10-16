@@ -22,7 +22,6 @@ export const DropdownPopover = ({ children, label, filterLabel, showResults, rtl
   return (
     <Fragment>
       <TextField
-        className={styles.field}
         label={label}
         InputProps={{
           readOnly: true,

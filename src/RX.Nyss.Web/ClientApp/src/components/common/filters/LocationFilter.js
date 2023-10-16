@@ -1,6 +1,4 @@
-import styles from "./LocationFilter.module.scss";
-import { Fragment, useEffect, useState } from "react";
-import { Popover, TextField } from "@material-ui/core";
+import { useEffect, useState } from "react";
 import {
   cascadeSelectDistrict,
   cascadeSelectRegion,
@@ -8,10 +6,8 @@ import {
   cascadeSelectZone,
   extractSelectedValues,
   mapToSelectedLocations,
-  renderFilterLabel,
   toggleSelectedStatus,
 } from "./logic/locationFilterService";
-import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
 import { stringKeys, strings } from "../../../strings";
 import LocationItem from "./LocationItem";
 import { SelectAll } from "../../common/selectAll/SelectAll";
@@ -170,7 +166,7 @@ const LocationFilter = ({
   };
 
   return (
-      <DropdownPopover label={strings(stringKeys.common.location)} filterLabel={renderFilterLabel} showResults={showResults}>
+      <DropdownPopover label={strings(stringKeys.common.location)} filterLabel={filterLabel} showResults={showResults}>
         <SelectAll
           isSelectAllEnabled={selectAll}
           showResults={showResults}
