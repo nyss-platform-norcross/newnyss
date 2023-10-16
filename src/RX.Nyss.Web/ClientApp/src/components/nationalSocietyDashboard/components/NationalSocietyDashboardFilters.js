@@ -347,6 +347,7 @@ export const NationalSocietyDashboardFilters = ({
                 filteredHealthRisks={value.healthRisks}
                 onChange={handleHealthRiskChange}
                 updateValue={updateValue}
+                rtl={rtl}
               />
             </Grid>
             <Grid item>

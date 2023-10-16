@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import { MenuItem, Checkbox } from "@material-ui/core";
-import MultiSelectField from "../../forms/MultiSelectField";
 import { strings, stringKeys } from "../../../strings";
 import styles from "./HealthRiskFilter.module.scss";
 import { SelectAll } from "../../common/selectAll/SelectAll";
+import { DropdownPopover } from "./DropdownPopover";
 
 export const HealthRiskFilter = ({
   allHealthRisks,
   filteredHealthRisks,
   onChange,
   updateValue,
+  rtl
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   // Checks off all boxes on mount
   useEffect(() => {
     updateValue({ healthRisks: allHealthRisks.map((hr) => hr.id) });
@@ -19,11 +20,9 @@ export const HealthRiskFilter = ({
 
   // Handles when the checkbox is checked off or not checked on. Will only update filteredHealthRisks to not fetch from backend every time.
   const handleHealthRiskChange = (event) => {
+    const healthRiskId = parseInt(event.target.value);
     updateValue({
-      healthRisks:
-        typeof event.target.value === "string"
-          ? event.target.value.split(",")
-          : event.target.value,
+      healthRisks: filteredHealthRisks.includes(healthRiskId) ? filteredHealthRisks.filter(hrId => hrId !== healthRiskId) : [...filteredHealthRisks, healthRiskId]
     });
   };
 
@@ -49,21 +48,11 @@ export const HealthRiskFilter = ({
   // Uses the onChange function to fetch from backend
   const showResults = () => {
     onChange(filteredHealthRisks);
-    setIsOpen(false);
+    setDialogOpen(false);
   };
 
   return (
-    <MultiSelectField
-      name="healthRisks"
-      label={strings(stringKeys.dashboard.filters.healthRisk)}
-      onChange={handleHealthRiskChange}
-      value={filteredHealthRisks}
-      renderValues={renderHealthRiskValues}
-      className={styles.healthRiskFilter}
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-      showResults={showResults}
-    >
+    <DropdownPopover label={strings(stringKeys.dashboard.filters.healthRisk)} filterLabel={renderHealthRiskValues(filteredHealthRisks)} showResults={showResults} rtl={rtl} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}>
       <SelectAll
         isSelectAllEnabled={
           filteredHealthRisks.length === allHealthRisks.length
@@ -76,10 +65,12 @@ export const HealthRiskFilter = ({
           key={`filter_healthRisk_${hr.id}`}
           value={hr.id}
           className={styles.healtRiskMenuItem}
-        >
+          >
           <Checkbox
+            value={hr.id}
             color="primary"
             checked={filteredHealthRisks.indexOf(hr.id) > -1}
+            onClick={handleHealthRiskChange}
           />
           <span
             style={{
@@ -93,6 +84,6 @@ export const HealthRiskFilter = ({
           </span>
         </MenuItem>
       ))}
-    </MultiSelectField>
+    </DropdownPopover>
   );
 };

@@ -5,8 +5,7 @@ import { Popover, TextField } from "@material-ui/core";
 import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
 
 
-export const DropdownPopover = ({ children, label, filterLabel, showResults, rtl=false }) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
+export const DropdownPopover = ({ children, label, filterLabel, showResults, rtl, dialogOpen, setDialogOpen }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleDropdownClick = (event) => {

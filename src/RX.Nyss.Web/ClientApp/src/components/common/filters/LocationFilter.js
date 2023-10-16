@@ -24,6 +24,7 @@ const LocationFilter = ({
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [includeUnknownLocation, setIncludeUnknownLocation] = useState(false);
   const [selectAll, setSelectAll] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     if (!allLocations) return;
@@ -151,6 +152,7 @@ const LocationFilter = ({
   };
 
   const showResults = () => {
+    setDialogOpen(false);
     const filterValue = extractSelectedValues(
       selectedLocations,
       includeUnknownLocation
@@ -166,32 +168,32 @@ const LocationFilter = ({
   };
 
   return (
-      <DropdownPopover label={strings(stringKeys.common.location)} filterLabel={filterLabel} showResults={showResults}>
+      <DropdownPopover label={strings(stringKeys.common.location)} filterLabel={filterLabel} showResults={showResults} rtl={rtl} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}>
         <SelectAll
           isSelectAllEnabled={selectAll}
           showResults={showResults}
           toggleSelectAll={toggleSelectAll}
-        />
+          />
         {showUnknownLocation && (
           <LocationItem
-            type="unknown"
-            data={{
-              name: strings(stringKeys.filters.area.unknown),
-              selected: includeUnknownLocation,
-            }}
-            isVisible
-            onChange={handleChange}
-            rtl={rtl}
+          type="unknown"
+          data={{
+            name: strings(stringKeys.filters.area.unknown),
+            selected: includeUnknownLocation,
+          }}
+          isVisible
+          onChange={handleChange}
+          rtl={rtl}
           />
         )}
         {selectedLocations.map((r) => (
           <LocationItem
-            key={`region_${r.id}`}
-            type="region"
-            data={r}
-            isVisible
-            onChange={handleChange}
-            rtl={rtl}
+          key={`region_${r.id}`}
+          type="region"
+          data={r}
+          isVisible
+          onChange={handleChange}
+          rtl={rtl}
           />
         ))}
       </DropdownPopover>
