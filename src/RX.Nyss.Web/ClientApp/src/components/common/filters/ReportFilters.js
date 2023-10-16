@@ -1,6 +1,6 @@
 import styles from "./ReportFilters.module.scss";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   Grid,
   MenuItem,
@@ -23,8 +23,9 @@ import {
 import { Fragment } from "react";
 import { ReportStatusFilter } from "./ReportStatusFilter";
 import LocationFilter from "./LocationFilter";
-import { renderFilterLabel } from "./logic/locationFilterService";
 import { HealthRiskFilter } from "../../common/filters/HealthRiskFilter";
+import useLocalFilters from "../../common/filters/useLocalFilters";
+import useLocationFilter from "../../common/filters/useLocationFilter";
 
 export const ReportFilters = ({
   filters,
@@ -36,85 +37,52 @@ export const ReportFilters = ({
   hideCorrectedFilter,
   rtl,
 }) => {
-  const [value, setValue] = useState(filters);
-
-  const [locationsFilterLabel, setLocationsFilterLabel] = useState(
-    strings(stringKeys.filters.area.all)
-  );
-  const updateValue = (change) => {
-    const newValue = {
-      ...value,
-      ...change,
-    };
-
-    setValue((prev) => ({ ...prev, ...change }));
-    return newValue;
-  };
-
-  // Sets label for location filter to 'All' or "Region (+n)"
+  //Reducer for local filters state
+  const [localFilters, updateLocalFilters] = useLocalFilters(filters);
+  //Updates redux store with local filters state when local filters state changes
   useEffect(() => {
-    const label =
-      !value || !locations || !value.locations || value.locations.regionIds.length === 0
-        ? strings(stringKeys.filters.area.all)
-        : renderFilterLabel(value.locations, locations.regions, true);
-    setLocationsFilterLabel(label);
-  }, [value.locations]);
+    localFilters.changed && onChange(localFilters.value);
+  }, [localFilters, onChange]);
 
+  //Syncs locations from redux store with filter state and sets label for location filter to 'All' or "Region (+n)"
+  //Neccecary if locations are added, edited or removed, to make all filters checked
+  //Should not be neccecary if state is managed correctly, quick fix but needs rework
+  const [locationsFilterLabel] = useLocationFilter(locations, localFilters, updateLocalFilters)
 
-  // useEffect which runs on mount and when locations are added, edited or removed. Updates locations in the filter state in order to avoid mismatch between locations and filtered locations
-  useEffect(() => {
-    if (!locations) return;
-
-    const filterValue = {
-      regionIds: locations.regions.map((region) => region.id),
-      districtIds: locations.regions.map((region) => region.districts.map((district) => district.id)).flat(),
-      villageIds: locations.regions.map((region) => region.districts.map((district) => district.villages.map((village) => village.id))).flat(2),
-      zoneIds: locations.regions.map((region) => region.districts.map((district) => district.villages.map((village) => village.zones.map((zone) => zone.id)))).flat(3),
-      includeUnknownLocation: false,
-    }
-
-    updateValue({ locations: filterValue });
-  }, [locations]);
 
   const handleLocationChange = (newValue) => {
-    onChange(
-      updateValue({
+    updateLocalFilters({
         locations: newValue,
       })
-    );
   };
 
   const handleHealthRiskChange = (filteredHealthRisks) =>
-    onChange(updateValue({ healthRisks: filteredHealthRisks }));
+    updateLocalFilters({ healthRisks: filteredHealthRisks });
 
   const handleDataCollectorTypeChange = (event) =>
-    onChange(updateValue({ dataCollectorType: event.target.value }));
+    updateLocalFilters({ dataCollectorType: event.target.value });
 
   const handleErrorTypeChange = (event) =>
-    onChange(updateValue({ errorType: event.target.value }));
+    updateLocalFilters({ errorType: event.target.value });
 
   const handleCorrectedStateChange = (event) =>
-    onChange(updateValue({ correctedState: event.target.value }));
+    updateLocalFilters({ correctedState: event.target.value });
 
   const handleReportStatusChange = (event) =>
-    onChange(
-      updateValue({
+      updateLocalFilters({
         reportStatus: {
-          ...value.reportStatus,
+          ...localFilters.value.reportStatus,
           [event.target.name]: event.target.checked,
         },
-      })
-    );
+      });
 
   const handleTrainingStatusChange = (event) =>
-    onChange(
-      updateValue({
-        ...value,
+      updateLocalFilters({
+        ...localFilters.value,
         trainingStatus: event.target.value,
-      })
-    );
+      });
 
-  if (!value) {
+  if (!localFilters) {
     return null;
   }
 
@@ -124,7 +92,7 @@ export const ReportFilters = ({
         <Grid container spacing={2}>
           <Grid item>
             <LocationFilter
-              filteredLocations={value.locations}
+              filteredLocations={localFilters.value.locations}
               allLocations={locations}
               onChange={handleLocationChange}
               showUnknownLocation
@@ -162,9 +130,9 @@ export const ReportFilters = ({
               <Grid item>
                 <HealthRiskFilter
                   allHealthRisks={healthRisks}
-                  filteredHealthRisks={value.healthRisks}
+                  filteredHealthRisks={localFilters.value.healthRisks}
                   onChange={handleHealthRiskChange}
-                  updateValue={updateValue}
+                  updateValue={updateLocalFilters}
                 />
               </Grid>
             </Fragment>
@@ -229,7 +197,7 @@ export const ReportFilters = ({
                     {strings(stringKeys.dashboard.filters.trainingStatus)}
                   </FormLabel>
                   <RadioGroup
-                    value={value.trainingStatus}
+                    value={localFilters.value.trainingStatus}
                     onChange={handleTrainingStatusChange}
                     className={styles.radioGroup}
                   >
@@ -261,7 +229,7 @@ export const ReportFilters = ({
             <Fragment>
               <Grid item>
                 <ReportStatusFilter
-                  filter={value.reportStatus}
+                  filter={localFilters.value.reportStatus}
                   onChange={handleReportStatusChange}
                   correctReports={showCorrectReportFilters}
                   showDismissedFilter
