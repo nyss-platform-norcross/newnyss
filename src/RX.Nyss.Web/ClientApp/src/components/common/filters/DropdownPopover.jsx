@@ -51,6 +51,7 @@ export const DropdownPopover = ({ children, label, filterLabel, showResults, rtl
         PaperProps={{
           className: styles.filterContainer,
         }}
+        style={{ maxHeight: 400 }}
       >
         {children}
       </Popover>
