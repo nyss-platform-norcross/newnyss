@@ -8,12 +8,14 @@ import {
   cascadeSelectZone,
   extractSelectedValues,
   mapToSelectedLocations,
+  renderFilterLabel,
   toggleSelectedStatus,
 } from "./logic/locationFilterService";
 import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
 import { stringKeys, strings } from "../../../strings";
 import LocationItem from "./LocationItem";
 import { SelectAll } from "../../common/selectAll/SelectAll";
+import { DropdownPopover } from "./DropdownPopover";
 
 const LocationFilter = ({
   filteredLocations,
@@ -23,8 +25,6 @@ const LocationFilter = ({
   showUnknownLocation,
   rtl,
 }) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [includeUnknownLocation, setIncludeUnknownLocation] = useState(false);
   const [selectAll, setSelectAll] = useState(true);
@@ -155,7 +155,6 @@ const LocationFilter = ({
   };
 
   const showResults = () => {
-    setDialogOpen(false);
     const filterValue = extractSelectedValues(
       selectedLocations,
       includeUnknownLocation
@@ -163,11 +162,6 @@ const LocationFilter = ({
     onChange(filterValue);
   };
 
-  const handleDropdownClick = (event) => {
-    event.preventDefault();
-    setAnchorEl(event.currentTarget);
-    setDialogOpen(true);
-  };
 
   const toggleSelectAll = () => {
     setIncludeUnknownLocation(!selectAll);
@@ -176,37 +170,7 @@ const LocationFilter = ({
   };
 
   return (
-    <Fragment>
-      <TextField
-        className={styles.field}
-        label={strings(stringKeys.common.location)}
-        InputProps={{
-          readOnly: true,
-          endAdornment: <ArrowDropDown className={styles.arrow} />,
-        }}
-        value={filterLabel}
-        inputProps={{
-          className: styles.clickable,
-        }}
-        onClick={handleDropdownClick}
-      />
-
-      <Popover
-        open={dialogOpen}
-        onClose={showResults}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: rtl ? "right" : "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: rtl ? "right" : "left",
-        }}
-        PaperProps={{
-          className: styles.filterContainer,
-        }}
-      >
+      <DropdownPopover label={strings(stringKeys.common.location)} filterLabel={renderFilterLabel} showResults={showResults}>
         <SelectAll
           isSelectAllEnabled={selectAll}
           showResults={showResults}
@@ -234,8 +198,7 @@ const LocationFilter = ({
             rtl={rtl}
           />
         ))}
-      </Popover>
-    </Fragment>
+      </DropdownPopover>
   );
 };
 
