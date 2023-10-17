@@ -77,7 +77,7 @@ function* openDataCollectorMapOverview({ projectId }) {
     endDate = endDate.set('hour', 0);
     endDate = endDate.set('minute', 0);
     endDate = endDate.set('second', 0);
-    const filters = (yield select(state => state.dataCollectors.mapOverviewFilters)) ||
+    const filters =
     {
       startDate: endDate.add(-7, 'day'),
       endDate: endDate

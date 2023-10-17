@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useCallback, useEffect } from 'react';
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
 import * as dataCollectorsActions from './logic/dataCollectorsActions';
@@ -17,9 +17,9 @@ const DataCollectorsMapOverviewPageComponent = (props) => {
 
   const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
 
-  const handleFiltersChange = (value) => {
+  const handleFiltersChange = useCallback((value) => {
     props.getDataCollectorsMapOverview(props.projectId, value)
-  };
+  }, [props.getDataCollectorsMapOverview, props.projectId]);
 
   useEffect(() => {
     props.trackPage("DataCollectorsMapOverviewPage");
@@ -27,7 +27,7 @@ const DataCollectorsMapOverviewPageComponent = (props) => {
 
   if (!props.filters) {
     return null;
-  }  
+  }
 
   return (
     <Fragment>
