@@ -15,6 +15,8 @@ import { stringKeys, strings } from "../../../strings";
 import LocationItem from "./LocationItem";
 import { SelectAll } from "../../common/selectAll/SelectAll";
 
+//Location Filter should probably fetch locations from redux store itself, instead of passing them as props
+//Removes the need to pass allLocations and makes the component more self contained and reusable
 const LocationFilter = ({
   filteredLocations,
   filterLabel,
