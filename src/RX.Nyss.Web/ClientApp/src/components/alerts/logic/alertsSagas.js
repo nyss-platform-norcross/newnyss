@@ -25,22 +25,20 @@ export const alertsSagas = () => [
 ];
 
 function* openAlertsList({ projectId }) {
-  const listProjectId = yield select(state => state.alerts.listProjectId);
-
   yield put(actions.openList.request());
   try {
-    yield openAlertsModule(projectId);
+    yield call(openAlertsModule, projectId);
+
+    const filtersData = yield call(http.get, `/api/alert/getFiltersData?projectId=${projectId}`)
+
     const localDate = dayjs();
     const utcOffset = getUtcOffset();
     let endDate = localDate.add(-utcOffset, 'hour');
     endDate = endDate.set('hour', 0);
     endDate = endDate.set('minute', 0);
     endDate = endDate.set('second', 0);
-    const filtersData = listProjectId !== projectId
-      ? (yield call(http.get, `/api/alert/getFiltersData?projectId=${projectId}`)).value
-      : yield select(state => state.alerts.filtersData);
 
-    const filters = (yield select(state => state.alerts.filters)) ||
+    const filters =
       {
         locations: null,
         healthRiskId: null,
@@ -54,7 +52,7 @@ function* openAlertsList({ projectId }) {
 
     yield call(getAlerts, { projectId, filters });
 
-    yield put(actions.openList.success(projectId, filtersData));
+    yield put(actions.openList.success(projectId, filtersData.value));
 
   } catch (error) {
     yield put(actions.openList.failure(error.message));
