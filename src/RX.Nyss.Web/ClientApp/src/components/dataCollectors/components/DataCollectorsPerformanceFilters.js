@@ -1,9 +1,8 @@
 import styles from './DataCollectorsPerformanceFilters.module.scss';
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import {
   Card,
   CardContent,
-  Button,
   TextField,
   MenuItem,
   Grid,
@@ -15,7 +14,7 @@ import {
 import { strings, stringKeys } from '../../../strings';
 import useDebounce from '../../../utils/debounce';
 import * as roles from '../../../authentication/roles';
-import {trainingStatus, trainingStatusAll, trainingStatusTrained} from "../logic/dataCollectorsConstants";
+import { trainingStatus } from "../logic/dataCollectorsConstants";
 import LocationFilter from '../../common/filters/LocationFilter';
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";

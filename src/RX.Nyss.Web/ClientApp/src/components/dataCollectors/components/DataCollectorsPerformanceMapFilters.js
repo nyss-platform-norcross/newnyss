@@ -1,11 +1,10 @@
 import styles from "./DataCollectorsPerformanceMapFilters.module.scss"
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 import { strings, stringKeys } from "../../../strings";
 import { DatePicker } from "../../forms/DatePicker";
 import { convertToLocalDate, convertToUtc } from "../../../utils/date";
 import useLocalFilters from "../../common/filters/useLocalFilters";
-import useLocationFilter from "../../common/filters/useLocationFilter";
 
 export const DataCollectorsPerformanceMapFilters = ({ filters, onChange }) => {
   //Reducer for local filters state

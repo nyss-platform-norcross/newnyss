@@ -27,7 +27,6 @@ import { Fragment } from "react";
 import { ReportStatusFilter } from "../../common/filters/ReportStatusFilter";
 import { DataConsumer } from "../../../authentication/roles";
 import LocationFilter from "../../common/filters/LocationFilter";
-import { renderFilterLabel } from "../../common/filters/logic/locationFilterService";
 import { HealthRiskFilter } from "../../common/filters/HealthRiskFilter";
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";

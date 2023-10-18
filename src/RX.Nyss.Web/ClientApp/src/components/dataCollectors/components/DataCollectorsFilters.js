@@ -1,5 +1,5 @@
 import styles from "./DataCollectorsFilters.module.scss";
-import { useState, useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { strings, stringKeys } from "../../../strings";
 import { sexValues, trainingStatus, deployedMode } from '../logic/dataCollectorsConstants';
 import {
@@ -15,9 +15,7 @@ import {
 } from "@material-ui/core";
 import * as roles from '../../../authentication/roles';
 import useDebounce from "../../../utils/debounce";
-import { shallowEqual } from "react-redux";
 import LocationFilter from "../../common/filters/LocationFilter";
-import { renderFilterLabel } from "../../common/filters/logic/locationFilterService";
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";
 

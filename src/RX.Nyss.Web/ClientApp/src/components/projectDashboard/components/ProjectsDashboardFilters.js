@@ -1,5 +1,5 @@
 import styles from "./ProjectsDashboardFilters.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { DatePicker } from "../../forms/DatePicker";
 import { strings, stringKeys } from "../../../strings";
 import { ConditionalCollapse } from "../../common/conditionalCollapse/ConditionalCollapse";
@@ -27,7 +27,6 @@ import { ReportStatusFilter } from "../../common/filters/ReportStatusFilter";
 import { Fragment } from "react";
 import { DataConsumer } from "../../../authentication/roles";
 import LocationFilter from "../../common/filters/LocationFilter";
-import { renderFilterLabel } from "../../common/filters/logic/locationFilterService";
 import { HealthRiskFilter } from "../../common/filters/HealthRiskFilter";
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";

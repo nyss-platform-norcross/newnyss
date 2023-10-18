@@ -1,10 +1,9 @@
 import styles from "./AlertsFilters.module.scss";
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Grid, TextField, MenuItem, Card, CardContent } from '@material-ui/core';
 import LocationFilter from "../../common/filters/LocationFilter";
 import { strings, stringKeys } from "../../../strings";
 import {alertStatusFilters} from "../logic/alertsConstants";
-import { renderFilterLabel } from "../../common/filters/logic/locationFilterService";
 import {DatePicker} from "../../forms/DatePicker";
 import {convertToLocalDate, convertToUtc} from "../../../utils/date";
 import useLocalFilters from "../../common/filters/useLocalFilters";
