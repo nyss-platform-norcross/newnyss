@@ -22,6 +22,7 @@ const AlertsListPageComponent = ({
 
   const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
 
+  //useCallback important to avoid infinite loop from useEffect in AlertsFilters
   const handleFilterChange = useCallback((filters) => {
     props.getList(props.projectId, 1, filters);
   }, [props.getList, props.projectId]);

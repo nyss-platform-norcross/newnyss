@@ -28,7 +28,7 @@ const NationalSocietyDashboardPageComponent = ({ nationalSocietyId, openDashboar
   const dashboardElement = useRef(null);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
-
+  //useCallback important to avoid infinite loop from useEffect in NationalSocietyDashboardFilters
   const handleFiltersChange = useCallback((filters) =>
     getDashboardData(nationalSocietyId, filters), [getDashboardData, nationalSocietyId]);
 

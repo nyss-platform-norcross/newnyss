@@ -23,6 +23,7 @@ const DataCollectorsListPageComponent = ({getDataCollectorList, projectId, ...pr
   const [replaceSupervisorDialogOpened, setReplaceSupervisorDialogOpened] = useState(false);
   const [selectedDataCollectors, setSelectedDataCollectors] = useState([]);
 
+  //useCallback important to avoid infinite loop from useEffect in DataCollectorsFilters
   const handleFilterChange = useCallback((filters) =>
     getDataCollectorList(projectId, filters), [getDataCollectorList, projectId]);
 

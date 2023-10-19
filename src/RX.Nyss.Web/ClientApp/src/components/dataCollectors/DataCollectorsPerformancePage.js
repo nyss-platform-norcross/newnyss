@@ -21,6 +21,7 @@ const DataCollectorsPerformancePageComponent = ({ projectId, getDataCollectorPer
 
   const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
 
+  //useCallback important to avoid infinite loop from useEffect in DataCollectorsPerformanceFilters
   const handleFilterChange = useCallback((filters) =>
     getDataCollectorPerformanceList(projectId, filters), [getDataCollectorPerformanceList, projectId]);
 

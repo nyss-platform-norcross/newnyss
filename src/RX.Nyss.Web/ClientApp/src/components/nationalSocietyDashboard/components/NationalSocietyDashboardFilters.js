@@ -52,7 +52,6 @@ export const NationalSocietyDashboardFilters = ({
   //Syncs locations from redux store with filter state and sets label for location filter to 'All' or "Region (+n)"
   //Neccecary if locations are added, edited or removed, to make all filters checked
   //Should not be neccecary if state is managed correctly, quick fix but needs rework
-  //TODO: Move to Location Filter component
   const [locationsFilterLabel] = useLocationFilter(locations, localFilters, updateLocalFilters)
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("lg"));

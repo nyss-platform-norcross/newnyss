@@ -17,6 +17,7 @@ const DataCollectorsMapOverviewPageComponent = (props) => {
 
   const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
 
+  //useCallback important to avoid infinite loop from useEffect in DataCollectorsPerformanceMapFilters
   const handleFiltersChange = useCallback((value) => {
     props.getDataCollectorsMapOverview(props.projectId, value)
   }, [props.getDataCollectorsMapOverview, props.projectId]);

@@ -38,6 +38,7 @@ const ProjectDashboardPageComponent = ({
   const dashboardElement = useRef(null);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
+  //useCallback important to avoid infinite loop from useEffect in ProjectsDashboardFilters
   const handleFiltersChange = useCallback((filters) => getDashboardData(projectId, filters), [getDashboardData, projectId]);
 
   if (!props.filters) {
