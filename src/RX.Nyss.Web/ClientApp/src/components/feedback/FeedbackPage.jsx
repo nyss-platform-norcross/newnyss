@@ -64,7 +64,7 @@ const Feedback = ({ openModule, match, goBack }) => {
     if (!form.isValid()) {
       return;
     }
-    
+
     dispatch(
       sendFeedback.invoke({
         message: form.fields.message.value,
@@ -114,14 +114,21 @@ const Feedback = ({ openModule, match, goBack }) => {
               placeholder={strings(stringKeys.feedback.placeholder)}
             />
           </Grid>
-          <Grid item xs={12} style={{ textAlign: "right" }}>
-            <SubmitButton isFetching={isSendingFeedback} onClick={handleSubmit}>
-              {strings(stringKeys.feedback.submit)}
-            </SubmitButton>
+          <Grid container justifyContent={"flex-end"} spacing={2} style={{ textAlign: "right", marginRight:"4px"}}>
+            <Grid item>
+              <GoBackToButton onClick={handleGoBack}>
+                {strings(stringKeys.common.buttons.goBack)}
+              </GoBackToButton>
+            </Grid>
+            <Grid item>
+              <SubmitButton isFetching={isSendingFeedback} onClick={handleSubmit}>
+                {strings(stringKeys.feedback.submit)}
+              </SubmitButton>
+            </Grid>
           </Grid>
         </Grid>
-      )} 
-      
+      )}
+
       {hasSent && sendFeedbackResult === "ok" && (
         <Grid container justifyContent="center" spacing={7}>
           <Grid container direction="column" alignItems="center">
@@ -131,13 +138,15 @@ const Feedback = ({ openModule, match, goBack }) => {
             <Typography>
               {strings(stringKeys.feedback.thankYouDescription)}
             </Typography>
-            <GoBackToButton onClick={handleGoBack}>
-              {strings(stringKeys.common.buttons.goBack)}
-            </GoBackToButton>
+            <Grid item style={{marginTop:"2rem"}}>
+             <GoBackToButton onClick={handleGoBack}>
+               {strings(stringKeys.common.buttons.goBack)}
+             </GoBackToButton>
+            </Grid>
           </Grid>
         </Grid>
       )}
-      
+
       {hasSent && sendFeedbackResult === "error" && (
         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={7}>
             <Typography variant={"h1"} className={classes.title}>
