@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMount } from "../../utils/lifecycle";
 import * as appActions from "../app/logic/appActions";
 import { withLayout } from "../../utils/layout";
-import { Layout } from "../layout/Layout";
+import Layout from "../layout/Layout";
 import { connect } from "react-redux";
 import { Grid, Typography } from "@material-ui/core";
 import { strings, stringKeys } from "../../strings";
