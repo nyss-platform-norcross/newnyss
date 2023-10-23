@@ -10,24 +10,54 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 
 
-export const DropdownMenuItemComponent = ({ page, onItemClick, projectSubMenu }) => {
+export const TabDropdownComponent = ({ page, onItemClick, projectSubMenu }) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
 
   const useStyles = makeStyles({
+    container: {
+      position: "relative",
+      backgroundColor: "inherit",
+      border: page.isActive && open ? "1px solid #E3E3E3" : "1px solid transparent", borderRadius: "10px 10px 0px 0px"
+    },
     tab: {
-      borderBottom: page.isActive ? (open ? "3px solid transparent" : "3px solid #D52B1E") : "3px solid transparent",
+      borderBottom: page.isActive ? "3px solid #D52B1E" : "3px solid transparent",
       padding: "0px 20px 0px 20px",
     },
     buttonRoot: {
       borderRadius: "10px 10px 0px 0px",
+    },
+    popper: {
+      marginLeft: 1,
+      width: anchorRef?.current?.offsetWidth,
+      backgroundColor: "inherit",
+      zIndex: 1002,
+      border: page.isActive && open ? "1px solid #E3E3E3" : "none",
+      borderTop: "none",
+      borderBottomLeftRadius: 10,
+      borderBottomRightRadius: 10
+    },
+    menuList: {
+      width: "100%", padding: 0, backgroundColor: "inherit", borderRadius: "0px 0px 10px 10px"
+    },
+    menuItem: {
+      display: "flex",
+      justifyContent: "center",
+      padding: "0",
+    },
+    menuItemActive: {
+      backgroundColor: "#E3E3E3"
+    },
+    lastMenuItem: {
+      borderBottomLeftRadius: 10,
+      borderBottomRightRadius: 10
     }
   });
 
   const styles = useStyles()
 
   useEffect(()=> {
-    if(page.isActive && projectSubMenu.length > 0) setOpen(true);
+    if(page.isActive && projectSubMenu.length > 1) setOpen(true);
   }, [page.isActive, projectSubMenu])
 
   const handleToggle = () => {
@@ -55,7 +85,7 @@ export const DropdownMenuItemComponent = ({ page, onItemClick, projectSubMenu })
   }
 
   return (
-    <div style={{ position: "relative", backgroundColor: "inherit", border: page.isActive && open ? "1px solid #E3E3E3" : "1px solid transparent", borderRadius: "10px 10px 0px 0px" }}>
+    <div className={styles.container}>
       <Button
         ref={anchorRef}
         aria-controls={open ? 'menu-list-grow' : undefined}
@@ -70,18 +100,10 @@ export const DropdownMenuItemComponent = ({ page, onItemClick, projectSubMenu })
           {page.title.toUpperCase()}
         </Typography>
       </Button>
-      {projectSubMenu.length > 0 && (
+      {/* No need to display the dropdown if it only has 1 menuitem */}
+      {projectSubMenu.length > 1 && (
         <Popper
-          style={{
-            marginLeft: 1,
-            width: anchorRef?.current?.offsetWidth,
-            backgroundColor: "inherit",
-            zIndex: 1002,
-            border: page.isActive && open ? "1px solid #E3E3E3" : "none",
-            borderTop: "none",
-            borderBottomLeftRadius: 10,
-            borderBottomRightRadius: 10
-        }}
+          className={styles.popper}
           open={open}
           anchorEl={anchorRef?.current}
           placement="bottom"
@@ -93,12 +115,17 @@ export const DropdownMenuItemComponent = ({ page, onItemClick, projectSubMenu })
               boundariesElement: 'scrollParent',
               escapeWithReference: true
             },
-        }}>
+            hide: {
+              enabled: false
+            }
+          }}
+
+        >
           <ClickAwayListener onClickAway={handleClose}>
-            <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown} style={{ width: "100%", padding: 0, backgroundColor: "inherit", borderRadius: "0px 0px 10px 10px" }}>
+            <MenuList className={styles.menuList} autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
               {projectSubMenu.map((menuItem, index) => (
-                <MenuItem key={`menuItem_${menuItem.url}`} onClick={() => handleMenuItemClick(menuItem)} style={{ display: "flex", justifyContent: "center", padding: "0", height: 36, borderBottomLeftRadius: index === projectSubMenu.length - 1 && 10, borderBottomRightRadius: index === projectSubMenu.length - 1 && 10 }}>
-                  <Typography variant="subtitle2" style={{ padding: 7,  borderBottom: menuItem.isActive ? "3px solid #D52B1E" : "none"}} align='center'>
+                <MenuItem className={`${styles.menuItem} ${menuItem.isActive && styles.menuItemActive} ${index === projectSubMenu.length-1 && styles.lastMenuItem}`} key={`menuItem_${menuItem.url}`} onClick={() => handleMenuItemClick(menuItem)}>
+                  <Typography variant="subtitle2" align='center'>
                     {menuItem.title}
                   </Typography>
                 </MenuItem>
@@ -120,4 +147,4 @@ const mapDispatchToProps = {
   push: push
 };
 
-export const DropdownMenuItem = connect(mapStateToProps, mapDispatchToProps)(DropdownMenuItemComponent);
+export const TabDropdown = connect(mapStateToProps, mapDispatchToProps)(TabDropdownComponent);

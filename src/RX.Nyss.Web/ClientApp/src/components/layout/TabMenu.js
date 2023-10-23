@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { Tabs, Tab, Grid, Typography, makeStyles } from '@material-ui/core';
-import { DropdownMenuItem } from './DropdownMenuItem';
+import { TabDropdown } from './TabDropdown';
 
 const useStyles = makeStyles({
   nsHeader: {
@@ -47,7 +47,7 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, pr
         {projectTabMenu.length > 1 && (
             projectTabMenu.map(item => (
             <Grid key={`projectTabMenu_${item.url}`} item style={{ backgroundColor: "rgba(252, 252, 252, 0.99)" }}>
-              <DropdownMenuItem page={item} onItemClick={onItemClick}/>
+              <TabDropdown page={item} onItemClick={onItemClick}/>
             </Grid>
           ))
         )}
