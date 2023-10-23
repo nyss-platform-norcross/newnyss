@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   }
 });
 
-const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, projectName, nationalSocietyName, projectSubMenu }) => {
+const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, projectName, projectSubMenu }) => {
   const classes = useStyles()
 
   const onItemClick = (item) => {
@@ -35,11 +35,9 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, pr
 
   return (
     <div className={styles.tabMenu}>
-      {nationalSocietyName && projectName ?
-        <>
-          <Typography className={classes.nsHeader}>{nationalSocietyName}</Typography>
-          <Typography className={classes.projectHeader}>{projectName}</Typography>
-        </> :
+      {projectName ?
+        <Typography className={classes.projectHeader}>{projectName}</Typography>
+        :
         <div className={styles.header}>{title}</div>
       }
       <Grid container justifyContent='center'>
@@ -77,7 +75,6 @@ TabMenuComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  nationalSocietyName: state.appData.siteMap.parameters.nationalSocietyName,
   projectName: state.appData.siteMap.parameters.projectName,
   projectTabMenu: state.appData.siteMap.projectTabMenu,
   projectSubMenu: state.appData.siteMap.projectSubMenu,
