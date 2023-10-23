@@ -44,7 +44,7 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, pr
         {/* Only display project tab menu for all users other than data consumer since the role only has acces to project dashboard */}
         {projectTabMenu.length > 1 && (
             projectTabMenu.map(item => (
-            <Grid key={`projectTabMenu_${item.url}`} item style={{ backgroundColor: "rgba(252, 252, 252, 0.99)" }}>
+            <Grid key={`projectTabMenu_${item.url}`} item style={{ backgroundColor: "#FCFCFC" }}>
               <TabDropdown page={item} onItemClick={onItemClick}/>
             </Grid>
           ))
