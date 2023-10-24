@@ -1,5 +1,4 @@
 import styles from "./DataCollectorsPerformanceMapFilters.module.scss"
-import { useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 import { strings, stringKeys } from "../../../strings";
 import { DatePicker } from "../../forms/DatePicker";
@@ -9,16 +8,17 @@ import useLocalFilters from "../../common/filters/useLocalFilters";
 export const DataCollectorsPerformanceMapFilters = ({ filters, onChange }) => {
   //Reducer for local filters state
   const [localFilters, updateLocalFilters] = useLocalFilters(filters);
-  useEffect(() => {
-    localFilters.changed && onChange(localFilters.value);
-  }, [localFilters, onChange]);
+
+  //Fetches new data based on changes in filters
+  const handleFiltersChange = (filters) =>
+    onChange(updateLocalFilters(filters));
 
 
   const handleDateFromChange = date =>
-    updateLocalFilters({ startDate: convertToUtc(date) });
+    handleFiltersChange({ startDate: convertToUtc(date) });
 
   const handleDateToChange = date =>
-    updateLocalFilters({ endDate: convertToUtc(date) });
+    handleFiltersChange({ endDate: convertToUtc(date) });
 
   return (
     <Grid container spacing={2} className={styles.filters}>
@@ -26,7 +26,7 @@ export const DataCollectorsPerformanceMapFilters = ({ filters, onChange }) => {
         <DatePicker
           onChange={handleDateFromChange}
           label={strings(stringKeys.dashboard.filters.startDate)}
-          value={convertToLocalDate(localFilters.value.startDate)}
+          value={convertToLocalDate(localFilters.startDate)}
         />
       </Grid>
 
@@ -34,7 +34,7 @@ export const DataCollectorsPerformanceMapFilters = ({ filters, onChange }) => {
         <DatePicker
           onChange={handleDateToChange}
           label={strings(stringKeys.dashboard.filters.endDate)}
-          value={convertToLocalDate(localFilters.value.endDate)}
+          value={convertToLocalDate(localFilters.endDate)}
         />
       </Grid>
     </Grid>

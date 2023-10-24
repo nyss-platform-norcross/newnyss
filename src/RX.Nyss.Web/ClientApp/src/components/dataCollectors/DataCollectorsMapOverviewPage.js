@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
 import * as dataCollectorsActions from './logic/dataCollectorsActions';
@@ -17,10 +17,8 @@ const DataCollectorsMapOverviewPageComponent = (props) => {
 
   const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
 
-  //useCallback important to avoid infinite loop from useEffect in DataCollectorsPerformanceMapFilters
-  const handleFiltersChange = useCallback((value) => {
+  const handleFiltersChange = (value) =>
     props.getDataCollectorsMapOverview(props.projectId, value)
-  }, [props.getDataCollectorsMapOverview, props.projectId]);
 
   useEffect(() => {
     props.trackPage("DataCollectorsMapOverviewPage");

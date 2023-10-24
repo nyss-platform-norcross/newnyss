@@ -26,11 +26,11 @@ const useLocationFilter = (locations, localFilters, updateLocalFilters) => {
   // Sets label for location filter to 'All' or "Region (+n)"
   useEffect(() => {
     const label =
-      !localFilters.value || !locations || !localFilters.value.locations || localFilters.value.locations.regionIds.length === 0
+      !localFilters || !locations || !localFilters.locations || localFilters.locations.regionIds.length === 0
         ? strings(stringKeys.filters.area.all)
-        : renderFilterLabel(localFilters.value.locations, locations.regions, false);
+        : renderFilterLabel(localFilters.locations, locations.regions, false);
     setLocationsFilterLabel(label);
-  }, [localFilters.value.locations]);
+  }, [localFilters.locations]);
 
   return [locationsFilterLabel];
 }

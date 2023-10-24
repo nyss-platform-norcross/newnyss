@@ -1,17 +1,18 @@
-import { useReducer } from 'react';
-import { shallowEqual } from "react-redux";
+import { useState } from 'react';
 
 const useLocalFilters = (filters) => {
-  return useReducer((state, action) => {
-    const newState = { ...state.value, ...action };
-    if (!shallowEqual(newState, state.value)) {
-      return { ...state, changed: true, value: newState }
-    } else {
-      return state
-    }
-  }, { value: filters, changed: false });
+  const [filter, setFilter] = useState(filters);
+
+  const updateFilter = (change) => {
+    const newValue = {
+      ...filter,
+      ...change,
+    };
+    setFilter((prev) => ({ ...prev, ...change }));
+    return newValue;
+  };
+
+  return [filter, updateFilter];
 };
-
-
 
 export default useLocalFilters;

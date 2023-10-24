@@ -1,6 +1,5 @@
 import styles from "./ReportFilters.module.scss";
 
-import { useEffect } from "react";
 import {
   Grid,
   MenuItem,
@@ -39,46 +38,46 @@ export const ReportFilters = ({
 }) => {
   //Reducer for local filters state
   const [localFilters, updateLocalFilters] = useLocalFilters(filters);
-  //Updates redux store with local filters state when local filters state changes
-  useEffect(() => {
-    localFilters.changed && onChange(localFilters.value);
-  }, [localFilters, onChange]);
+
+  //Fetches new data based on changes in filters
+  const handleFiltersChange = (filters) => {
+    onChange(updateLocalFilters(filters));
+  };
 
   //Syncs locations from redux store with filter state and sets label for location filter to 'All' or "Region (+n)"
   //Neccecary if locations are added, edited or removed, to make all filters checked
-  //Should not be neccecary if state is managed correctly, quick fix but needs rework
   const [locationsFilterLabel] = useLocationFilter(locations, localFilters, updateLocalFilters)
 
 
   const handleLocationChange = (newValue) => {
-    updateLocalFilters({
+    handleFiltersChange({
         locations: newValue,
       })
   };
 
   const handleHealthRiskChange = (filteredHealthRisks) =>
-    updateLocalFilters({ healthRisks: filteredHealthRisks });
+    handleFiltersChange({ healthRisks: filteredHealthRisks });
 
   const handleDataCollectorTypeChange = (event) =>
-    updateLocalFilters({ dataCollectorType: event.target.value });
+    handleFiltersChange({ dataCollectorType: event.target.value });
 
   const handleErrorTypeChange = (event) =>
-    updateLocalFilters({ errorType: event.target.value });
+    handleFiltersChange({ errorType: event.target.value });
 
   const handleCorrectedStateChange = (event) =>
-    updateLocalFilters({ correctedState: event.target.value });
+    handleFiltersChange({ correctedState: event.target.value });
 
   const handleReportStatusChange = (event) =>
-      updateLocalFilters({
+      handleFiltersChange({
         reportStatus: {
-          ...localFilters.value.reportStatus,
+          ...localFilters.reportStatus,
           [event.target.name]: event.target.checked,
         },
       });
 
   const handleTrainingStatusChange = (event) =>
-      updateLocalFilters({
-        ...localFilters.value,
+      handleFiltersChange({
+        ...localFilters,
         trainingStatus: event.target.value,
       });
 
@@ -92,7 +91,7 @@ export const ReportFilters = ({
         <Grid container spacing={2}>
           <Grid item>
             <LocationFilter
-              filteredLocations={localFilters.value.locations}
+              filteredLocations={localFilters.locations}
               allLocations={locations}
               onChange={handleLocationChange}
               showUnknownLocation
@@ -130,7 +129,7 @@ export const ReportFilters = ({
               <Grid item>
                 <HealthRiskFilter
                   allHealthRisks={healthRisks}
-                  filteredHealthRisks={localFilters.value.healthRisks}
+                  filteredHealthRisks={localFilters.healthRisks}
                   onChange={handleHealthRiskChange}
                   updateValue={updateLocalFilters}
                 />
@@ -197,7 +196,7 @@ export const ReportFilters = ({
                     {strings(stringKeys.dashboard.filters.trainingStatus)}
                   </FormLabel>
                   <RadioGroup
-                    value={localFilters.value.trainingStatus}
+                    value={localFilters.trainingStatus}
                     onChange={handleTrainingStatusChange}
                     className={styles.radioGroup}
                   >
@@ -229,7 +228,7 @@ export const ReportFilters = ({
             <Fragment>
               <Grid item>
                 <ReportStatusFilter
-                  filter={localFilters.value.reportStatus}
+                  filter={localFilters.reportStatus}
                   onChange={handleReportStatusChange}
                   correctReports={showCorrectReportFilters}
                   showDismissedFilter

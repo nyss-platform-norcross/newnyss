@@ -1,5 +1,5 @@
 import styles from "./NationalSocietyDashboardPage.module.scss";
-import React, { Fragment, useRef, useState, useCallback } from 'react';
+import React, { Fragment, useRef, useState } from 'react';
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
 import * as nationalSocietyDashboardActions from './logic/nationalSocietyDashboardActions';
@@ -28,9 +28,7 @@ const NationalSocietyDashboardPageComponent = ({ nationalSocietyId, openDashboar
   const dashboardElement = useRef(null);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
-  //useCallback important to avoid infinite loop from useEffect in NationalSocietyDashboardFilters
-  const handleFiltersChange = useCallback((filters) =>
-    getDashboardData(nationalSocietyId, filters), [getDashboardData, nationalSocietyId]);
+  const handleFiltersChange = (filters) => getDashboardData(nationalSocietyId, filters);
 
   if (!props.filters) {
     return <Loading />;

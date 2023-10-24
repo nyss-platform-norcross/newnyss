@@ -22,13 +22,14 @@ import useLocationFilter from "../../common/filters/useLocationFilter";
 export const DataCollectorsFilters = ({ supervisors, locations, onChange, callingUserRoles, filters, rtl }) => {
   //Reducer for local filters state
   const [localFilters, updateLocalFilters] = useLocalFilters(filters);
-  useEffect(() => {
-    localFilters.changed && onChange(localFilters.value);
-  }, [localFilters, onChange]);
+
+  //Fetches new data based on changes in filters
+  const handleFiltersChange = (filters) => {
+    onChange(updateLocalFilters(filters));
+  };
 
   //Syncs locations from redux store with filter state and sets label for location filter to 'All' or "Region (+n)"
   //Neccecary if locations are added, edited or removed, to make all filters checked
-  //Should not be neccecary if state is managed correctly, quick fix but needs rework
   const [locationsFilterLabel] = useLocationFilter(locations, localFilters, updateLocalFilters)
 
   const [name, setName] = useReducer((state, action) => {
@@ -41,7 +42,7 @@ export const DataCollectorsFilters = ({ supervisors, locations, onChange, callin
   const debouncedName = useDebounce(name, 500);
 
   const updateValue = (change) => {
-    updateLocalFilters(change);
+    handleFiltersChange(change);
   };
 
   const handleLocationChange = (newValue) => {
@@ -81,7 +82,7 @@ export const DataCollectorsFilters = ({ supervisors, locations, onChange, callin
           </Grid>
           <Grid item>
             <LocationFilter
-              filteredLocations={localFilters.value.locations}
+              filteredLocations={localFilters.locations}
               allLocations={locations}
               filterLabel={locationsFilterLabel}
               onChange={handleLocationChange}
@@ -95,7 +96,7 @@ export const DataCollectorsFilters = ({ supervisors, locations, onChange, callin
                 select
                 label={strings(stringKeys.dataCollectors.filters.supervisors)}
                 onChange={handleSupervisorChange}
-                value={localFilters.value.supervisorId || 0}
+                value={localFilters.supervisorId || 0}
                 className={styles.filterItem}
                 InputLabelProps={{ shrink: true }}
               >
@@ -115,7 +116,7 @@ export const DataCollectorsFilters = ({ supervisors, locations, onChange, callin
               select
               label={strings(stringKeys.dataCollectors.filters.sex)}
               onChange={handleSexChange}
-              value={localFilters.value.sex || "all"}
+              value={localFilters.sex || "all"}
               className={styles.filterItem}
               InputLabelProps={{ shrink: true }}
             >
@@ -134,7 +135,7 @@ export const DataCollectorsFilters = ({ supervisors, locations, onChange, callin
           <Grid item>
             <InputLabel>{strings(stringKeys.dataCollectors.filters.trainingStatus)}</InputLabel>
             <RadioGroup
-              value={localFilters.value.trainingStatus || 'All'}
+              value={localFilters.trainingStatus || 'All'}
               onChange={handleTrainingStatusChange}
               className={styles.filterRadioGroup}>
               {trainingStatus.map(status => (
@@ -146,7 +147,7 @@ export const DataCollectorsFilters = ({ supervisors, locations, onChange, callin
           <Grid item>
             <InputLabel>{strings(stringKeys.dataCollectors.filters.deployedMode)}</InputLabel>
             <RadioGroup
-              value={localFilters.value.deployedMode}
+              value={localFilters.deployedMode}
               onChange={handleDeployedModeChange}
               className={styles.filterRadioGroup}>
               {deployedMode.map(status => (

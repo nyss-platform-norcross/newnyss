@@ -1,5 +1,5 @@
 import styles from "./NationalSocietyDashboardFilters.module.scss";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { DatePicker } from "../../forms/DatePicker";
 import { strings, stringKeys } from "../../../strings";
 import {
@@ -31,7 +31,7 @@ import { HealthRiskFilter } from "../../common/filters/HealthRiskFilter";
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";
 
-//TODO: Filters components should probably fetch data from redux store themselves
+//Filters components should probably fetch data from redux store themselves
 export const NationalSocietyDashboardFilters = ({
   filters,
   healthRisks,
@@ -40,22 +40,23 @@ export const NationalSocietyDashboardFilters = ({
   onChange,
   isFetching,
   userRoles,
+  isFilterExpanded,
+  setIsFilterExpanded,
   rtl,
 }) => {
   //Reducer for local filters state
   const [localFilters, updateLocalFilters] = useLocalFilters(filters);
-  //Updates redux store with local filters state when local filters state changes
-  useEffect(() => {
-    localFilters.changed && onChange(localFilters.value);
-  }, [localFilters, onChange]);
+
+  //Fetches new data based on changes in filters
+  const handleFiltersChange = (filters) => {
+    onChange(updateLocalFilters(filters));
+  };
 
   //Syncs locations from redux store with filter state and sets label for location filter to 'All' or "Region (+n)"
   //Neccecary if locations are added, edited or removed, to make all filters checked
-  //Should not be neccecary if state is managed correctly, quick fix but needs rework
   const [locationsFilterLabel] = useLocationFilter(locations, localFilters, updateLocalFilters)
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("lg"));
-  const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
   const collectionsTypes = {
     all: strings(stringKeys.dashboard.filters.allReportsType),
@@ -68,43 +69,43 @@ export const NationalSocietyDashboardFilters = ({
   };
 
   const handleLocationChange = (locations) => {
-    updateLocalFilters({ locations: locations });
+    handleFiltersChange({ locations: locations });
   };
   const handleHealthRiskChange = (filteredHealthRisks) =>
-    updateLocalFilters({ healthRisks: filteredHealthRisks });
+    handleFiltersChange({ healthRisks: filteredHealthRisks });
 
   const handleOrganizationChange = (event) =>
 
-      updateLocalFilters({
+    handleFiltersChange({
         organizationId: event.target.value === 0 ? null : event.target.value,
       })
     ;
 
   const handleDateFromChange = (date) =>
-    updateLocalFilters({ startDate: convertToUtc(date) });
+    handleFiltersChange({ startDate: convertToUtc(date) });
 
   const handleDateToChange = (date) =>
-    updateLocalFilters({ endDate: convertToUtc(date) });
+    handleFiltersChange({ endDate: convertToUtc(date) });
 
   const handleGroupingTypeChange = (event) =>
-    updateLocalFilters({ groupingType: event.target.value });
+    handleFiltersChange({ groupingType: event.target.value });
 
   const handleDataCollectorTypeChange = (event) =>
-    updateLocalFilters({ dataCollectorType: event.target.value });
+    handleFiltersChange({ dataCollectorType: event.target.value });
 
   const handleReportStatusChange = (event) =>
 
-      updateLocalFilters({
+    handleFiltersChange({
         reportStatus: {
-          ...localFilters.value.reportStatus,
+          ...localFilters.reportStatus,
           [event.target.name]: event.target.checked,
         },
       })
     ;
 
   const allLocationsSelected = () =>
-    !localFilters.value.locations ||
-    localFilters.value.locations.regionIds.length === locations.regions.length;
+    !localFilters.locations ||
+    localFilters.locations.regionIds.length === locations.regions.length;
 
 
   if (!localFilters) {
@@ -125,9 +126,9 @@ export const NationalSocietyDashboardFilters = ({
                 <Grid item>
                   <Chip
                     icon={<DateRange />}
-                    label={`${convertToLocalDate(localFilters.value.startDate).format(
+                    label={`${convertToLocalDate(localFilters.startDate).format(
                       "YYYY-MM-DD"
-                    )} - ${convertToLocalDate(localFilters.value.endDate).format(
+                    )} - ${convertToLocalDate(localFilters.endDate).format(
                       "YYYY-MM-DD"
                     )}`}
                     onClick={() => setIsFilterExpanded(!isFilterExpanded)}
@@ -136,7 +137,7 @@ export const NationalSocietyDashboardFilters = ({
                 <Grid item>
                   <Chip
                     label={
-                      localFilters.value.groupingType === "Day"
+                      localFilters.groupingType === "Day"
                         ? strings(stringKeys.dashboard.filters.timeGroupingDay)
                         : strings(stringKeys.dashboard.filters.timeGroupingWeek)
                     }
@@ -153,39 +154,39 @@ export const NationalSocietyDashboardFilters = ({
                 />
               </Grid>
             )}
-            {!isFilterExpanded && localFilters.value.healthRiskId && (
+            {!isFilterExpanded && localFilters.healthRiskId && (
               <Grid item>
                 <Chip
                   label={
-                    healthRisks.filter((hr) => hr.id === localFilters.value.healthRiskId)[0]
+                    healthRisks.filter((hr) => hr.id === localFilters.healthRiskId)[0]
                       .name
                   }
-                  onDelete={() => updateLocalFilters({ healthRiskId: null })}
+                  onDelete={() => handleFiltersChange({ healthRiskId: null })}
                   onClick={() => setIsFilterExpanded(!isFilterExpanded)}
                 />
               </Grid>
             )}
-            {!isFilterExpanded && localFilters.value.dataCollectorType !== "all" && (
+            {!isFilterExpanded && localFilters.dataCollectorType !== "all" && (
               <Grid item>
                 <Chip
-                  label={collectionsTypes[localFilters.value.dataCollectorType]}
+                  label={collectionsTypes[localFilters.dataCollectorType]}
                   onDelete={() =>
-                    updateLocalFilters({ dataCollectorType: "all" })
+                    handleFiltersChange({ dataCollectorType: "all" })
                   }
                   onClick={() => setIsFilterExpanded(!isFilterExpanded)}
                 />
               </Grid>
             )}
-            {!isFilterExpanded && localFilters.value.organizationId && (
+            {!isFilterExpanded && localFilters.organizationId && (
               <Grid item>
                 <Chip
                   label={
                     organizations.filter(
-                      (o) => o.id === localFilters.value.organizationId
+                      (o) => o.id === localFilters.organizationId
                     )[0].name
                   }
                   onDelete={() =>
-                    updateLocalFilters({ organizationId: null })
+                    handleFiltersChange({ organizationId: null })
                   }
                   onClick={() => setIsFilterExpanded(!isFilterExpanded)}
                 />
@@ -193,15 +194,15 @@ export const NationalSocietyDashboardFilters = ({
             )}
             {!isFilterExpanded &&
               !userRoles.some((r) => r === DataConsumer) &&
-              localFilters.value.reportStatus.kept && (
+              localFilters.reportStatus.kept && (
                 <Grid item>
                   <Chip
                     label={strings(stringKeys.filters.report.kept)}
                     onDelete={() =>
 
-                        updateLocalFilters({
+                        handleFiltersChange({
                           reportStatus: {
-                            ...localFilters.value.reportStatus,
+                            ...localFilters.reportStatus,
                             kept: false,
                           },
                         })
@@ -213,15 +214,15 @@ export const NationalSocietyDashboardFilters = ({
               )}
             {!isFilterExpanded &&
               !userRoles.some((r) => r === DataConsumer) &&
-              localFilters.value.reportStatus.notCrossChecked && (
+              localFilters.reportStatus.notCrossChecked && (
                 <Grid item>
                   <Chip
                     label={strings(stringKeys.filters.report.notCrossChecked)}
                     onDelete={() =>
 
-                        updateLocalFilters({
+                        handleFiltersChange({
                           reportStatus: {
-                            ...localFilters.value.reportStatus,
+                            ...localFilters.reportStatus,
                             notCrossChecked: false,
                           },
                         })
@@ -265,7 +266,7 @@ export const NationalSocietyDashboardFilters = ({
                 className={styles.filterDate}
                 onChange={handleDateFromChange}
                 label={strings(stringKeys.dashboard.filters.startDate)}
-                value={convertToLocalDate(localFilters.value.startDate)}
+                value={convertToLocalDate(localFilters.startDate)}
               />
             </Grid>
 
@@ -274,7 +275,7 @@ export const NationalSocietyDashboardFilters = ({
                 className={styles.filterDate}
                 onChange={handleDateToChange}
                 label={strings(stringKeys.dashboard.filters.endDate)}
-                value={convertToLocalDate(localFilters.value.endDate)}
+                value={convertToLocalDate(localFilters.endDate)}
               />
             </Grid>
 
@@ -284,7 +285,7 @@ export const NationalSocietyDashboardFilters = ({
                   {strings(stringKeys.dashboard.filters.timeGrouping)}
                 </FormLabel>
                 <RadioGroup
-                  value={localFilters.value.groupingType}
+                  value={localFilters.groupingType}
                   onChange={handleGroupingTypeChange}
                   className={styles.radioGroup}
                 >
@@ -310,7 +311,7 @@ export const NationalSocietyDashboardFilters = ({
 
             <Grid item>
               <LocationFilter
-                filteredLocations={localFilters.value.locations}
+                filteredLocations={localFilters.locations}
                 filterLabel={locationsFilterLabel}
                 allLocations={locations}
                 onChange={handleLocationChange}
@@ -321,7 +322,7 @@ export const NationalSocietyDashboardFilters = ({
             <Grid item>
               <HealthRiskFilter
                 allHealthRisks={healthRisks}
-                filteredHealthRisks={localFilters.value.healthRisks}
+                filteredHealthRisks={localFilters.healthRisks}
                 onChange={handleHealthRiskChange}
                 updateValue={updateLocalFilters}
               />
@@ -331,7 +332,7 @@ export const NationalSocietyDashboardFilters = ({
                 select
                 label={strings(stringKeys.dashboard.filters.reportsType)}
                 onChange={handleDataCollectorTypeChange}
-                value={localFilters.value.dataCollectorType}
+                value={localFilters.dataCollectorType}
                 className={styles.filterItem}
                 InputLabelProps={{ shrink: true }}
               >
@@ -351,7 +352,7 @@ export const NationalSocietyDashboardFilters = ({
                   select
                   label={strings(stringKeys.dashboard.filters.organization)}
                   onChange={handleOrganizationChange}
-                  value={localFilters.value.organizationId || 0}
+                  value={localFilters.organizationId || 0}
                   className={styles.filterItem}
                   InputLabelProps={{ shrink: true }}
                 >
@@ -374,7 +375,7 @@ export const NationalSocietyDashboardFilters = ({
             {!userRoles.some((r) => r === DataConsumer) && (
               <Grid item>
                 <ReportStatusFilter
-                  filter={localFilters.value.reportStatus}
+                  filter={localFilters.reportStatus}
                   correctReports
                   showDismissedFilter
                   doNotWrap

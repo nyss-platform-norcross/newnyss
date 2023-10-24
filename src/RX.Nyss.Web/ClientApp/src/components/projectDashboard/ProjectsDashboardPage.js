@@ -1,5 +1,5 @@
 import styles from "./ProjectsDashboardPage.module.scss";
-import React, { Fragment, useCallback, useRef, useState } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
 import * as projectDashboardActions from "./logic/projectDashboardActions";
@@ -38,8 +38,7 @@ const ProjectDashboardPageComponent = ({
   const dashboardElement = useRef(null);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
-  //useCallback important to avoid infinite loop from useEffect in ProjectsDashboardFilters
-  const handleFiltersChange = useCallback((filters) => getDashboardData(projectId, filters), [getDashboardData, projectId]);
+  const handleFiltersChange = (filters) => getDashboardData(projectId, filters);
 
   if (!props.filters) {
     return <Loading />;

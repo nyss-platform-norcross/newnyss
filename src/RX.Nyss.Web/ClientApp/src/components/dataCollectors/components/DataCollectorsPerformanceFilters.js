@@ -22,14 +22,13 @@ import useLocationFilter from "../../common/filters/useLocationFilter";
 export const DataCollectorsPerformanceFilters = ({ onChange, filters, rtl, locations, supervisors, userRoles }) => {
   //Reducer for local filters state
   const [localFilters, updateLocalFilters] = useLocalFilters(filters);
-  //Updates redux store with local filters state when local filters state changes
-  useEffect(() => {
-    localFilters.changed && onChange(localFilters.value);
-  }, [localFilters, onChange]);
+
+  //Fetches new data based on changes in filters
+  const handleFiltersChange = (filters) =>
+    onChange(updateLocalFilters(filters));
 
   //Syncs locations from redux store with filter state and sets label for location filter to 'All' or "Region (+n)"
   //Neccecary if locations are added, edited or removed, to make all filters checked
-  //Should not be neccecary if state is managed correctly, quick fix but needs rework
   const [locationsFilterLabel] = useLocationFilter(locations, localFilters, updateLocalFilters)
 
   const [name, setName] = useReducer((state, action) => {
@@ -43,20 +42,20 @@ export const DataCollectorsPerformanceFilters = ({ onChange, filters, rtl, locat
   const debouncedName = useDebounce(name, 500);
 
   useEffect(() => {
-    debouncedName.changed && updateLocalFilters({ name: debouncedName.value });
-  }, [debouncedName, updateLocalFilters]);
+    debouncedName.changed && handleFiltersChange({ name: debouncedName.value });
+  }, [debouncedName]);
 
   const handleAreaChange = (newValue) =>
-    updateLocalFilters({ locations: newValue, pageNumber: 1 });
+    handleFiltersChange({ locations: newValue, pageNumber: 1 });
 
   const handleNameChange = event =>
     setName(event.target.value);
 
   const handleSupervisorChange = event =>
-    updateLocalFilters({ supervisorId: event.target.value === 0 ? null : event.target.value });
+    handleFiltersChange({ supervisorId: event.target.value === 0 ? null : event.target.value });
 
   const handleTrainingStatusChange = event =>
-    updateLocalFilters({ trainingStatus: event.target.value });
+    handleFiltersChange({ trainingStatus: event.target.value });
 
   if (!filters) {
     return null;
@@ -109,7 +108,7 @@ export const DataCollectorsPerformanceFilters = ({ onChange, filters, rtl, locat
           <Grid item>
             <InputLabel>{strings(stringKeys.dataCollectors.filters.trainingStatus)}</InputLabel>
             <RadioGroup
-              value={localFilters.value.trainingStatus || 'All'}
+              value={localFilters.trainingStatus || 'All'}
               onChange={handleTrainingStatusChange}
               className={styles.filterRadioGroup}>
               {trainingStatus.map(status => (

@@ -1,6 +1,6 @@
-import { Fragment, useReducer, useEffect, useCallback } from 'react';
+import { Fragment } from 'react';
 import PropTypes from "prop-types";
-import { connect, shallowEqual, useSelector } from "react-redux";
+import { connect,  useSelector } from "react-redux";
 import { withLayout } from '../../utils/layout';
 import Layout from '../layout/Layout';
 import { useMount } from '../../utils/lifecycle';
@@ -8,7 +8,6 @@ import DataCollectorsPerformanceTable from './components/DataCollectorsPerforman
 import * as dataCollectorActions from './logic/dataCollectorsActions';
 import { DataCollectorsPerformanceFilters } from './components/DataCollectorsPerformanceFilters';
 import { DataCollectorsPerformanceTableLegend } from './components/DataCollectorsPerformanceTableLegend';
-import { initialState } from '../../initialState';
 import TableActions from '../common/tableActions/TableActions';
 import { TableActionsButton } from '../common/buttons/tableActionsButton/TableActionsButton';
 import { stringKeys, strings } from '../../strings';
@@ -21,9 +20,8 @@ const DataCollectorsPerformancePageComponent = ({ projectId, getDataCollectorPer
 
   const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
 
-  //useCallback important to avoid infinite loop from useEffect in DataCollectorsPerformanceFilters
-  const handleFilterChange = useCallback((filters) =>
-    getDataCollectorPerformanceList(projectId, filters), [getDataCollectorPerformanceList, projectId]);
+  const handleFilterChange = (filters) =>
+    getDataCollectorPerformanceList(projectId, filters);
 
   return (
     <Fragment>
