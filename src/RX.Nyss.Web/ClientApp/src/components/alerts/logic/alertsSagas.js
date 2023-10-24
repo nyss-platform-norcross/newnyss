@@ -60,12 +60,12 @@ function* openAlertsList({ projectId }) {
 };
 
 function* getAlerts({ projectId, pageNumber, filters }) {
-  yield put(actions.getList.request());
+  yield put(actions.getAlerts.request());
   try {
     const response = yield call(http.post, `/api/alert/list?projectId=${projectId}&pageNumber=${pageNumber || 1}`, filters);
-    yield put(actions.getList.success(response.value.data, response.value.page, response.value.rowsPerPage, response.value.totalRows, filters));
+    yield put(actions.getAlerts.success(response.value.data, response.value.page, response.value.rowsPerPage, response.value.totalRows, filters));
   } catch (error) {
-    yield put(actions.getList.failure(error.message));
+    yield put(actions.getAlerts.failure(error.message));
   }
 };
 

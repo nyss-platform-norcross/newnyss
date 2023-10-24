@@ -24,8 +24,8 @@ const AlertsListPageComponent = ({
 
   //useCallback important to avoid infinite loop from useEffect in AlertsFilters
   const handleFilterChange = useCallback((filters) => {
-    props.getList(props.projectId, 1, filters);
-  }, [props.getList, props.projectId]);
+    props.getAlerts(props.projectId, 1, filters); // 1 is the default page number
+  }, [props.getAlerts, props.projectId]);
 
   const handlePageChange = (page) => {
     props.getList(props.projectId, page, props.filters);
@@ -91,7 +91,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   openAlertsList: alertsActions.openList.invoke,
   goToAssessment: alertsActions.goToAssessment,
-  getList: alertsActions.getList.invoke,
+  getAlerts: alertsActions.getAlerts.invoke,
   export: alertsActions.exportAlerts.invoke
 };
 

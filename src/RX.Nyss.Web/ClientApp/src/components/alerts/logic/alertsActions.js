@@ -16,7 +16,7 @@ export const openList = {
   failure: (message) => ({ type: OPEN_ALERTS_LIST.FAILURE, message })
 };
 
-export const getList = {
+export const getAlerts = {
   invoke: (projectId, pageNumber, filters) => ({ type: GET_ALERTS.INVOKE, projectId, pageNumber, filters }),
   request: () => ({ type: GET_ALERTS.REQUEST }),
   success: (data, page, rowsPerPage, totalRows, filters) => ({ type: GET_ALERTS.SUCCESS, data, page, rowsPerPage, totalRows, filters }),
