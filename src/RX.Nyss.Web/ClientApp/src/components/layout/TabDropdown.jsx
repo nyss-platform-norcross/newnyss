@@ -46,8 +46,7 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
     },
     menuItem: {
       display: "flex",
-      justifyContent: "center",
-      padding: "0",
+      whiteSpace: "normal"
     },
     menuItemActive: {
       backgroundColor: "#E3E3E3"
@@ -128,7 +127,7 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
             <MenuList className={styles.menuList} autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
               {page.subMenu?.map((menuItem, index) => (
                 <MenuItem className={`${styles.menuItem} ${menuItem.isActive && styles.menuItemActive} ${index === page.subMenu?.length-1 && styles.lastMenuItem}`} key={`menuItem_${menuItem.url}`} onClick={() => handleMenuItemClick(menuItem)}>
-                  <Typography variant="subtitle2" align='center'>
+                  <Typography variant="subtitle2">
                     {menuItem.title}
                   </Typography>
                 </MenuItem>
