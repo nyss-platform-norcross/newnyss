@@ -9,7 +9,6 @@ export const initialState = {
       generalMenu: [],
       tabMenu: [],
       projectTabMenu: [],
-      projectSubMenu: [],
       sideMenu: []
     },
     mobile: {

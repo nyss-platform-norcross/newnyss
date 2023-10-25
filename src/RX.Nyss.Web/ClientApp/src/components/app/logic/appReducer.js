@@ -81,7 +81,6 @@ export function appReducer(state = initialState.appData, action) {
           sideMenu: [],
           tabMenu: [],
           projectTabMenu: [],
-          projectSubMenu: [],
           title: null
         }
       }
@@ -96,7 +95,6 @@ export function appReducer(state = initialState.appData, action) {
           sideMenu: action.sideMenu,
           tabMenu: action.tabMenu,
           projectTabMenu: action.projectTabMenu,
-          projectSubMenu: action.projectSubMenu,
           title: action.title
         }
       }

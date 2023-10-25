@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   }
 });
 
-const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, projectName, projectSubMenu }) => {
+const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, projectName }) => {
   const classes = useStyles()
 
   const onItemClick = (item) => {
@@ -50,8 +50,9 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, pr
           ))
         )}
       </Grid>
-      {projectSubMenu.length > 0 && (
-        <div className={styles.header}>{projectSubMenu.find(menuItem => menuItem.isActive).title}</div>
+      {/* Display header for subpages inside a project for data collectors, project reports and project settings */}
+      {projectTabMenu.some(projectItem => projectItem.subMenu.length > 0 && projectItem.isActive) && (
+        <div className={styles.header}>{projectTabMenu.find(projectItem => projectItem.isActive)?.subMenu.find(item => item.isActive)?.title}</div>
       )}
       {showTabMenu && (
         <Tabs
@@ -77,7 +78,6 @@ TabMenuComponent.propTypes = {
 const mapStateToProps = state => ({
   projectName: state.appData.siteMap.parameters.projectName,
   projectTabMenu: state.appData.siteMap.projectTabMenu,
-  projectSubMenu: state.appData.siteMap.projectSubMenu,
   tabMenu: state.appData.siteMap.tabMenu,
   title: state.appData.siteMap.title,
   currentUrl: state.appData.route.url

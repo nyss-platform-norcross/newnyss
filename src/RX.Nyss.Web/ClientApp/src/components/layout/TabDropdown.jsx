@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 
@@ -8,9 +8,10 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
-
-export const TabDropdownComponent = ({ page, onItemClick, projectSubMenu }) => {
+export const TabDropdownComponent = ({ page, onItemClick }) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
 
@@ -18,7 +19,7 @@ export const TabDropdownComponent = ({ page, onItemClick, projectSubMenu }) => {
     container: {
       position: "relative",
       backgroundColor: "inherit",
-      border: page.isActive && open ? "1px solid #E3E3E3" : "1px solid transparent", borderRadius: "10px 10px 0px 0px"
+      border: open ? "1px solid #E3E3E3" : "1px solid transparent", borderRadius: "10px 10px 0px 0px"
     },
     tab: {
       borderBottom: page.isActive ? "3px solid #D52B1E" : "3px solid transparent",
@@ -32,13 +33,16 @@ export const TabDropdownComponent = ({ page, onItemClick, projectSubMenu }) => {
       width: anchorRef?.current?.offsetWidth,
       backgroundColor: "inherit",
       zIndex: 1002,
-      border: page.isActive && open ? "1px solid #E3E3E3" : "none",
+      border:  open ? "1px solid #E3E3E3" : "none",
       borderTop: "none",
       borderBottomLeftRadius: 10,
       borderBottomRightRadius: 10
     },
     menuList: {
-      width: "100%", padding: 0, backgroundColor: "inherit", borderRadius: "0px 0px 10px 10px"
+      width: "100%",
+      padding: 0,
+      backgroundColor: "inherit",
+      borderRadius: "0px 0px 10px 10px"
     },
     menuItem: {
       display: "flex",
@@ -56,14 +60,8 @@ export const TabDropdownComponent = ({ page, onItemClick, projectSubMenu }) => {
 
   const styles = useStyles()
 
-  useEffect(()=> {
-    if(page.isActive && projectSubMenu.length > 1) setOpen(true);
-  }, [page.isActive, projectSubMenu])
-
   const handleToggle = () => {
-    if(!page.isActive) onItemClick(page);
-    else if(!page.isActive || projectSubMenu.length > 0) setOpen((prevOpen) => !prevOpen);
-    else if(page.isActive && !open) onItemClick(page);
+    onItemClick(page);
   };
 
   const handleClose = (event) => {
@@ -85,7 +83,11 @@ export const TabDropdownComponent = ({ page, onItemClick, projectSubMenu }) => {
   }
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
       <Button
         ref={anchorRef}
         aria-controls={open ? 'menu-list-grow' : undefined}
@@ -99,9 +101,10 @@ export const TabDropdownComponent = ({ page, onItemClick, projectSubMenu }) => {
         <Typography variant='subtitle2'>
           {page.title.toUpperCase()}
         </Typography>
+        {page.subMenu?.length > 0 ? open ? <ExpandLessIcon fontSize='small'/> : <ExpandMoreIcon fontSize='small'/> : null}
       </Button>
       {/* No need to display the dropdown if it only has 1 menuitem */}
-      {projectSubMenu.length > 1 && (
+      {page.subMenu?.length > 1 && (
         <Popper
           className={styles.popper}
           open={open}
@@ -123,8 +126,8 @@ export const TabDropdownComponent = ({ page, onItemClick, projectSubMenu }) => {
         >
           <ClickAwayListener onClickAway={handleClose}>
             <MenuList className={styles.menuList} autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-              {projectSubMenu.map((menuItem, index) => (
-                <MenuItem className={`${styles.menuItem} ${menuItem.isActive && styles.menuItemActive} ${index === projectSubMenu.length-1 && styles.lastMenuItem}`} key={`menuItem_${menuItem.url}`} onClick={() => handleMenuItemClick(menuItem)}>
+              {page.subMenu?.map((menuItem, index) => (
+                <MenuItem className={`${styles.menuItem} ${menuItem.isActive && styles.menuItemActive} ${index === page.subMenu?.length-1 && styles.lastMenuItem}`} key={`menuItem_${menuItem.url}`} onClick={() => handleMenuItemClick(menuItem)}>
                   <Typography variant="subtitle2" align='center'>
                     {menuItem.title}
                   </Typography>
@@ -139,12 +142,8 @@ export const TabDropdownComponent = ({ page, onItemClick, projectSubMenu }) => {
   )
 }
 
-const mapStateToProps = state => ({
-  projectSubMenu: state.appData.siteMap.projectSubMenu,
-});
-
 const mapDispatchToProps = {
   push: push
 };
 
-export const TabDropdown = connect(mapStateToProps, mapDispatchToProps)(TabDropdownComponent);
+export const TabDropdown = connect(undefined, mapDispatchToProps)(TabDropdownComponent);
