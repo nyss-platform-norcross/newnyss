@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using System.Web;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using RX.Nyss.Common.Services.StringsResources;
 using RX.Nyss.Common.Utils;
 using RX.Nyss.Common.Utils.Logging;
@@ -211,11 +212,20 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                 gatewaySetting = await _reportValidationService.ValidateGatewaySetting(apiKey);
                 rawReport.NationalSociety = gatewaySetting.NationalSociety;
 
-                var receivedAt = _reportValidationService.ParseTelerivetTimestamp(timestamp);
+                int convertedTimestamp;
+                try
+                {
+                    convertedTimestamp = int.Parse(timestamp);
+                }catch (Exception e){
+                    _loggerAdapter.Warn(e.Message);
+                    return new ReportValidationResult { IsSuccess = false };
+                }
+                var receivedAt = _reportValidationService.ParseTelerivetTimestamp(convertedTimestamp);
                 _reportValidationService.ValidateReceivalTime(receivedAt);
                 rawReport.ReceivedAt = receivedAt;
 
-                dataCollector = await ValidateDataCollector(sender, gatewaySetting.NationalSocietyId);
+                var fixedSender = string.Concat("+",sender);
+                dataCollector = await ValidateDataCollector(fixedSender, gatewaySetting.NationalSocietyId);
                 rawReport.DataCollector = dataCollector;
                 rawReport.IsTraining = dataCollector?.IsInTrainingMode ?? false;
                 rawReport.Village = dataCollector?.DataCollectorLocations.Count == 1
@@ -286,8 +296,8 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
         {
             if (errorReportData == null)
             {
-                var senderNumber =  long.Parse(senderPhoneNumber);
-                await _queuePublisherService.SendTelerivetSms(senderNumber,  projectHealthRisk.FeedbackMessage, gatewaySetting.TelerivetSendSmsApiKey,gatewaySetting.TelerivetProjectId);
+                var senderNumber = long.Parse(senderPhoneNumber);
+                await _queuePublisherService.SendTelerivetSms(senderNumber, projectHealthRisk.FeedbackMessage, gatewaySetting.TelerivetSendSmsApiKey, gatewaySetting.TelerivetProjectId);
 
                 if (alertData != null && alertData.Alert != null)
                 {
