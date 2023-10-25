@@ -101,7 +101,7 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
         <Typography variant='subtitle2'>
           {page.title.toUpperCase()}
         </Typography>
-        {page.subMenu?.length > 0 ? open ? <ExpandLessIcon fontSize='small'/> : <ExpandMoreIcon fontSize='small'/> : null}
+        {page.subMenu?.length > 1 ? open ? <ExpandLessIcon fontSize='small'/> : <ExpandMoreIcon fontSize='small'/> : null}
       </Button>
       {/* No need to display the dropdown if it only has 1 menuitem */}
       {page.subMenu?.length > 1 && (
