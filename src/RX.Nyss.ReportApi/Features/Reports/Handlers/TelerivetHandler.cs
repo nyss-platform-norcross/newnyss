@@ -92,6 +92,14 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
             var apiKey = parsedQueryString[ApiKeyParameterName];
             var projectId = parsedQueryString[ProjectIdParameterName].ParseToNullableInt();
 
+            if (sender != null)
+            {
+                var res = sender.Substring(0, 1);
+                if (res != "+") { sender = string.Concat("+", sender);
+                    sender = sender.Replace(" ", "");
+                }
+            }
+            
             ErrorReportData errorReportData = null;
             AlertData alertData = null;
             ProjectHealthRisk projectHealthRisk = null;
@@ -108,7 +116,6 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                     IncomingMessageId = time_updated,
                     ApiKey = apiKey
                 };
-
 
                 var exists = await _nyssContext.RawReports.AnyAsync(r => r.IncomingMessageId == time_updated && r.ApiKey == apiKey);
                 if (exists)
@@ -205,7 +212,7 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
             try
             {
                 var apiKey = parsedQueryString[ApiKeyParameterName];
-                var sender = parsedQueryString[SenderParameterName];
+                var sender = rawReport.Sender;
                 var timestamp = parsedQueryString[TimestampParameterName];
                 var text = parsedQueryString[TextParameterName].Trim();
 
@@ -224,8 +231,7 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                 _reportValidationService.ValidateReceivalTime(receivedAt);
                 rawReport.ReceivedAt = receivedAt;
 
-                var fixedSender = string.Concat("+",sender);
-                dataCollector = await ValidateDataCollector(fixedSender, gatewaySetting.NationalSocietyId);
+                dataCollector = await ValidateDataCollector(sender, gatewaySetting.NationalSocietyId);
                 rawReport.DataCollector = dataCollector;
                 rawReport.IsTraining = dataCollector?.IsInTrainingMode ?? false;
                 rawReport.Village = dataCollector?.DataCollectorLocations.Count == 1
