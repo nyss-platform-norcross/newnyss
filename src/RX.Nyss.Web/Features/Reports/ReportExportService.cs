@@ -154,6 +154,7 @@ namespace RX.Nyss.Web.Features.Reports
                 ReportErrorType.GenderAndAgeNonHumanHealthRisk => strings[ResultKey.Report.ErrorType.GenderAndAgeNonHumanHealthRisk],
                 ReportErrorType.TooLong => strings[ResultKey.Report.ErrorType.TooLong],
                 ReportErrorType.Gateway => strings[ResultKey.Report.ErrorType.Gateway],
+                ReportErrorType.Timestamp => strings[ResultKey.Report.ErrorType.Timestamp],
                 ReportErrorType.Other => strings[ResultKey.Report.ErrorType.Other],
                 _ => null
             };

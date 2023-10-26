@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -12,8 +13,6 @@ using RX.Nyss.FuncApp.Configuration;
 using RX.Nyss.Common.Utils.DataContract;
 using RX.Nyss.FuncApp.Contracts;
 using RX.Nyss.FuncApp.Services;
-
-
 namespace RX.Nyss.FuncApp;
 
 public class TelerivetReportReceiver
@@ -21,9 +20,9 @@ public class TelerivetReportReceiver
 private const string ApiKeyQueryParameterName = "apikey";
     private readonly ILogger<TelerivetReportReceiver> _logger;
     private readonly IConfig _config;
-    private readonly IReportPublisherService _reportPublisherService;
+    private readonly ITelerivetReportPublisherService _reportPublisherService;
 
-    public TelerivetReportReceiver(ILogger<TelerivetReportReceiver> logger, IConfig config, IReportPublisherService reportPublisherService)
+    public TelerivetReportReceiver(ILogger<TelerivetReportReceiver> logger, IConfig config, ITelerivetReportPublisherService reportPublisherService)
     {
         _logger = logger;
         _config = config;
@@ -53,19 +52,33 @@ private const string ApiKeyQueryParameterName = "apikey";
         }
 
         var decodedHttpRequestContent = HttpUtility.UrlDecode(httpRequestContent);
+        var result = HttpUtility.ParseQueryString(decodedHttpRequestContent);
+
+        /*foreach (var key in result.AllKeys)
+        {
+            var value = result[key];
+            Console.WriteLine("{0}: {1}", key, value);
+        }*/
+
 
         if (!VerifyApiKey(authorizedApiKeys, decodedHttpRequestContent))
         {
             return new UnauthorizedResult();
         }
 
-        var report = new Report
+        var report = new TelerivetReport
         {
-            Content = httpRequestContent,
+            TimeCreated= result["time_created"],
+            TimeUpdated= result["time_updated"],
+            MessageContent= result["content"],
+            FromNumber= result["from_number_e164"],
+            ApiKey= result["apikey"],
+            ProjectId= result["project_id"],
             ReportSource = ReportSource.Telerivet
         };
+        //report.FromNumber = string.Concat("+", report.FromNumber);
 
-        await _reportPublisherService.AddReportToQueue(report);
+        await _reportPublisherService.AddTelerivetReportToQueue(report);
 
         return new OkResult();
     }

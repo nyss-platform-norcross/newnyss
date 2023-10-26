@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using System.Web;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using RX.Nyss.Common.Services.StringsResources;
 using RX.Nyss.Common.Utils;
 using RX.Nyss.Common.Utils.Logging;
@@ -91,6 +92,14 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
             var apiKey = parsedQueryString[ApiKeyParameterName];
             var projectId = parsedQueryString[ProjectIdParameterName].ParseToNullableInt();
 
+            if (sender != null)
+            {
+                var res = sender.Substring(0, 1);
+                if (res != "+") { sender = string.Concat("+", sender);
+                    sender = sender.Replace(" ", "");
+                }
+            }
+            
             ErrorReportData errorReportData = null;
             AlertData alertData = null;
             ProjectHealthRisk projectHealthRisk = null;
@@ -107,7 +116,6 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                     IncomingMessageId = time_updated,
                     ApiKey = apiKey
                 };
-
 
                 var exists = await _nyssContext.RawReports.AnyAsync(r => r.IncomingMessageId == time_updated && r.ApiKey == apiKey);
                 if (exists)
@@ -204,14 +212,22 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
             try
             {
                 var apiKey = parsedQueryString[ApiKeyParameterName];
-                var sender = parsedQueryString[SenderParameterName];
+                var sender = rawReport.Sender;
                 var timestamp = parsedQueryString[TimestampParameterName];
                 var text = parsedQueryString[TextParameterName].Trim();
 
                 gatewaySetting = await _reportValidationService.ValidateGatewaySetting(apiKey);
                 rawReport.NationalSociety = gatewaySetting.NationalSociety;
 
-                var receivedAt = _reportValidationService.ParseTelerivetTimestamp(timestamp);
+                int convertedTimestamp;
+                try
+                {
+                    convertedTimestamp = int.Parse(timestamp);
+                }catch (Exception e){
+                    _loggerAdapter.Warn(e.Message);
+                    return new ReportValidationResult { IsSuccess = false };
+                }
+                var receivedAt = _reportValidationService.ParseTelerivetTimestamp(convertedTimestamp);
                 _reportValidationService.ValidateReceivalTime(receivedAt);
                 rawReport.ReceivedAt = receivedAt;
 
@@ -286,8 +302,8 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
         {
             if (errorReportData == null)
             {
-                var senderNumber =  long.Parse(senderPhoneNumber);
-                await _queuePublisherService.SendTelerivetSms(senderNumber,  projectHealthRisk.FeedbackMessage, gatewaySetting.TelerivetSendSmsApiKey,gatewaySetting.TelerivetProjectId);
+                var senderNumber = long.Parse(senderPhoneNumber);
+                await _queuePublisherService.SendTelerivetSms(senderNumber, projectHealthRisk.FeedbackMessage, gatewaySetting.TelerivetSendSmsApiKey, gatewaySetting.TelerivetProjectId);
 
                 if (alertData != null && alertData.Alert != null)
                 {
