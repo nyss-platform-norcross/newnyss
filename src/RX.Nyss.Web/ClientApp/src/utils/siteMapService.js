@@ -8,12 +8,12 @@ const findClosestMenu = (hierarchy, placeholder) => {
   }
 };
 
-export const getMenu = (parameters, placeholder, currentPath, authUser) => {
+export const getMenu = (parameters, placeholder, currentPath, authUser, parentPath) => {
   const pathHierarchy = getHierarchy(currentPath, parameters, authUser);
   const closestMenuPath = findClosestMenu(pathHierarchy, placeholder);
 
   const filteredSiteMap = siteMap
-    .filter(item => item.parentPath === closestMenuPath
+    .filter(item => item.parentPath === (parentPath ? parentPath : closestMenuPath)
       && item.placeholder
       && item.placeholder === placeholder
       && item.access.some(role => authUser.roles.some(r => r === role))
@@ -27,7 +27,8 @@ export const getMenu = (parameters, placeholder, currentPath, authUser) => {
       title: item.title(),
       url: getUrl(item.path, parameters),
       isActive: pathHierarchy.some(b => b.siteMapData.path === item.path),
-      icon: item.icon
+      icon: item.icon,
+      path: item.path
     }))
 };
 
