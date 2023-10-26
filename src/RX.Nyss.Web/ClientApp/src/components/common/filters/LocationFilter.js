@@ -1,6 +1,4 @@
-import styles from "./LocationFilter.module.scss";
-import { Fragment, useEffect, useState } from "react";
-import { Popover, TextField } from "@material-ui/core";
+import { useEffect, useState } from "react";
 import {
   cascadeSelectDistrict,
   cascadeSelectRegion,
@@ -10,10 +8,10 @@ import {
   mapToSelectedLocations,
   toggleSelectedStatus,
 } from "./logic/locationFilterService";
-import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
 import { stringKeys, strings } from "../../../strings";
 import LocationItem from "./LocationItem";
 import { SelectAll } from "../../common/selectAll/SelectAll";
+import { DropdownPopover } from "./DropdownPopover";
 
 const LocationFilter = ({
   filteredLocations,
@@ -23,11 +21,10 @@ const LocationFilter = ({
   showUnknownLocation,
   rtl,
 }) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [includeUnknownLocation, setIncludeUnknownLocation] = useState(false);
   const [selectAll, setSelectAll] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     if (!allLocations) return;
@@ -163,11 +160,6 @@ const LocationFilter = ({
     onChange(filterValue);
   };
 
-  const handleDropdownClick = (event) => {
-    event.preventDefault();
-    setAnchorEl(event.currentTarget);
-    setDialogOpen(true);
-  };
 
   const toggleSelectAll = () => {
     setIncludeUnknownLocation(!selectAll);
@@ -176,67 +168,35 @@ const LocationFilter = ({
   };
 
   return (
-    <Fragment>
-      <TextField
-        className={styles.field}
-        label={strings(stringKeys.common.location)}
-        InputProps={{
-          readOnly: true,
-          endAdornment: <ArrowDropDown className={styles.arrow} />,
-        }}
-        value={filterLabel}
-        inputProps={{
-          className: styles.clickable,
-        }}
-        onClick={handleDropdownClick}
-      />
-
-      <Popover
-        open={dialogOpen}
-        onClose={showResults}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: rtl ? "right" : "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: rtl ? "right" : "left",
-        }}
-        PaperProps={{
-          className: styles.filterContainer,
-        }}
-        style={{maxHeight: 400}}
-      >
+      <DropdownPopover label={strings(stringKeys.common.location)} filterLabel={filterLabel} showResults={showResults} rtl={rtl} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}>
         <SelectAll
           isSelectAllEnabled={selectAll}
           showResults={showResults}
           toggleSelectAll={toggleSelectAll}
-        />
+          />
         {showUnknownLocation && (
           <LocationItem
-            type="unknown"
-            data={{
-              name: strings(stringKeys.filters.area.unknown),
-              selected: includeUnknownLocation,
-            }}
-            isVisible
-            onChange={handleChange}
-            rtl={rtl}
+          type="unknown"
+          data={{
+            name: strings(stringKeys.filters.area.unknown),
+            selected: includeUnknownLocation,
+          }}
+          isVisible
+          onChange={handleChange}
+          rtl={rtl}
           />
         )}
         {selectedLocations.map((r) => (
           <LocationItem
-            key={`region_${r.id}`}
-            type="region"
-            data={r}
-            isVisible
-            onChange={handleChange}
-            rtl={rtl}
+          key={`region_${r.id}`}
+          type="region"
+          data={r}
+          isVisible
+          onChange={handleChange}
+          rtl={rtl}
           />
         ))}
-      </Popover>
-    </Fragment>
+      </DropdownPopover>
   );
 };
 
