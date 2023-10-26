@@ -14,6 +14,7 @@ namespace RX.Nyss.Data.Concepts
         EventReportHumanHealthRisk,
         GenderAndAgeNonHumanHealthRisk,
         Gateway,
+        Timestamp,
         Other
     }
 }

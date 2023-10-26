@@ -16,6 +16,7 @@ namespace RX.Nyss.ReportApi.Features.Reports
     {
         Task<ProjectHealthRisk> ValidateReport(ParsedReport parsedReport, DataCollector dataCollector, int nationalSocietyId);
         DateTime ParseTimestamp(string timestamp);
+        DateTime ParseTelerivetTimestamp(int unixTimeStamp);
         void ValidateReceivalTime(DateTime receivedAt);
         Task<GatewaySetting> ValidateGatewaySetting(string apiKey);
     }
@@ -152,13 +153,30 @@ namespace RX.Nyss.ReportApi.Features.Reports
             }
         }
 
+        public DateTime ParseTelerivetTimestamp(int unixTimeStamp)
+        {
+            try
+            {
+                // Unix timestamp is seconds past epoch
+                var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+
+                var parsedTimestampInUtc = dateTime.ToUniversalTime();
+                return parsedTimestampInUtc;
+            }
+            catch (Exception e)
+            {
+                throw new ReportValidationException($"Cannot parse timestamp '{unixTimeStamp}'. Exception: {e.Message} Stack trace: {e.StackTrace}", ReportErrorType.Timestamp);
+            }
+        }
+
         public void ValidateReceivalTime(DateTime receivedAt)
         {
             const int maxAllowedPrecedenceInMinutes = 3;
 
             if (receivedAt > _dateTimeProvider.UtcNow.AddMinutes(maxAllowedPrecedenceInMinutes))
             {
-                throw new ReportValidationException("The receival time cannot be in the future.", ReportErrorType.Gateway);
+                throw new ReportValidationException("The receival time cannot be in the future.", ReportErrorType.Timestamp);
             }
         }
 
@@ -166,7 +184,6 @@ namespace RX.Nyss.ReportApi.Features.Reports
         {
             var gatewaySetting = await _nyssContext.GatewaySettings
                 .Include(gs => gs.NationalSociety)
-                .Include(gs => gs.Modems)
                 .SingleOrDefaultAsync(gs => gs.ApiKey == apiKey);
 
             if (gatewaySetting == null)
@@ -174,9 +191,9 @@ namespace RX.Nyss.ReportApi.Features.Reports
                 throw new ReportValidationException($"A gateway setting with API key '{apiKey}' does not exist.", ReportErrorType.Gateway);
             }
 
-            if (gatewaySetting.GatewayType != GatewayType.SmsEagle && gatewaySetting.GatewayType != GatewayType.SmsGateway) 
+            if (gatewaySetting.GatewayType != GatewayType.SmsEagle && gatewaySetting.GatewayType != GatewayType.SmsGateway && gatewaySetting.GatewayType != GatewayType.Telerivet)
             {
-                throw new ReportValidationException($"A gateway type ('{gatewaySetting.GatewayType}') is different than '{GatewayType.SmsEagle}' or '{GatewayType.SmsGateway}'.", ReportErrorType.Gateway);
+                throw new ReportValidationException($"A gateway type ('{gatewaySetting.GatewayType}') is different than '{GatewayType.SmsEagle}' or '{GatewayType.SmsGateway}' or '{GatewayType.Telerivet}'.", ReportErrorType.Gateway);
             }
 
             return gatewaySetting;

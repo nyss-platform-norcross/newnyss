@@ -11,14 +11,13 @@ export const reportsSiteMap = [
     placeholder: placeholders.projectTabMenu,
     access: accessMap.reports.list,
     placeholderIndex: projectTabMenuOrder.reports,
-    icon: "Report"
   },
   {
     parentPath: "/projects/:projectId/reports",
     path: "/projects/:projectId/reports/correct",
     title: () => strings(stringKeys.reports.correctReportsTitle),
     access: accessMap.reports.list,
-    placeholder: placeholders.tabMenu,
+    placeholder: placeholders.projectSubMenu,
     placeholderIndex: 1,
     middleStepOnly: true
   },
@@ -27,7 +26,7 @@ export const reportsSiteMap = [
     path: "/projects/:projectId/reports/incorrect",
     title: () => strings(stringKeys.reports.incorrectReportsTitle),
     access: accessMap.reports.list,
-    placeholder: placeholders.tabMenu,
+    placeholder: placeholders.projectSubMenu,
     placeholderIndex: 2,
     middleStepOnly: true
   },

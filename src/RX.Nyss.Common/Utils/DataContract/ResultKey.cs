@@ -205,6 +205,22 @@ public static class ResultKey
         }
     }
 
+    public static class DhisIntegration
+    {
+        public static class Edit
+        {
+            public const string Success = "DhisIntegration.edit.success";
+            public const string ErrorNationalSocietyDoesNotExists = "DhisIntegration.edit.ErrorNationalSocietyDoesNotExists";
+            public const string ErrorDhisIntegrationDisabled = "DhisIntegration.edit.ErrorDhisIntegrationDisabled";
+        }
+
+        public static class DhisApi
+        {
+            public const string ConnectionError = "DhisIntegration.DhisApi.ConnectionError";
+            public const string RegisterReportError = "DhisIntegration.DhisApi.RegisterReportError";
+        }
+    }
+
     public static class HealthRisk
     {
         public const string HealthRiskNotFound = "healthRisk.notFound";
@@ -284,6 +300,7 @@ public static class ResultKey
             public const string GlobalHealthRiskCodeNotFound = "report.errorType.globalHealthRiskCodeNotFound";
             public const string FormatError = "report.errorType.formatError";
             public const string Gateway = "report.errorType.gateway";
+            public const string Timestamp = "report.errorType.timestamp";
             public const string TooLong = "report.errorType.tooLong";
             public const string DataCollectorUsedCollectionPointFormat = "report.errorType.dataCollectorUsedCollectionPointFormat";
             public const string CollectionPointUsedDataCollectorFormat = "report.errorType.collectionPointUsedDataCollectorFormat";

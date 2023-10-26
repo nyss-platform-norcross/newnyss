@@ -9,28 +9,76 @@ import { useTheme, Drawer, Grid, useMediaQuery, makeStyles } from "@material-ui/
 import { toggleSideMenu } from '../app/logic/appActions';
 import { MenuSection } from './MenuSection';
 import { stringKeys, strings } from '../../strings';
+import ExpandButton from '../common/buttons/expandButton/ExpandButton';
 import { AccountSection } from './AccountSection';
+import { expandSideMenu } from '../app/logic/appActions';
 
+const drawerWidth = 240;
 
-
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   MenuContainer: {
-    height: '100%',
-    marginTop: '32px',
+    paddingTop: '12px',
+    backgroundColor: "#f1f1f1",
   },
   SideMenu: {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    background: 'linear-gradient(90deg, #f1f1f1 90%, #ececec)',
+    backgroundColor: '#F1F1F1',
+    position: "relative",
+  },
+  SideMenuContent: {
+    overflowX: 'hidden',
+    overflowY: 'auto',
+    scrollbarColor: '#B4B4B4 #F1F1F1',
+  },
+  drawer: {
+    zIndex: 100,
+    "@media (min-width: 1280px)": {
+      width: drawerWidth,
+    },
+    flexShrink: 0,
+    whiteSpace: "nowrap",
+    '& .MuiDrawer-paper': {
+      borderRight: 'none',
+    },
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerClose: {
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: theme.spacing(7) + 1,
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(9) + 2,
+    },
+  },
+  logo: {
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  image: {
+    height: "38px"
+  },
+  overflowVisible: {
+    overflowY: 'visible',
   }
 }));
 
 
-const SideMenuComponent = ({ generalMenu, sideMenu, sideMenuOpen, toggleSideMenu, push }) => {
+const SideMenuComponent = ({ generalMenu, sideMenu, sideMenuOpen, toggleSideMenu, push, isSideMenuExpanded, expandSideMenu, isSupervisor }) => {
   const theme = useTheme();
   const classes = useStyles();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const userLanguageCode = useSelector(state => state.appData.user.languageCode);
 
@@ -42,41 +90,56 @@ const SideMenuComponent = ({ generalMenu, sideMenu, sideMenuOpen, toggleSideMenu
   const closeDrawer = () => {
     toggleSideMenu(false);
   }
+  
+  const handleExpandClick = () => {
+    expandSideMenu(!isSideMenuExpanded);
+  }
+
+  if (isSupervisor) return null;
   return (
-    <div className={styles.drawer}>
-      <Drawer
-        variant={fullScreen ? "temporary" : "permanent"}
-        anchor={"left"}
-        open={!fullScreen || sideMenuOpen}
-        onClose={closeDrawer}
-        classes={{
-          paper: styles.drawer
-        }}
-        ModalProps={{
-          keepMounted: fullScreen
-        }}
-      >
-        <div className={classes.SideMenu}>
-          <div className={styles.sideMenuHeader}>
-            <Link to="/" className={userLanguageCode !== 'ar' ? styles.logo : styles.logoDirectionRightToLeft}>
-              <img src="/images/logo.svg" alt="Nyss logo" />
-            </Link>
-          </div>
-          <Grid container className={classes.MenuContainer} direction={'column'} justifyContent='space-between'>
-            <Grid container direction='column'>
-            {generalMenu.length !== 0 && (
-              <MenuSection menuTitle={strings(stringKeys.sideMenu.general)} menuItems={generalMenu} handleItemClick={handleItemClick}/>
-              )}
-            {sideMenu.length !== 0 && (
-              <Grid style={{ marginTop: 20 }}>
-                <MenuSection menuTitle={strings(stringKeys.sideMenu.nationalSocieties)} menuItems={sideMenu} handleItemClick={handleItemClick}/>
+    <div className={styles.sideMenu}>
+      <div className={styles.drawer}>
+        <Drawer
+          variant={isSmallScreen ? "temporary" : "permanent"}
+          anchor={"left"}
+          open={!isSmallScreen || sideMenuOpen}
+          onClose={closeDrawer}
+          className={`${classes.drawer} ${!isSmallScreen && (isSideMenuExpanded ? classes.drawerOpen : classes.drawerClose)}`}
+          classes={{
+            paper: !isSmallScreen && (isSideMenuExpanded ? classes.drawerOpen : classes.drawerClose)
+          }}
+          PaperProps={{
+            classes: {
+              root: classes.overflowVisible,
+            }
+          }}
+          ModalProps={{
+            keepMounted: isSmallScreen
+          }}
+        >
+          <div className={classes.SideMenu}>
+            <ExpandButton onClick={handleExpandClick} isExpanded={isSideMenuExpanded}/>
+            <div className={styles.sideMenuHeader}>
+                <Link to="/" className={userLanguageCode !== 'ar' ? classes.logo : styles.logoDirectionRightToLeft}>
+                  <img className={classes.image} src={!isSideMenuExpanded && !isSmallScreen ? "/images/logo-small.svg" : "/images/logo.svg"} alt="Nyss logo" />
+                </Link>
+              </div>
+            <div className={classes.SideMenuContent}>
+              <Grid container className={classes.MenuContainer} direction={'column'}>
+                {generalMenu.length !== 0 && (
+                  <MenuSection menuTitle={strings(stringKeys.sideMenu.general)} menuItems={generalMenu} handleItemClick={handleItemClick} isExpanded={isSideMenuExpanded}/>
+                  )}
+                {sideMenu.length !== 0 && (
+                  <Grid style={{ marginTop: 20 }}>
+                    <MenuSection menuTitle={strings(stringKeys.sideMenu.nationalSocieties)} menuItems={sideMenu} handleItemClick={handleItemClick} isExpanded={isSideMenuExpanded}/>
+                  </Grid>
+                  )}
               </Grid>
-              )}
-            </Grid>
-            <AccountSection handleItemClick={handleItemClick}/>
-          </Grid>
-        </div>
-      </Drawer>
+            </div>
+            <AccountSection handleItemClick={handleItemClick} isExpanded={isSideMenuExpanded}/>
+          </div>
+        </Drawer>
+      </div>
     </div>
   );
 }
@@ -89,12 +152,15 @@ SideMenuComponent.propTypes = {
 const mapStateToProps = state => ({
   generalMenu: state.appData.siteMap.generalMenu,
   sideMenu: state.appData.siteMap.sideMenu,
-  sideMenuOpen: state.appData.mobile.sideMenuOpen
+  sideMenuOpen: state.appData.mobile.sideMenuOpen,
+  isSideMenuExpanded: state.appData.isSideMenuExpanded,
+  isSupervisor: state.appData.user.roles.includes("Supervisor") || state.appData.user.roles.includes("HeadSupervisor")
 });
 
 const mapDispatchToProps = {
   push: push,
-  toggleSideMenu: toggleSideMenu
+  toggleSideMenu: toggleSideMenu,
+  expandSideMenu: expandSideMenu,
 };
 
 export const SideMenu = connect(mapStateToProps, mapDispatchToProps)(SideMenuComponent);
