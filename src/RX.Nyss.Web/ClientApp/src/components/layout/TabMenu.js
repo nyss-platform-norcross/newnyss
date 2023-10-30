@@ -33,6 +33,11 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, pr
   // http addresses are case insensitive so compare to-lower versions
   const showTabMenu = tabMenu.some(t => t.url.toLowerCase() === currentUrl.toLowerCase());
 
+  // Title for sub menu pages inside a project
+  const showSubMenuTitle = projectTabMenu.some(projectItem => projectItem.subMenu.length > 0 && projectItem.isActive);
+  // Alternative title for sub menu pages inside a project such as 'edit data collector' or 'edit alert recipient'
+  const showSubMenuAlternativeTitle = projectTabMenu && projectTabMenu.length > 0 && projectTabMenu.every(menuItem => menuItem.title !== title);
+
   return (
     <div className={styles.tabMenu}>
       {projectName ?
@@ -51,8 +56,11 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, pr
         )}
       </Grid>
       {/* Display header for subpages inside a project for data collectors, project reports and project settings */}
-      {projectTabMenu.some(projectItem => projectItem.subMenu.length > 0 && projectItem.isActive) && (
+      {showSubMenuTitle && !showSubMenuAlternativeTitle && (
         <div className={styles.header}>{projectTabMenu.find(projectItem => projectItem.isActive)?.subMenu.find(item => item.isActive)?.title}</div>
+      )}
+      {showSubMenuAlternativeTitle && (
+        <div className={styles.header}>{title}</div>
       )}
       {showTabMenu && (
         <Tabs
@@ -65,9 +73,6 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, pr
             <Tab key={`tabMenu_${item.url}`} label={item.title} onClick={() => onItemClick(item)} />
           ))}
         </Tabs>
-      )}
-      {projectTabMenu && projectTabMenu.length > 0 && projectTabMenu.every(menuItem => menuItem.title !== title) && (
-        <div className={styles.header}>{title}</div>
       )}
     </div>
   );
