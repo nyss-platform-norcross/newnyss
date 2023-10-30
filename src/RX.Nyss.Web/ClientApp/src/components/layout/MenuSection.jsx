@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText, ListItemIcon, ListSubheader, Divider, makeStyles, Tooltip } from "@material-ui/core";
+import { List, ListItem, ListItemText, ListItemIcon, ListSubheader, Divider, makeStyles, Tooltip, Typography } from "@material-ui/core";
 import { RcIcon } from '../icons/RcIcon';
 
 const useStyles = makeStyles(() => ({
@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
   },
   ListItemActive: {
     backgroundColor: '#E3E3E3',
-    "& span": {
+    "& span p": {
       fontWeight: '600',
     },
   },
@@ -46,7 +46,7 @@ export const MenuSection = ({menuItems, handleItemClick, menuTitle, isExpanded})
   const classes = useStyles();
 
   return(
-    <List component="nav" aria-label={`${menuTitle} navigation menu`}
+    <List style={{ width: "inherit" }} component="nav" aria-label={`${menuTitle} navigation menu`}
       subheader={
       <>
         <ListSubheader component="div" id={menuTitle} className={`${classes.SubHeader} ${!isExpanded && classes.Hide}`} disableGutters>
@@ -63,7 +63,12 @@ export const MenuSection = ({menuItems, handleItemClick, menuTitle, isExpanded})
               {item.icon && <RcIcon icon={item.icon} className={`${classes.SideMenuIcon}`} />}
             </ListItemIcon>
           </Tooltip>
-          <ListItemText primary={item.title} primaryTypographyProps={{ 'className': classes.SideMenuText }} className={classes.SideMenuTextWrapper}/>
+          <ListItemText
+            primary={
+              <Tooltip title={item.title}>
+                <Typography className={classes.SideMenuText} noWrap>{item.title}</Typography>
+              </Tooltip>}
+            className={classes.SideMenuTextWrapper}/>
         </ListItem>
       )
     })}
