@@ -48,6 +48,7 @@ public static class ResultKey
             public const string CannotAssignUserToModemInDifferentNationalSociety = "user.registration.cannotAssignUserToModemInDifferentNationalSociety";
             public const string OrganizationDoesNotExists = "user.registration.organizationDoesNotExist";
             public const string InvalidUserOrganization = "user.registration.invalidUserOrganization";
+            public const string EmailIsTaken = "user.registration.emailIsTaken";
         }
 
         public static class Edition

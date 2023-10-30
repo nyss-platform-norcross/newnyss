@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
@@ -66,23 +67,26 @@ namespace RX.Nyss.Web.Features.DataConsumers.Commands
                 try
                 {
                     var user = await _nationalSocietyUserService.GetNationalSocietyUser<DataConsumerUser>(request.Id);
-                    var oldEmail = user.EmailAddress;
 
                     if (user == null)
                     {
                         throw new ResultException(ResultKey.User.Registration.UserNotFound);
                     }
-                    else
+
+                    var oldEmail = user.EmailAddress;
+                    var emailChanged = request.Body.Email != null && oldEmail != request.Body.Email;
+                    var emailExists = _dataContext.Users.Any(usr => usr.EmailAddress == request.Body.Email);
+                    if (emailChanged && emailExists)
                     {
-                        user.Name = request.Body.Name;
-                        user.EmailAddress = request.Body.Email;
-                        user.PhoneNumber = request.Body.PhoneNumber;
-                        user.Organization = request.Body.Organization;
-                        user.AdditionalPhoneNumber = request.Body.AdditionalPhoneNumber;
-
-                        await _dataContext.SaveChangesAsync(cancellationToken);
-
+                        throw new ResultException(ResultKey.User.Registration.EmailIsTaken);
                     }
+
+
+                    user.Name = request.Body.Name;
+                    user.EmailAddress = request.Body.Email;
+                    user.PhoneNumber = request.Body.PhoneNumber;
+                    user.Organization = request.Body.Organization;
+                    user.AdditionalPhoneNumber = request.Body.AdditionalPhoneNumber;
 
                     if (oldEmail != request.Body.Email)
                     {
@@ -91,6 +95,8 @@ namespace RX.Nyss.Web.Features.DataConsumers.Commands
                         securityStamp = await _identityUserRegistrationService.GenerateEmailVerification(identityUser.Email);
                         await _verificationEmailService.SendVerificationForDataConsumersEmail(user, user.Organization, securityStamp);
                     }
+
+                    await _dataContext.SaveChangesAsync(cancellationToken);
 
                     return Result.Success();
                 }

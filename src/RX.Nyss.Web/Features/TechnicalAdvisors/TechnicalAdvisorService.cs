@@ -112,43 +112,46 @@ namespace RX.Nyss.Web.Features.TechnicalAdvisors
             try
             {
                 var user = await _nationalSocietyUserService.GetNationalSocietyUser<TechnicalAdvisorUser>(technicalAdvisorId);
-                var oldEmail = user.EmailAddress;
                 if (user == null)
                 {
                     throw new ResultException(ResultKey.User.Registration.UserNotFound);
                 }
-                else
+
+                var oldEmail = user.EmailAddress;
+                var emailChanged = editDto.Email != null && oldEmail != editDto.Email;
+                var emailExists = _nyssContext.Users.Any(usr => usr.EmailAddress == editDto.Email);
+                if (emailChanged && emailExists)
                 {
-                    user.Name = editDto.Name;
-                    user.EmailAddress = editDto.Email;
-                    user.PhoneNumber = editDto.PhoneNumber;
-                    user.Organization = editDto.Organization;
-                    user.AdditionalPhoneNumber = editDto.AdditionalPhoneNumber;
-                    user.IsFirstLogin = oldEmail != editDto.Email ? true : false;
-
-                    if (editDto.OrganizationId.HasValue)
-                    {
-                        var userLink = await _nyssContext.UserNationalSocieties
-                            .Where(un => un.UserId == technicalAdvisorId && un.NationalSociety.Id == editDto.NationalSocietyId)
-                            .SingleOrDefaultAsync();
-
-                        if (editDto.OrganizationId.Value != userLink.OrganizationId)
-                        {
-                            var validationResult = await _organizationService.CheckAccessForOrganizationEdition(userLink);
-
-                            if (!validationResult.IsSuccess)
-                            {
-                                return validationResult;
-                            }
-
-                            userLink.Organization = await _nyssContext.Organizations.FindAsync(editDto.OrganizationId.Value);
-                        }
-                    }
-
-                    await UpdateModem(user, editDto.ModemId, editDto.NationalSocietyId);
-
-                    await _nyssContext.SaveChangesAsync();
+                    throw new ResultException(ResultKey.User.Registration.EmailIsTaken);
                 }
+
+                user.Name = editDto.Name;
+                user.EmailAddress = editDto.Email;
+                user.PhoneNumber = editDto.PhoneNumber;
+                user.Organization = editDto.Organization;
+                user.AdditionalPhoneNumber = editDto.AdditionalPhoneNumber;
+                user.IsFirstLogin = oldEmail != editDto.Email ? true : false;
+
+                if (editDto.OrganizationId.HasValue)
+                {
+                    var userLink = await _nyssContext.UserNationalSocieties
+                        .Where(un => un.UserId == technicalAdvisorId && un.NationalSociety.Id == editDto.NationalSocietyId)
+                        .SingleOrDefaultAsync();
+
+                    if (editDto.OrganizationId.Value != userLink.OrganizationId)
+                    {
+                        var validationResult = await _organizationService.CheckAccessForOrganizationEdition(userLink);
+
+                        if (!validationResult.IsSuccess)
+                        {
+                            return validationResult;
+                        }
+
+                        userLink.Organization = await _nyssContext.Organizations.FindAsync(editDto.OrganizationId.Value);
+                    }
+                }
+
+                await UpdateModem(user, editDto.ModemId, editDto.NationalSocietyId);
 
                 if (oldEmail != editDto.Email)
                 {
@@ -157,6 +160,8 @@ namespace RX.Nyss.Web.Features.TechnicalAdvisors
                     securityStamp = await _identityUserRegistrationService.GenerateEmailVerification(identityUser.Email);
                     await _verificationEmailService.SendVerificationEmail(user, securityStamp);
                 }
+
+                await _nyssContext.SaveChangesAsync();
 
                 return Success();
             }

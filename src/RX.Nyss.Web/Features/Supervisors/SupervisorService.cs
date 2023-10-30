@@ -161,51 +161,55 @@ namespace RX.Nyss.Web.Features.Supervisors
             try
             {
                 var supervisorUserData = await GetSupervisorUser(supervisorId);
-
-                var oldEmail = supervisorUserData.User.EmailAddress;
                 if (supervisorUserData.User == null)
                 {
                     throw new ResultException(ResultKey.User.Registration.UserNotFound);
                 }
-                else
+
+                var supervisorUser = supervisorUserData.User;
+                var oldEmail = supervisorUserData.User.EmailAddress;
+
+                var emailChanged = editDto.Email != null && oldEmail != editDto.Email;
+                var emailExists = _nyssContext.Users.Any(usr => usr.EmailAddress == editDto.Email);
+                if (emailChanged && emailExists)
                 {
-                    var supervisorUser = supervisorUserData.User;
-
-                    supervisorUser.Name = editDto.Name;
-                    supervisorUser.EmailAddress = editDto.Email;
-                    supervisorUser.Sex = editDto.Sex;
-                    supervisorUser.DecadeOfBirth = editDto.DecadeOfBirth;
-                    supervisorUser.PhoneNumber = editDto.PhoneNumber;
-                    supervisorUser.AdditionalPhoneNumber = editDto.AdditionalPhoneNumber;
-                    supervisorUser.IsFirstLogin = oldEmail != editDto.Email ? true : false;
-                    supervisorUser.Organization = editDto.Organization;
-
-                    await UpdateSupervisorProjectReferences(supervisorUser, supervisorUserData.CurrentProjectReference, editDto.ProjectId);
-                    await UpdateHeadSupervisor(supervisorUser, editDto.HeadSupervisorId);
-                    await UpdateModem(supervisorUser, editDto.ModemId, editDto.NationalSocietyId);
-
-                    if (editDto.OrganizationId.HasValue)
-                    {
-                        var userLink = await _nyssContext.UserNationalSocieties
-                            .Where(un => un.UserId == supervisorId && un.NationalSocietyId == editDto.NationalSocietyId)
-                            .SingleOrDefaultAsync();
-
-                        if (editDto.OrganizationId.Value != userLink.OrganizationId)
-                        {
-                            var validationResult = await _organizationService.CheckAccessForOrganizationEdition(userLink);
-
-                            if (!validationResult.IsSuccess)
-                            {
-                                return validationResult;
-                            }
-
-                            userLink.Organization = await _nyssContext.Organizations.FindAsync(editDto.OrganizationId.Value);
-                        }
-                    }
-
-                    await _nyssContext.SaveChangesAsync();
-
+                    throw new ResultException(ResultKey.User.Registration.EmailIsTaken);
                 }
+
+
+                supervisorUser.Name = editDto.Name;
+                supervisorUser.EmailAddress = editDto.Email;
+                supervisorUser.Sex = editDto.Sex;
+                supervisorUser.DecadeOfBirth = editDto.DecadeOfBirth;
+                supervisorUser.PhoneNumber = editDto.PhoneNumber;
+                supervisorUser.AdditionalPhoneNumber = editDto.AdditionalPhoneNumber;
+                supervisorUser.IsFirstLogin = oldEmail != editDto.Email ? true : false;
+                supervisorUser.Organization = editDto.Organization;
+
+                await UpdateSupervisorProjectReferences(supervisorUser, supervisorUserData.CurrentProjectReference, editDto.ProjectId);
+                await UpdateHeadSupervisor(supervisorUser, editDto.HeadSupervisorId);
+                await UpdateModem(supervisorUser, editDto.ModemId, editDto.NationalSocietyId);
+
+                if (editDto.OrganizationId.HasValue)
+                {
+                    var userLink = await _nyssContext.UserNationalSocieties
+                        .Where(un => un.UserId == supervisorId && un.NationalSocietyId == editDto.NationalSocietyId)
+                        .SingleOrDefaultAsync();
+
+                    if (editDto.OrganizationId.Value != userLink.OrganizationId)
+                    {
+                        var validationResult = await _organizationService.CheckAccessForOrganizationEdition(userLink);
+
+                        if (!validationResult.IsSuccess)
+                        {
+                            return validationResult;
+                        }
+
+                        userLink.Organization = await _nyssContext.Organizations.FindAsync(editDto.OrganizationId.Value);
+                    }
+                }
+
+
 
                 if (oldEmail != editDto.Email)
                 {
@@ -214,6 +218,8 @@ namespace RX.Nyss.Web.Features.Supervisors
                     securityStamp = await _identityUserRegistrationService.GenerateEmailVerification(identityUser.Email);
                     await _verificationEmailService.SendVerificationEmail(supervisorUserData.User, securityStamp);
                 }
+
+                await _nyssContext.SaveChangesAsync();
 
                 return Success();
             }

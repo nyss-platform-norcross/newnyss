@@ -91,7 +91,6 @@ namespace RX.Nyss.Web.Features.GlobalCoordinators
         {
             var globalCoordinator = await _dataContext.Users.FilterAvailable()
                 .SingleOrDefaultAsync(u => u.Id == dto.Id && u.Role == Role.GlobalCoordinator);
-
             if (globalCoordinator == null)
             {
                 _loggerAdapter.Debug($"Global coordinator with id {dto.Id} was not found");
