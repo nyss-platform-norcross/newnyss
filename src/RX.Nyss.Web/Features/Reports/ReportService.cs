@@ -18,9 +18,11 @@ using RX.Nyss.Web.Features.Reports.Dto;
 using RX.Nyss.Web.Features.Users;
 using RX.Nyss.Web.Services;
 using RX.Nyss.Web.Services.Authorization;
+using RX.Nyss.Web.Services.EidsrService;
 using RX.Nyss.Web.Utils.DataContract;
 using RX.Nyss.Web.Utils.Extensions;
 using static RX.Nyss.Common.Utils.DataContract.Result;
+using RX.Nyss.Common.Utils.Logging;
 
 namespace RX.Nyss.Web.Features.Reports;
 
@@ -59,6 +61,10 @@ public class ReportService : IReportService
 
     private readonly INationalSocietyStructureService _nationalSocietyStructureService;
 
+    private readonly IEidsrService _dhisService;
+
+    private readonly ILoggerAdapter _loggerAdapter;
+
     public ReportService(
         INyssContext nyssContext,
         IUserService userService,
@@ -67,6 +73,8 @@ public class ReportService : IReportService
         IAuthorizationService authorizationService,
         IDateTimeProvider dateTimeProvider,
         IStringsService stringsService,
+        IEidsrService dhisService,
+        ILoggerAdapter loggerAdapter,
         INationalSocietyStructureService nationalSocietyStructureService)
     {
         _nyssContext = nyssContext;
@@ -77,6 +85,8 @@ public class ReportService : IReportService
         _dateTimeProvider = dateTimeProvider;
         _stringsService = stringsService;
         _nationalSocietyStructureService = nationalSocietyStructureService;
+        _dhisService = dhisService;
+        _loggerAdapter = loggerAdapter;
     }
 
     public async Task<Result<PaginatedList<ReportListResponseDto>>> List(int projectId, int pageNumber, ReportListFilterRequestDto filter)
@@ -259,12 +269,50 @@ public class ReportService : IReportService
             return Error(ResultKey.Report.CannotCrossCheckReportWithoutLocation);
         }
 
+        //var dc = await _nyssContext.DataCollectors
+            //.Where(d => d.PhoneNumber == report.PhoneNumber)
+            //.Select(r => r.RawReport)
+            //.FirstOrDefaultAsync();
+
+        var nonEssentialSubProcessesErrors = new List<string>();
+        //if (report.RawReport.NationalSociety.Id)
+        //{
+
+        //}
+        await SendReportsToDhis(
+            reportId,
+            nonEssentialSubProcessesErrors);
+            //dc.Project.NationalSocietyId);
+
         report.AcceptedAt = _dateTimeProvider.UtcNow;
         report.AcceptedBy = currentUser;
         report.Status = ReportStatus.Accepted;
 
         await _nyssContext.SaveChangesAsync();
         return Success();
+    }
+
+    private async Task SendReportsToDhis(
+        int reportId,
+        List<string> nonEssentialSubProcessesErrors)
+    {
+        try
+        {
+            /*var ns = await _nyssContext.NationalSocieties
+                .FirstOrDefaultAsync(x => x.Id == nationalSocietyId);
+
+            if (ns != null && !ns.EnableEidsrIntegration)
+            {
+                return;
+            }*/
+
+            await _dhisService.SendReportToDhis(reportId);
+        }
+        catch (ResultException e)
+        {
+            _loggerAdapter.Error(e, $"Failed to send reports to queue {_config.ServiceBusQueues.DhisReportQueue}.");
+            nonEssentialSubProcessesErrors.Add(ResultKey.DhisIntegration.DhisApi.RegisterReportError);
+        }
     }
 
     public async Task<Result> DismissReport(int reportId)

@@ -9,8 +9,8 @@ namespace RX.Nyss.Data.Repositories;
 
 public interface IEidsrRepository
 {
-    List<EidsrDbReport> GetReportsForEidsr(int reportId);
-    public List<DhisDbReport> GetReportsForDhis(int reportId);
+    List<EidsrDbReport> GetReportsForEidsr(int alertId);
+    List<DhisDbReport> GetReportsForDhis(int reportId);
 }
 
 public class EidsrRepository : IEidsrRepository
@@ -76,15 +76,26 @@ public class EidsrRepository : IEidsrRepository
         return _reportsConverter.ConvertReports(reports, alertDate, englishContentLanguageId);
     }
 
-    private List<DhisDbReportData> GetDhisReports(int reportId, DateTime reportDate, int englishContentLanguageId)
+    private DhisDbReportData GetDhisReports(int reportId, DateTime reportDate, int englishContentLanguageId)
     {
-        var reportsOfAlertIds = _nyssContext.AlertReports
-            .Where(x => x.ReportId == reportId).ToList();
-        var reports = GetReportFilterQuery().ToList();
-            //.Where(queriedReport => reportsOfAlertIds.Contains(queriedReport.Report.Id))
-            //.ToList();
+        var reportForControls = _nyssContext.Reports
+            .Where(x => x.Id == reportId);
 
-        return _reportsConverter.ConvertDhisReports(reports, reportDate, englishContentLanguageId);
+        var rep = new DhisDbReportData
+        {
+            OrgUnit = reportForControls.OrgUnit,
+            EventDate = report.EventDate,
+            ReportLocation = report.ReportLocation,
+            ReportSuspectedDisease = report.ReportSuspectedDisease,
+            ReportHealthRisk = report.ReportHealthRisk,
+            ReportStatus = report.ReportStatus,
+            ReportGender = report.ReportGender,
+            ReportAgeAtLeastFive = report.ReportAgeAtLeastFive,
+            ReportAgeBelowFive = report.ReportAgeBelowFive
+        };
+        return rep;
+
+        return _reportsConverter.SquashDhisReports(reportForControls);
     }
 
     private IQueryable<RawReport> GetReportFilterQuery()

@@ -12,6 +12,7 @@ namespace RX.Nyss.ReportApi.Features.Reports
     {
         Task<bool> ReceiveReport(Report report);
         Task<bool> RegisterEidsrEvent(EidsrReport eidsrReport);
+        Task<bool> RegisterDhisReport(DhisReport dhisReport);
     }
 
     public class ReportService : IReportService
@@ -20,6 +21,7 @@ namespace RX.Nyss.ReportApi.Features.Reports
         private readonly INyssReportHandler _nyssReportHandler;
         private readonly ISmsGatewayHandler _smsGatewayHandler;
         private readonly IEidsrReportHandler _eidsrReportHandler;
+        private readonly IDhisReportHandler _dhisReportHandler;
         private readonly ILoggerAdapter _loggerAdapter;
 
         public ReportService(
@@ -27,14 +29,15 @@ namespace RX.Nyss.ReportApi.Features.Reports
             ILoggerAdapter loggerAdapter,
             INyssReportHandler nyssReportHandler,
             IEidsrReportHandler eidsrReportHandler,
+            IDhisReportHandler dhisReportHandler,
             ISmsGatewayHandler smsGatewayHandler)
         {
             _smsEagleHandler = smsEagleHandler;
             _loggerAdapter = loggerAdapter;
             _nyssReportHandler = nyssReportHandler;
             _eidsrReportHandler = eidsrReportHandler;
-            //_nyssReportHandler = nyssReportHandler;
             _smsGatewayHandler = smsGatewayHandler;
+            _dhisReportHandler = dhisReportHandler;
         }
 
         public async Task<bool> ReceiveReport(Report report)
@@ -75,6 +78,17 @@ namespace RX.Nyss.ReportApi.Features.Reports
             }
 
             return await _eidsrReportHandler.Handle(eidsrReport);
+        }
+
+        public async Task<bool> RegisterDhisReport(DhisReport dhisReport)
+        {
+            if (dhisReport == null)
+            {
+                _loggerAdapter.Error("Received a dhisReport with null value.");
+                return false;
+            }
+
+            return await _dhisReportHandler.Handle(dhisReport);
         }
     }
 }
