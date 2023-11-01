@@ -11,6 +11,14 @@ export const projectTabMenuOrder = {
   settings: 40
 };
 
+const projectSubMenuOrder = {
+  general: 0,
+  healthRisks: 1,
+  unhandledAlertRecipients: 2,
+  escalatedAlertRecipients: 3,
+  errorMessages: 4,
+}
+
 export const projectsSiteMap = [
   {
     parentPath: "/nationalsocieties/:nationalSocietyId",
