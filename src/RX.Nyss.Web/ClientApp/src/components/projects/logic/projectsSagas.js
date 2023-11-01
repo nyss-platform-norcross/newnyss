@@ -16,6 +16,7 @@ export const projectsSagas = () => [
   takeEvery(consts.EDIT_PROJECT.INVOKE, editProject),
   takeEvery(consts.CLOSE_PROJECT.INVOKE, closeProject),
   takeEvery(consts.OPEN_ERROR_MESSAGES, openErrorMessages),
+  takeEvery(consts.OPEN_PROJECT_HEALTHRISKS_EDITION.INVOKE, editProject),
 ];
 
 function* openProjectsList({ nationalSocietyId }) {

@@ -11,9 +11,7 @@ import CancelButton from '../common/buttons/cancelButton/CancelButton';
 import TextInputField from '../forms/TextInputField';
 import { useMount } from '../../utils/lifecycle';
 import { strings, stringKeys } from '../../strings';
-import { Grid, Typography } from '@material-ui/core';
-import { MultiSelect } from '../forms/MultiSelect';
-import { ProjectsHealthRiskItem } from './ProjectHealthRiskItem';
+import { Grid } from '@material-ui/core';
 import { getSaveFormModel } from './logic/projectsService';
 import { Loading } from '../common/loading/Loading';
 import { ValidationMessage } from '../forms/ValidationMessage';
@@ -22,18 +20,10 @@ import { SubMenuTitle } from '../layout/SubMenuTitle';
 
 
 const ProjectsEditPageComponent = (props) => {
-  const [healthRiskDataSource, setHealthRiskDataSource] = useState([]);
-  const [selectedHealthRisks, setSelectedHealthRisks] = useState([]);
-  const [healthRisksFieldTouched, setHealthRisksFieldTouched] = useState(false);
-
 
   useMount(() => {
     props.openEdition(props.nationalSocietyId, props.projectId);
   })
-
-  useEffect(() => {
-    setHealthRiskDataSource(props.healthRisks.map(hr => ({ label: hr.healthRiskName, value: hr.healthRiskId, data: hr })));
-  }, [props.healthRisks])
 
   const [form, setForm] = useState(null);
 
@@ -56,40 +46,20 @@ const ProjectsEditPageComponent = (props) => {
     }
 
     setForm(createForm(fields, validation, refs));
-    setSelectedHealthRisks(props.data.projectHealthRisks);
     return () => setForm(null);
   }, [props.data]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const preventSubmit = selectedHealthRisks.length === 1
-
-    if (preventSubmit) {
-      setHealthRisksFieldTouched(true)
-    }
-
     if (!form.isValid()) {
 
       Object.values(form.fields).filter(e => e.error)[0].scrollTo();
       return;
     }
-
-    !preventSubmit && props.edit(props.nationalSocietyId, props.projectId, getSaveFormModel(form.getValues(), selectedHealthRisks));
+    
+    props.edit(props.nationalSocietyId, props.projectId, getSaveFormModel(form.getValues(), props.data.projectHealthRisks));
   };
-
-  const onHealthRiskChange = (value, eventData) => {
-    if (eventData.action === "select-option") {
-      setSelectedHealthRisks([...selectedHealthRisks, eventData.option.data]);
-    } else if ((eventData.action === "remove-value" || eventData.action === "pop-value") && eventData.removedValue.data.healthRiskType !== 'Activity') {
-        setSelectedHealthRisks(selectedHealthRisks.filter(hr => hr.healthRiskId !== eventData.removedValue.value));
-    } else if (eventData.action === "clear") {
-      setSelectedHealthRisks(props.data.healthRisks.filter(hr => hr.healthRiskType === 'Activity' ));
-    }
-  }
-
-  const getSelectedHealthRiskValue = () =>
-    healthRiskDataSource.filter(hr => (selectedHealthRisks.some(shr => shr.healthRiskId === hr.value))).sort((a, b) => a.data.healthRiskType === 'Activity' ? -1 : 1);
 
   useCustomErrors(form, props.error);
 
@@ -121,32 +91,6 @@ const ProjectsEditPageComponent = (props) => {
               color="primary"
             />
           </Grid>
-
-          <Grid item xs={12}>
-            <MultiSelect
-              label={strings(stringKeys.project.form.healthRisks)}
-              options={healthRiskDataSource}
-              value={getSelectedHealthRiskValue()}
-              onChange={onHealthRiskChange}
-              error={(healthRisksFieldTouched && selectedHealthRisks.length < 2) ? `${strings(stringKeys.validation.noHealthRiskSelected)}` : null}
-            />
-          </Grid>
-
-          {selectedHealthRisks.length > 0 &&
-            <Grid item xs={12}>
-              <Typography variant="h3">{strings(stringKeys.project.form.healthRisksSection)}</Typography>
-            </Grid>
-          }
-
-          {selectedHealthRisks.sort((a, b) => a.healthRiskCode - b.healthRiskCode).map(selectedHealthRisk => (
-            <Grid item xs={12} key={`projectsHealthRiskItem_${selectedHealthRisk.healthRiskId}`}>
-              <ProjectsHealthRiskItem
-                form={form}
-                projectHealthRisk={{ id: selectedHealthRisk.id }}
-                healthRisk={selectedHealthRisk}
-              />
-            </Grid>
-          ))}
         </Grid>
 
         <FormActions>

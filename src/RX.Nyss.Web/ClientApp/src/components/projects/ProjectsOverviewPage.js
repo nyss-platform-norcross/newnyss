@@ -44,25 +44,9 @@ const ProjectsOverviewPageComponent = (props) => {
           <Typography variant="body1" gutterBottom>
             {strings(stringKeys.common.boolean[String(props.data.allowMultipleOrganizations)])}
           </Typography>
-
-          <Typography variant="h6">
-            {strings(stringKeys.project.form.healthRisks)}
-          </Typography>
-
-          {props.data.projectHealthRisks.map(hr =>
-            <Chip key={`projectsHealthRiskItemIcon_${hr.healthRiskId}`} label={hr.healthRiskName} className={styles.chip} />
-          )}
         </Grid>
 
         <Grid item xs={12}>
-          <Typography variant="h3">{strings(stringKeys.project.form.overviewHealthRisksSection)}</Typography>
-          <Grid container spacing={2}>
-            {props.data.projectHealthRisks.map(hr =>
-              <Grid item xs={12} key={`projectsHealthRiskItem_${hr.healthRiskId}`}>
-                <ProjectsOverviewHealthRiskItem projectHealthRisk={hr} rtl={useRtlDirection} />
-              </Grid>
-            )}
-          </Grid>
 
       {!props.isClosed && (
         <FormActions>
@@ -87,8 +71,6 @@ ProjectsOverviewPageComponent.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  healthRisks: state.projects.overviewHealthRisks,
-  timeZones: state.projects.overviewTimeZones,
   projectId: ownProps.match.params.projectId,
   nationalSocietyId: ownProps.match.params.nationalSocietyId,
   isFetching: state.projects.formFetching,

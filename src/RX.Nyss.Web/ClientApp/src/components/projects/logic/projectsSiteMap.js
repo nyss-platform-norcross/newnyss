@@ -75,7 +75,13 @@ export const projectsSiteMap = [
   },
   {
     parentPath: "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
-    path: "/projects/:projectId/escalatedAlertNotifications",
+    path: "/nationalsocieties/:nationalSocietyId/projects/:projectId/editHealthRisks",
+    title: () => strings(stringKeys.project.form.editionTitle),
+    access: accessMap.projects.edit,
+  },
+  {
+    parentPath: "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
+    path: "/projects/:projectId/alertNotifications",
     title: () => strings(stringKeys.projectAlertRecipient.title),
     placeholder: placeholders.projectSubMenu,
     access: accessMap.projectAlertNotifications.list,

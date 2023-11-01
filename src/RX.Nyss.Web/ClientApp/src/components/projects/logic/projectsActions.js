@@ -6,6 +6,7 @@ import {
   CLOSE_PROJECT,
   OPEN_PROJECT_OVERVIEW,
   OPEN_ERROR_MESSAGES,
+  OPEN_PROJECT_HEALTHRISKS_EDITION
 } from "./projectsConstants";
 
 export const goToList = (nationalSocietyId) => push(`/nationalsocieties/${nationalSocietyId}/projects`);
@@ -13,6 +14,8 @@ export const goToCreation = (nationalSocietyId) => push(`/nationalsocieties/${na
 export const goToEdition = (nationalSocietyId, projectId) => push(`/nationalsocieties/${nationalSocietyId}/projects/${projectId}/edit`);
 export const goToDashboard = (nationalSocietyId, projectId) => push(`/nationalsocieties/${nationalSocietyId}/projects/${projectId}/dashboard`);
 export const goToOverview = (nationalSocietyId, projectId) => push(`/nationalsocieties/${nationalSocietyId}/projects/${projectId}/overview`);
+export const goToHealthRisksEdition = (nationalSocietyId, projectId) => push(`/nationalsocieties/${nationalSocietyId}/projects/${projectId}/editHealthRisks`);
+export const goToHealthRisks = (nationalSocietyId, projectId) => push(`/nationalsocieties/${nationalSocietyId}/projects/${projectId}/healthrisks`);
 
 export const openList = {
   invoke: (nationalSocietyId) => ({ type: OPEN_PROJECTS_LIST.INVOKE, nationalSocietyId }),
@@ -46,6 +49,13 @@ export const openEdition = {
   invoke: (nationalSocietyId, projectId) => ({ type: OPEN_PROJECT_EDITION.INVOKE, nationalSocietyId, projectId }),
   request: () => ({ type: OPEN_PROJECT_EDITION.REQUEST }),
   success: (data, healthRisks, timeZones) => ({ type: OPEN_PROJECT_EDITION.SUCCESS, data, healthRisks, timeZones }),
+  failure: (message) => ({ type: OPEN_PROJECT_EDITION.FAILURE, message })
+};
+
+export const openHealthRisksEdition = {
+  invoke: (nationalSocietyId, projectId) => ({ type: OPEN_PROJECT_HEALTHRISKS_EDITION.INVOKE, nationalSocietyId, projectId }),
+  request: () => ({ type: OPEN_PROJECT_HEALTHRISKS_EDITION.REQUEST }),
+  success: (data, healthRisks, timeZones) => ({ type: OPEN_PROJECT_HEALTHRISKS_EDITION.SUCCESS, data, healthRisks, timeZones }),
   failure: (message) => ({ type: OPEN_PROJECT_EDITION.FAILURE, message })
 };
 

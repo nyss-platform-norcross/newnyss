@@ -53,7 +53,7 @@ const ProjectHealthRisksPageComponent = (props) => {
         <FormActions>
           {(!props.data.allowMultipleOrganizations || (props.data.hasCoordinator && props.callingUserRoles.some(r => r === Coordinator || r === Administrator))) && (
             <TableActionsButton
-              onClick={() => props.openEdition(props.nationalSocietyId, props.projectId)}
+              onClick={() => props.openHealthRisksEdition(props.nationalSocietyId, props.projectId)}
               roles={accessMap.projects.edit}
               variant={"contained"}
             >
@@ -80,7 +80,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   openOverview: projectsActions.openOverview.invoke,
   openEdition: projectsActions.goToEdition,
-  goToList: projectsActions.goToList
+  goToList: projectsActions.goToList,
+  openHealthRisksEdition: projectsActions.goToHealthRisksEdition
 };
 
 export const ProjectHealthRisksPage = withLayout(
