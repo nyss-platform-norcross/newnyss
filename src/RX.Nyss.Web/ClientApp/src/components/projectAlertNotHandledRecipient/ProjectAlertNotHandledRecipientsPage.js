@@ -8,6 +8,8 @@ import { Fragment } from 'react';
 import { Administrator } from '../../authentication/roles';
 import { ProjectAlertNotHandledRecipientItem } from './components/ProjectAlertNotHandledRecipientItem';
 import { Card, CardContent, CircularProgress, Grid, Typography } from '@material-ui/core';
+import { withLayout } from "../../utils/layout";
+import Layout from "../layout/Layout";
 
 export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, projectId, recipients, getFormData, edit, create }) => {
   useMount(() => {
@@ -40,7 +42,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
                   {(isFetchingFormData || isFetchingList) && (
                     <span className={styles.progressSpinner}>
                       <CircularProgress />
-                     </span>
+                    </span>
                   )}
 
                   <div className={styles.recipientsContainer}>
@@ -69,11 +71,12 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
   );
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
   recipients: state.projectAlertNotHandledRecipients.listData,
   isListFetching: state.projectAlertNotHandledRecipients.listFetching,
   nationalSocietyIsArchived: state.appData.siteMap.parameters.nationalSocietyIsArchived,
-  projectIsClosed: state.appData.siteMap.parameters.projectIsClosed
+  projectIsClosed: state.appData.siteMap.parameters.projectIsClosed,
+  projectId: ownProps.match.params.projectId
 });
 
 const mapDispatchToProps = {
@@ -83,4 +86,7 @@ const mapDispatchToProps = {
   getFormData: projectAlertNotHandledRecipientsActions.getFormData.invoke
 };
 
-export const ProjectAlertNotHandledRecipientsPage = connect(mapStateToProps, mapDispatchToProps)(ProjectAlertNotHandledRecipientsComponent);
+export const ProjectAlertNotHandledRecipientsPage = withLayout(
+  Layout,
+  connect(mapStateToProps, mapDispatchToProps)(ProjectAlertNotHandledRecipientsComponent)
+);

@@ -66,11 +66,20 @@ export const projectsSiteMap = [
   },
   {
     parentPath: "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
-    path: "/projects/:projectId/alertNotifications",
+    path: "/projects/:projectId/escalatedAlertNotifications",
     title: () => strings(stringKeys.projectAlertRecipient.title),
     placeholder: placeholders.projectSubMenu,
     access: accessMap.projectAlertNotifications.list,
-    placeholderIndex: 3,
+    placeholderIndex: projectSubMenuOrder.escalatedAlertRecipients,
+    middleStepOnly: true,
+  },
+  {
+    parentPath: "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
+    path: "/projects/:projectId/alertNotifications",
+    title: () => strings(stringKeys.projectAlertNotHandledRecipient.title),
+    placeholder: placeholders.projectSubMenu,
+    access: accessMap.projectAlertNotifications.list,
+    placeholderIndex: projectSubMenuOrder.unhandledAlertRecipients,
     middleStepOnly: true,
   },
   {
