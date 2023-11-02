@@ -269,20 +269,10 @@ public class ReportService : IReportService
             return Error(ResultKey.Report.CannotCrossCheckReportWithoutLocation);
         }
 
-        //var dc = await _nyssContext.DataCollectors
-            //.Where(d => d.PhoneNumber == report.PhoneNumber)
-            //.Select(r => r.RawReport)
-            //.FirstOrDefaultAsync();
-
         var nonEssentialSubProcessesErrors = new List<string>();
-        //if (report.RawReport.NationalSociety.Id)
-        //{
-
-        //}
         await SendReportsToDhis(
             reportId,
             nonEssentialSubProcessesErrors);
-            //dc.Project.NationalSocietyId);
 
         report.AcceptedAt = _dateTimeProvider.UtcNow;
         report.AcceptedBy = currentUser;
@@ -298,14 +288,6 @@ public class ReportService : IReportService
     {
         try
         {
-            /*var ns = await _nyssContext.NationalSocieties
-                .FirstOrDefaultAsync(x => x.Id == nationalSocietyId);
-
-            if (ns != null && !ns.EnableEidsrIntegration)
-            {
-                return;
-            }*/
-
             await _dhisService.SendReportToDhis(reportId);
         }
         catch (ResultException e)

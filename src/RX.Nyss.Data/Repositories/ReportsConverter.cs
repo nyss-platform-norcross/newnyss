@@ -9,6 +9,7 @@ namespace RX.Nyss.Data.Repositories;
 public interface IReportsConverter
 {
     List<EidsrDbReportData> ConvertReports(List<RawReport> reports, DateTime alertDate, int englishContentLanguageId);
+    DhisDbReportData ConvertDhisReport(RawReport rawReport, DateTime reportDate, int englishContentLanguageId);
 }
 
 public class ReportsConverter : IReportsConverter
@@ -147,5 +148,27 @@ public class ReportsConverter : IReportsConverter
         return string.Join(", ", valuePairs
             .Where(valuePairs => !string.IsNullOrEmpty(valuePairs.Value))
             .Select(valuePairs => $"{valuePairs.Value}"));
+    }
+
+    public DhisDbReportData ConvertDhisReport(RawReport rawReport, DateTime reportDate, int englishContentLanguageId)
+    {
+        if (rawReport.Village.District.EidsrOrganisationUnits.OrganisationUnitId == null)
+        {
+            throw new ArgumentException("Report's location has no organisation unit.");
+        }
+
+        return new DhisDbReportData
+        {
+            OrgUnit = rawReport.Village.District.EidsrOrganisationUnits.OrganisationUnitId,
+            EventDate = reportDate.ToString("yyyy-MM-dd"),
+
+            ReportLocation = $"{rawReport?.Village?.District?.Region?.Name}/{rawReport?.Village?.District?.Name}/{rawReport?.Village?.Name}",
+            ReportSuspectedDisease = ExtractSuspectedDiseases(englishContentLanguageId, rawReport?.Report),
+            ReportHealthRisk = rawReport?.Report?.ProjectHealthRisk?.HealthRisk.ToString(),
+            ReportStatus = rawReport?.Report?.Status.ToString("u"),
+            ReportGender = ExtractGender(report: rawReport?.Report),
+            ReportAgeAtLeastFive = (rawReport?.Report?.ReportedCase?.CountFemalesAtLeastFive + rawReport?.Report?.ReportedCase?.CountMalesAtLeastFive).ToString(),
+            ReportAgeBelowFive = (rawReport?.Report?.ReportedCase?.CountFemalesBelowFive + rawReport?.Report?.ReportedCase?.CountMalesBelowFive).ToString()
+        };
     }
 }

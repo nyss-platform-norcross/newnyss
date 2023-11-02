@@ -25,7 +25,7 @@ namespace RX.Nyss.ReportFuncApp
 
         [FunctionName("RegisterDhisReportFromReport")]
         public async Task DequeueReportForDhis(
-            [ServiceBusTrigger("%SERVICEBUS_EIDSRREPORTQUEUE%", Connection = "SERVICEBUS_CONNECTIONSTRING")] ReportForDhis reportForDhis)
+            [ServiceBusTrigger("%SERVICEBUS_DHISREPORTQUEUE%", Connection = "SERVICEBUS_CONNECTIONSTRING")] ReportForDhis reportForDhis)
         {
             _logger.Log(LogLevel.Debug, $"Dequeued report for dhis: '{reportForDhis}'");
 
