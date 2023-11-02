@@ -111,8 +111,9 @@ export const DataCollectorsPerformanceFilters = ({ onChange, filters, rtl, locat
               value={localFilters.trainingStatus || 'All'}
               onChange={handleTrainingStatusChange}
               className={styles.filterRadioGroup}>
-              {trainingStatus.map(status => (
-                <FormControlLabel key={`trainingStatus_filter_${status}`} control={<Radio />} label={strings(stringKeys.dataCollectors.constants.trainingStatus[status])} value={status} />
+              {trainingStatus
+                .map(status => (
+                  <FormControlLabel key={`trainingStatus_filter_${status}`} control={<Radio />} className={styles.radio} label={strings(stringKeys.dataCollectors.constants.trainingStatus[status])} value={status} />
               ))}
             </RadioGroup>
           </Grid>

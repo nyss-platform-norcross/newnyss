@@ -139,7 +139,7 @@ export const DataCollectorsFilters = ({ supervisors, locations, onChange, callin
               onChange={handleTrainingStatusChange}
               className={styles.filterRadioGroup}>
               {trainingStatus.map(status => (
-                <FormControlLabel key={`trainingStatus_filter_${status}`} control={<Radio />} label={strings(stringKeys.dataCollectors.constants.trainingStatus[status])} value={status} />
+                <FormControlLabel key={`trainingStatus_filter_${status}`} control={<Radio />} className={styles.radio} label={strings(stringKeys.dataCollectors.constants.trainingStatus[status])} value={status} />
               ))}
             </RadioGroup>
           </Grid>
@@ -151,7 +151,7 @@ export const DataCollectorsFilters = ({ supervisors, locations, onChange, callin
               onChange={handleDeployedModeChange}
               className={styles.filterRadioGroup}>
               {deployedMode.map(status => (
-                <FormControlLabel key={`deployedMode_filter_${status}`} control={<Radio />} label={strings(stringKeys.dataCollectors.constants.deployedMode[status])} value={status} />
+                <FormControlLabel key={`deployedMode_filter_${status}`} control={<Radio />} className={styles.radio} label={strings(stringKeys.dataCollectors.constants.deployedMode[status])} value={status} />
               ))}
             </RadioGroup>
           </Grid>

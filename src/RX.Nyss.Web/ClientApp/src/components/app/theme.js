@@ -81,6 +81,7 @@ export const theme = (direction) => createTheme({
     MuiIconButton: {
       root: {
         fontSize: "22px",
+        padding: "4px"
       }
     },
     MuiMenu: {
@@ -137,14 +138,15 @@ export const theme = (direction) => createTheme({
       root: {
         color: "#333333 !important",
         transform: "translate(0, 2px);",
-        lineHeight: "inherit"
+        lineHeight: "inherit",
+        fontSize: "16px",
       },
       focused: {},
     },
     MuiFormControlLabel: {
       root: {
-        marginRight: direction === 'ltr' ? '16px' : '-11px',
-        marginLeft: direction === 'ltr' ? '-11px' : '16px'
+        marginRight: direction === 'ltr' ? '0px' : '-4px',
+        marginLeft: direction === 'ltr' ? '-4px' : '0px'
       },
       label: {
         fontSize: "14px"
@@ -298,7 +300,23 @@ export const theme = (direction) => createTheme({
         '&$checked': {
           color: '#C02C2C'
         }
-      }
+      },
+      root: {
+        padding: '4px',
+        "& .MuiSvgIcon-root": {
+          height: 22,
+          width: 22,
+        }
+      },
+    },
+    MuiCheckbox: {
+      root: {
+        padding: '4px',
+        "& .MuiSvgIcon-root": {
+          height: 22,
+          width: 22,
+        }
+      },
     },
     MuiTableSortLabel: {
       root: {
