@@ -51,22 +51,20 @@ namespace RX.Nyss.ReportApi.Features.Reports
 
             _loggerAdapter.Debug($"Received report: {report}");
 
-            if (report.ReportSource == ReportSource.Nyss)
+            switch (report.ReportSource)
             {
-                await _nyssReportHandler.Handle(report.Content);
-            }
-            else if (report.ReportSource == ReportSource.SmsEagle)
-            {
-                await _smsEagleHandler.Handle(report.Content);
-            }
-            else if (report.ReportSource == ReportSource.SmsGateway)
-            {
-                await _smsGatewayHandler.Handle(report.Content);
-            }
-            else 
-            {
-                _loggerAdapter.Error("Received a report with unknown source.");
-                return false;
+                case ReportSource.SmsEagle:
+                    await _smsEagleHandler.Handle(report.Content);
+                    break;
+                case ReportSource.Nyss:
+                    await _nyssReportHandler.Handle(report.Content);
+                    break;
+                case ReportSource.SmsGateway:
+                    await _smsGatewayHandler.Handle(report.Content);
+                    break;
+                default:
+                    _loggerAdapter.Error($"Could not find a proper handler to handle a report '{report}'.");
+                    break;
             }
 
             return true;
