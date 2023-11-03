@@ -13,7 +13,7 @@ import ExpandButton from '../common/buttons/expandButton/ExpandButton';
 import { AccountSection } from './AccountSection';
 import { expandSideMenu } from '../app/logic/appActions';
 
-const drawerWidth = 240;
+const drawerWidth = 230;
 
 const useStyles = makeStyles((theme) => ({
   MenuContainer: {
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     width: theme.spacing(7) + 1,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 2,
+      width: theme.spacing(7) + 2.1,
     },
   },
   logo: {
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center"
   },
   image: {
-    height: "38px"
+    height: "38px",
   },
   overflowVisible: {
     overflowY: 'visible',
@@ -90,7 +90,7 @@ const SideMenuComponent = ({ generalMenu, sideMenu, sideMenuOpen, toggleSideMenu
   const closeDrawer = () => {
     toggleSideMenu(false);
   }
-  
+
   const handleExpandClick = () => {
     expandSideMenu(!isSideMenuExpanded);
   }
