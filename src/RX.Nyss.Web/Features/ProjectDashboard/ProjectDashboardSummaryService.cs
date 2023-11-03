@@ -42,6 +42,9 @@ namespace RX.Nyss.Web.Features.ProjectDashboard
             var dashboardReports = _reportService.GetDashboardHealthRiskEventReportsQuery(filters);
             var rawReportsWithDataCollector = _reportService.GetRawReportsWithDataCollectorQuery(filters);
 
+            var dashBoardReportsList = dashboardReports.ToList();
+            var rawReportList = rawReportsWithDataCollector.ToList();
+
             return await _nyssContext.Projects
                 .AsNoTracking()
                 .Where(p => p.Id == filters.ProjectId.Value)
