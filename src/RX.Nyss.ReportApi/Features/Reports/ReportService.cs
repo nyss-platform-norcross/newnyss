@@ -43,11 +43,11 @@ namespace RX.Nyss.ReportApi.Features.Reports
 
         public async Task<bool> ReceiveReport(Report report)
         {
-            if (report == null)
+            /*if (report.Content == null)
             {
                 _loggerAdapter.Error("Received a report with null value.");
                 return false;
-            }
+            }*/
 
             _loggerAdapter.Debug($"Received report: {report}");
 
