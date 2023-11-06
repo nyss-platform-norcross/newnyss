@@ -1,4 +1,3 @@
-import styles from "./ProjectsOverviewPage.module.scss";
 import React, { Fragment } from 'react';
 import { connect, useSelector } from "react-redux";
 import { stringKeys, strings } from '../../strings';
@@ -8,12 +7,12 @@ import { Loading } from '../common/loading/Loading';
 import FormActions from '../forms/formActions/FormActions';
 import Layout from '../layout/Layout';
 import * as projectsActions from './logic/projectsActions';
-import { ProjectsOverviewHealthRiskItem } from "./ProjectsOverviewHealthRiskItem";
 import { accessMap } from '../../authentication/accessMap';
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { Chip, Grid, Typography } from "@material-ui/core";
 import { Coordinator, Administrator } from "../../authentication/roles";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
+import EditIcon from '@material-ui/icons/Edit';
 
 const ProjectsOverviewPageComponent = (props) => {
   useMount(() => {
@@ -35,6 +34,7 @@ const ProjectsOverviewPageComponent = (props) => {
             <FormActions>
               {(!props.data.allowMultipleOrganizations || (props.data.hasCoordinator && props.callingUserRoles.some(r => r === Coordinator || r === Administrator))) && (
                 <TableActionsButton
+                  startIcon={<EditIcon />}
                   onClick={() => props.openEdition(props.nationalSocietyId, props.projectId)}
                   roles={accessMap.projects.edit}
                   variant={"contained"}

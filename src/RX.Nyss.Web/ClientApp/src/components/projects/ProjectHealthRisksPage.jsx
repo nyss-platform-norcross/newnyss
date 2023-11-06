@@ -13,6 +13,7 @@ import { accessMap } from '../../authentication/accessMap';
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { Chip, Grid, Typography } from "@material-ui/core";
 import { Coordinator, Administrator } from "../../authentication/roles";
+import EditIcon from '@material-ui/icons/Edit';
 
 const ProjectHealthRisksPageComponent = (props) => {
   useMount(() => {
@@ -34,6 +35,7 @@ const ProjectHealthRisksPageComponent = (props) => {
             <FormActions>
               {(!props.data.allowMultipleOrganizations || (props.data.hasCoordinator && props.callingUserRoles.some(r => r === Coordinator || r === Administrator))) && (
                 <TableActionsButton
+                  startIcon={<EditIcon />}
                   onClick={() => props.openHealthRisksEdition(props.nationalSocietyId, props.projectId)}
                   roles={accessMap.projects.edit}
                   variant={"contained"}
