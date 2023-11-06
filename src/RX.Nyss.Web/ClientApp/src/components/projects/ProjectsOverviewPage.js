@@ -31,6 +31,19 @@ const ProjectsOverviewPageComponent = (props) => {
       <SubMenuTitle />
       <Grid container spacing={4} fixed='true' style={{ maxWidth: 800 }}>
         <Grid item xs={12}>
+          {!props.isClosed && (
+            <FormActions>
+              {(!props.data.allowMultipleOrganizations || (props.data.hasCoordinator && props.callingUserRoles.some(r => r === Coordinator || r === Administrator))) && (
+                <TableActionsButton
+                  onClick={() => props.openEdition(props.nationalSocietyId, props.projectId)}
+                  roles={accessMap.projects.edit}
+                  variant={"contained"}
+                >
+                  {strings(stringKeys.common.buttons.edit)}
+                </TableActionsButton>
+              )}
+            </FormActions>
+          )}
           <Typography variant="h6">
             {strings(stringKeys.project.form.name)}
           </Typography>
@@ -44,23 +57,6 @@ const ProjectsOverviewPageComponent = (props) => {
           <Typography variant="body1" gutterBottom>
             {strings(stringKeys.common.boolean[String(props.data.allowMultipleOrganizations)])}
           </Typography>
-        </Grid>
-
-        <Grid item xs={12}>
-
-      {!props.isClosed && (
-        <FormActions>
-          {(!props.data.allowMultipleOrganizations || (props.data.hasCoordinator && props.callingUserRoles.some(r => r === Coordinator || r === Administrator))) && (
-            <TableActionsButton
-              onClick={() => props.openEdition(props.nationalSocietyId, props.projectId)}
-              roles={accessMap.projects.edit}
-              variant={"contained"}
-            >
-              {strings(stringKeys.common.buttons.edit)}
-            </TableActionsButton>
-          )}
-        </FormActions>
-      )}
         </Grid>
       </Grid>
     </Fragment>

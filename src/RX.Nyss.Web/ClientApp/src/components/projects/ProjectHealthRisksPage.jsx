@@ -27,9 +27,22 @@ const ProjectHealthRisksPageComponent = (props) => {
 
   return (
     <Fragment>
-
       <Grid container spacing={4} fixed='true' style={{ maxWidth: 800 }}>
+        
         <Grid item xs={12}>
+          {!props.isClosed && (
+            <FormActions>
+              {(!props.data.allowMultipleOrganizations || (props.data.hasCoordinator && props.callingUserRoles.some(r => r === Coordinator || r === Administrator))) && (
+                <TableActionsButton
+                  onClick={() => props.openHealthRisksEdition(props.nationalSocietyId, props.projectId)}
+                  roles={accessMap.projects.edit}
+                  variant={"contained"}
+                >
+                  {strings(stringKeys.common.buttons.edit)}
+                </TableActionsButton>
+              )}
+            </FormActions>
+          )}
           <Typography variant="h6">
             {strings(stringKeys.project.form.healthRisks)}
           </Typography>
@@ -48,20 +61,6 @@ const ProjectHealthRisksPageComponent = (props) => {
               </Grid>
             )}
           </Grid>
-
-      {!props.isClosed && (
-        <FormActions>
-          {(!props.data.allowMultipleOrganizations || (props.data.hasCoordinator && props.callingUserRoles.some(r => r === Coordinator || r === Administrator))) && (
-            <TableActionsButton
-              onClick={() => props.openHealthRisksEdition(props.nationalSocietyId, props.projectId)}
-              roles={accessMap.projects.edit}
-              variant={"contained"}
-            >
-              {strings(stringKeys.common.buttons.edit)}
-            </TableActionsButton>
-          )}
-        </FormActions>
-      )}
         </Grid>
       </Grid>
     </Fragment>
