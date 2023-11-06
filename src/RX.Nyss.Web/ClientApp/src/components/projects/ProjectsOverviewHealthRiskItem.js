@@ -8,28 +8,28 @@ export const ProjectsOverviewHealthRiskItem = ({ projectHealthRisk, rtl }) => {
   return (
     <Card>
       <CardContent className={styles.healthRisk}>
-        <Typography variant="h2" className={styles.header}>{projectHealthRisk.healthRiskCode}</Typography>
-        <Typography variant="h3" className={`${styles.header} ${styles.healthRiskName} ${rtl ? styles.rtl : ""}`}> {projectHealthRisk.healthRiskName}</Typography>
+        <Typography className={`${styles.header} ${styles.healthRiskCode}`}>{projectHealthRisk.healthRiskCode}</Typography>
+        <Typography className={`${styles.header} ${styles.healthRiskName} ${rtl ? styles.rtl : ""}`}> {projectHealthRisk.healthRiskName}</Typography>
         <Grid container spacing={2} className={styles.healthRiskTextArea}>
           <Grid item xs={12} sm={6}>
-            <Typography variant="h6">
+            <Typography variant={"h5"}>
               {strings(stringKeys.project.form.caseDefinition)}
             </Typography>
-            <Typography variant="body1" gutterBottom>
+            <Typography variant={"body1"} style={{fontSize: 16}} gutterBottom>
               {projectHealthRisk.caseDefinition}
             </Typography>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <Typography variant="h6">
+            <Typography variant={"h5"}>
               {strings(stringKeys.project.form.feedbackMessage)}
             </Typography>
-            <Typography variant="body1" gutterBottom>
+            <Typography variant={"body1"} style={{fontSize: 16}} gutterBottom>
               {projectHealthRisk.feedbackMessage}
             </Typography>
           </Grid>
         </Grid>
-        <Typography variant="h3">{strings(stringKeys.project.form.alertsSection)}</Typography>
+        <Typography variant={"h5"}>{strings(stringKeys.project.form.alertsSection)}</Typography>
 
         {(projectHealthRisk.healthRiskCode === 98 || projectHealthRisk.healthRiskCode === 99) && (
           <Typography variant="body1"
