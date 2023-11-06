@@ -55,9 +55,9 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing(7) + 1,
+    width: "230px",
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(7) + 2.1,
+      width: "58px",
     },
   },
   logo: {

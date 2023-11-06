@@ -6,7 +6,7 @@ const useStyles = makeStyles(() => ({
     fontSize: '24px !important',
     margin: '10px 0',
     fontWeight: '600',
-    '@media screen and (max-width: 1279px)': {
+    '@media screen and (max-width: 800px)': {
       fontSize: '18px !important',
     },
   },

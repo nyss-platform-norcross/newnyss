@@ -9,6 +9,7 @@ import { DataCollectorsPerformanceMap } from './components/DataCollectorsPerform
 import { DataCollectorsPerformanceMapFilters } from './components/DataCollectorsPerformanceMapFilters';
 import { DataCollectorsPerformanceMapLegend } from './components/DataCollectorsPerformanceMapLegend';
 import * as tracking from "../../utils/tracking";
+import TableHeader from '../common/tableHeader/TableHeader';
 
 const DataCollectorsMapOverviewPageComponent = (props) => {
   useMount(() => {
@@ -30,6 +31,7 @@ const DataCollectorsMapOverviewPageComponent = (props) => {
 
   return (
     <Fragment>
+      <TableHeader />
       <DataCollectorsPerformanceMapFilters
         onChange={handleFiltersChange}
         filters={props.filters}

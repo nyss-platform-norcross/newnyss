@@ -13,6 +13,7 @@ import { accessMap } from '../../authentication/accessMap';
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { Chip, Grid, Typography } from "@material-ui/core";
 import { Coordinator, Administrator } from "../../authentication/roles";
+import { SubMenuTitle } from "../layout/SubMenuTitle";
 
 const ProjectsOverviewPageComponent = (props) => {
   useMount(() => {
@@ -27,7 +28,7 @@ const ProjectsOverviewPageComponent = (props) => {
 
   return (
     <Fragment>
-
+      <SubMenuTitle />
       <Grid container spacing={4} fixed='true' style={{ maxWidth: 800 }}>
         <Grid item xs={12}>
           <Typography variant="h6">

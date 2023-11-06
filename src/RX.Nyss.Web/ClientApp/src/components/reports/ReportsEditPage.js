@@ -20,6 +20,7 @@ import { ValidationMessage } from '../forms/ValidationMessage';
 import dayjs from 'dayjs';
 import { reportAges, reportCountToSexAge, reportSexes, reportStatus, ReportType } from './logic/reportsConstants';
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
+import { SubMenuTitle } from '../layout/SubMenuTitle';
 
 const ReportsEditPageComponent = (props) => {
   const [form, setForm] = useState(null);
@@ -174,12 +175,13 @@ const ReportsEditPageComponent = (props) => {
 
   return (
     <Fragment>
+      <SubMenuTitle />
       {props.error && <ValidationMessage message={props.error} />}
 
       <Form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} direction='column' className={styles.correctNegativeMargin}>
           <div className={styles.formSectionTitle}>{strings(stringKeys.reports.form.senderSectionTitle)}</div>
-          <Grid item xs={12}>
+          <Grid item>
             <SelectField
               label={strings(stringKeys.reports.form.dataCollector)}
               name='dataCollectorId'
@@ -196,7 +198,7 @@ const ReportsEditPageComponent = (props) => {
             </SelectField>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item>
             <SelectField
               label={strings(stringKeys.common.location)}
               name='locationId'
@@ -215,7 +217,7 @@ const ReportsEditPageComponent = (props) => {
           {(props.data.reportType !== ReportType.dataCollectionPoint && props.data.reportType !== ReportType.aggregate && !props.data.isActivityReport) && (
             <Fragment>
               <div className={styles.formSectionTitle}>{strings(stringKeys.reports.form.statusSectionTitle)}</div>
-              <Grid item xs={12}>
+              <Grid item>
                 <SelectField
                   label={strings(stringKeys.reports.form.reportStatus)}
                   name='reportStatus'
@@ -239,7 +241,7 @@ const ReportsEditPageComponent = (props) => {
 
           {props.data.reportType === ReportType.single && (
             <Fragment>
-              <Grid item xs={12}>
+              <Grid item>
                 <SelectField
                   label={strings(stringKeys.reports.form.reportSex)}
                   name='reportSex'
@@ -253,7 +255,7 @@ const ReportsEditPageComponent = (props) => {
                 </SelectField>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item>
                 <SelectField
                   label={strings(stringKeys.reports.form.reportAge)}
                   name='reportAge'
@@ -271,7 +273,7 @@ const ReportsEditPageComponent = (props) => {
 
           {(props.data.reportType === ReportType.dataCollectionPoint || props.data.reportType === ReportType.aggregate) && (
             <Fragment>
-              <Grid item xs={12}>
+              <Grid item>
                 <DateInputField
                   className={styles.fullWidth}
                   label={strings(stringKeys.reports.form.date)}
@@ -280,7 +282,7 @@ const ReportsEditPageComponent = (props) => {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item>
                 <SelectField
                   label={strings(stringKeys.reports.form.healthRisk)}
                   name='healthRiskId'
@@ -294,7 +296,7 @@ const ReportsEditPageComponent = (props) => {
                 </SelectField>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item>
                 <TextInputField
                   label={strings(stringKeys.reports.form.malesBelowFive)}
                   name='countMalesBelowFive'
@@ -302,7 +304,7 @@ const ReportsEditPageComponent = (props) => {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item>
                 <TextInputField
                   label={strings(stringKeys.reports.form.malesAtLeastFive)}
                   name='countMalesAtLeastFive'
@@ -310,7 +312,7 @@ const ReportsEditPageComponent = (props) => {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item>
                 <TextInputField
                   label={strings(stringKeys.reports.form.femalesBelowFive)}
                   name='countFemalesBelowFive'
@@ -318,7 +320,7 @@ const ReportsEditPageComponent = (props) => {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item>
                 <TextInputField
                   label={strings(stringKeys.reports.form.femalesAtLeastFive)}
                   name='countFemalesAtLeastFive'
@@ -330,7 +332,7 @@ const ReportsEditPageComponent = (props) => {
 
           {props.data.reportType === ReportType.dataCollectionPoint && (
             <Fragment>
-              <Grid item xs={12}>
+              <Grid item>
                 <TextInputField
                   label={strings(stringKeys.reports.form.referredCount)}
                   name='referredCount'
@@ -338,7 +340,7 @@ const ReportsEditPageComponent = (props) => {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item>
                 <TextInputField
                   label={strings(stringKeys.reports.form.deathCount)}
                   name='deathCount'
@@ -346,7 +348,7 @@ const ReportsEditPageComponent = (props) => {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item>
                 <TextInputField
                   label={strings(stringKeys.reports.form.fromOtherVillagesCount)}
                   name='fromOtherVillagesCount'
