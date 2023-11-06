@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { Tabs, Tab, Grid, Typography, makeStyles } from '@material-ui/core';
+import { TabDropdown } from './TabDropdown';
 
 const useStyles = makeStyles({
   nsHeader: {
@@ -32,6 +33,11 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, pr
   // http addresses are case insensitive so compare to-lower versions
   const showTabMenu = tabMenu.some(t => t.url.toLowerCase() === currentUrl.toLowerCase());
 
+  // Title for sub menu pages inside a project
+  const showSubMenuTitle = projectTabMenu.some(projectItem => projectItem.subMenu.length > 0 && projectItem.isActive);
+  // Alternative title for sub menu pages inside a project such as 'edit data collector' or 'edit alert recipient'
+  const showSubMenuAlternativeTitle = projectTabMenu && projectTabMenu.length > 0 && projectTabMenu.every(menuItem => menuItem.title !== title);
+
   return (
     <div className={styles.tabMenu}>
       {projectName ?
@@ -39,21 +45,23 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, pr
         :
         <div className={styles.header}>{title}</div>
       }
-      <Grid container justifyContent='center' style={{ width: "100%" }}>
-      {/* Only display project tab menu for all users other than data consumer since the role only has acces to project dashboard */}
-      {projectTabMenu && projectTabMenu.length > 1 && (
-        <Tabs
-        value={projectTabMenu.indexOf(projectTabMenu.find(t => t.isActive))}
-        className={styles.projectTabs}
-        scrollButtons="auto"
-        indicatorColor="primary"
-        variant="scrollable">
-          {projectTabMenu.map(item => (
-            <Tab key={`tabMenu_${item.url}`} label={item.title} onClick={() => onItemClick(item)} />
-            ))}
-        </Tabs>
-      )}
+      <Grid container justifyContent='center'>
+        {/* Only display project tab menu for all users other than data consumer since the role only has acces to project dashboard */}
+        {projectTabMenu.length > 1 && (
+            projectTabMenu.map(item => (
+            <Grid key={`projectTabMenu_${item.url}`} item style={{ backgroundColor: "#FCFCFC" }}>
+              <TabDropdown page={item} onItemClick={onItemClick}/>
+            </Grid>
+          ))
+        )}
       </Grid>
+      {/* Display header for subpages inside a project for data collectors, project reports and project settings */}
+      {showSubMenuTitle && !showSubMenuAlternativeTitle && (
+        <div className={styles.header}>{projectTabMenu.find(projectItem => projectItem.isActive)?.subMenu.find(item => item.isActive)?.title}</div>
+      )}
+      {showSubMenuAlternativeTitle && (
+        <div className={styles.header}>{title}</div>
+      )}
       {showTabMenu && (
         <Tabs
           value={tabMenu.indexOf(tabMenu.find(t => t.isActive))}

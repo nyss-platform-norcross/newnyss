@@ -300,6 +300,7 @@ public static class ResultKey
             public const string GlobalHealthRiskCodeNotFound = "report.errorType.globalHealthRiskCodeNotFound";
             public const string FormatError = "report.errorType.formatError";
             public const string Gateway = "report.errorType.gateway";
+            public const string Timestamp = "report.errorType.timestamp";
             public const string TooLong = "report.errorType.tooLong";
             public const string DataCollectorUsedCollectionPointFormat = "report.errorType.dataCollectorUsedCollectionPointFormat";
             public const string CollectionPointUsedDataCollectorFormat = "report.errorType.collectionPointUsedDataCollectorFormat";

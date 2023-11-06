@@ -132,6 +132,7 @@ export const ReportFilters = ({
                   filteredHealthRisks={localFilters.healthRisks}
                   onChange={handleHealthRiskChange}
                   updateValue={updateLocalFilters}
+                  rtl={rtl}
                 />
               </Grid>
             </Fragment>
