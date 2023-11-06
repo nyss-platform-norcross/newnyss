@@ -362,7 +362,6 @@ export const ProjectsDashboardFilters = ({
                 filteredHealthRisks={localFilters.healthRisks}
                 onChange={handleHealthRiskChange}
                 updateValue={updateLocalFilters}
-                updateValue={updateValue}
                 rtl={rtl}
               />
             </Grid>
