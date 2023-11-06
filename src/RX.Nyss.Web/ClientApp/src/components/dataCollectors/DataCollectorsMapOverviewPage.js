@@ -17,9 +17,8 @@ const DataCollectorsMapOverviewPageComponent = (props) => {
 
   const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
 
-  const handleFiltersChange = (value) => {
+  const handleFiltersChange = (value) =>
     props.getDataCollectorsMapOverview(props.projectId, value)
-  };
 
   useEffect(() => {
     props.trackPage("DataCollectorsMapOverviewPage");
@@ -27,7 +26,7 @@ const DataCollectorsMapOverviewPageComponent = (props) => {
 
   if (!props.filters) {
     return null;
-  }  
+  }
 
   return (
     <Fragment>

@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
 import * as dataCollectorsActions from './logic/dataCollectorsActions';
@@ -23,8 +23,8 @@ const DataCollectorsListPageComponent = ({getDataCollectorList, projectId, ...pr
   const [replaceSupervisorDialogOpened, setReplaceSupervisorDialogOpened] = useState(false);
   const [selectedDataCollectors, setSelectedDataCollectors] = useState([]);
 
-  const handleFilterChange = useCallback((filters) =>
-    getDataCollectorList(projectId, filters), [getDataCollectorList, projectId]);
+  const handleFilterChange = (filters) =>
+    getDataCollectorList(projectId, filters);
 
   const handleReplaceSupervisor = (dataCollectors) => {
     setSelectedDataCollectors(dataCollectors);

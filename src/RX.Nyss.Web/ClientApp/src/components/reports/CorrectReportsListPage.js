@@ -1,6 +1,6 @@
 import styles from "./ReportsListPage.module.scss";
 
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
 import * as reportsActions from './logic/reportsActions';
@@ -30,15 +30,12 @@ const CorrectReportsListPageComponent = (props) => {
     props.openReportsList(props.projectId);
   });
 
-  if (!props.data || !props.filters || !props.sorting) {
-    return null;
-  }
-
   const handleRefresh = () =>
     props.getList(props.projectId, 1);
 
-  const handleFiltersChange = (filters) =>
-    props.getList(props.projectId, 1, filters, props.sorting);
+  //useCallback important to avoid infinite loop from useEffect in ReportFilters
+  const handleFiltersChange = useCallback((filters) =>
+    props.getList(props.projectId, 1, filters, props.sorting), [props.getList, props.projectId, props.sorting]);
 
   const handlePageChange = (page) =>
     props.getList(props.projectId, page, props.filters, props.sorting);
@@ -60,6 +57,10 @@ const CorrectReportsListPageComponent = (props) => {
   function exportToExcel() {
     props.trackReportExport(Page, "Excel", props.projectId);
     props.exportToExcel(props.projectId, props.filters, props.sorting);
+  }
+
+  if (!props.data || !props.filters || !props.sorting) {
+    return null;
   }
 
   return (

@@ -341,7 +341,10 @@ export const initialState = {
     notificationPhoneNumbers: [],
     notificationEmails: [],
     filters: null,
-    filtersData: null,
+    filtersData: {
+      healthRisks: null,
+      locations: null,
+    },
     isLoadingValidateEidsr: false,
   },
   alertEvents: {
