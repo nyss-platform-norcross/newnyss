@@ -1,10 +1,20 @@
 import styles from "./ProjectsOverviewHealthRiskItem.module.scss";
 import React, { Fragment } from 'react';
 import { stringKeys, strings } from '../../strings';
-import { Card, CardContent, Grid, Typography } from "@material-ui/core";
+import { Card, CardContent, Grid, Typography, makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles({
+  cardBodyText: {
+    fontSize: 16,
+  },
+  cardInfoText: {
+    color: "#a0a0a0",
+  }
+});
 
 export const ProjectsOverviewHealthRiskItem = ({ projectHealthRisk, rtl }) => {
 
+  const classes = useStyles();
   return (
     <Card>
       <CardContent className={styles.healthRisk}>
@@ -15,7 +25,7 @@ export const ProjectsOverviewHealthRiskItem = ({ projectHealthRisk, rtl }) => {
             <Typography variant={"h5"}>
               {strings(stringKeys.project.form.caseDefinition)}
             </Typography>
-            <Typography variant={"body1"} style={{fontSize: 16}} gutterBottom>
+            <Typography variant={"body1"} className={classes.cardBodyText} gutterBottom>
               {projectHealthRisk.caseDefinition}
             </Typography>
           </Grid>
@@ -24,7 +34,7 @@ export const ProjectsOverviewHealthRiskItem = ({ projectHealthRisk, rtl }) => {
             <Typography variant={"h5"}>
               {strings(stringKeys.project.form.feedbackMessage)}
             </Typography>
-            <Typography variant={"body1"} style={{fontSize: 16}} gutterBottom>
+            <Typography variant={"body1"} className={classes.cardBodyText} gutterBottom>
               {projectHealthRisk.feedbackMessage}
             </Typography>
           </Grid>
@@ -32,8 +42,8 @@ export const ProjectsOverviewHealthRiskItem = ({ projectHealthRisk, rtl }) => {
         <Typography variant={"h5"}>{strings(stringKeys.project.form.alertsSection)}</Typography>
 
         {(projectHealthRisk.healthRiskCode === 98 || projectHealthRisk.healthRiskCode === 99) && (
-          <Typography variant="body1"
-                      style={{ color: "#a0a0a0" }}>{strings(stringKeys.healthRisk.form.noAlertRule)}
+          <Typography variant="body1" className={`${classes.cardBodyText} ${classes.cardInfoText}`}>
+            {strings(stringKeys.healthRisk.form.noAlertRule)}
           </Typography>
         )}
 
@@ -41,7 +51,9 @@ export const ProjectsOverviewHealthRiskItem = ({ projectHealthRisk, rtl }) => {
           <Fragment>
 
             {projectHealthRisk.alertRuleCountThreshold === 0 && (
-              <Typography variant="body1" style={{ color: "#a0a0a0" }}>{strings(stringKeys.common.boolean.false)}</Typography>
+              <Typography variant="body1" className={`${classes.cardBodyText} ${classes.cardInfoText}`}>
+                {strings(stringKeys.common.boolean.false)}
+              </Typography>
             )}
 
             {projectHealthRisk.alertRuleCountThreshold > 0 && (
@@ -49,7 +61,7 @@ export const ProjectsOverviewHealthRiskItem = ({ projectHealthRisk, rtl }) => {
                 <Grid container spacing={2}>
                   <Grid item xs={4}>
                     <Grid container>
-                      <Typography style={{fontSize: 16}}>
+                      <Typography className={classes.cardBodyText}>
                         {strings(stringKeys.project.form.alertRuleCountThreshold)}:
                       </Typography>
                       <Typography className={styles.alertRuleData} gutterBottom>
@@ -62,7 +74,7 @@ export const ProjectsOverviewHealthRiskItem = ({ projectHealthRisk, rtl }) => {
                     <Fragment>
                       <Grid item xs={4}>
                         <Grid container>
-                          <Typography style={{fontSize: 16}}>
+                          <Typography className={classes.cardBodyText}>
                             {strings(stringKeys.project.form.alertRuleDaysThreshold)}:
                           </Typography>
                           <Typography className={styles.alertRuleData} gutterBottom>
@@ -73,7 +85,7 @@ export const ProjectsOverviewHealthRiskItem = ({ projectHealthRisk, rtl }) => {
 
                       <Grid item xs={4}>
                         <Grid container>
-                          <Typography style={{fontSize: 16}}>
+                          <Typography className={classes.cardBodyText}>
                             {strings(stringKeys.project.form.alertRuleKilometersThreshold)}:
                           </Typography>
                           <Typography className={styles.alertRuleData} gutterBottom>
