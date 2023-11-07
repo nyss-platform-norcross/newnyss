@@ -79,6 +79,9 @@ export const ProjectsOverviewHealthRiskItem = ({ projectHealthRisk, rtl }) => {
                           <Typography className={styles.alertRuleData} gutterBottom>
                             {projectHealthRisk.alertRuleKilometersThreshold}
                           </Typography>
+                          <Typography className={styles.alertRuleData} gutterBottom>
+                            {strings(stringKeys.project.form.alertRuleKilometer)}
+                          </Typography>
                         </Grid>
                       </Grid>
                     </Fragment>

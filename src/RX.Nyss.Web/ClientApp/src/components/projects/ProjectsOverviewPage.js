@@ -9,7 +9,7 @@ import Layout from '../layout/Layout';
 import * as projectsActions from './logic/projectsActions';
 import { accessMap } from '../../authentication/accessMap';
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
-import { Chip, Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { Coordinator, Administrator } from "../../authentication/roles";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
 import EditIcon from '@material-ui/icons/Edit';
