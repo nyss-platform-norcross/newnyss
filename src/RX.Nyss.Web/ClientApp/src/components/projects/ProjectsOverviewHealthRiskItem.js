@@ -48,32 +48,38 @@ export const ProjectsOverviewHealthRiskItem = ({ projectHealthRisk, rtl }) => {
               <Fragment>
                 <Grid container spacing={2}>
                   <Grid item xs={4}>
-                    <Typography variant="h6">
-                      {strings(stringKeys.project.form.alertRuleCountThreshold)}
-                    </Typography>
-                    <Typography variant="body1" gutterBottom>
-                      {projectHealthRisk.alertRuleCountThreshold}
-                    </Typography>
+                    <Grid container>
+                      <Typography style={{fontSize: 16}}>
+                        {strings(stringKeys.project.form.alertRuleCountThreshold)}:
+                      </Typography>
+                      <Typography className={styles.alertRuleData} gutterBottom>
+                        {projectHealthRisk.alertRuleCountThreshold}
+                      </Typography>
+                    </Grid>
                   </Grid>
 
                   {projectHealthRisk.alertRuleCountThreshold > 1 && (
                     <Fragment>
                       <Grid item xs={4}>
-                        <Typography variant="h6">
-                          {strings(stringKeys.project.form.alertRuleDaysThreshold)}
-                        </Typography>
-                        <Typography variant="body1" gutterBottom>
-                          {projectHealthRisk.alertRuleDaysThreshold}
-                        </Typography>
+                        <Grid container>
+                          <Typography style={{fontSize: 16}}>
+                            {strings(stringKeys.project.form.alertRuleDaysThreshold)}:
+                          </Typography>
+                          <Typography className={styles.alertRuleData} gutterBottom>
+                            {projectHealthRisk.alertRuleDaysThreshold}
+                          </Typography>
+                        </Grid>
                       </Grid>
 
                       <Grid item xs={4}>
-                        <Typography variant="h6">
-                          {strings(stringKeys.project.form.alertRuleKilometersThreshold)}
-                        </Typography>
-                        <Typography variant="body1" gutterBottom>
-                          {projectHealthRisk.alertRuleKilometersThreshold}
-                        </Typography>
+                        <Grid container>
+                          <Typography style={{fontSize: 16}}>
+                            {strings(stringKeys.project.form.alertRuleKilometersThreshold)}:
+                          </Typography>
+                          <Typography className={styles.alertRuleData} gutterBottom>
+                            {projectHealthRisk.alertRuleKilometersThreshold}
+                          </Typography>
+                        </Grid>
                       </Grid>
                     </Fragment>
                   )}
