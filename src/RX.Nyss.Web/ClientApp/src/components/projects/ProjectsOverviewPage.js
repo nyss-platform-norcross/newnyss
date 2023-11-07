@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { stringKeys, strings } from '../../strings';
 import { withLayout } from '../../utils/layout';
 import { useMount } from '../../utils/lifecycle';
@@ -9,17 +9,24 @@ import Layout from '../layout/Layout';
 import * as projectsActions from './logic/projectsActions';
 import { accessMap } from '../../authentication/accessMap';
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, makeStyles } from "@material-ui/core";
 import { Coordinator, Administrator } from "../../authentication/roles";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
 import EditIcon from '@material-ui/icons/Edit';
 
+const useStyles = makeStyles({
+  bodyText: {
+    fontSize: 16,
+  },
+});
+
+
 const ProjectsOverviewPageComponent = (props) => {
+  const classes = useStyles();
+
   useMount(() => {
     props.openOverview(props.nationalSocietyId, props.projectId);
   });
-
-  const useRtlDirection = useSelector(state => state.appData.user.languageCode === 'ar');
 
   if (props.isFetching || !props.data) {
     return <Loading />;
@@ -44,17 +51,17 @@ const ProjectsOverviewPageComponent = (props) => {
               )}
             </FormActions>
           )}
-          <Typography variant="h6">
+          <Typography variant="h5">
             {strings(stringKeys.project.form.name)}
           </Typography>
-          <Typography variant="body1" gutterBottom>
+          <Typography variant="body1" className={classes.bodyText} gutterBottom>
             {props.data.name}
           </Typography>
 
-          <Typography variant="h6">
+          <Typography variant="h5">
             {strings(stringKeys.project.form.allowMultipleOrganizations)}
           </Typography>
-          <Typography variant="body1" gutterBottom>
+          <Typography variant="body1" className={classes.bodyText} gutterBottom>
             {strings(stringKeys.common.boolean[String(props.data.allowMultipleOrganizations)])}
           </Typography>
         </Grid>
