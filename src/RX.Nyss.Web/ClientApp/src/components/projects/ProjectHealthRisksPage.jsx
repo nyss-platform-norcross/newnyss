@@ -39,15 +39,13 @@ const ProjectHealthRisksPageComponent = (props) => {
                   onClick={() => props.openHealthRisksEdition(props.nationalSocietyId, props.projectId)}
                   roles={accessMap.projects.edit}
                   variant={"contained"}
+                  style={{marginBottom: 16}}
                 >
                   {strings(stringKeys.common.buttons.edit)}
                 </TableActionsButton>
               )}
             </FormActions>
           )}
-          <Typography variant="h6">
-            {strings(stringKeys.project.form.healthRisks)}
-          </Typography>
 
           {props.data.projectHealthRisks.map(hr =>
             <Chip key={`projectsHealthRiskItemIcon_${hr.healthRiskId}`} label={hr.healthRiskName} className={styles.chip} />
