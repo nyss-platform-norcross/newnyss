@@ -49,7 +49,7 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
         /// <returns>A list of all alert not handled recipients</returns>
         [HttpGet("list")]
         [NeedsRole(Role.Administrator, Role.Manager, Role.TechnicalAdvisor), NeedsPolicy(Policy.ProjectAccess)]
-        public async Task<Result<List<ProjectAlertNotHandledRecipientResponseDto>>> List(int projectId) =>
+        public async Task<Result<List<ProjectAlertNotHandledRecipientsResponseDto>>> List(int projectId) =>
             await _projectAlertNotHandledRecipientService.List(projectId);
 
         /// <summary>

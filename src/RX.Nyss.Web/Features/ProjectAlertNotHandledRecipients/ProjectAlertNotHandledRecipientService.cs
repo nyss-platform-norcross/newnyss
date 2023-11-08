@@ -17,7 +17,7 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
     {
         Task<Result> Create(int projectId, ProjectAlertNotHandledRecipientRequestDto dto);
         Task<Result> Edit(int projectId, ProjectAlertNotHandledRecipientRequestDto dto);
-        Task<Result<List<ProjectAlertNotHandledRecipientResponseDto>>> List(int projectId);
+        Task<Result<List<ProjectAlertNotHandledRecipientsResponseDto>>> List(int projectId);
         Task<Result<List<ProjectAlertNotHandledRecipientResponseDto>>> GetFormData(int projectId);
     }
 
@@ -48,6 +48,17 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
                 UserId = dto.UserId,
                 OrganizationId = dto.OrganizationId
             };
+
+            var projectOrganizationExists = await _nyssContext.ProjectOrganizations.AnyAsync(po => po.ProjectId == projectId && po.OrganizationId == dto.OrganizationId);
+            if (!projectOrganizationExists)
+            {
+                var projectOrganizationToAdd = new ProjectOrganization
+                {
+                    OrganizationId = dto.OrganizationId,
+                    ProjectId = projectId
+                };
+                await _nyssContext.ProjectOrganizations.AddAsync(projectOrganizationToAdd);
+            }
 
             await _nyssContext.AlertNotHandledNotificationRecipients.AddAsync(alertNotHandledNotificationRecipient);
             await _nyssContext.SaveChangesAsync();
@@ -81,7 +92,7 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
             return SuccessMessage(ResultKey.AlertNotHandledNotificationRecipient.EditSuccess);
         }
 
-        public async Task<Result<List<ProjectAlertNotHandledRecipientResponseDto>>> List(int projectId)
+        public async Task<Result<List<ProjectAlertNotHandledRecipientsResponseDto>>> List(int projectId)
         {
             var currentUser = await _authorizationService.GetCurrentUser();
             var currentUserOrganizationId = await _nyssContext.UserNationalSocieties
@@ -94,19 +105,20 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
                 .Select(po => new
                 {
                     Organization = po.Organization,
-                    AlertNotHandledRecipient = po.Project.AlertNotHandledNotificationRecipients
+                    AlertNotHandledRecipients = po.Project.AlertNotHandledNotificationRecipients
                         .Where(ar => _nyssContext.UserNationalSocieties
                             .Any(uns => uns.UserId == ar.UserId && uns.OrganizationId == po.OrganizationId))
                         .Select(ar => ar.User)
-                        .FirstOrDefault()
                 }).ToListAsync();
 
-            var alertNotHandledRecipients = alertNotHandledRecipientsForOrganization.Select(x => new ProjectAlertNotHandledRecipientResponseDto
+            var alertNotHandledRecipients = alertNotHandledRecipientsForOrganization.Select(org => new ProjectAlertNotHandledRecipientsResponseDto
             {
-                OrganizationId = x.Organization.Id,
-                OrganizationName = x.Organization.Name,
-                UserId = x.AlertNotHandledRecipient?.Id,
-                Name = x.AlertNotHandledRecipient?.Name
+                OrganizationId = org.Organization.Id,
+                OrganizationName = org.Organization.Name,
+                Users = org.AlertNotHandledRecipients.Select(rec => new RecipientDto {
+                    Name = rec.Name,
+                    UserId = rec.Id
+                }).ToList()
             }).ToList();
 
             return Success(alertNotHandledRecipients);
