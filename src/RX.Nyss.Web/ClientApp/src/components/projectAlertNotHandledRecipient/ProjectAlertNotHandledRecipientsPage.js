@@ -37,13 +37,21 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
   const [newRecipient, setNewRecipient] = useState(null)
 
 
-  // const onEdit = () => {
-  //   edit(projectId, {
-  //     userId: unhandledRecipients[0].userId,
-  //     organizationId: unhandledRecipients[0].organizationId,
-  //   });
-  //   setIsEditing(false)
-  // }
+  const onEdit = () => {
+    edit(projectId, {
+      userId: unhandledRecipients[0].userId,
+      organizationId: unhandledRecipients[0].organizationId,
+    });
+    setIsEditing(false)
+  }
+
+  const cancel = () => {
+    const recipients = organizations?.map(org => org.users.map(user => ({...user, organizationName: org.organizationName, organizationId: org.organizationId}))).flat(1)
+    setUnhandledRecipients(recipients)
+    setIsEditing(false)
+    setIsCreating(false)
+
+  }
 
   const onCreate = () => {
     create(projectId, {
@@ -60,7 +68,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
       <Typography variant="subtitle1" className={styles.description}>
         {strings(stringKeys.projectAlertNotHandledRecipient.description)}
       </Typography>
-      <Button color='primary' variant='contained' style={{ width: 120 }} onClick={() => setIsCreating(true)}>Add recipient</Button>
+      <Button color='primary' variant='contained' style={{ width: 120 }} disabled={isEditing} onClick={() => setIsCreating(true)}>Add recipient</Button>
       <Grid container>
         {unhandledRecipients?.map((r) => (
             <ProjectAlertNotHandledRecipientItem
@@ -73,6 +81,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
               getFormData={getFormData}
               rtl={useRtlDirection}
               setIsEditing={setIsEditing}
+              isCreating={isCreating}
               />
               ))}
         {isCreating && (
@@ -92,15 +101,12 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
       {(isCreating || isEditing)  && (
         <Grid container style={{ marginTop: 10 }}>
           <CancelButton
-            onClick={() => {
-              setIsEditing(false);
-              setIsCreating(false);
-            }}>
+            onClick={cancel}>
               {strings(stringKeys.form.cancel)}
             </CancelButton>
-          {/* {isEditing && (
+          {isEditing && (
             <SubmitButton onClick={onEdit} isFetching={isSaving}>{strings(stringKeys.form.confirm)}</SubmitButton>
-          )} */}
+          )}
           {isCreating && (
             <SubmitButton onClick={onCreate} isFetching={isSaving}>{strings(stringKeys.common.buttons.add)}</SubmitButton>
           )}

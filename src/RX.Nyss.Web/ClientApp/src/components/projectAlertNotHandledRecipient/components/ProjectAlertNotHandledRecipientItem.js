@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Select, MenuItem, Grid, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
-export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormData, projectId, rtl, unhandledRecipient, unhandledRecipients, setUnhandledRecipients, setIsEditing, setNewRecipient, organizationName }) => {
+export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormData, projectId, rtl, unhandledRecipient, unhandledRecipients, setUnhandledRecipients, setIsEditing, setNewRecipient, organizationName, isCreating }) => {
   const [user, setUser] = useState(unhandledRecipient)
   const users = useSelector(state => state.projectAlertNotHandledRecipients.users);
 
@@ -35,6 +35,7 @@ export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormDa
         className={`${styles.recipientNameSelect} ${rtl ? styles.rtl : ""}`}
         value={user?.userId}
         onChange={handleRecipientChange}
+        disabled={isCreating}
       >
         {userList.map(u => (
           <MenuItem key={`recipient_user_${u.userId}`} value={u.userId}>
