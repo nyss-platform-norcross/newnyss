@@ -107,7 +107,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
           {isEditing && (
             <SubmitButton onClick={onEdit} isFetching={isSaving}>{strings(stringKeys.form.confirm)}</SubmitButton>
           )}
-          {isCreating && (
+          {isCreating && newRecipient && (
             <SubmitButton onClick={onCreate} isFetching={isSaving}>{strings(stringKeys.common.buttons.add)}</SubmitButton>
           )}
         </Grid>
