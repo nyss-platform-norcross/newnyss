@@ -17,7 +17,7 @@ import TablePager from '../../common/tablePagination/TablePager';
 
 export const DataCollectorsTable = ({ isListFetching, listSelectedAll, isRemoving, goToEdition, remove, list, page, rowsPerPage, totalRows, projectId,
   setTrainingState, isUpdatingDataCollector, selectDataCollector, selectAllDataCollectors, replaceSupervisor, onChangePage, setDeployedState, rtl }) => {
-  
+
   const [isSelected, setIsSelected] = useState(false);
   useEffect(() => setIsSelected(list.some(i => i.isSelected)), [list]);
 

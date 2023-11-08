@@ -39,5 +39,13 @@ namespace RX.Nyss.ReportApi.Features.Reports
                 ? (StatusCodeResult)new OkResult()
                 : new BadRequestResult();
 
+        // Report comes from Telerivet and is forwarded to Nyss
+        [HttpPost]
+        [Route("telerivetReport")]
+        public async Task<IActionResult> ReceiveTelerivetReport([FromBody] TelerivetReport t) =>
+            await _reportService.ReceiveTelerivetReport(t)
+                ? (StatusCodeResult)new OkResult()
+                : new BadRequestResult();
+
     }
 }

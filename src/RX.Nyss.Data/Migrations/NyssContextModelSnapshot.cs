@@ -2313,6 +2313,12 @@ namespace RX.Nyss.Data.Migrations
                     b.Property<int>("NationalSocietyId")
                         .HasColumnType("int");
 
+                    b.Property<string>("TelerivetProjectId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelerivetSendSmsApiKey")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApiKey")

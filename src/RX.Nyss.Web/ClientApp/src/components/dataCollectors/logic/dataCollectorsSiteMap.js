@@ -16,7 +16,7 @@ export const dataCollectorsSiteMap = [
     parentPath: "/projects/:projectId/datacollectors",
     path: "/projects/:projectId/datacollectors/list",
     title: () => strings(stringKeys.dataCollectors.list.title),
-    placeholder: placeholders.tabMenu,
+    placeholder: placeholders.projectSubMenu,
     access: accessMap.dataCollectors.list,
     placeholderIndex: 1,
     middleStepOnly: true
@@ -37,7 +37,7 @@ export const dataCollectorsSiteMap = [
     parentPath: "/projects/:projectId/datacollectors",
     path: "/projects/:projectId/datacollectors/mapoverview",
     title: () => strings(stringKeys.dataCollectors.mapOverview.title),
-    placeholder: placeholders.tabMenu,
+    placeholder: placeholders.projectSubMenu,
     access: accessMap.dataCollectors.list,
     placeholderIndex: 2,
     middleStepOnly: true
@@ -46,7 +46,7 @@ export const dataCollectorsSiteMap = [
     parentPath: "/projects/:projectId/datacollectors",
     path: "/projects/:projectId/datacollectors/performance",
     title: () => strings(stringKeys.dataCollectors.performanceList.title),
-    placeholder: placeholders.tabMenu,
+    placeholder: placeholders.projectSubMenu,
     access: accessMap.dataCollectors.performanceList,
     placeholderIndex: 3,
     middleStepOnly: true

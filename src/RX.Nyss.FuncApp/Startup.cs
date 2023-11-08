@@ -52,6 +52,7 @@ public static class FunctionHostBuilderExtensions
         builder.Services.AddScoped<IEmailAttachmentService, EmailAttachmentService>();
         builder.Services.AddScoped<IDeadLetterSmsService, DeadLetterSmsService>();
         builder.Services.AddScoped<IReportPublisherService, ReportPublisherService>();
+        builder.Services.AddScoped<ITelerivetReportPublisherService, TelerivetReportPublisherService>();
 
         //https://docs.microsoft.com/en-us/azure/azure-functions/functions-app-settings#azure_functions_environment
         builder.Services.AddScoped(typeof(IEmailClient), newConfiguration["AZURE_FUNCTIONS_ENVIRONMENT"] == "Development"
