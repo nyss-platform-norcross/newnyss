@@ -34,7 +34,10 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [unhandledRecipients, setUnhandledRecipients] = useState(null)
-  const [newRecipient, setNewRecipient] = useState(null)
+  const [newRecipient, setNewRecipient] = useState({
+    userId: '',
+    name: ''
+  })
 
 
   const onEdit = () => {
@@ -90,6 +93,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
             isAdministrator={isAdministrator}
             projectId={projectId}
             getFormData={getFormData}
+            unhandledRecipient={newRecipient}
             unhandledRecipients={unhandledRecipients}
             setUnhandledRecipients={setUnhandledRecipients}
             rtl={useRtlDirection}
