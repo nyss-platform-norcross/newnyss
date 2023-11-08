@@ -76,6 +76,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
         {unhandledRecipients?.map((r) => (
             <ProjectAlertNotHandledRecipientItem
               key={`alertNotHandledRecipient_${r.userId}`}
+              originalRecipients={organizations?.map(org => org.users.map(user => ({...user, organizationName: org.organizationName, organizationId: org.organizationId}))).flat(1)}
               unhandledRecipient={r}
               unhandledRecipients={unhandledRecipients}
               setUnhandledRecipients={setUnhandledRecipients}

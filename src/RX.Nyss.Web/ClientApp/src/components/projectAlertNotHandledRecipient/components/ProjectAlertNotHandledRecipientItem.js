@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Select, MenuItem, Grid, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
-export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormData, projectId, rtl, unhandledRecipient, unhandledRecipients, setUnhandledRecipients, setIsEditing, setNewRecipient, organizationName, isCreating }) => {
+export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormData, projectId, rtl, unhandledRecipient, unhandledRecipients, setUnhandledRecipients, setIsEditing, setNewRecipient, originalRecipients, isCreating }) => {
   const [user, setUser] = useState(unhandledRecipient)
   const users = useSelector(state => state.projectAlertNotHandledRecipients.users);
 
@@ -20,7 +20,7 @@ export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormDa
       setUser(user)
       const newRecipientList = [...unhandledRecipients.filter(rec => rec.userId !== unhandledRecipient.userId), user]
       setUnhandledRecipients(newRecipientList)
-      setIsEditing(unhandledRecipient.userId !== change.target.value)
+      setIsEditing(originalRecipients.every(rec => rec.userId !== change.target.value))
     }
   }
 
