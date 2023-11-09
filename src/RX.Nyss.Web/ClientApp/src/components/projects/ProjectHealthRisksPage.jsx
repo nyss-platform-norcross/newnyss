@@ -17,7 +17,7 @@ import EditIcon from '@material-ui/icons/Edit';
 
 const ProjectHealthRisksPageComponent = (props) => {
   useMount(() => {
-    props.openOverview(props.nationalSocietyId, props.projectId);
+    props.openHealthRisksOverview(props.nationalSocietyId, props.projectId);
   });
 
   const useRtlDirection = useSelector(state => state.appData.user.languageCode === 'ar');
@@ -77,8 +77,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = {
-  openOverview: projectsActions.openOverview.invoke,
-  openEdition: projectsActions.goToEdition,
+  openHealthRisksOverview: projectsActions.openHealthRisksOverview.invoke,
   goToList: projectsActions.goToList,
   openHealthRisksEdition: projectsActions.goToHealthRisksEdition
 };

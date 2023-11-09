@@ -25,7 +25,7 @@ const ProjectHealthRisksEditPageComponent = (props) => {
 
 
   useMount(() => {
-    props.openEdition(props.nationalSocietyId, props.projectId);
+    props.openHealthRisksEdition(props.nationalSocietyId, props.projectId);
   })
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const ProjectHealthRisksEditPageComponent = (props) => {
       return;
     }
 
-    !preventSubmit && props.edit(props.nationalSocietyId, props.projectId, getSaveFormModel(form.getValues(), selectedHealthRisks));
+    !preventSubmit && props.editHealthRisk(props.nationalSocietyId, props.projectId, getSaveFormModel(null, selectedHealthRisks));
   };
 
   const onHealthRiskChange = (value, eventData) => {
@@ -153,8 +153,8 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = {
-  openEdition: projectsActions.openEdition.invoke,
-  edit: projectsActions.edit.invoke,
+  openHealthRisksEdition: projectsActions.openHealthRisksEdition.invoke,
+  editHealthRisk: projectsActions.editHealthRisks.invoke,
   goToHealthRisks: projectsActions.goToHealthRisks
 };
 

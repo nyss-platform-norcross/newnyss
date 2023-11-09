@@ -57,8 +57,8 @@ const ProjectsEditPageComponent = (props) => {
       Object.values(form.fields).filter(e => e.error)[0].scrollTo();
       return;
     }
-    
-    props.edit(props.nationalSocietyId, props.projectId, getSaveFormModel(form.getValues(), props.data.projectHealthRisks));
+
+    props.edit(props.nationalSocietyId, props.projectId, getSaveFormModel(form.getValues()));
   };
 
   useCustomErrors(form, props.error);
