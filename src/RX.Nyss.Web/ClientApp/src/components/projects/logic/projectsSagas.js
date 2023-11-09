@@ -12,11 +12,13 @@ export const projectsSagas = () => [
   takeEvery(consts.OPEN_PROJECT_CREATION.INVOKE, openProjectCreation),
   takeEvery(consts.OPEN_PROJECT_EDITION.INVOKE, openProjectEdition),
   takeEvery(consts.OPEN_PROJECT_OVERVIEW.INVOKE, openProjectOverview),
+  takeEvery(consts.OPEN_PROJECT_HEALTH_RISKS_OVERVIEW.INVOKE, openProjectHealthRisksOverview),
   takeEvery(consts.CREATE_PROJECT.INVOKE, createProject),
   takeEvery(consts.EDIT_PROJECT.INVOKE, editProject),
+  takeEvery(consts.EDIT_PROJECT_HEALTH_RISKS.INVOKE, editProjectHealthRisks),
   takeEvery(consts.CLOSE_PROJECT.INVOKE, closeProject),
   takeEvery(consts.OPEN_ERROR_MESSAGES, openErrorMessages),
-  takeEvery(consts.OPEN_PROJECT_HEALTHRISKS_EDITION.INVOKE, editProject),
+  takeEvery(consts.OPEN_PROJECT_HEALTHRISKS_EDITION.INVOKE, openProjectHealthRisksEdition),
 ];
 
 function* openProjectsList({ nationalSocietyId }) {
@@ -56,6 +58,17 @@ function* openProjectEdition({ nationalSocietyId, projectId }) {
   }
 };
 
+function* openProjectHealthRisksEdition({ nationalSocietyId, projectId }) {
+  yield put(actions.openHealthRisksEdition.request());
+  try {
+    const response = yield call(http.get, `/api/project/${projectId}/get`);
+    yield call(openProjectDashboardModule, projectId);
+    yield put(actions.openHealthRisksEdition.success(response.value, response.value.formData.healthRisks, response.value.formData.timeZones));
+  } catch (error) {
+    yield put(actions.openHealthRisksEdition.failure(error.message));
+  }
+};
+
 function* openProjectOverview({ projectId }) {
   yield put(actions.openOverview.request());
   try {
@@ -64,6 +77,17 @@ function* openProjectOverview({ projectId }) {
     yield put(actions.openOverview.success(response.value, response.value.formData.healthRisks, response.value.formData.timeZones));
   } catch (error) {
     yield put(actions.openOverview.failure(error.message));
+  }
+};
+
+function* openProjectHealthRisksOverview({ projectId }) {
+  yield put(actions.openHealthRisksOverview.request());
+  try {
+    const response = yield call(http.get, `/api/project/${projectId}/get`);
+    yield call(openProjectDashboardModule, projectId);
+    yield put(actions.openHealthRisksOverview.success(response.value, response.value.formData.healthRisks, response.value.formData.timeZones));
+  } catch (error) {
+    yield put(actions.openHealthRisksOverview.failure(error.message));
   }
 };
 
@@ -89,6 +113,19 @@ function* editProject({ nationalSocietyId, projectId, data }) {
     yield put(appActions.showMessage(stringKeys.project.messages.edit.success));
   } catch (error) {
     yield put(actions.edit.failure(error));
+  }
+};
+
+function* editProjectHealthRisks({ nationalSocietyId, projectId, healthRisks }) {
+  yield put(actions.editHealthRisks.request());
+  try {
+    const response = yield call(http.post, `/api/project/${projectId}/editProjectHealthRisks`, healthRisks);
+    yield put(actions.editHealthRisks.success(response.value));
+    yield put(appActions.entityUpdated(entityTypes.project(projectId)));
+    yield put(actions.goToHealthRisks(nationalSocietyId, projectId));
+    yield put(appActions.showMessage(stringKeys.project.messages.edit.success));
+  } catch (error) {
+    yield put(actions.editHealthRisks.failure(error));
   }
 };
 
