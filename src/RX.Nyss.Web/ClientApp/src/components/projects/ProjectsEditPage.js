@@ -110,7 +110,6 @@ ProjectsEditPageComponent.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  healthRisks: state.projects.formHealthRisks,
   projectId: ownProps.match.params.projectId,
   nationalSocietyId: ownProps.match.params.nationalSocietyId,
   isFetching: state.projects.formFetching,
