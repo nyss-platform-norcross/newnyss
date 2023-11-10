@@ -39,7 +39,7 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
         /// <returns></returns>
         [HttpPost("edit")]
         [NeedsRole(Role.Administrator, Role.Manager, Role.TechnicalAdvisor), NeedsPolicy(Policy.ProjectAccess)]
-        public async Task<Result> Edit(int projectId, [FromBody]ProjectAlertNotHandledRecipientRequestDto dto) =>
+        public async Task<Result> Edit(int projectId, [FromBody]ProjectAlertNotHandledRecipientsRequestDto dto) =>
             await _projectAlertNotHandledRecipientService.Edit(projectId, dto);
 
         /// <summary>

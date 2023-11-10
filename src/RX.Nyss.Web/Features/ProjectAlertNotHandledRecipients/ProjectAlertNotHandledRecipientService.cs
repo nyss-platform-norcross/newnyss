@@ -16,7 +16,7 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
     public interface IProjectAlertNotHandledRecipientService
     {
         Task<Result> Create(int projectId, ProjectAlertNotHandledRecipientRequestDto dto);
-        Task<Result> Edit(int projectId, ProjectAlertNotHandledRecipientRequestDto dto);
+        Task<Result> Edit(int projectId, ProjectAlertNotHandledRecipientsRequestDto dtoList);
         Task<Result<List<ProjectAlertNotHandledRecipientsResponseDto>>> List(int projectId);
         Task<Result<List<ProjectAlertNotHandledRecipientResponseDto>>> GetFormData(int projectId);
     }
@@ -66,27 +66,45 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
             return SuccessMessage(ResultKey.AlertNotHandledNotificationRecipient.CreateSuccess);
         }
 
-        public async Task<Result> Edit(int projectId, ProjectAlertNotHandledRecipientRequestDto dto)
+        public async Task<Result> Edit(int projectId, ProjectAlertNotHandledRecipientsRequestDto dtoList)
         {
-            var currentAlertNotHandledRecipient = await _nyssContext.AlertNotHandledNotificationRecipients
-                .Where(a => a.ProjectId == projectId
-                    && _nyssContext.UserNationalSocieties.Any(uns => uns.UserId == a.UserId && uns.OrganizationId == dto.OrganizationId))
-                .SingleOrDefaultAsync();
 
-            if (currentAlertNotHandledRecipient == null)
+            // Remove all replaced recipients
+            var allAlertNotHandledRecipients = await _nyssContext.AlertNotHandledNotificationRecipients
+                .Where(a => a.ProjectId == projectId).ToListAsync();
+
+            var removedRecipients = allAlertNotHandledRecipients.Where(recipient => dtoList.Recipients.All(dto => dto.UserId != recipient.UserId)).ToList();
+            removedRecipients.ForEach(removedRecipient => _nyssContext.AlertNotHandledNotificationRecipients.Remove(removedRecipient));
+            await _nyssContext.SaveChangesAsync();
+
+            var updatedRecipients= await _nyssContext.AlertNotHandledNotificationRecipients.Where(a => a.ProjectId == projectId).ToListAsync();
+            var newRecipients = dtoList.Recipients.ToList().Where(dto => updatedRecipients.All(recipient => recipient.UserId != dto.UserId)).ToList();
+
+            // Add all new recipients
+            newRecipients.ForEach(async dto =>
             {
-                return Error(ResultKey.AlertNotHandledNotificationRecipient.NotFound);
-            }
+                var alertNotHandledNotificationRecipient = new AlertNotHandledNotificationRecipient
+                {
+                    ProjectId = projectId,
+                    UserId = dto.UserId,
+                    OrganizationId = dto.OrganizationId
+                };
+                await _nyssContext.AlertNotHandledNotificationRecipients.AddAsync(alertNotHandledNotificationRecipient);
+            });
 
-            var alertNotHandledNotificationRecipient = new AlertNotHandledNotificationRecipient
+            // Add all new project organizations
+            var newProjectOrganizationIds = dtoList.Recipients.Select(recipient => recipient.OrganizationId)
+                .Where(organizationId => updatedRecipients.All(recipient => recipient.OrganizationId != organizationId)).Distinct().ToList();
+            newProjectOrganizationIds.ForEach(async projectOrganizationId =>
             {
-                ProjectId = projectId,
-                UserId = dto.UserId,
-                OrganizationId = dto.OrganizationId
-            };
+                var projectOrganizationToAdd = new ProjectOrganization
+                {
+                    OrganizationId = projectOrganizationId,
+                    ProjectId = projectId
+                };
+                await _nyssContext.ProjectOrganizations.AddAsync(projectOrganizationToAdd);
+            });
 
-            _nyssContext.AlertNotHandledNotificationRecipients.Remove(currentAlertNotHandledRecipient);
-            await _nyssContext.AlertNotHandledNotificationRecipients.AddAsync(alertNotHandledNotificationRecipient);
             await _nyssContext.SaveChangesAsync();
 
             return SuccessMessage(ResultKey.AlertNotHandledNotificationRecipient.EditSuccess);

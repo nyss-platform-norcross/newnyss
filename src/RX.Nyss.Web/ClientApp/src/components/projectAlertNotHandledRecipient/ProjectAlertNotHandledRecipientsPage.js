@@ -41,10 +41,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
 
 
   const onEdit = () => {
-    edit(projectId, {
-      userId: unhandledRecipients[0].userId,
-      organizationId: unhandledRecipients[0].organizationId,
-    });
+    edit(projectId, unhandledRecipients.map(recipient => ({ organizationId: recipient.organizationId, userId: recipient.userId })));
     setIsEditing(false)
   }
 

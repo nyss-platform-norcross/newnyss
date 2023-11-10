@@ -38,7 +38,7 @@ function* createAlertNotHandledRecipient({ projectId, data }) {
 function* editAlertNotHandledRecipient({ projectId, data }) {
   yield put(actions.edit.request());
   try {
-    const response = yield call(http.post, `/api/projectAlertNotHandledRecipient/edit?projectId=${projectId}`, data);
+    const response = yield call(http.post, `/api/projectAlertNotHandledRecipient/edit?projectId=${projectId}`, { recipients: data });
     yield put(actions.edit.success(response.value));
     yield put(appActions.showMessage(response.message.key));
     yield call(getProjectAlertNotHandledRecipients, projectId);
