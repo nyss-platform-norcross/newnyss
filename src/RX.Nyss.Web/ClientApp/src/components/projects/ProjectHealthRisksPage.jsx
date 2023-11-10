@@ -12,7 +12,6 @@ import { ProjectsOverviewHealthRiskItem } from "./ProjectsOverviewHealthRiskItem
 import { accessMap } from '../../authentication/accessMap';
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { Chip, Grid, Typography } from "@material-ui/core";
-import { Coordinator, Administrator } from "../../authentication/roles";
 import EditIcon from '@material-ui/icons/Edit';
 
 const ProjectHealthRisksPageComponent = (props) => {
@@ -33,7 +32,6 @@ const ProjectHealthRisksPageComponent = (props) => {
         <Grid item xs={12}>
           {!props.isClosed && (
             <FormActions>
-              {(!props.data.allowMultipleOrganizations || (props.data.hasCoordinator && props.callingUserRoles.some(r => r === Coordinator || r === Administrator))) && (
                 <TableActionsButton
                   startIcon={<EditIcon />}
                   onClick={() => props.openHealthRisksEdition(props.nationalSocietyId, props.projectId)}
@@ -43,7 +41,6 @@ const ProjectHealthRisksPageComponent = (props) => {
                 >
                   {strings(stringKeys.common.buttons.edit)}
                 </TableActionsButton>
-              )}
             </FormActions>
           )}
 

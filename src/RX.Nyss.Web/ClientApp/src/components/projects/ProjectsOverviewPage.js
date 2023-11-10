@@ -10,7 +10,6 @@ import * as projectsActions from './logic/projectsActions';
 import { accessMap } from '../../authentication/accessMap';
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { Grid, Typography, makeStyles } from "@material-ui/core";
-import { Coordinator, Administrator } from "../../authentication/roles";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -39,7 +38,6 @@ const ProjectsOverviewPageComponent = (props) => {
         <Grid item xs={12}>
           {!props.isClosed && (
             <FormActions>
-              {(!props.data.allowMultipleOrganizations || (props.data.hasCoordinator && props.callingUserRoles.some(r => r === Coordinator || r === Administrator))) && (
                 <TableActionsButton
                   startIcon={<EditIcon />}
                   onClick={() => props.openEdition(props.nationalSocietyId, props.projectId)}
@@ -48,7 +46,6 @@ const ProjectsOverviewPageComponent = (props) => {
                 >
                   {strings(stringKeys.common.buttons.edit)}
                 </TableActionsButton>
-              )}
             </FormActions>
           )}
           <Typography variant="h5">
