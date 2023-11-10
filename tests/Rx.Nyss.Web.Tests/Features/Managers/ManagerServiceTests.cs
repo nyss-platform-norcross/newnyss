@@ -13,8 +13,10 @@ using RX.Nyss.Data.Models;
 using RX.Nyss.Web.Features.Managers;
 using RX.Nyss.Web.Features.Managers.Dto;
 using RX.Nyss.Web.Features.Organizations;
+using RX.Nyss.Web.Features.Users;
 using RX.Nyss.Web.Services;
 using RX.Nyss.Web.Services.Authorization;
+using RX.Nyss.Web.Utils;
 using Shouldly;
 using Xunit;
 
@@ -36,6 +38,7 @@ namespace RX.Nyss.Web.Tests.Features.Managers
         private readonly IDeleteUserService _deleteUserService;
         private readonly IAuthorizationService _authorizationService;
         private readonly IOrganizationService _organizationService;
+        private readonly IUserService _userService;
 
 
         public ManagerServiceTests()
@@ -46,11 +49,12 @@ namespace RX.Nyss.Web.Tests.Features.Managers
             _verificationEmailServiceMock = Substitute.For<IVerificationEmailService>();
             _nationalSocietyUserService = Substitute.For<INationalSocietyUserService>();
             _deleteUserService = Substitute.For<IDeleteUserService>();
+            _userService = Substitute.For<IUserService>();
 
             _authorizationService = Substitute.For<IAuthorizationService>();
             _organizationService = Substitute.For<IOrganizationService>();
             _managerService = new ManagerService(_identityUserRegistrationServiceMock, _nationalSocietyUserService, _nyssContext, _loggerAdapter, _verificationEmailServiceMock, _deleteUserService,
-                _authorizationService, _organizationService);
+                _authorizationService, _organizationService, _userService);
 
             var nationalSocieties = new List<NationalSociety>
             {

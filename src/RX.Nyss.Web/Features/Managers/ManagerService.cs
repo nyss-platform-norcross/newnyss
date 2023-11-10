@@ -12,8 +12,10 @@ using RX.Nyss.Data.Models;
 using RX.Nyss.Data.Queries;
 using RX.Nyss.Web.Features.Managers.Dto;
 using RX.Nyss.Web.Features.Organizations;
+using RX.Nyss.Web.Features.Users;
 using RX.Nyss.Web.Services;
 using RX.Nyss.Web.Services.Authorization;
+using RX.Nyss.Web.Utils;
 using static RX.Nyss.Common.Utils.DataContract.Result;
 
 namespace RX.Nyss.Web.Features.Managers
@@ -38,9 +40,11 @@ namespace RX.Nyss.Web.Features.Managers
         private readonly IDeleteUserService _deleteUserService;
         private readonly IAuthorizationService _authorizationService;
         private readonly IOrganizationService _organizationService;
+        private readonly IUserService _userService;
 
         public ManagerService(IIdentityUserRegistrationService identityUserRegistrationService, INationalSocietyUserService nationalSocietyUserService, INyssContext nyssContext,
-            ILoggerAdapter loggerAdapter, IVerificationEmailService verificationEmailService, IDeleteUserService deleteUserService, IAuthorizationService authorizationService, IOrganizationService organizationService)
+            ILoggerAdapter loggerAdapter, IVerificationEmailService verificationEmailService, IDeleteUserService deleteUserService, IAuthorizationService authorizationService,
+            IOrganizationService organizationService, IUserService userService)
         {
             _identityUserRegistrationService = identityUserRegistrationService;
             _nationalSocietyUserService = nationalSocietyUserService;
@@ -50,6 +54,7 @@ namespace RX.Nyss.Web.Features.Managers
             _deleteUserService = deleteUserService;
             _authorizationService = authorizationService;
             _organizationService = organizationService;
+            _userService = userService;
         }
 
         public async Task<Result> Create(int nationalSocietyId, CreateManagerRequestDto createManagerRequestDto)
@@ -118,19 +123,12 @@ namespace RX.Nyss.Web.Features.Managers
                 }
 
                 var oldEmail = user.EmailAddress;
-                var emailChanged = editDto.Email != null && oldEmail != editDto.Email;
-                var emailExists = _nyssContext.Users.Any(usr => usr.EmailAddress == editDto.Email);
-                if (emailChanged && emailExists)
-                {
-                    throw new ResultException(ResultKey.User.Registration.EmailIsTaken);
-                }
+                await _userService.UpdateUserEmail(user, editDto.Email);
 
                 user.Name = editDto.Name;
-                user.EmailAddress = editDto.Email;
                 user.PhoneNumber = editDto.PhoneNumber;
                 user.Organization = editDto.Organization;
                 user.AdditionalPhoneNumber = editDto.AdditionalPhoneNumber;
-                user.IsFirstLogin = oldEmail != editDto.Email ? true : false;
                 var organization = await _nyssContext.Organizations.FindAsync(editDto.OrganizationId);
 
                 if (editDto.OrganizationId.HasValue)
