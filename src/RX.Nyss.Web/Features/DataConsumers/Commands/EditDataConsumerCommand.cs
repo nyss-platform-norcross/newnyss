@@ -7,7 +7,9 @@ using RX.Nyss.Common.Utils.DataContract;
 using RX.Nyss.Common.Utils.Logging;
 using RX.Nyss.Data;
 using RX.Nyss.Data.Models;
+using RX.Nyss.Web.Features.Users;
 using RX.Nyss.Web.Services;
+using RX.Nyss.Web.Utils;
 
 namespace RX.Nyss.Web.Features.DataConsumers.Commands
 {
@@ -48,18 +50,22 @@ namespace RX.Nyss.Web.Features.DataConsumers.Commands
 
             private readonly IVerificationEmailService _verificationEmailService;
 
+            private readonly IUserService _userService;
+
             public Handler(
                 IVerificationEmailService verificationEmailService,
                 IIdentityUserRegistrationService identityUserRegistrationService,
                 INyssContext dataContext,
                 INationalSocietyUserService nationalSocietyUserService,
-                ILoggerAdapter loggerAdapter)
+                ILoggerAdapter loggerAdapter,
+                IUserService userService)
             {
                 _verificationEmailService = verificationEmailService;
                 _identityUserRegistrationService = identityUserRegistrationService;
                 _dataContext = dataContext;
                 _nationalSocietyUserService = nationalSocietyUserService;
                 _loggerAdapter = loggerAdapter;
+                _userService = userService;
             }
 
             public async Task<Result> Handle(EditDataConsumerCommand request, CancellationToken cancellationToken)
@@ -74,16 +80,10 @@ namespace RX.Nyss.Web.Features.DataConsumers.Commands
                     }
 
                     var oldEmail = user.EmailAddress;
-                    var emailChanged = request.Body.Email != null && oldEmail != request.Body.Email;
-                    var emailExists = _dataContext.Users.Any(usr => usr.EmailAddress == request.Body.Email);
-                    if (emailChanged && emailExists)
-                    {
-                        throw new ResultException(ResultKey.User.Registration.EmailIsTaken);
-                    }
 
+                    await _userService.UpdateUserEmail(user, request.Body.Email);
 
                     user.Name = request.Body.Name;
-                    user.EmailAddress = request.Body.Email;
                     user.PhoneNumber = request.Body.PhoneNumber;
                     user.Organization = request.Body.Organization;
                     user.AdditionalPhoneNumber = request.Body.AdditionalPhoneNumber;
