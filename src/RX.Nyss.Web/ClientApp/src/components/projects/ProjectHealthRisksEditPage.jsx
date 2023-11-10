@@ -38,12 +38,7 @@ const ProjectHealthRisksEditPageComponent = (props) => {
     if (!props.data) {
       return;
     }
-
-    let fields = {
-      name: props.data.name,
-      allowMultipleOrganizations: props.data.allowMultipleOrganizations
-    };
-
+    
     let validation = {
       name: [validators.required, validators.minLength(1), validators.maxLength(100)]
     };
@@ -52,7 +47,7 @@ const ProjectHealthRisksEditPageComponent = (props) => {
       name: createRef()
     }
 
-    setForm(createForm(fields, validation, refs));
+    setForm(createForm(null, validation, refs));
     setSelectedHealthRisks(props.data.projectHealthRisks);
     return () => setForm(null);
   }, [props.data]);
