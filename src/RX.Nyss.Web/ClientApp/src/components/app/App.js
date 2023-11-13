@@ -155,9 +155,9 @@ export const App = ({ history }) => {
             <AuthRoute exact path='/projects/:projectId/organizations' component={ProjectOrganizationsListPage} roles={accessMap.projectOrganizations.list} />
             <AuthRoute exact path='/projects/:projectId/organizations/add' component={ProjectOrganizationsCreatePage} roles={accessMap.projectOrganizations.add} />
 
-            <AuthRoute exact path='/projects/:projectId/alertNotifications' component={ProjectAlertNotHandledRecipientsPage} roles={accessMap.projectAlertNotifications.list} />
-            <AuthRoute exact path='/projects/:projectId/alertNotifications/addRecipient' component={ProjectAlertRecipientsCreatePage} roles={accessMap.projectAlertNotifications.addRecipient} />
-            <AuthRoute exact path='/projects/:projectId/alertNotifications/:alertRecipientId/editRecipient' component={ProjectAlertRecipientsEditPage} roles={accessMap.projectAlertNotifications.editRecipient} />
+            <AuthRoute exact path='/projects/:projectId/unhandledAlertNotifications' component={ProjectAlertNotHandledRecipientsPage} roles={accessMap.projectAlertNotifications.list} />
+            <AuthRoute exact path='/projects/:projectId/escalatedAlertNotifications/addRecipient' component={ProjectAlertRecipientsCreatePage} roles={accessMap.projectAlertNotifications.addRecipient} />
+            <AuthRoute exact path='/projects/:projectId/escalatedAlertNotifications/:alertRecipientId/editRecipient' component={ProjectAlertRecipientsEditPage} roles={accessMap.projectAlertNotifications.editRecipient} />
             <AuthRoute exact path='/projects/:projectId/escalatedAlertNotifications' component={ProjectAlertRecipientsListPage} roles={accessMap.projectAlertNotifications.list} />
 
             <AuthRoute exact path='/projects/:projectId/errorMessages' component={ProjectErrorMessagesPage} roles={accessMap.projectErrorMessages.list} />
