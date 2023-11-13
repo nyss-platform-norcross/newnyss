@@ -76,7 +76,7 @@ export const projectsSiteMap = [
   {
     parentPath: "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
     path: "/nationalsocieties/:nationalSocietyId/projects/:projectId/editHealthRisks",
-    title: () => strings(stringKeys.project.form.editionTitle),
+    title: () => strings(stringKeys.project.form.healthRisksEditionTitle),
     access: accessMap.projects.edit,
   },
   {
