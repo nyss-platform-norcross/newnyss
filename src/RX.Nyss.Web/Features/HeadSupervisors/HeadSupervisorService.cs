@@ -13,6 +13,7 @@ using RX.Nyss.Data.Queries;
 using RX.Nyss.Web.Features.Organizations;
 using RX.Nyss.Web.Features.HeadSupervisors.Dto;
 using RX.Nyss.Web.Features.HeadSupervisors.Models;
+using RX.Nyss.Web.Features.Users;
 using RX.Nyss.Web.Services;
 using RX.Nyss.Web.Services.Authorization;
 using static RX.Nyss.Common.Utils.DataContract.Result;
@@ -37,9 +38,11 @@ namespace RX.Nyss.Web.Features.HeadSupervisors
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly IAuthorizationService _authorizationService;
         private readonly IOrganizationService _organizationService;
+        private readonly IUserService _userService;
 
         public HeadSupervisorService(IIdentityUserRegistrationService identityUserRegistrationService, INyssContext nyssContext, IOrganizationService organizationService,
-            ILoggerAdapter loggerAdapter, IVerificationEmailService verificationEmailService, IDeleteUserService deleteUserService, IDateTimeProvider dateTimeProvider, IAuthorizationService authorizationService)
+            ILoggerAdapter loggerAdapter, IVerificationEmailService verificationEmailService, IDeleteUserService deleteUserService, IDateTimeProvider dateTimeProvider,
+            IAuthorizationService authorizationService, IUserService userService)
         {
             _identityUserRegistrationService = identityUserRegistrationService;
             _nyssContext = nyssContext;
@@ -49,6 +52,7 @@ namespace RX.Nyss.Web.Features.HeadSupervisors
             _dateTimeProvider = dateTimeProvider;
             _authorizationService = authorizationService;
             _organizationService = organizationService;
+            _userService = userService;
         }
 
         public async Task<Result> Create(int nationalSocietyId, CreateHeadSupervisorRequestDto createHeadSupervisorRequestDto)
@@ -159,22 +163,12 @@ namespace RX.Nyss.Web.Features.HeadSupervisors
                 var headSupervisorUser = supervisorUserData.User;
                 var oldEmail = supervisorUserData.User.EmailAddress;
 
-                var emailChanged = editDto.Email != null && oldEmail != editDto.Email;
-                var emailExists = _nyssContext.Users.Any(usr => usr.EmailAddress == editDto.Email);
-                if (emailChanged && emailExists)
-                {
-                    throw new ResultException(ResultKey.User.Registration.EmailIsTaken);
-                }
-
-
-
+                await _userService.UpdateUserEmail(headSupervisorUser, editDto.Email);
                 headSupervisorUser.Name = editDto.Name;
-                headSupervisorUser.EmailAddress = editDto.Email;
                 headSupervisorUser.Sex = editDto.Sex;
                 headSupervisorUser.DecadeOfBirth = editDto.DecadeOfBirth;
                 headSupervisorUser.PhoneNumber = editDto.PhoneNumber;
                 headSupervisorUser.AdditionalPhoneNumber = editDto.AdditionalPhoneNumber;
-                headSupervisorUser.IsFirstLogin = oldEmail != editDto.Email ? true : false;
                 headSupervisorUser.Organization = editDto.Organization;
 
                 await UpdateHeadSupervisorProjectReferences(headSupervisorUser, supervisorUserData.CurrentProjectReference, editDto.ProjectId);
