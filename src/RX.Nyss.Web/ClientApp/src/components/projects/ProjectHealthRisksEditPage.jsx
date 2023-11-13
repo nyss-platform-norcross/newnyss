@@ -76,7 +76,7 @@ const ProjectHealthRisksEditPageComponent = (props) => {
     } else if ((eventData.action === "remove-value" || eventData.action === "pop-value") && eventData.removedValue.data.healthRiskType !== 'Activity') {
         setSelectedHealthRisks(selectedHealthRisks.filter(hr => hr.healthRiskId !== eventData.removedValue.value));
     } else if (eventData.action === "clear") {
-      setSelectedHealthRisks(props.data.healthRisks.filter(hr => hr.healthRiskType === 'Activity' ));
+      setSelectedHealthRisks(selectedHealthRisks.filter(hr => hr.healthRiskType === 'Activity' ));
     }
   }
 
