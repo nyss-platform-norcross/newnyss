@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import StepConnector from '@material-ui/core/StepConnector';
 import CheckIcon from '@material-ui/icons/Check';
+import { strings, stringKeys } from '../../../strings';
+
 
 const dummySteps = [
   {
@@ -170,16 +172,16 @@ export const SetupStepper = ({ steps = dummySteps, stepInputIsValid = true }) =>
                   onClick={handleBack}
                   className={classes.backButton}
                 >
-                Previous
+                  {strings(stringKeys.common.buttons.previous)}
                 </Button>
               )}
               <Button variant={stepInputIsValid ? "contained" : "outlined"} color="primary" onClick={activeStep === steps.length - 1 ? handleReset : handleNext}>
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                {activeStep === steps.length - 1 ? strings(stringKeys.common.buttons.finish) : strings(stringKeys.common.buttons.next)}
               </Button>
             </Grid>
             <Grid item style={{ marginTop: 10 }}>
               <Button color="primary" onClick={handleReset}>
-                Cancel
+                {strings(stringKeys.form.cancel)}
               </Button>
             </Grid>
           </Grid>
