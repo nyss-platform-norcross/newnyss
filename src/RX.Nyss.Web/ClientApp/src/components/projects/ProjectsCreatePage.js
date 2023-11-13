@@ -19,7 +19,6 @@ import { ValidationMessage } from '../forms/ValidationMessage';
 import CheckboxField from '../forms/CheckboxField';
 import * as roles from '../../authentication/roles';
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
-import { SetupStepper } from '../common/stepper/SetupStepper';
 
 
 const ProjectsCreatePageComponent = (props) => {
@@ -96,16 +95,12 @@ const ProjectsCreatePageComponent = (props) => {
     }
   }
 
-  const getSelectedHealthRiskValue = () =>
+  const getSelectedHealthRiskValue = () => 
     healthRiskDataSource.filter(hr => (selectedHealthRisks.some(shr => shr.healthRiskId === hr.value))).sort((a, b) => a.data.healthRiskType === 'Activity' ? -1 : 1);
 
   if (!props.data) {
     return null;
   }
-
-  return (
-    <SetupStepper/>
-  )
 
   return (
     <Fragment>
