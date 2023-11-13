@@ -92,6 +92,15 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
                 await _nyssContext.AlertNotHandledNotificationRecipients.AddAsync(alertNotHandledNotificationRecipient);
             });
 
+            // Remove project organizations which have been replaced
+            // Check if any recipients has the same organization of the removed recipient. If not, remove the project organization
+            var removedProjectOrganizationIds = removedRecipients.Select(recipient => recipient.OrganizationId).Where(organizationId =>
+                _nyssContext.AlertNotHandledNotificationRecipients.Where(a => a.ProjectId == projectId).Select(recipient => recipient.OrganizationId).All(recipientOrganization => recipientOrganization != organizationId)).ToList();
+            var projectOrganizations = await _nyssContext.ProjectOrganizations.ToListAsync();
+            var removedProjectOrganizations = projectOrganizations.Where(po => removedProjectOrganizationIds.Any(orgId => po.OrganizationId == orgId && po.ProjectId == projectId))
+                .ToList();
+            removedProjectOrganizations.ForEach(removedOrganization => _nyssContext.ProjectOrganizations.Remove(removedOrganization));
+
             // Add all new project organizations
             var newProjectOrganizationIds = dtoList.Recipients.Select(recipient => recipient.OrganizationId)
                 .Where(organizationId => updatedRecipients.All(recipient => recipient.OrganizationId != organizationId)).Distinct().ToList();
