@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
@@ -9,7 +8,6 @@ using RX.Nyss.Data;
 using RX.Nyss.Data.Models;
 using RX.Nyss.Web.Features.Users;
 using RX.Nyss.Web.Services;
-using RX.Nyss.Web.Utils;
 
 namespace RX.Nyss.Web.Features.DataConsumers.Commands
 {

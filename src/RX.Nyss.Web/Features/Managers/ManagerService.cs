@@ -15,7 +15,6 @@ using RX.Nyss.Web.Features.Organizations;
 using RX.Nyss.Web.Features.Users;
 using RX.Nyss.Web.Services;
 using RX.Nyss.Web.Services.Authorization;
-using RX.Nyss.Web.Utils;
 using static RX.Nyss.Common.Utils.DataContract.Result;
 
 namespace RX.Nyss.Web.Features.Managers
