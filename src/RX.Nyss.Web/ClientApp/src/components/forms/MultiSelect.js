@@ -64,7 +64,7 @@ function MultiValue(props) {
       label={props.children}
       className={`${styles.chip} ${props.isFocused ? styles.chipFocused : ""}`}
       onDelete={!isActivityReport && props.removeProps.onClick}
-      deleteIcon={!isActivityReport && <CancelIcon {...props.removeProps} />}
+      deleteIcon={!isActivityReport ? <CancelIcon {...props.removeProps} /> : null}
     />
   );
 }
