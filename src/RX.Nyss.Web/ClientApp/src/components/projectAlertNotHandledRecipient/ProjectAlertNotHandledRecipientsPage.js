@@ -61,6 +61,13 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
     setIsCreating(false)
   }
 
+  const onAddClick = () => {
+    setIsCreating(true)
+  }
+  const onEditClick = () => {
+    setIsEditing(true)
+  }
+
   if(isFetchingFormData && isFetchingList) return <CircularProgress />
 
   return !!unhandledRecipients && (
@@ -68,8 +75,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
       <Typography variant="subtitle1" className={styles.description}>
         {strings(stringKeys.projectAlertNotHandledRecipient.description)}
       </Typography>
-      <Button color='primary' variant='contained' style={{ width: 120 }} disabled={isEditing} onClick={() => setIsCreating(true)}>Add recipient</Button>
-      <Grid container>
+      <Grid container style={{ marginTop: 10 }}>
         {unhandledRecipients?.map((r) => (
             <ProjectAlertNotHandledRecipientItem
               key={`alertNotHandledRecipient_${r.userId}`}
@@ -82,7 +88,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
               getFormData={getFormData}
               rtl={useRtlDirection}
               setIsEditing={setIsEditing}
-              isCreating={isCreating}
+              isEditing={isEditing}
               />
               ))}
         {isCreating && (
@@ -97,10 +103,18 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
             rtl={useRtlDirection}
             setIsEditing={setIsEditing}
             setNewRecipient={setNewRecipient}
+            isCreating={isCreating}
+            isEditing={isEditing}
             />
           )}
       </Grid>
-      {(isCreating || isEditing)  && (
+      {(!isCreating && !isEditing) && (
+        <Grid style={{ marginTop: 10 }}>
+          <Button color='primary' variant='contained' onClick={onAddClick}>{strings(stringKeys.projectAlertNotHandledRecipient.add)}</Button>
+          <Button color='primary' variant='outlined' style={{ marginLeft: 10 }} onClick={onEditClick}>{strings(stringKeys.common.buttons.edit)}</Button>
+        </Grid>
+      )}
+      {(isCreating || isEditing) && (
         <Grid container style={{ marginTop: 10 }}>
           <CancelButton
             onClick={cancel}>

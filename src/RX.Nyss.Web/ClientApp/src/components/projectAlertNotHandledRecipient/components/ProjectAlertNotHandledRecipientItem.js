@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Select, MenuItem, Grid, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
-export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormData, projectId, rtl, unhandledRecipient, unhandledRecipients, setUnhandledRecipients, setIsEditing, setNewRecipient, originalRecipients, isCreating }) => {
+export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormData, projectId, rtl, unhandledRecipient, unhandledRecipients, setUnhandledRecipients, setIsEditing, setNewRecipient, originalRecipients, isCreating, isEditing }) => {
   const [user, setUser] = useState(unhandledRecipient)
   const users = useSelector(state => state.projectAlertNotHandledRecipients.users);
 
@@ -31,18 +31,22 @@ export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormDa
 
   return (
     <Grid container item alignItems='center' style={{ marginTop: 10 }}>
-      <Select
-        className={`${styles.recipientNameSelect} ${rtl ? styles.rtl : ""}`}
-        value={user?.userId}
-        onChange={handleRecipientChange}
-        disabled={isCreating}
-      >
-        {userList.map(u => (
-          <MenuItem key={`recipient_user_${u.userId}`} value={u.userId}>
-            {u.name}
-          </MenuItem>
-        ))}
+      {(isEditing || isCreating) && (
+        <Select
+          className={`${styles.recipientNameSelect} ${rtl ? styles.rtl : ""}`}
+          value={user?.userId}
+          onChange={handleRecipientChange}
+          >
+          {userList.map(u => (
+            <MenuItem key={`recipient_user_${u.userId}`} value={u.userId}>
+              {u.name}
+            </MenuItem>
+          ))}
       </Select>
+      )}
+      {!isEditing && !isCreating && (
+        <Typography style={{ fontWeight: 700, width: 200, marginRight: 30 }}>{user.name}</Typography>
+      )}
       {isAdministrator && (
         <Typography variant="body1" className={styles.organizationField}>
           {user?.organizationName}
