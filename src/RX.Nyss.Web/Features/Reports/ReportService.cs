@@ -269,32 +269,18 @@ public class ReportService : IReportService
             return Error(ResultKey.Report.CannotCrossCheckReportWithoutLocation);
         }
 
-        var nonEssentialSubProcessesErrors = new List<string>();
-        await SendReportsToDhis(
-            reportId,
-            nonEssentialSubProcessesErrors);
-
         report.AcceptedAt = _dateTimeProvider.UtcNow;
         report.AcceptedBy = currentUser;
         report.Status = ReportStatus.Accepted;
 
         await _nyssContext.SaveChangesAsync();
-        return Success();
-    }
 
-    private async Task SendReportsToDhis(
-        int reportId,
-        List<string> nonEssentialSubProcessesErrors)
-    {
-        try
-        {
-            await _dhisService.SendReportToDhis(reportId);
-        }
-        catch (ResultException e)
-        {
-            _loggerAdapter.Error(e, $"Failed to send reports to queue {_config.ServiceBusQueues.DhisReportQueue}.");
-            nonEssentialSubProcessesErrors.Add(ResultKey.DhisIntegration.DhisApi.RegisterReportError);
-        }
+        var nonEssentialSubProcessesErrors = new List<string>();
+        await SendReportsToDhis(
+            reportId,
+            nonEssentialSubProcessesErrors);
+
+        return Success();
     }
 
     public async Task<Result> DismissReport(int reportId)
@@ -330,6 +316,12 @@ public class ReportService : IReportService
         report.Status = ReportStatus.Rejected;
 
         await _nyssContext.SaveChangesAsync();
+
+        var nonEssentialSubProcessesErrors = new List<string>();
+        await SendReportsToDhis(
+            reportId,
+            nonEssentialSubProcessesErrors);
+
         return Success();
     }
 
@@ -388,4 +380,19 @@ public class ReportService : IReportService
                 x.Zone = "";
                 x.Village = "";
             });
+
+    private async Task SendReportsToDhis(
+        int reportId,
+        List<string> nonEssentialSubProcessesErrors)
+    {
+        try
+        {
+            await _dhisService.SendReportToDhis(reportId);
+        }
+        catch (ResultException e)
+        {
+            _loggerAdapter.Error(e, $"Failed to send reports to queue {_config.ServiceBusQueues.DhisReportQueue}.");
+            nonEssentialSubProcessesErrors.Add(ResultKey.DhisIntegration.DhisApi.RegisterReportError);
+        }
+    }
 }
