@@ -69,16 +69,18 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
         public async Task<Result> Edit(int projectId, ProjectAlertNotHandledRecipientsRequestDto dtoList)
         {
 
-            // Remove all replaced recipients
             var allAlertNotHandledRecipients = await _nyssContext.AlertNotHandledNotificationRecipients
                 .Where(a => a.ProjectId == projectId).ToListAsync();
+            var newRecipients = dtoList.Recipients.Where(dto => allAlertNotHandledRecipients.All(recipient => recipient.UserId != dto.UserId && _nyssContext.UserNationalSocieties.Any(uns => uns.UserId == dto.UserId && uns.OrganizationId == dto.OrganizationId))).ToList();
+            if (newRecipients.Count == 0)
+            {
+                return Error(ResultKey.AlertNotHandledNotificationRecipient.NotFound);
+            }
 
+            // Remove all replaced recipients
             var removedRecipients = allAlertNotHandledRecipients.Where(recipient => dtoList.Recipients.All(dto => dto.UserId != recipient.UserId)).ToList();
             removedRecipients.ForEach(removedRecipient => _nyssContext.AlertNotHandledNotificationRecipients.Remove(removedRecipient));
-            await _nyssContext.SaveChangesAsync();
 
-            var updatedRecipients= await _nyssContext.AlertNotHandledNotificationRecipients.Where(a => a.ProjectId == projectId).ToListAsync();
-            var newRecipients = dtoList.Recipients.ToList().Where(dto => updatedRecipients.All(recipient => recipient.UserId != dto.UserId)).ToList();
 
             // Add all new recipients
             newRecipients.ForEach(async dto =>
@@ -91,6 +93,7 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
                 };
                 await _nyssContext.AlertNotHandledNotificationRecipients.AddAsync(alertNotHandledNotificationRecipient);
             });
+            await _nyssContext.SaveChangesAsync();
 
             // Remove project organizations which have been replaced
             // Check if any recipients has the same organization of the removed recipient. If not, remove the project organization
@@ -102,8 +105,9 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
             removedProjectOrganizations.ForEach(removedOrganization => _nyssContext.ProjectOrganizations.Remove(removedOrganization));
 
             // Add all new project organizations
-            var newProjectOrganizationIds = dtoList.Recipients.Select(recipient => recipient.OrganizationId)
-                .Where(organizationId => updatedRecipients.All(recipient => recipient.OrganizationId != organizationId)).Distinct().ToList();
+            var newProjectOrganizationIds = dtoList.Recipients.Select(recipient => recipient.OrganizationId).Distinct().ToList()
+                .Where(organizationId => projectOrganizations.Where(po => po.ProjectId == projectId).All(po => po.OrganizationId != organizationId) && removedProjectOrganizationIds.All(removedOrgId => removedOrgId != organizationId)).ToList();
+
             newProjectOrganizationIds.ForEach(async projectOrganizationId =>
             {
                 var projectOrganizationToAdd = new ProjectOrganization
