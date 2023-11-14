@@ -212,18 +212,7 @@ public class ReportService : IReportService
 
     public IQueryable<RawReport> GetRawReportsWithDataCollectorQuery(ReportsFilter filters)
     {
-        var untrackedReports = _nyssContext.RawReports.AsNoTracking().ToList();
-        var reportsFilteredByStatus = _nyssContext.RawReports.AsNoTracking().FilterByReportStatus(filters.ReportStatus).ToList();
-        var reportsFromKnownDataCollector =  _nyssContext.RawReports.AsNoTracking().FilterByReportStatus(filters.ReportStatus).FromKnownDataCollector().ToList();
-        var reportsFilteredByArea =  _nyssContext.RawReports.AsNoTracking().FilterByReportStatus(filters.ReportStatus).FromKnownDataCollector().FilterByArea(filters.Area).ToList();
-        var reportsFilteredByDataCollectorType = _nyssContext.RawReports.AsNoTracking().FilterByReportStatus(filters.ReportStatus).FromKnownDataCollector().FilterByArea(filters.Area).FilterByDataCollectorType(filters.DataCollectorType).ToList();
-        var reportsFilteredByOrganization = _nyssContext.RawReports.AsNoTracking().FilterByReportStatus(filters.ReportStatus).FromKnownDataCollector().FilterByArea(filters.Area).FilterByDataCollectorType(filters.DataCollectorType).FilterByOrganization(filters.OrganizationId).ToList();
-        var reportsFilteredByProject = _nyssContext.RawReports.AsNoTracking().FilterByReportStatus(filters.ReportStatus).FromKnownDataCollector().FilterByArea(filters.Area).FilterByDataCollectorType(filters.DataCollectorType).FilterByOrganization(filters.OrganizationId).FilterByProject(filters.ProjectId).ToList();
-        var reportsFilteredByNationalSociety = _nyssContext.RawReports.AsNoTracking().FilterByReportStatus(filters.ReportStatus).FromKnownDataCollector().FilterByArea(filters.Area).FilterByDataCollectorType(filters.DataCollectorType).FilterByOrganization(filters.OrganizationId).FilterByProject(filters.ProjectId).FilterReportsByNationalSociety(filters.NationalSocietyId).ToList();
-        var reportsFilteredByDate = _nyssContext.RawReports.AsNoTracking().FilterByReportStatus(filters.ReportStatus).FromKnownDataCollector().FilterByArea(filters.Area).FilterByDataCollectorType(filters.DataCollectorType).FilterByOrganization(filters.OrganizationId).FilterByProject(filters.ProjectId).FilterReportsByNationalSociety(filters.NationalSocietyId).FilterByDate(filters.StartDate, filters.EndDate).ToList();
-        var reportsFilteredByHealthRisks = _nyssContext.RawReports.AsNoTracking().FilterByReportStatus(filters.ReportStatus).FromKnownDataCollector().FilterByArea(filters.Area).FilterByDataCollectorType(filters.DataCollectorType).FilterByOrganization(filters.OrganizationId).FilterByProject(filters.ProjectId).FilterReportsByNationalSociety(filters.NationalSocietyId).FilterByDate(filters.StartDate, filters.EndDate).FilterByHealthRisks(filters.HealthRisks).ToList();
-        var reportsFilteredByTrainingMode = _nyssContext.RawReports.AsNoTracking().FilterByReportStatus(filters.ReportStatus).FromKnownDataCollector().FilterByArea(filters.Area).FilterByDataCollectorType(filters.DataCollectorType).FilterByOrganization(filters.OrganizationId).FilterByProject(filters.ProjectId).FilterReportsByNationalSociety(filters.NationalSocietyId).FilterByDate(filters.StartDate, filters.EndDate).FilterByHealthRisks(filters.HealthRisks).FilterByTrainingMode(filters.TrainingStatus).ToList();
-
+       
         return _nyssContext.RawReports
             .AsNoTracking()
             .FilterByReportStatus(filters.ReportStatus)
@@ -234,7 +223,7 @@ public class ReportService : IReportService
             .FilterByProject(filters.ProjectId)
             .FilterReportsByNationalSociety(filters.NationalSocietyId)
             .FilterByDate(filters.StartDate, filters.EndDate)
-            .FilterByHealthRisks(filters.HealthRisks)
+            .FilterByHealthRisks(filters.HealthRisks, true)
             .FilterByTrainingMode(filters.TrainingStatus);
     }
 
@@ -242,8 +231,8 @@ public class ReportService : IReportService
     public IQueryable<Report> GetDashboardHealthRiskEventReportsQuery(ReportsFilter filters) =>
         GetRawReportsWithDataCollectorQuery(filters)
             .AllSuccessfulReports()
-            .Select(r => r.Report);
-            //.Where(r => r.ProjectHealthRisk.HealthRisk.HealthRiskType != HealthRiskType.Activity);
+            .Select(r => r.Report)
+            .Where(r => r.ProjectHealthRisk.HealthRisk.HealthRiskType != HealthRiskType.Activity);
 
     public async Task<Result> AcceptReport(int reportId)
     {
@@ -347,7 +336,7 @@ public class ReportService : IReportService
             .ThenInclude(r => r.ProjectHealthRisk)
             .ThenInclude(r => r.HealthRisk)
             .FilterByProject(projectId)
-            .FilterByHealthRisks(filter.HealthRisks)
+            .FilterByHealthRisks(filter.HealthRisks, false)
             .FilterByDataCollectorType(filter.DataCollectorType)
             .FilterByArea(filter.Locations)
             .FilterByErrorType(filter.ErrorType)
