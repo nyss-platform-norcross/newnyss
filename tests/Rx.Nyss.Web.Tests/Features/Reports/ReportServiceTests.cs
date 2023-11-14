@@ -11,6 +11,7 @@ using RX.Nyss.Common.Configuration;
 using RX.Nyss.Common.Services.StringsResources;
 using RX.Nyss.Common.Utils;
 using RX.Nyss.Common.Utils.DataContract;
+using RX.Nyss.Common.Utils.Logging;
 using RX.Nyss.Data;
 using RX.Nyss.Data.Concepts;
 using RX.Nyss.Data.Models;
@@ -25,6 +26,7 @@ using RX.Nyss.Web.Features.Reports.Dto;
 using RX.Nyss.Web.Features.Users;
 using RX.Nyss.Web.Services;
 using RX.Nyss.Web.Services.Authorization;
+using RX.Nyss.Web.Services.EidsrService;
 using Shouldly;
 using Xunit;
 
@@ -63,6 +65,10 @@ public class ReportServiceTests
     private readonly INationalSocietyStructureService _nationalSocietyStructureServiceMock;
 
     private readonly IStringsService _stringsService;
+
+    private readonly IEidsrService _dhisService;
+
+    private readonly ILoggerAdapter _loggerAdapter;
 
     private readonly List<int> _reportIdsFromProject1 = Enumerable.Range(1, 13).ToList();
 
@@ -106,6 +112,8 @@ public class ReportServiceTests
         _alertService = Substitute.For<IAlertService>();
         _queueService = Substitute.For<IQueueService>();
         _stringsService = Substitute.For<IStringsService>();
+        _dhisService = Substitute.For<IEidsrService>();
+        _loggerAdapter = Substitute.For<ILoggerAdapter>();
         _nationalSocietyStructureServiceMock = Substitute.For<INationalSocietyStructureService>();
 
         _alertReportService = new AlertReportService(
@@ -123,6 +131,8 @@ public class ReportServiceTests
             _authorizationService,
             _dateTimeProvider,
             _stringsService,
+            _dhisService,
+            _loggerAdapter,
             _nationalSocietyStructureServiceMock);
 
         _authorizationService.IsCurrentUserInRole(Role.Supervisor).Returns(false);
@@ -1090,6 +1100,8 @@ public class ReportServiceTests
             _authorizationService,
             _dateTimeProvider,
             _stringsService,
+            _dhisService,
+            _loggerAdapter,
             _nationalSocietyStructureServiceMock);
     }
 }
