@@ -73,6 +73,31 @@ public class ReportsConverter : IReportsConverter
             return "male";
         }
 
+        if (report?.ReportedCase != null && (report.ReportedCase.CountUnspecifiedSexAndAge == 1))
+        {
+            return "Unspecified Sex and Age";
+        }
+
+        return "";
+    }
+
+    private string ExtractGender(RawReport rawReport)
+    {
+        if (rawReport.Report?.ReportedCase != null && (rawReport.Report.ReportedCase.CountFemalesBelowFive == 1 || rawReport.Report.ReportedCase.CountFemalesAtLeastFive == 1))
+        {
+            return "female";
+        }
+
+        if (rawReport.Report?.ReportedCase != null && (rawReport.Report.ReportedCase.CountMalesBelowFive == 1 || rawReport.Report.ReportedCase.CountMalesAtLeastFive == 1))
+        {
+            return "male";
+        }
+
+        if (rawReport.Report?.ReportedCase != null && (rawReport.Report.ReportedCase.CountUnspecifiedSexAndAge == 1))
+        {
+            return "Unspecified Sex and Age";
+        }
+
         return "";
     }
 
@@ -90,6 +115,20 @@ public class ReportsConverter : IReportsConverter
 
             var suspectedDiseases = string.Join('/', suspectedDiseasesLanguageContents);
             return suspectedDiseases;
+        }
+        catch (Exception e)
+        {
+            return "";
+        }
+    }
+
+    private static string ExtractHealthRisk(int englishContentLanguageId, RawReport rawReport)
+    {
+        try
+        {
+            var healthRisk = rawReport
+                .Report.ProjectHealthRisk.CaseDefinition;
+            return healthRisk;
         }
         catch (Exception e)
         {
@@ -164,9 +203,9 @@ public class ReportsConverter : IReportsConverter
 
             ReportLocation = $"{rawReport?.Village?.District?.Region?.Name}/{rawReport?.Village?.District?.Name}/{rawReport?.Village?.Name}",
             ReportSuspectedDisease = ExtractSuspectedDiseases(englishContentLanguageId, rawReport?.Report),
-            ReportHealthRisk = rawReport?.Report?.ProjectHealthRisk?.HealthRisk.ToString(),
-            ReportStatus = rawReport?.Report?.Status.ToString("u"),
-            ReportGender = ExtractGender(report: rawReport?.Report),
+            ReportHealthRisk = ExtractHealthRisk(englishContentLanguageId, rawReport),
+            ReportStatus = rawReport?.Report?.Status.ToString(),
+            ReportGender = ExtractGender(rawReport),
             ReportAgeAtLeastFive = (rawReport?.Report?.ReportedCase?.CountFemalesAtLeastFive + rawReport?.Report?.ReportedCase?.CountMalesAtLeastFive).ToString(),
             ReportAgeBelowFive = (rawReport?.Report?.ReportedCase?.CountFemalesBelowFive + rawReport?.Report?.ReportedCase?.CountMalesBelowFive).ToString()
         };

@@ -22,20 +22,20 @@ public class DhisReportHandler : IDhisReportHandler
     private readonly IDhisClient _dhisClient;
     private readonly INyssReportApiConfig _nyssReportApiConfig;
     private readonly ICryptographyService _cryptographyService;
-    private readonly IEidsrRepository _eidsrRepository;
+    private readonly IDhisRepository _dhisRepository;
 
     public DhisReportHandler(
         ILoggerAdapter loggerAdapter,
         IDhisClient dhisClient,
         INyssReportApiConfig nyssReportApiConfig,
         ICryptographyService cryptographyService,
-        IEidsrRepository eidsrRepository)
+        IDhisRepository dhisRepository)
     {
         _loggerAdapter = loggerAdapter;
         _dhisClient = dhisClient;
         _nyssReportApiConfig = nyssReportApiConfig;
         _cryptographyService = cryptographyService;
-        _eidsrRepository = eidsrRepository;
+        _dhisRepository = dhisRepository;
     }
 
     public async Task<bool> Handle(DhisReport dhisReport)
@@ -48,7 +48,7 @@ public class DhisReportHandler : IDhisReportHandler
                 throw new ArgumentException($"DhisReport is null");
             }
 
-            var report = _eidsrRepository.GetReportsForDhis(dhisReport.ReportId.Value);
+            var report = _dhisRepository.GetReportsForDhis(dhisReport.ReportId.Value);
             var template = new DhisRegisterReportRequestTemplate {
                 EidsrApiProperties = new EidsrApiProperties
                 {
