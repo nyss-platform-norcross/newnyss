@@ -18,7 +18,7 @@ export const MenuSection = ({menuItems, handleItemClick, menuTitle, isExpanded})
       fontSize: '16px',
     },
     SideMenuTextWrapper: {
-      padding: '12px 12px 12px 16px',
+      padding: useRtlDirection ? '12px 16px 12px 12px' : '12px 12px 12px 16px',
     },
     ListItemActive: {
       backgroundColor: '#E3E3E3',
