@@ -17,6 +17,7 @@ namespace RX.Nyss.ReportApi.Services
         Task QueueAlertCheck(int alertId);
         Task SendEmail((string Name, string EmailAddress) to, string emailSubject, string emailBody, bool sendAsTextOnly = false);
         Task SendSms(List<SendSmsRecipient> recipients, GatewaySetting gatewaySetting, string message);
+        Task SendGatewayHttpSms(long number, string message, string apiKey, string projectId);
     }
 
     public class QueuePublisherService : IQueuePublisherService
@@ -109,6 +110,11 @@ namespace RX.Nyss.ReportApi.Services
 
                 return _sendSmsQueueSender.SendMessageAsync(message);
             }));
+
+        public async Task SendGatewayHttpSms(long number, string message, string apiKey, string projectId)
+        {
+            
+        }
     }
 
     public class SendEmailMessage
