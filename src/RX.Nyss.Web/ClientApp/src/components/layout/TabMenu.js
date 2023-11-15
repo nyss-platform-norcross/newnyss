@@ -45,7 +45,7 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, pr
         :
         <div className={styles.header}>{title}</div>
       }
-      <Grid container justifyContent='center'>
+      <Grid container justifyContent='center' style={{ marginBottom: 50 }}>
         {/* Only display project tab menu for all users other than data consumer since the role only has acces to project dashboard */}
         {projectTabMenu.length > 1 && (
             projectTabMenu.map(item => (
