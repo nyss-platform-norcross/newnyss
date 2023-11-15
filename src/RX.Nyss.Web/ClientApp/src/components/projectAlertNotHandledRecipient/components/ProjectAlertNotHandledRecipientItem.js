@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Select, MenuItem, Grid, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
-export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormData, projectId, rtl, unhandledRecipient, unhandledRecipients, setUnhandledRecipients, setIsEditing, setNewRecipient, originalRecipients, isCreating, isEditing }) => {
-  const [user, setUser] = useState(unhandledRecipient)
+export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormData, projectId, rtl, unhandledRecipient, unhandledRecipients, setUnhandledRecipients, setNewRecipient, isCreating, isEditing }) => {
+  const [user, setUser] = useState(unhandledRecipient);
   const users = useSelector(state => state.projectAlertNotHandledRecipients.users);
 
   useEffect(() => {
@@ -13,14 +13,14 @@ export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormDa
 
   const handleRecipientChange = (change) => {
     const user = users.filter(u => u.userId === change.target.value)[0];
+    setUser(user);
     if(setNewRecipient) {
-      setNewRecipient(user)
-      setUser(user)
+      setNewRecipient(user);
     } else {
-      setUser(user)
-      const newRecipientList = [...unhandledRecipients.filter(rec => rec.userId !== unhandledRecipient.userId), user]
-      setUnhandledRecipients(newRecipientList)
-      setIsEditing(originalRecipients.every(rec => rec.userId !== change.target.value))
+      const removedRecipientIndex = unhandledRecipients.findIndex(rec => rec.userId === unhandledRecipient.userId);
+      let newRecipientList = [...unhandledRecipients];
+      newRecipientList[removedRecipientIndex] = user;
+      setUnhandledRecipients(newRecipientList);
     }
   }
 
@@ -30,7 +30,7 @@ export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormDa
   const userList = setNewRecipient ? addRecipients : editRecipients
 
   return (
-    <Grid container item alignItems='center' style={{ marginTop: 10 }}>
+    <Grid container item alignItems='center' style={{ marginTop: 20 }}>
       {(isEditing || isCreating) && (
         <Select
           className={`${styles.recipientNameSelect} ${rtl ? styles.rtl : ""}`}

@@ -33,7 +33,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
 
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-  const [unhandledRecipients, setUnhandledRecipients] = useState(null)
+  const [unhandledRecipients, setUnhandledRecipients] = useState(null);
   const [newRecipient, setNewRecipient] = useState({
     userId: '',
     name: ''
@@ -42,14 +42,14 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
 
   const onEdit = () => {
     edit(projectId, unhandledRecipients.map(recipient => ({ organizationId: recipient.organizationId, userId: recipient.userId })));
-    setIsEditing(false)
+    setIsEditing(false);
   }
 
   const cancel = () => {
-    const recipients = organizations?.map(org => org.users.map(user => ({...user, organizationName: org.organizationName, organizationId: org.organizationId}))).flat(1)
-    setUnhandledRecipients(recipients)
-    setIsEditing(false)
-    setIsCreating(false)
+    const recipients = organizations?.map(org => org.users.map(user => ({...user, organizationName: org.organizationName, organizationId: org.organizationId}))).flat(1);
+    setUnhandledRecipients(recipients);
+    setIsEditing(false);
+    setIsCreating(false);
 
   }
 
@@ -58,28 +58,27 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
       userId: newRecipient.userId,
       organizationId: newRecipient.organizationId,
     });
-    setIsCreating(false)
+    setIsCreating(false);
   }
 
   const onAddClick = () => {
-    setIsCreating(true)
+    setIsCreating(true);
   }
   const onEditClick = () => {
-    setIsEditing(true)
+    setIsEditing(true);
   }
 
   if(isFetchingFormData && isFetchingList) return <CircularProgress />
 
   return !!unhandledRecipients && (
     <>
-      <Typography variant="subtitle1" className={styles.description}>
+      <Typography variant="subtitle1">
         {strings(stringKeys.projectAlertNotHandledRecipient.description)}
       </Typography>
       <Grid container style={{ marginTop: 10 }}>
         {unhandledRecipients?.map((r) => (
             <ProjectAlertNotHandledRecipientItem
               key={`alertNotHandledRecipient_${r.userId}`}
-              originalRecipients={organizations?.map(org => org.users.map(user => ({...user, organizationName: org.organizationName, organizationId: org.organizationId}))).flat(1)}
               unhandledRecipient={r}
               unhandledRecipients={unhandledRecipients}
               setUnhandledRecipients={setUnhandledRecipients}
@@ -87,7 +86,6 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
               projectId={projectId}
               getFormData={getFormData}
               rtl={useRtlDirection}
-              setIsEditing={setIsEditing}
               isEditing={isEditing}
               />
               ))}
@@ -101,7 +99,6 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
             unhandledRecipients={unhandledRecipients}
             setUnhandledRecipients={setUnhandledRecipients}
             rtl={useRtlDirection}
-            setIsEditing={setIsEditing}
             setNewRecipient={setNewRecipient}
             isCreating={isCreating}
             isEditing={isEditing}
@@ -109,13 +106,13 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
           )}
       </Grid>
       {(!isCreating && !isEditing) && (
-        <Grid style={{ marginTop: 10 }}>
+        <Grid style={{ marginTop: 20 }}>
           <Button color='primary' variant='contained' onClick={onAddClick}>{strings(stringKeys.projectAlertNotHandledRecipient.add)}</Button>
           <Button color='primary' variant='outlined' style={{ marginLeft: 10 }} onClick={onEditClick}>{strings(stringKeys.common.buttons.edit)}</Button>
         </Grid>
       )}
       {(isCreating || isEditing) && (
-        <Grid container style={{ marginTop: 10 }}>
+        <Grid container style={{ marginTop: 20 }}>
           <CancelButton
             onClick={cancel}>
               {strings(stringKeys.form.cancel)}
