@@ -1,48 +1,50 @@
 import { List, ListItem, ListItemText, ListItemIcon, ListSubheader, Divider, makeStyles, Tooltip, Typography } from "@material-ui/core";
 import { RcIcon } from '../icons/RcIcon';
-
-const useStyles = makeStyles(() => ({
-  SideMenuIcon: {
-    fontSize: '26px',
-    color: '#1E1E1E',
-  },
-  ListItemIconWrapper: {
-    minWidth: '20px',
-  },
-  SideMenuText: {
-    color: '#1E1E1E',
-    fontSize: '16px',
-  },
-  SideMenuTextWrapper: {
-    padding: '12px 12px 12px 16px',
-  },
-  ListItemActive: {
-    backgroundColor: '#E3E3E3',
-    "& span p": {
-      fontWeight: '600',
-    },
-  },
-  ListItem : {
-    padding: '0 0 0 16px',
-  },
-  SubHeader : {
-    color: '#1E1E1E',
-    lineHeight: '28px',
-    fontSize: 12,
-    fontWeight: "bold",
-    margin: "0 0 0px 8px",
-    position: "relative"
-  },
-  Divider: {
-    backgroundColor: '#B4B4B4',
-  },
-  Hide: {
-    color: "transparent",
-    userSelect: "none"
-  }
-}));
+import { useSelector } from "react-redux";
 
 export const MenuSection = ({menuItems, handleItemClick, menuTitle, isExpanded}) => {
+  const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
+
+  const useStyles = makeStyles(() => ({
+    SideMenuIcon: {
+      fontSize: '26px',
+      color: '#1E1E1E',
+    },
+    ListItemIconWrapper: {
+      minWidth: '20px',
+    },
+    SideMenuText: {
+      color: '#1E1E1E',
+      fontSize: '16px',
+    },
+    SideMenuTextWrapper: {
+      padding: '12px 12px 12px 16px',
+    },
+    ListItemActive: {
+      backgroundColor: '#E3E3E3',
+      "& span p": {
+        fontWeight: '600',
+      },
+    },
+    ListItem : {
+      padding: useRtlDirection ? '0 16px 0 0' : '0 0 0 16px',
+    },
+    SubHeader : {
+      color: '#1E1E1E',
+      lineHeight: '28px',
+      fontSize: 12,
+      fontWeight: "bold",
+      margin: useRtlDirection ? "0 8px 0 0" : "0 0 0 8px",
+      position: "relative"
+    },
+    Divider: {
+      backgroundColor: '#B4B4B4',
+    },
+    Hide: {
+      color: "transparent",
+      userSelect: "none"
+    }
+  }));
   const classes = useStyles();
 
   return(

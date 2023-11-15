@@ -6,7 +6,12 @@ import { RcIcon } from '../icons/RcIcon';
 import { logout } from '../../authentication/authActions';
 import { strings, stringKeys } from '../../strings';
 
-const useStyles = makeStyles(() => ({
+export const AccountSection = ({handleItemClick, isExpanded}) => {
+  const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
+  const user = useSelector(state => state.appData.user);
+  const isSupervisor = user.roles.includes("Supervisor") || user.roles.includes("HeadSupervisor")
+
+  const useStyles = makeStyles(() => ({
     AccordionContainer: {
       position: "sticky",
       marginTop: "auto",
@@ -94,7 +99,7 @@ const useStyles = makeStyles(() => ({
     Account: {
       fontSize: 12,
       fontWeight: "bold",
-      padding: "8px 0 8px 8px",
+      padding: useRtlDirection ? "8px 8px 8px 0" : "8px 0 8px 8px",
       backgroundColor: "#F1F1F1"
     },
     Hide: {
@@ -102,16 +107,8 @@ const useStyles = makeStyles(() => ({
       userSelect: "none"
     }
 }));
-
-
-
-export const AccountSection = ({handleItemClick, isExpanded}) => {
   const classes = useStyles()
   const dispatch = useDispatch();
-
-  const user = useSelector(state => state.appData.user);
-  const isSupervisor = user.roles.includes("Supervisor") || user.roles.includes("HeadSupervisor")
-
   const handleLogout = () => dispatch(logout.invoke());
 
   if(isSupervisor) return null;
