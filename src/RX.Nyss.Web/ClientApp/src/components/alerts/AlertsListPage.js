@@ -11,6 +11,7 @@ import TableActions from '../common/tableActions/TableActions';
 import { TableActionsButton } from '../common/buttons/tableActionsButton/TableActionsButton';
 import { stringKeys, strings } from '../../strings';
 import { Loading } from '../common/loading/Loading';
+import TableHeader from '../common/tableHeader/TableHeader';
 
 const AlertsListPageComponent = ({
   openAlertsList,
@@ -38,14 +39,16 @@ const AlertsListPageComponent = ({
   return (
     <Fragment>
 
-      <TableActions>
-        <TableActionsButton
-          onClick={() => props.export(props.projectId, props.filters)}
-          variant={"outlined"}
-        >
-          {strings(stringKeys.alerts.list.export)}
-        </TableActionsButton>
-      </TableActions>
+      <TableHeader>
+        <TableActions>
+          <TableActionsButton
+            onClick={() => props.export(props.projectId, props.filters)}
+            variant={"outlined"}
+          >
+            {strings(stringKeys.alerts.list.export)}
+          </TableActionsButton>
+        </TableActions>
+      </TableHeader>
 
       <AlertsFilters
         filters={props.filters}

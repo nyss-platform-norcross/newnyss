@@ -12,6 +12,7 @@ import TableActions from '../common/tableActions/TableActions';
 import { TableActionsButton } from '../common/buttons/tableActionsButton/TableActionsButton';
 import { stringKeys, strings } from '../../strings';
 import { accessMap } from '../../authentication/accessMap';
+import TableHeader from '../common/tableHeader/TableHeader';
 
 const DataCollectorsPerformancePageComponent = ({ projectId, getDataCollectorPerformanceList, ...props }) => {
   useMount(() => {
@@ -25,16 +26,18 @@ const DataCollectorsPerformancePageComponent = ({ projectId, getDataCollectorPer
 
   return (
     <Fragment>
-      <TableActions>
-        <TableActionsButton
-          onClick={() => props.exportPerformance(projectId, props.filters)}
-          roles={accessMap.dataCollectors.export}
-          isFetching={props.isExporting}
-          variant={"outlined"}
-        >
-          {strings(stringKeys.dataCollectors.exportExcel)}
-        </TableActionsButton>
-      </TableActions>
+      <TableHeader>
+        <TableActions>
+          <TableActionsButton
+            onClick={() => props.exportPerformance(projectId, props.filters)}
+            roles={accessMap.dataCollectors.export}
+            isFetching={props.isExporting}
+            variant={"outlined"}
+          >
+            {strings(stringKeys.dataCollectors.exportExcel)}
+          </TableActionsButton>
+        </TableActions>
+      </TableHeader>
 
       <DataCollectorsPerformanceFilters
         onChange={handleFilterChange}

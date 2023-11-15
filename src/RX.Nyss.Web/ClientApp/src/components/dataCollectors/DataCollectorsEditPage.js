@@ -24,6 +24,7 @@ import { HeadSupervisor, Supervisor } from "../../authentication/roles";
 import CheckboxField from "../forms/CheckboxField";
 import { DataCollectorLocationItem } from "./components/DataCollectorLocationItem";
 import { getBirthDecades, parseBirthDecade } from "../../utils/birthYear";
+import { SubMenuTitle } from "../layout/SubMenuTitle";
 
 const DataCollectorsEditPageComponent = (props) => {
   const currentUserRoles = useSelector(state => state.appData.user.roles);
@@ -143,6 +144,7 @@ const DataCollectorsEditPageComponent = (props) => {
 
   return (
     <Fragment>
+      <SubMenuTitle />
       {props.error && !props.error.data && <ValidationMessage message={props.error.message} />}
       <Form onSubmit={handleSubmit} fullWidth>
         <Grid item xs={12}>

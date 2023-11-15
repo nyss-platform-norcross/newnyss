@@ -18,12 +18,12 @@ const useStyles = makeStyles({
   },
   button: {
     padding: 0,
-    transform: 'rotate(135deg)',
+    transform: 'rotate(135deg) translateX(-5px)',
     color: "#D52B1E",
     '&:hover': {
       backgroundColor: 'transparent',
     },
-  }, 
+  },
   invertedButton: {
     transform: 'rotate(-45deg)',
   },
@@ -33,7 +33,7 @@ export const ExpandButton = ({ onClick, isExpanded }) => {
   const classes = useStyles();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-  
+
   // The expanded button should only appear for larger screens
   if (isSmallScreen) return null;
   return (

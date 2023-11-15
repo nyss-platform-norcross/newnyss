@@ -11,6 +11,7 @@ import { accessMap } from "../../authentication/accessMap";
 import { stringKeys, strings } from "../../strings";
 import { CreateAlertEventDialog } from "./components/CreateAlertEventDialog";
 import TableActions from "../common/tableActions/TableActions";
+import TableHeader from '../common/tableHeader/TableHeader';
 
 const AlertEventsLogPageComponent = ({ alertId, projectId, data, ...props }) => {
   const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
@@ -33,17 +34,19 @@ const AlertEventsLogPageComponent = ({ alertId, projectId, data, ...props }) => 
 
   return (
     <Fragment>
-      <TableActions>
-        <TableActionsButton
-          onClick={() => setCreateDialogOpened(true)}
-          variant="contained"
-          roles={accessMap.alertEvents.add}
-          add
-          rtl={useRtlDirection}
-        >
-          {strings(stringKeys.common.buttons.add)}
-        </TableActionsButton>
-      </TableActions>
+      <TableHeader>
+        <TableActions>
+          <TableActionsButton
+            onClick={() => setCreateDialogOpened(true)}
+            variant="contained"
+            roles={accessMap.alertEvents.add}
+            add
+            rtl={useRtlDirection}
+          >
+            {strings(stringKeys.common.buttons.add)}
+          </TableActionsButton>
+        </TableActions>
+      </TableHeader>
 
       <AlertEventsTable
         alertId={alertId}

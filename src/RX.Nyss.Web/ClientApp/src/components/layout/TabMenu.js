@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { Tabs, Tab, Grid, Typography, makeStyles } from '@material-ui/core';
 import { TabDropdown } from './TabDropdown';
+import { SubMenuTitle } from './SubMenuTitle';
 
 const useStyles = makeStyles({
   nsHeader: {
@@ -33,11 +34,6 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, pr
   // http addresses are case insensitive so compare to-lower versions
   const showTabMenu = tabMenu.some(t => t.url.toLowerCase() === currentUrl.toLowerCase());
 
-  // Title for sub menu pages inside a project
-  const showSubMenuTitle = projectTabMenu.some(projectItem => projectItem.subMenu.length > 0 && projectItem.isActive);
-  // Alternative title for sub menu pages inside a project such as 'edit data collector' or 'edit alert recipient'
-  const showSubMenuAlternativeTitle = projectTabMenu && projectTabMenu.length > 0 && projectTabMenu.every(menuItem => menuItem.title !== title);
-
   return (
     <div className={styles.tabMenu}>
       {projectName ?
@@ -55,13 +51,7 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, pr
           ))
         )}
       </Grid>
-      {/* Display header for subpages inside a project for data collectors, project reports and project settings */}
-      {showSubMenuTitle && !showSubMenuAlternativeTitle && (
-        <div className={styles.header}>{projectTabMenu.find(projectItem => projectItem.isActive)?.subMenu.find(item => item.isActive)?.title}</div>
-      )}
-      {showSubMenuAlternativeTitle && (
-        <div className={styles.header}>{title}</div>
-      )}
+
       {showTabMenu && (
         <Tabs
           value={tabMenu.indexOf(tabMenu.find(t => t.isActive))}

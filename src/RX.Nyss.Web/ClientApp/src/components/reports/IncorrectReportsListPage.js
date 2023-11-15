@@ -16,6 +16,7 @@ import { Hidden, Icon } from "@material-ui/core";
 import * as roles from '../../authentication/roles';
 import { SendReportDialog } from "./SendReportDialog";
 import * as appActions from "../app/logic/appActions";
+import TableHeader from "../common/tableHeader/TableHeader";
 
 const Page = "incorrect";
 
@@ -73,39 +74,41 @@ const IncorrectReportsListPageComponent = (props) => {
 
   return (
     <Fragment>
-      <TableActions>
-        <Hidden xsDown>
+      <TableHeader>
+        <TableActions>
+          <Hidden xsDown>
+            <TableActionsButton
+              onClick={handleRefresh}
+              isFetching={props.isListFetching}
+              variant={"text"}>
+              <Icon>refresh</Icon>
+            </TableActionsButton>
+          </Hidden>
+
           <TableActionsButton
-            onClick={handleRefresh}
-            isFetching={props.isListFetching}
-            variant={"text"}>
-            <Icon>refresh</Icon>
-          </TableActionsButton>
-        </Hidden>
-
-        <TableActionsButton
-          onClick={exportToCsv}
-          variant={"outlined"}
-        >
-          {strings(stringKeys.reports.list.exportToCsv)}
-        </TableActionsButton>
-
-        <TableActionsButton
-          onClick={exportToExcel}
-          variant={"outlined"}
-        >
-          {strings(stringKeys.reports.list.exportToExcel)}
-        </TableActionsButton>
-
-        {canSendReport &&
-          <TableActionsButton
-            onClick={handleSendReport}
-            variant={"contained"}
+            onClick={exportToCsv}
+            variant={"outlined"}
           >
-            {strings(stringKeys.reports.list.sendReport)}
+            {strings(stringKeys.reports.list.exportToCsv)}
           </TableActionsButton>
-        }
-      </TableActions>
+
+          <TableActionsButton
+            onClick={exportToExcel}
+            variant={"outlined"}
+          >
+            {strings(stringKeys.reports.list.exportToExcel)}
+          </TableActionsButton>
+
+          {canSendReport &&
+            <TableActionsButton
+              onClick={handleSendReport}
+              variant={"contained"}
+            >
+              {strings(stringKeys.reports.list.sendReport)}
+            </TableActionsButton>
+          }
+        </TableActions>
+      </TableHeader>
 
       {open && (
         <SendReportDialog close={() => setOpen(false)}

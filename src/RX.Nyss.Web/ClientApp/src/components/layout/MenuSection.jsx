@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     fontSize: '16px',
   },
   SideMenuTextWrapper: {
-    padding: '16px 12px 16px 24px',
+    padding: '12px 12px 12px 16px',
   },
   ListItemActive: {
     backgroundColor: '#E3E3E3',
@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   ListItem : {
-    padding: '0 0 0 24px',
+    padding: '0 0 0 16px',
   },
   SubHeader : {
     color: '#1E1E1E',
