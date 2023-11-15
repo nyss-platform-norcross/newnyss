@@ -315,6 +315,7 @@ export const stringKeys = {
   },
   projectAlertRecipient: {
     title: "projectAlertRecipient.title",
+    description: "projectAlertRecipient.description",
     form: {
       creationTitle: "projectAlertRecipient.form.creationTitle",
       editionTitle: "projectAlertRecipient.form.editionTitle",

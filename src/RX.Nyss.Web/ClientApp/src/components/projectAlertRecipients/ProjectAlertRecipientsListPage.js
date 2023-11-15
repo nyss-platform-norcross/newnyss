@@ -9,6 +9,7 @@ import { strings, stringKeys } from '../../strings';
 import { TableActionsButton } from '../common/buttons/tableActionsButton/TableActionsButton';
 import { withLayout } from "../../utils/layout";
 import Layout from "../layout/Layout";
+import { Typography } from '@material-ui/core';
 
 const ProjectAlertRecipientsListPageComponent = (props) => {
   useMount(() => {
@@ -19,6 +20,7 @@ const ProjectAlertRecipientsListPageComponent = (props) => {
 
   return (
     <Fragment>
+      <Typography variant="subtitle1">{strings(stringKeys.projectAlertRecipient.description)}</Typography>
       {!props.nationalSocietyIsArchived && !props.projectIsClosed &&
       <TableActions>
         <TableActionsButton
@@ -30,7 +32,6 @@ const ProjectAlertRecipientsListPageComponent = (props) => {
           {strings(stringKeys.common.buttons.add)}
         </TableActionsButton>
       </TableActions>}
-
       <ProjectAlertRecipientsTable
         list={props.list}
         isListFetching={props.isListFetching}
