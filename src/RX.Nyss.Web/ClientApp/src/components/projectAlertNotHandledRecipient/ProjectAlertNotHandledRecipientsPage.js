@@ -1,4 +1,3 @@
-import styles from './ProjectAlertNotHandledRecipientsPage.module.scss';
 import React, { useEffect } from 'react';
 import { strings, stringKeys } from '../../strings';
 import { connect, useSelector } from 'react-redux';
