@@ -9,7 +9,7 @@ namespace RX.Nyss.Data.Repositories;
 
 public interface IEidsrRepository
 {
-    List<EidsrDbReport> GetReportsForEidsr(int reportId);
+    List<EidsrDbReport> GetReportsForEidsr(int alertId);
 }
 
 public class EidsrRepository : IEidsrRepository
@@ -42,7 +42,7 @@ public class EidsrRepository : IEidsrRepository
             EidsrDbReportData = aggregatedReport
         }).ToList();
     }
-
+    
     private List<EidsrDbReportData> GetReports(int alertId, DateTime alertDate, int englishContentLanguageId)
     {
         var reportsOfAlertIds = _nyssContext.AlertReports
@@ -133,4 +133,5 @@ public class EidsrRepository : IEidsrRepository
 
         return template;
     }
+    
 }

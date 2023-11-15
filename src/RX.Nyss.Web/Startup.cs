@@ -16,7 +16,7 @@ using RX.Nyss.Common.Configuration;
 using RX.Nyss.Web.Configuration;
 
 namespace RX.Nyss.Web;
-
+//
 public class Startup
 {
     public IConfiguration Configuration { get; }
@@ -127,3 +127,4 @@ public class Startup
         });
     }
 }
+////

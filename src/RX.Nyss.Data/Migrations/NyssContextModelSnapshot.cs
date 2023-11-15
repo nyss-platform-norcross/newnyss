@@ -2199,6 +2199,27 @@ namespace RX.Nyss.Data.Migrations
                     b.Property<string>("PhoneNumberDataElementId")
                         .HasColumnType("varchar(256)");
 
+                    b.Property<string>("ReportAgeAtLeastFiveDataElementId")
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("ReportAgeBelowFiveDataElementId")
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("ReportGenderDataElementId")
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("ReportHealthRiskDataElementId")
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("ReportLocationDataElementId")
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("ReportStatusDataElementId")
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("ReportSuspectedDiseaseDataElementId")
+                        .HasColumnType("varchar(256)");
+
                     b.Property<string>("SuspectedDiseaseDataElementId")
                         .HasColumnType("varchar(256)");
 
@@ -2210,7 +2231,8 @@ namespace RX.Nyss.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NationalSocietyId");
+                    b.HasIndex("NationalSocietyId")
+                        .IsUnique();
 
                     b.ToTable("EidsrConfiguration", "nyss");
                 });
@@ -2290,6 +2312,12 @@ namespace RX.Nyss.Data.Migrations
 
                     b.Property<int>("NationalSocietyId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TelerivetProjectId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelerivetSendSmsApiKey")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -3541,8 +3569,8 @@ namespace RX.Nyss.Data.Migrations
             modelBuilder.Entity("RX.Nyss.Data.Models.EidsrConfiguration", b =>
                 {
                     b.HasOne("RX.Nyss.Data.Models.NationalSociety", "NationalSociety")
-                        .WithMany()
-                        .HasForeignKey("NationalSocietyId")
+                        .WithOne("EidsrConfiguration")
+                        .HasForeignKey("RX.Nyss.Data.Models.EidsrConfiguration", "NationalSocietyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -4216,6 +4244,8 @@ namespace RX.Nyss.Data.Migrations
 
             modelBuilder.Entity("RX.Nyss.Data.Models.NationalSociety", b =>
                 {
+                    b.Navigation("EidsrConfiguration");
+
                     b.Navigation("NationalSocietyUsers");
 
                     b.Navigation("Organizations");

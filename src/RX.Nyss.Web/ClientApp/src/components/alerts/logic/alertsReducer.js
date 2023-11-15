@@ -15,8 +15,11 @@ export function alertsReducer(state = initialState.alerts, action) {
     case actions.OPEN_ALERTS_LIST.INVOKE:
       return { ...state };
 
+    case actions.OPEN_ALERTS_LIST.REQUEST:
+      return { ...state, isFetching: true };
+
     case actions.OPEN_ALERTS_LIST.SUCCESS:
-      return { ...state, listProjectId: action.projectId, filtersData: action.filtersData };
+      return { ...state, listProjectId: action.projectId, filtersData: action.filtersData, isFetching: false };
 
 
     case actions.GET_ALERTS.REQUEST:

@@ -1,29 +1,24 @@
 import styles from "./DataCollectorsPerformanceMapFilters.module.scss"
-import { useState } from 'react';
 import { Grid } from '@material-ui/core';
 import { strings, stringKeys } from "../../../strings";
 import { DatePicker } from "../../forms/DatePicker";
 import { convertToLocalDate, convertToUtc } from "../../../utils/date";
+import useLocalFilters from "../../common/filters/useLocalFilters";
 
 export const DataCollectorsPerformanceMapFilters = ({ filters, onChange }) => {
-  const [value, setValue] = useState(filters);
+  //Reducer for local filters state
+  const [localFilters, updateLocalFilters] = useLocalFilters(filters);
 
-  const handleChange = (change) => {
-    const newValue = {
-      ...value,
-      startDate: convertToUtc(change.startDate),
-      endDate: convertToUtc(change.endDate)
-    }
+  //Fetches new data based on changes in filters
+  const handleFiltersChange = (filters) =>
+    onChange(updateLocalFilters(filters));
 
-    setValue(newValue);
-    onChange(newValue);
-  };
 
   const handleDateFromChange = date =>
-    handleChange({ startDate: date });
+    handleFiltersChange({ startDate: convertToUtc(date) });
 
   const handleDateToChange = date =>
-    handleChange({ endDate: date });
+    handleFiltersChange({ endDate: convertToUtc(date) });
 
   return (
     <Grid container spacing={2} className={styles.filters}>
@@ -31,7 +26,7 @@ export const DataCollectorsPerformanceMapFilters = ({ filters, onChange }) => {
         <DatePicker
           onChange={handleDateFromChange}
           label={strings(stringKeys.dashboard.filters.startDate)}
-          value={convertToLocalDate(value.startDate)}
+          value={convertToLocalDate(localFilters.startDate)}
         />
       </Grid>
 
@@ -39,7 +34,7 @@ export const DataCollectorsPerformanceMapFilters = ({ filters, onChange }) => {
         <DatePicker
           onChange={handleDateToChange}
           label={strings(stringKeys.dashboard.filters.endDate)}
-          value={convertToLocalDate(value.endDate)}
+          value={convertToLocalDate(localFilters.endDate)}
         />
       </Grid>
     </Grid>

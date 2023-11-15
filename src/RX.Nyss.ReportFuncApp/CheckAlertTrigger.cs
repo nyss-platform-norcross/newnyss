@@ -21,7 +21,7 @@ namespace RX.Nyss.ReportFuncApp
         }
 
         [FunctionName("CheckAlert")]
-        public async Task DequeueReport(
+        public async Task CheckAlert(
             [ServiceBusTrigger("%SERVICEBUS_CHECKALERTQUEUE%", Connection = "SERVICEBUS_CONNECTIONSTRING")] int alertId)
         {
             _logger.Log(LogLevel.Debug, $"Checking alert triggered. AlertId: '{alertId}'");

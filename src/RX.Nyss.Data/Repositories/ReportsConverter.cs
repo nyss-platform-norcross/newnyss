@@ -9,6 +9,7 @@ namespace RX.Nyss.Data.Repositories;
 public interface IReportsConverter
 {
     List<EidsrDbReportData> ConvertReports(List<RawReport> reports, DateTime alertDate, int englishContentLanguageId);
+    DhisDbReportData ConvertDhisReport(RawReport rawReport, DateTime reportDate, int englishContentLanguageId);
 }
 
 public class ReportsConverter : IReportsConverter
@@ -39,7 +40,7 @@ public class ReportsConverter : IReportsConverter
         // generate aggregated reports - group them by the organisation unit associated with RawReport District
         return SquashReports(eidsrDbReportData);
     }
-
+    
     private EidsrDbReportData ConvertSingleReport(RawReport rawReport, DateTime alertDate, int englishContentLanguageId)
     {
         if (rawReport.Village.District.EidsrOrganisationUnits.OrganisationUnitId == null)
@@ -72,6 +73,31 @@ public class ReportsConverter : IReportsConverter
             return "male";
         }
 
+        if (report?.ReportedCase != null && (report.ReportedCase.CountUnspecifiedSexAndAge == 1))
+        {
+            return "Unspecified Sex and Age";
+        }
+
+        return "";
+    }
+
+    private string ExtractGender(RawReport rawReport)
+    {
+        if (rawReport.Report?.ReportedCase != null && (rawReport.Report.ReportedCase.CountFemalesBelowFive == 1 || rawReport.Report.ReportedCase.CountFemalesAtLeastFive == 1))
+        {
+            return "female";
+        }
+
+        if (rawReport.Report?.ReportedCase != null && (rawReport.Report.ReportedCase.CountMalesBelowFive == 1 || rawReport.Report.ReportedCase.CountMalesAtLeastFive == 1))
+        {
+            return "male";
+        }
+
+        if (rawReport.Report?.ReportedCase != null && (rawReport.Report.ReportedCase.CountUnspecifiedSexAndAge == 1))
+        {
+            return "Unspecified Sex and Age";
+        }
+
         return "";
     }
 
@@ -89,6 +115,20 @@ public class ReportsConverter : IReportsConverter
 
             var suspectedDiseases = string.Join('/', suspectedDiseasesLanguageContents);
             return suspectedDiseases;
+        }
+        catch (Exception e)
+        {
+            return "";
+        }
+    }
+
+    private static string ExtractHealthRisk(int englishContentLanguageId, RawReport rawReport)
+    {
+        try
+        {
+            var healthRisk = rawReport
+                .Report.ProjectHealthRisk.CaseDefinition;
+            return healthRisk;
         }
         catch (Exception e)
         {
@@ -121,7 +161,7 @@ public class ReportsConverter : IReportsConverter
             })
             .ToList();
     }
-
+    
     private string CreateValuesAndCountsString(List<string> list)
     {
         var valueCountPairs = from x in list
@@ -147,5 +187,27 @@ public class ReportsConverter : IReportsConverter
         return string.Join(", ", valuePairs
             .Where(valuePairs => !string.IsNullOrEmpty(valuePairs.Value))
             .Select(valuePairs => $"{valuePairs.Value}"));
+    }
+
+    public DhisDbReportData ConvertDhisReport(RawReport rawReport, DateTime reportDate, int englishContentLanguageId)
+    {
+        if (rawReport.Village.District.EidsrOrganisationUnits.OrganisationUnitId == null)
+        {
+            throw new ArgumentException("Report's location has no organisation unit.");
+        }
+
+        return new DhisDbReportData
+        {
+            OrgUnit = rawReport.Village.District.EidsrOrganisationUnits.OrganisationUnitId,
+            EventDate = reportDate.ToString("yyyy-MM-dd"),
+
+            ReportLocation = $"{rawReport?.Village?.District?.Region?.Name}/{rawReport?.Village?.District?.Name}/{rawReport?.Village?.Name}",
+            ReportSuspectedDisease = ExtractSuspectedDiseases(englishContentLanguageId, rawReport?.Report),
+            ReportHealthRisk = ExtractHealthRisk(englishContentLanguageId, rawReport),
+            ReportStatus = rawReport?.Report?.Status.ToString(),
+            ReportGender = ExtractGender(rawReport),
+            ReportAgeAtLeastFive = (rawReport?.Report?.ReportedCase?.CountFemalesAtLeastFive + rawReport?.Report?.ReportedCase?.CountMalesAtLeastFive).ToString(),
+            ReportAgeBelowFive = (rawReport?.Report?.ReportedCase?.CountFemalesBelowFive + rawReport?.Report?.ReportedCase?.CountMalesBelowFive).ToString()
+        };
     }
 }

@@ -80,6 +80,7 @@ export function appReducer(state = initialState.appData, action) {
           generalMenu: [],
           sideMenu: [],
           tabMenu: [],
+          projectTabMenu: [],
           title: null
         }
       }
@@ -105,6 +106,12 @@ export function appReducer(state = initialState.appData, action) {
           ...state.mobile,
           sideMenuOpen: action.value
         }
+      }
+
+    case actions.EXPAND_SIDE_MENU:
+      return {
+        ...state,
+        isSideMenuExpanded: action.value
       }
 
     case actions.OPEN_MODULE.FAILURE:

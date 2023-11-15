@@ -1,14 +1,20 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using RX.Nyss.Common.Utils;
 using RX.Nyss.Common.Utils.Logging;
+using RX.Nyss.Data.Concepts;
 using RX.Nyss.Data.Models;
 using RX.Nyss.ReportApi.Configuration;
 using RX.Nyss.ReportApi.Features.Common;
+using Telerivet.Client;
+
 
 namespace RX.Nyss.ReportApi.Services
 {
@@ -17,7 +23,8 @@ namespace RX.Nyss.ReportApi.Services
         Task QueueAlertCheck(int alertId);
         Task SendEmail((string Name, string EmailAddress) to, string emailSubject, string emailBody, bool sendAsTextOnly = false);
         Task SendSms(List<SendSmsRecipient> recipients, GatewaySetting gatewaySetting, string message);
-        Task SendGatewayHttpSms(long number, string message, string apiKey, string projectId);
+        Task SendGatewayHttpSms(List<SendGatewaySmsRecipient> recipients, GatewaySetting gatewaySetting, string message);
+        Task SendTelerivetSms(long number, string message, string apiKey, string projectId);
     }
 
     public class QueuePublisherService : IQueuePublisherService
@@ -99,7 +106,9 @@ namespace RX.Nyss.ReportApi.Services
                     IotHubDeviceName = iotHubDeviceName,
                     PhoneNumber = recipient.PhoneNumber,
                     SmsMessage = smsMessage,
-                    ModemNumber = specifyModemWhenSending ? recipient.Modem : null
+                    ModemNumber = specifyModemWhenSending
+                        ? recipient.Modem
+                        : null
                 };
 
                 var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(sendSms)))
@@ -111,12 +120,73 @@ namespace RX.Nyss.ReportApi.Services
                 return _sendSmsQueueSender.SendMessageAsync(message);
             }));
 
-        public async Task SendGatewayHttpSms(long number, string message, string apiKey, string projectId)
+        public async Task SendGatewayHttpSms(List<SendGatewaySmsRecipient> recipients, GatewaySetting gatewaySetting, string message)
         {
-            
+            if (!string.IsNullOrEmpty(gatewaySetting.GatewaySenderId))
+            {
+                await SendSmsViaDigitalGateway(gatewaySetting, recipients, message);
+            }
+            else if (!string.IsNullOrEmpty(gatewaySetting.EmailAddress))
+            {
+                await SendSmsViaEmail(gatewaySetting.EmailAddress, gatewaySetting.GatewaySenderId, recipients.Select(r => r.PhoneNumber).ToList(), message);
+            }
+            else
+            {
+                _loggerAdapter.Warn($"No email or sender id found for gateway {gatewaySetting.Name}, not able to send feedback SMS!");
+            }
+        }
+
+        private async Task SendSmsViaDigitalGateway(GatewaySetting gatewaySetting, List<SendGatewaySmsRecipient> recipients, string smsMessage) =>
+            await Task.WhenAll(recipients.Select(async recipient =>
+            {
+                using StringContent jsonContent = new(
+                    JsonSerializer.Serialize(new
+                    {
+                        senderId = gatewaySetting.GatewaySenderId,
+                        msisdn = recipient,
+                        message = smsMessage
+                    }),
+                    Encoding.UTF8,
+                    "application/json");
+
+                var httpClient = new HttpClient();
+                var request = new HttpRequestMessage();
+                request.RequestUri = new Uri(gatewaySetting.GatewayUrl);
+                request.Method = HttpMethod.Post;
+                httpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
+                request.Headers.Add(gatewaySetting.GatewayApiKeyName, gatewaySetting.GatewayApiKey);
+                if (gatewaySetting.GatewayExtraKey != null && gatewaySetting.GatewayExtraKeyName != null)
+                {
+                    request.Headers.Add(gatewaySetting.GatewayExtraKeyName, gatewaySetting.GatewayExtraKey);
+                }
+
+                request.Content = jsonContent;
+
+                var response = await httpClient.SendAsync(request);
+
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    _loggerAdapter.Warn($"No send email request is sent to digital gateway with sender id:{gatewaySetting.GatewaySenderId}");
+                }
+                else
+                {
+                    _loggerAdapter.Info(responseString);
+                }
+
+            }));
+
+        public async Task SendTelerivetSms(long number, string message, string apiKey, string projectId)
+        {
+            var tr = new TelerivetAPI(apiKey);
+            var project = tr.InitProjectById(projectId);
+            // send message
+            var sentMsg = await project.SendMessageAsync(Util.Options("content", message, "to_number", number));
+            _loggerAdapter.Info(sentMsg);
         }
     }
-
+};
     public class SendEmailMessage
     {
         public Contact To { get; set; }
@@ -145,4 +215,8 @@ namespace RX.Nyss.ReportApi.Services
 
         public int? ModemNumber { get; set; }
     }
+
+public class SendGatewaySmsRecipient
+{
+    public string PhoneNumber { get; set; }
 }
