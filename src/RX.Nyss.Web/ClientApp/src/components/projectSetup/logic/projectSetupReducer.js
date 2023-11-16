@@ -10,6 +10,8 @@ export const projectSetupInitialState = {
   alertNotHandledNotificationRecipientId: null,
   formFetching: false,
   formData: null,
+  regions: [],
+  newRegions: [],
 }
 
 export function projectSetupReducer(state = projectSetupInitialState, action) {
@@ -18,13 +20,13 @@ export function projectSetupReducer(state = projectSetupInitialState, action) {
       return { ...state, formData: null, formError: null }
 
     case actions.OPEN_PROJECT_SETUP.INVOKE:
-      return { ...state, formFetching: true, formData: null };
+      return { ...state, formFetching: true, formData: null, regions: null };
 
     case actions.OPEN_PROJECT_SETUP.REQUEST:
-      return { ...state, formFetching: true, formData: null };
+      return { ...state, formFetching: true, formData: null, regions: null };
 
     case actions.OPEN_PROJECT_SETUP.SUCCESS:
-      return { ...state, formFetching: false, formData: action.data};
+      return { ...state, formFetching: false, formData: action.data.formData, regions: action.data.regions};
 
     case actions.OPEN_PROJECT_SETUP.FAILURE:
       return { ...state, formFetching: false, formError: action.error };
@@ -49,6 +51,9 @@ export function projectSetupReducer(state = projectSetupInitialState, action) {
 
     case actions.SET_HEALTH_RISKS:
       return { ...state,  healthRisks: action.healthRisks}
+
+    case actions.SET_NEW_REGIONS:
+      return { ...state, newRegions: action.newRegions }
 
     default:
       return state;

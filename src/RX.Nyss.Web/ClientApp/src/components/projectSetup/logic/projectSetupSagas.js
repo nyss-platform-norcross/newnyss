@@ -14,10 +14,12 @@ export const projectSetupSagas = () => [
 function* openProjectSetup({ nationalSocietyId }) {
   yield put(actions.openSetup.request());
   try {
-    const formData = yield call(http.get, `/api/project/getFormData?nationalSocietyId=${nationalSocietyId}`);
-    console.log("formData", formData);
     yield openProjectsModule(nationalSocietyId);
-    yield put(actions.openSetup.success(formData.value));
+
+    const formData = yield call(http.get, `/api/project/getFormData?nationalSocietyId=${nationalSocietyId}`);
+    const regions = yield call(http.get, `/api/nationalSocietyStructure/get?nationalSocietyId=${nationalSocietyId}`);
+
+    yield put(actions.openSetup.success({formData: formData.value, regions: regions.value}));
   } catch (error) {
     yield put(actions.openSetup.failure(error));
   }
