@@ -57,6 +57,12 @@ namespace RX.Nyss.Web.Features.SmsGateways
                     GatewayType = gs.GatewayType,
                     TelerivetApiKey = gs.TelerivetSendSmsApiKey,
                     TelerivetProjectId = gs.TelerivetProjectId,
+                    GatewayApiKey = gs.GatewayApiKey,
+                    GatewayApiKeyName = gs.GatewayApiKeyName,
+                    GatewayExtraKey = gs.GatewayExtraKey,
+                    GatewayExtraKeyName = gs.GatewayExtraKeyName,
+                    GatewayUrl = gs.GatewayUrl,
+                    GatewaySenderId = gs.GatewaySenderId,
                     EmailAddress = gs.EmailAddress,
                     IotHubDeviceName = gs.IotHubDeviceName,
                     ModemOneName = gs.Modems != null && gs.Modems.Any(gm => gm.ModemId == 1)
@@ -114,6 +120,12 @@ namespace RX.Nyss.Web.Features.SmsGateways
                     GatewayType = editGatewaySettingRequestDto.GatewayType,
                     TelerivetSendSmsApiKey = editGatewaySettingRequestDto.TelerivetApiKey,
                     TelerivetProjectId = editGatewaySettingRequestDto.TelerivetProjectId,
+                    GatewayApiKey = editGatewaySettingRequestDto.GatewayApiKey,
+                    GatewayApiKeyName = editGatewaySettingRequestDto.GatewayApiKeyName,
+                    GatewayExtraKey = editGatewaySettingRequestDto.GatewayExtraKey,
+                    GatewayExtraKeyName = editGatewaySettingRequestDto.GatewayExtraKeyName,
+                    GatewayUrl = editGatewaySettingRequestDto.GatewayUrl,
+                    GatewaySenderId = editGatewaySettingRequestDto.GatewaySenderId,
                     EmailAddress = editGatewaySettingRequestDto.EmailAddress,
                     NationalSocietyId = nationalSocietyId,
                     IotHubDeviceName = editGatewaySettingRequestDto.IotHubDeviceName
@@ -153,6 +165,12 @@ namespace RX.Nyss.Web.Features.SmsGateways
                 gatewaySettingToUpdate.GatewayType = editGatewaySettingRequestDto.GatewayType;
                 gatewaySettingToUpdate.TelerivetSendSmsApiKey = editGatewaySettingRequestDto.TelerivetApiKey;
                 gatewaySettingToUpdate.TelerivetProjectId = editGatewaySettingRequestDto.TelerivetProjectId;
+                gatewaySettingToUpdate.GatewayApiKey = editGatewaySettingRequestDto.GatewayApiKey;
+                gatewaySettingToUpdate.GatewayApiKeyName = editGatewaySettingRequestDto.GatewayApiKeyName;
+                gatewaySettingToUpdate.GatewayExtraKeyName = editGatewaySettingRequestDto.GatewayExtraKeyName;
+                gatewaySettingToUpdate.GatewayExtraKey = editGatewaySettingRequestDto.GatewayExtraKey;
+                gatewaySettingToUpdate.GatewayUrl = editGatewaySettingRequestDto.GatewayUrl;
+                gatewaySettingToUpdate.GatewaySenderId = editGatewaySettingRequestDto.GatewaySenderId;
                 gatewaySettingToUpdate.EmailAddress = editGatewaySettingRequestDto.EmailAddress;
                 gatewaySettingToUpdate.IotHubDeviceName = editGatewaySettingRequestDto.IotHubDeviceName;
 

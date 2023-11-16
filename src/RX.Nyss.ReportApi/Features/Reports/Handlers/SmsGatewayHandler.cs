@@ -292,16 +292,15 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
         {
             if (errorReportData == null)
             {
-                var recipients = new List<SendSmsRecipient>
+                var recipients = new List<SendGatewaySmsRecipient>
                 {
-                    new SendSmsRecipient
+                    new SendGatewaySmsRecipient
                     {
-                        PhoneNumber = senderPhoneNumber,
-                        Modem = senderModemNumber
+                        PhoneNumber = senderPhoneNumber
                     }
                 };
 
-                await _queuePublisherService.SendSms(recipients, gatewaySetting, projectHealthRisk.FeedbackMessage);
+                await _queuePublisherService.SendGatewayHttpSms(recipients, gatewaySetting, projectHealthRisk.FeedbackMessage);
 
                 if (alertData != null && alertData.Alert != null)
                 {
@@ -341,16 +340,15 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                 return;
             }
 
-            var senderList = new List<SendSmsRecipient>
+            var senderList = new List<SendGatewaySmsRecipient>
             {
-                new SendSmsRecipient
+                new SendGatewaySmsRecipient
                 {
-                    PhoneNumber = errorReport.DataCollector.PhoneNumber,
-                    Modem = errorReport.ModemNumber
+                    PhoneNumber = errorReport.DataCollector.PhoneNumber
                 }
             };
 
-            await _queuePublisherService.SendSms(senderList, gatewaySetting, feedbackMessage);
+            await _queuePublisherService.SendGatewayHttpSms(senderList, gatewaySetting, feedbackMessage);
         }
 
         private async Task<string> GetFeedbackMessageContent(string key, string languageCode)

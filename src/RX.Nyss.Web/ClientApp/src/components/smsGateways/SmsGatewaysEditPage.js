@@ -57,6 +57,12 @@ const SmsGatewaysEditPageComponent = (props) => {
       gatewayType: props.data.gatewayType.toString(),
       telerivetApiKey: props.data.telerivetApiKey || '',
       telerivetProjectId: props.data.telerivetProjectId || '',
+      gatewayApiKey: props.data.gatewayApiKey || '',
+      gatewayApiKeyName: props.data.gatewayApiKeyName || '',
+      gatewayExtraKey: props.data.gatewayExtraKey || '',
+      gatewayExtraKeyName: props.data.gatewayExtraKeyName || '',
+      gatewayUrl: props.data.gatewayUrl || '',
+      gatewaySenderId: props.data.gatewaySenderId || '',
       emailAddress: props.data.emailAddress,
       useIotHub: !!props.data.iotHubDeviceName,
       iotHubDeviceName: props.data.iotHubDeviceName || '',
@@ -71,6 +77,12 @@ const SmsGatewaysEditPageComponent = (props) => {
       gatewayType: [validators.required],
       telerivetApiKey: [validators.requiredWhen(tr => tr.gatewayType.toString() === telerivet)],
       telerivetProjectId: [validators.requiredWhen(tp => tp.gatewayType.toString() === telerivet)],
+      gatewayApiKey: [validators.requiredWhen(tr => tr.gatewayType.toString() === smsGateway)],
+      gatewayApiKeyName: [validators.requiredWhen(tp => tp.gatewayType.toString() === smsGateway)],
+      //gatewayExtraKey: [validators.requiredWhen(tr => tr.gatewayType.toString() === smsGateway)],
+      //gatewayExtraKeyName: [validators.requiredWhen(tp => tp.gatewayType.toString() === smsGateway)],
+      gatewayUrl: [validators.requiredWhen(tr => tr.gatewayType.toString() === smsGateway)],
+      gatewaySenderId: [validators.requiredWhen(tp => tp.gatewayType.toString() === smsGateway)],
       emailAddress: [validators.emailWhen(_ => _.gatewayType.toString() === smsEagle && _.useIotHub === false)],
       iotHubDeviceName: [validators.requiredWhen(x => x.useIotHub === true)],
       modemOneName: [validators.requiredWhen(x => x.useDualModem === true), validators.maxLength(100)],
@@ -106,6 +118,12 @@ const SmsGatewaysEditPageComponent = (props) => {
       gatewayType: values.gatewayType,
       telerivetApiKey: values.gatewayType.toString() === telerivet ? values.telerivetApiKey : null,
       telerivetProjectId: values.gatewayType.toString() === telerivet ? values.telerivetProjectId : null,
+      gatewayApiKey: values.gatewayType.toString() === smsGateway ? values.gatewayApiKey : null,
+      gatewayApiKeyName: values.gatewayType.toString() === smsGateway ? values.gatewayApiKeyName : null,
+      gatewayExtraKey: values.gatewayType.toString() === smsGateway ? values.gatewayExtraKey : null,
+      gatewayExtraKeyName: values.gatewayType.toString() === smsGateway ? values.gatewayExtraKeyName : null,
+      gatewayUrl: values.gatewayType.toString() === smsGateway ? values.gatewayUrl : null,
+      gatewaySenderId: values.gatewayType.toString() === smsGateway ? values.gatewaySenderId : null,
       emailAddress: values.emailAddress,
       iotHubDeviceName: values.useIotHub ? values.iotHubDeviceName : null,
       modemOneName: values.useDualModem ? values.modemOneName : null,
@@ -208,6 +226,40 @@ const SmsGatewaysEditPageComponent = (props) => {
               name="telerivetProjectId"
               field={form.fields.telerivetProjectId} />
           </Grid>
+
+          <Grid item xs={12}>
+            <TextInputField
+              label={strings(stringKeys.smsGateway.form.gatewayApiKeyName)}
+              name="gatewayApiKeyName"
+              field={form.fields.gatewayApiKeyName} />
+            <TextInputField
+              label={strings(stringKeys.smsGateway.form.gatewayApiKey)}
+              name="gatewayApiKey"
+              field={form.fields.gatewayApiKey} />
+          </Grid>
+          <Grid item xs={12}>
+            <TextInputField
+              label={strings(stringKeys.smsGateway.form.gatewayExtraKeyName)}
+              name="gatewayExtraKeyName"
+              field={form.fields.gatewayExtraKeyName} />
+            <TextInputField
+              label={strings(stringKeys.smsGateway.form.gatewayExtraKey)}
+              name="gatewayExtraKey"
+              field={form.fields.gatewayExtraKey} />
+          </Grid>
+          <Grid item xs={12}>
+            <TextInputField
+              label={strings(stringKeys.smsGateway.form.gatewayUrl)}
+              name="gatewayUrl"
+              field={form.fields.gatewayUrl} />
+          </Grid>
+          <Grid item xs={12}>
+            <TextInputField
+              label={strings(stringKeys.smsGateway.form.gatewaySenderId)}
+              name="gatewaySenderId"
+              field={form.fields.gatewaySenderId} />
+          </Grid>
+
           <Grid item xs={12}>
             <CheckboxField
               label={strings(stringKeys.smsGateway.form.useIotHub)}
