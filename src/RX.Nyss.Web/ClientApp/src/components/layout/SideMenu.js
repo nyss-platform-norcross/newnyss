@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
     '& .MuiDrawer-paper': {
       borderRight: 'none',
+      borderLeft: 'none',
     },
   },
   drawerOpen: {
@@ -120,7 +121,7 @@ const SideMenuComponent = ({ generalMenu, sideMenu, sideMenuOpen, toggleSideMenu
           <div className={classes.SideMenu}>
             <ExpandButton onClick={handleExpandClick} isExpanded={isSideMenuExpanded}/>
             <div className={styles.sideMenuHeader}>
-                <Link to="/" className={userLanguageCode !== 'ar' ? classes.logo : styles.logoDirectionRightToLeft}>
+                <Link to="/" className={classes.logo}>
                   <img className={classes.image} src={!isSideMenuExpanded && !isSmallScreen ? "/images/logo-small.svg" : "/images/logo.svg"} alt="Nyss logo" />
                 </Link>
               </div>
