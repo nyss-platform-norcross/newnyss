@@ -3,7 +3,8 @@ import {
   OPEN_PROJECT_SETUP, CREATE_PROJECT,
   OPEN_ERROR_MESSAGES,
   SET_PROJECT_NAME,
-  SET_ORGANIZATION_ID
+  SET_ORGANIZATION_ID,
+  SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_ID
 } from "./projectSetupConstants";
 
 export const goToList = (nationalSocietyId) => push(`/nationalsocieties/${nationalSocietyId}/projects`);
@@ -26,5 +27,7 @@ export const create = {
 export const setProjectName = (projectName) => ({ type: SET_PROJECT_NAME, projectName })
 
 export const setOrganizationId = (organizationId) => ({ type: SET_ORGANIZATION_ID, organizationId })
+
+export const setAlertNotHandledNotificationRecipientId = (alertNotHandledNotificationRecipientId) => ({ type: SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_ID, alertNotHandledNotificationRecipientId })
 
 export const openErrorMessages = (projectId) => ({ type: OPEN_ERROR_MESSAGES, projectId });

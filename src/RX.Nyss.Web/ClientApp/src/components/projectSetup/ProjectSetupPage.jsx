@@ -7,7 +7,7 @@ import * as projectSetupActions from './logic/projectSetupActions';
 import { useMount } from '../../utils/lifecycle';
 
 
-const ProjectSetupPageComponent = ({nationalSocietyId, openProjectSetup, setProjectName, setOrganizationId, isFetching, ...props}) => {
+const ProjectSetupPageComponent = ({nationalSocietyId, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, isFetching, ...props}) => {
 
   useMount(() => {
     openProjectSetup(nationalSocietyId);
@@ -36,6 +36,7 @@ const mapDispatchToProps = {
   openProjectSetup: projectSetupActions.openSetup.invoke,
   setProjectName: projectSetupActions.setProjectName,
   setOrganizationId: projectSetupActions.setOrganizationId,
+  setAlertNotHandledNotificationRecipientId: projectSetupActions.setAlertNotHandledNotificationRecipientId,
 };
 
 export const ProjectSetupPage = withLayout(
