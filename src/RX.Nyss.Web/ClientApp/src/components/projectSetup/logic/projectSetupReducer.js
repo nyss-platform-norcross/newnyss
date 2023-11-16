@@ -47,6 +47,9 @@ export function projectSetupReducer(state = projectSetupInitialState, action) {
     case actions.SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_ID:
       return { ...state,  alertNotHandledNotificationRecipientId: action.alertNotHandledNotificationRecipientId}
 
+    case actions.SET_HEALTH_RISKS:
+      return { ...state,  healthRisks: action.healthRisks}
+
     default:
       return state;
   }

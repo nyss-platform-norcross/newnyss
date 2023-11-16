@@ -4,7 +4,8 @@ import {
   OPEN_ERROR_MESSAGES,
   SET_PROJECT_NAME,
   SET_ORGANIZATION_ID,
-  SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_ID
+  SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_ID,
+  SET_HEALTH_RISKS
 } from "./projectSetupConstants";
 
 export const goToList = (nationalSocietyId) => push(`/nationalsocieties/${nationalSocietyId}/projects`);
@@ -24,10 +25,14 @@ export const create = {
   failure: (error) => ({ type: CREATE_PROJECT.FAILURE, error, suppressPopup: true  })
 };
 
+export const openErrorMessages = (projectId) => ({ type: OPEN_ERROR_MESSAGES, projectId });
+
 export const setProjectName = (projectName) => ({ type: SET_PROJECT_NAME, projectName })
 
 export const setOrganizationId = (organizationId) => ({ type: SET_ORGANIZATION_ID, organizationId })
 
 export const setAlertNotHandledNotificationRecipientId = (alertNotHandledNotificationRecipientId) => ({ type: SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_ID, alertNotHandledNotificationRecipientId })
 
-export const openErrorMessages = (projectId) => ({ type: OPEN_ERROR_MESSAGES, projectId });
+export const setHealthRisks = (healthRisks) => ({ type: SET_HEALTH_RISKS, healthRisks })
+
+
