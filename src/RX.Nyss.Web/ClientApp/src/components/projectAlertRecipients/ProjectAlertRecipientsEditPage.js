@@ -25,6 +25,7 @@ import {
 import { MultiSelect } from '../forms/MultiSelect';
 import SelectField from '../forms/SelectField';
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
+import { SubMenuTitle } from '../layout/SubMenuTitle';
 
 const ProjectAlertRecipientsEditPageComponent = ({ formData, listData, alertRecipient, projectId, alertRecipientId, isSaving, error, directionRtl, openEdition, edit, goToList }) => {
   const [freeTextOrganizations, setFreeTextOrganizations] = useState([]);
@@ -118,6 +119,7 @@ const ProjectAlertRecipientsEditPageComponent = ({ formData, listData, alertReci
 
   return (
     <Fragment>
+      <SubMenuTitle />
       {error && <ValidationMessage message={error} />}
 
       <Form onSubmit={handleSubmit} fullWidth style={{ maxWidth: 800 }}>

@@ -18,6 +18,7 @@ import { getSaveFormModel } from './logic/projectsService';
 import { Loading } from '../common/loading/Loading';
 import { ValidationMessage } from '../forms/ValidationMessage';
 import CheckboxField from '../forms/CheckboxField';
+import { SubMenuTitle } from '../layout/SubMenuTitle';
 
 
 const ProjectsEditPageComponent = (props) => {
@@ -87,7 +88,7 @@ const ProjectsEditPageComponent = (props) => {
     }
   }
 
-  const getSelectedHealthRiskValue = () => 
+  const getSelectedHealthRiskValue = () =>
     healthRiskDataSource.filter(hr => (selectedHealthRisks.some(shr => shr.healthRiskId === hr.value))).sort((a, b) => a.data.healthRiskType === 'Activity' ? -1 : 1);
 
   useCustomErrors(form, props.error);
@@ -98,6 +99,7 @@ const ProjectsEditPageComponent = (props) => {
 
   return (
     <Fragment>
+      <SubMenuTitle />
       {props.error && <ValidationMessage message={props.error.message} />}
 
       <Form onSubmit={handleSubmit} fullWidth style={{ maxWidth: 800 }}>

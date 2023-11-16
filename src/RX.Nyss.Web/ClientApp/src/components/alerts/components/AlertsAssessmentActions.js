@@ -115,16 +115,15 @@ export const AlertsAssessmentActions = ({
                     />
 
                     <div className={styles.escalateWithoutNotificationWrapper}>
-                      <CheckboxField className={styles.escalateWithoutNotificationCheckbox}
-                                     name="escalateWithoutNotification"
+                      <CheckboxField name="escalateWithoutNotification"
                                      label={strings(stringKeys.alerts.assess.alert.escalateWithoutNotification)}
                                      field={form.fields.escalateWithoutNotification}
                       />
+                    </div>
 
-                      <SubmitButton onClick={handleEscalateAlert}>
+                    <SubmitButton onClick={handleEscalateAlert}>
                         {strings(stringKeys.alerts.assess.alert.escalate)}
                       </SubmitButton>
-                    </div>
                   </Fragment>
                 )}
 

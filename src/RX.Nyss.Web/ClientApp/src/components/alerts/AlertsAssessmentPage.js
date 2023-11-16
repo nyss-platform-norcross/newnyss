@@ -13,6 +13,7 @@ import { AlertsAssessmentReport } from "./components/AlertsAssessmentReport";
 import { assessmentStatus } from "./logic/alertsConstants";
 import { AlertsAssessmentActions } from "./components/AlertsAssessmentActions";
 import AlertNotificationRecipients from "./components/AlertNotificationRecipients";
+import { SubMenuTitle } from '../layout/SubMenuTitle';
 
 const getAssessmentStatusInformation = (status) => {
   switch (status) {
@@ -61,6 +62,7 @@ const AlertsAssessmentPageComponent = ({ alertId, projectId, data, ...props }) =
 
   return (
     <Fragment>
+      <SubMenuTitle />
       <div className={styles.form}>
         <DisplayField
           label={strings(getAssessmentStatusInformation(data.assessmentStatus))}

@@ -7,6 +7,7 @@ import ProjectAlertRecipientsTable from './ProjectAlertRecipientsTable';
 import { useMount } from '../../utils/lifecycle';
 import { strings, stringKeys } from '../../strings';
 import { TableActionsButton } from '../common/buttons/tableActionsButton/TableActionsButton';
+import TableHeader from '../common/tableHeader/TableHeader';
 
 const ProjectAlertRecipientsListPageComponent = (props) => {
   useMount(() => {
@@ -17,17 +18,19 @@ const ProjectAlertRecipientsListPageComponent = (props) => {
 
   return (
     <Fragment>
-      {!props.nationalSocietyIsArchived && !props.projectIsClosed &&
-      <TableActions>
-        <TableActionsButton
-          onClick={() => props.goToCreation(props.projectId)}
-          add
-          variant="contained"
-          rtl={useRtlDirection}
-        >
-          {strings(stringKeys.common.buttons.add)}
-        </TableActionsButton>
-      </TableActions>}
+      <TableHeader>
+        {!props.nationalSocietyIsArchived && !props.projectIsClosed &&
+        <TableActions>
+          <TableActionsButton
+            onClick={() => props.goToCreation(props.projectId)}
+            add
+            variant="contained"
+            rtl={useRtlDirection}
+          >
+            {strings(stringKeys.common.buttons.add)}
+          </TableActionsButton>
+        </TableActions>}
+      </TableHeader>
 
       <ProjectAlertRecipientsTable
         list={props.list}
