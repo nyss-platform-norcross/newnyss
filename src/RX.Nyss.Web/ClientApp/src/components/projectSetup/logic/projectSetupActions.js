@@ -22,4 +22,6 @@ export const create = {
   failure: (error) => ({ type: CREATE_PROJECT.FAILURE, error, suppressPopup: true  })
 };
 
+export const setProjectName = (projectName) => ({ type: SET_PROJECT_NAME, projectName })
+
 export const openErrorMessages = (projectId) => ({ type: OPEN_ERROR_MESSAGES, projectId });

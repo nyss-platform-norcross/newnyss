@@ -38,6 +38,9 @@ export function projectSetupReducer(state = projectSetupInitialState, action) {
     case actions.CREATE_PROJECT.FAILURE:
       return { ...state, formSaving: false, formError: action.error };
 
+    case actions.SET_PROJECT_NAME:
+      return { ...state,  projectName: action.projectName}
+
     default:
       return state;
   }
