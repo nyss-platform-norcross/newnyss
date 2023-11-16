@@ -23,6 +23,8 @@ namespace RX.Nyss.Web.Features.Users
         Task<string> GetUserApplicationLanguageCode(string userIdentityName);
 
         Task<Result<NationalSocietyUsersEditFormDataResponseDto>> GetEditFormData(int nationalSocietyUserId, int nationalSocietyId);
+
+        Task UpdateUserEmail(User user, string email);
     }
 
     public class UserService : IUserService
@@ -185,6 +187,24 @@ namespace RX.Nyss.Web.Features.Users
                     || uns.OrganizationId == query.Where(x => x.User == currentUser).Select(x => x.OrganizationId).FirstOrDefault()),
                 _ => query.Where(uns => uns.OrganizationId == query.Where(x => x.User == currentUser).Select(x => x.OrganizationId).FirstOrDefault())
             };
+        }
+
+        public async Task UpdateUserEmail(User user, string newEmail)
+        {
+            var oldEmail = user.EmailAddress;
+
+            if (newEmail != null && newEmail != oldEmail) // email is changed
+            {
+                if (await _nyssContext.Users.AnyAsync(usr => usr.EmailAddress == newEmail)) // new email already exists in nyssContext
+                {
+                    throw new ResultException(ResultKey.User.Registration.EmailIsTaken);
+                }
+
+                // Update user email address and isFirstLogin state
+                user.EmailAddress = newEmail;
+                user.IsFirstLogin = true;
+            }
+
         }
     }
 }
