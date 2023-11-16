@@ -41,6 +41,9 @@ export function projectSetupReducer(state = projectSetupInitialState, action) {
     case actions.SET_PROJECT_NAME:
       return { ...state,  projectName: action.projectName}
 
+    case actions.SET_ORGANIZATION_ID:
+      return { ...state,  organizationId: action.organizationId}
+
     default:
       return state;
   }

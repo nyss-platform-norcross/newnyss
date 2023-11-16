@@ -2,7 +2,8 @@ import { push } from "connected-react-router";
 import {
   OPEN_PROJECT_SETUP, CREATE_PROJECT,
   OPEN_ERROR_MESSAGES,
-  SET_PROJECT_NAME
+  SET_PROJECT_NAME,
+  SET_ORGANIZATION_ID
 } from "./projectSetupConstants";
 
 export const goToList = (nationalSocietyId) => push(`/nationalsocieties/${nationalSocietyId}/projects`);
@@ -23,5 +24,7 @@ export const create = {
 };
 
 export const setProjectName = (projectName) => ({ type: SET_PROJECT_NAME, projectName })
+
+export const setOrganizationId = (organizationId) => ({ type: SET_ORGANIZATION_ID, organizationId })
 
 export const openErrorMessages = (projectId) => ({ type: OPEN_ERROR_MESSAGES, projectId });
