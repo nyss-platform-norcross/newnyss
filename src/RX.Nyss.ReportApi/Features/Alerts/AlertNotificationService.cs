@@ -81,9 +81,19 @@ namespace RX.Nyss.ReportApi.Features.Alerts
                 .Concat(phoneNumbersOfHeadSupervisorsInAlert)
                 .ToListAsync();
 
-            var message = await CreateNotificationMessageForNewAlert(alert);
+            if (gatewaySetting.GatewayType == GatewayType.Telerivet)
+            {
+                var message = await CreateNotificationMessageForNewAlert(alert);
+                foreach (var i in recipients)
+                {
+                    var l1 = (long)Convert.ToDouble(i);
+                    await _queuePublisherService.SendTelerivetSms(l1, message, gatewaySetting.TelerivetSendSmsApiKey, gatewaySetting.TelerivetProjectId);
+                }
+            }
 
-            await _queuePublisherService.SendSms(recipients, gatewaySetting, message);
+
+            //var message = await CreateNotificationMessageForNewAlert(alert);
+            //await _queuePublisherService.SendSms(recipients, gatewaySetting, message);
             await _queuePublisherService.QueueAlertCheck(alert.Id);
         }
 
@@ -94,9 +104,25 @@ namespace RX.Nyss.ReportApi.Features.Alerts
                 PhoneNumber = s.PhoneNumber,
                 Modem = s.Modem
             }).ToList();
-            var message = await CreateNotificationMessageForExistingAlert(alert);
+            if (gatewaySetting.GatewayType == GatewayType.SmsEagle)
+            {
+                var message = await CreateNotificationMessageForExistingAlert(alert);
 
-            await _queuePublisherService.SendSms(phoneNumbers, gatewaySetting, message);
+                await _queuePublisherService.SendSms(phoneNumbers, gatewaySetting, message);
+            }
+
+            if (gatewaySetting.GatewayType == GatewayType.Telerivet)
+            {
+                var message = await CreateNotificationMessageForExistingAlert(alert);
+                foreach (var i in phoneNumbers)
+                {
+                    var l1 = (long)Convert.ToDouble(i);
+                    await _queuePublisherService.SendTelerivetSms(l1, message, gatewaySetting.TelerivetSendSmsApiKey, gatewaySetting.TelerivetProjectId);
+                }
+            }
+
+
+
         }
 
         public async Task<IEnumerable<SupervisorSmsRecipient>> GetSupervisorsConnectedToExistingAlert(int alertId) =>
