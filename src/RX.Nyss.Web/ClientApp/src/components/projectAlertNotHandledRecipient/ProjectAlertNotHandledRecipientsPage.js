@@ -85,10 +85,10 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
         {strings(stringKeys.projectAlertNotHandledRecipient.description)}
       </Typography>
       <Grid container style={{ marginTop: 10 }}>
-        {unhandledRecipients?.map((r) => (
+        {unhandledRecipients?.map((recipient) => (
             <ProjectAlertNotHandledRecipientItem
-              key={`alertNotHandledRecipient_${r.userId}`}
-              unhandledRecipient={r}
+              key={`alertNotHandledRecipient_${recipient.userId}`}
+              unhandledRecipient={recipient}
               unhandledRecipients={unhandledRecipients}
               setUnhandledRecipients={setUnhandledRecipients}
               isAdministrator={isAdministrator}
