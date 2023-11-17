@@ -1,6 +1,6 @@
 import styles from "./ReportsListPage.module.scss";
 
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
 import * as reportsActions from './logic/reportsActions';
@@ -16,6 +16,7 @@ import { Hidden, Icon } from "@material-ui/core";
 import * as roles from '../../authentication/roles';
 import { SendReportDialog } from "./SendReportDialog";
 import * as appActions from "../app/logic/appActions";
+import TableHeader from "../common/tableHeader/TableHeader";
 
 const Page = "correct";
 
@@ -30,15 +31,12 @@ const CorrectReportsListPageComponent = (props) => {
     props.openReportsList(props.projectId);
   });
 
-  if (!props.data || !props.filters || !props.sorting) {
-    return null;
-  }
-
   const handleRefresh = () =>
     props.getList(props.projectId, 1);
 
-  const handleFiltersChange = (filters) =>
-    props.getList(props.projectId, 1, filters, props.sorting);
+  //useCallback important to avoid infinite loop from useEffect in ReportFilters
+  const handleFiltersChange = useCallback((filters) =>
+    props.getList(props.projectId, 1, filters, props.sorting), [props.getList, props.projectId, props.sorting]);
 
   const handlePageChange = (page) =>
     props.getList(props.projectId, page, props.filters, props.sorting);
@@ -62,42 +60,48 @@ const CorrectReportsListPageComponent = (props) => {
     props.exportToExcel(props.projectId, props.filters, props.sorting);
   }
 
+  if (!props.data || !props.filters || !props.sorting) {
+    return null;
+  }
+
   return (
     <Fragment>
-      <TableActions>
-        <Hidden xsDown>
+      <TableHeader>
+        <TableActions>
+          <Hidden xsDown>
+            <TableActionsButton
+              variant={"text"}
+              onClick={handleRefresh}
+              isFetching={props.isListFetching}
+            >
+              <Icon>refresh</Icon>
+            </TableActionsButton>
+          </Hidden>
+
           <TableActionsButton
-            variant={"text"}
-            onClick={handleRefresh}
-            isFetching={props.isListFetching}
+            onClick={exportToCsv}
+            variant={"outlined"}
           >
-            <Icon>refresh</Icon>
+            {strings(stringKeys.reports.list.exportToCsv)}
           </TableActionsButton>
-        </Hidden>
 
-        <TableActionsButton
-          onClick={exportToCsv}
-          variant={"outlined"}
-        >
-          {strings(stringKeys.reports.list.exportToCsv)}
-        </TableActionsButton>
-
-        <TableActionsButton
-          onClick={exportToExcel}
-          variant={"outlined"}
-        >
-          {strings(stringKeys.reports.list.exportToExcel)}
-        </TableActionsButton>
-
-        {canSendReport &&
           <TableActionsButton
-            onClick={handleSendReport}
-            variant={"contained"}
+            onClick={exportToExcel}
+            variant={"outlined"}
           >
-            {strings(stringKeys.reports.list.sendReport)}
+            {strings(stringKeys.reports.list.exportToExcel)}
           </TableActionsButton>
-        }
-      </TableActions>
+
+          {canSendReport &&
+            <TableActionsButton
+              onClick={handleSendReport}
+              variant={"contained"}
+            >
+              {strings(stringKeys.reports.list.sendReport)}
+            </TableActionsButton>
+          }
+        </TableActions>
+      </TableHeader>
 
       {open && (
         <SendReportDialog close={() => setOpen(false)}

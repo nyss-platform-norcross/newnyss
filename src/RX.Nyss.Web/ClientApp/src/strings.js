@@ -211,6 +211,12 @@ export const stringKeys = {
       gatewayType: "smsGateway.form.gatewayType",
       telerivetApiKey: "smsGateway.form.telerivetApiKey",
       telerivetProjectId: "smsGateway.form.telerivetProjectId",
+      gatewayApiKeyName: "smsGateway.form.gatewayApiKeyName",
+      gatewayApiKey: "smsGateway.form.gatewayApiKey",
+      gatewayExtraKeyName: "smsGateway.form.gatewayExtraKeyName",
+      gatewayExtraKey: "smsGateway.form.gatewayExtraKey",
+      gatewayUrl: "smsGateway.form.gatewayUrl",
+      gatewaySenderId: "smsGateway.form.gatewaySenderId",
       emailAddress: "smsGateway.form.emailAddress",
       useIotHub: "smsGateway.form.useIotHub",
       iotHubDeviceName: "smsGateway.form.iotHubDeviceName",
@@ -1060,6 +1066,9 @@ export const stringKeys = {
       edit: "common.buttons.edit",
       update: "common.buttons.update",
       goBack: "common.buttons.goBack",
+      previous: "common.buttons.previous",
+      finish: "common.buttons.finish",
+      next: "common.buttons.next",
       tryAgain: "common.buttons.tryAgain"
     },
     boolean: {

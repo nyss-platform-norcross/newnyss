@@ -9,6 +9,7 @@ import { DataCollectorsPerformanceMap } from './components/DataCollectorsPerform
 import { DataCollectorsPerformanceMapFilters } from './components/DataCollectorsPerformanceMapFilters';
 import { DataCollectorsPerformanceMapLegend } from './components/DataCollectorsPerformanceMapLegend';
 import * as tracking from "../../utils/tracking";
+import TableHeader from '../common/tableHeader/TableHeader';
 
 const DataCollectorsMapOverviewPageComponent = (props) => {
   useMount(() => {
@@ -17,9 +18,8 @@ const DataCollectorsMapOverviewPageComponent = (props) => {
 
   const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
 
-  const handleFiltersChange = (value) => {
+  const handleFiltersChange = (value) =>
     props.getDataCollectorsMapOverview(props.projectId, value)
-  };
 
   useEffect(() => {
     props.trackPage("DataCollectorsMapOverviewPage");
@@ -27,10 +27,11 @@ const DataCollectorsMapOverviewPageComponent = (props) => {
 
   if (!props.filters) {
     return null;
-  }  
+  }
 
   return (
     <Fragment>
+      <TableHeader />
       <DataCollectorsPerformanceMapFilters
         onChange={handleFiltersChange}
         filters={props.filters}

@@ -14,6 +14,7 @@ namespace RX.Nyss.ReportApi.Features.Reports
 
         Task<bool> ReceiveTelerivetReport(TelerivetReport t);
         Task<bool> RegisterEidsrEvent(EidsrReport eidsrReport);
+        Task<bool> RegisterDhisReport(DhisReport dhisReport);
     }
 
     public class ReportService : IReportService
@@ -23,6 +24,7 @@ namespace RX.Nyss.ReportApi.Features.Reports
         private readonly ITelerivetHandler _telerivetHandler;
         private readonly ISmsGatewayHandler _smsGatewayHandler;
         private readonly IEidsrReportHandler _eidsrReportHandler;
+        private readonly IDhisReportHandler _dhisReportHandler;
         private readonly ILoggerAdapter _loggerAdapter;
 
         public ReportService(
@@ -31,6 +33,7 @@ namespace RX.Nyss.ReportApi.Features.Reports
             INyssReportHandler nyssReportHandler,
             ITelerivetHandler telerivetHandler,
             IEidsrReportHandler eidsrReportHandler,
+            IDhisReportHandler dhisReportHandler,
             ISmsGatewayHandler smsGatewayHandler)
         {
             _smsEagleHandler = smsEagleHandler;
@@ -39,34 +42,33 @@ namespace RX.Nyss.ReportApi.Features.Reports
             _telerivetHandler = telerivetHandler;
             _eidsrReportHandler = eidsrReportHandler;
             _smsGatewayHandler = smsGatewayHandler;
+            _dhisReportHandler = dhisReportHandler;
         }
 
         public async Task<bool> ReceiveReport(Report report)
         {
-            if (report == null)
+            /*if (report.Content == null)
             {
                 _loggerAdapter.Error("Received a report with null value.");
                 return false;
-            }
+            }*/
 
             _loggerAdapter.Debug($"Received report: {report}");
 
-            if (report.ReportSource == ReportSource.Nyss)
+            switch (report.ReportSource)
             {
-                await _nyssReportHandler.Handle(report.Content);
-            }
-            else if (report.ReportSource == ReportSource.SmsEagle)
-            {
-                await _smsEagleHandler.Handle(report.Content);
-            }
-            else if (report.ReportSource == ReportSource.SmsGateway)
-            {
-                await _smsGatewayHandler.Handle(report.Content);
-            }
-            else 
-            {
-                _loggerAdapter.Error("Received a report with unknown source.");
-                return false;
+                case ReportSource.SmsEagle:
+                    await _smsEagleHandler.Handle(report.Content);
+                    break;
+                case ReportSource.Nyss:
+                    await _nyssReportHandler.Handle(report.Content);
+                    break;
+                case ReportSource.SmsGateway:
+                    await _smsGatewayHandler.Handle(report.Content);
+                    break;
+                default:
+                    _loggerAdapter.Error($"Could not find a proper handler to handle a report '{report}'.");
+                    break;
             }
 
             return true;
@@ -106,6 +108,17 @@ namespace RX.Nyss.ReportApi.Features.Reports
             }
 
             return await _eidsrReportHandler.Handle(eidsrReport);
+        }
+
+        public async Task<bool> RegisterDhisReport(DhisReport dhisReport)
+        {
+            if (dhisReport == null)
+            {
+                _loggerAdapter.Error("Received a dhisReport with null value.");
+                return false;
+            }
+
+            return await _dhisReportHandler.Handle(dhisReport);
         }
     }
 }

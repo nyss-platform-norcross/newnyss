@@ -130,11 +130,11 @@ export const AccountSection = ({handleItemClick, isExpanded}) => {
               expanded: classes.AccordionSummaryExpanded,
             }}
             >
-            
+
               <RcIcon icon="UserCircle" style={{
                 fontSize: "24px",
               }}/>
-            
+
           {isExpanded && (
             <Typography className={classes.User}>{user.name}</Typography>
             )}
@@ -142,7 +142,7 @@ export const AccountSection = ({handleItemClick, isExpanded}) => {
         </div>
         </Tooltip>
         <AccordionDetails className={classes.AccordionDetails}>
-        <List component="nav" className={classes.List} aria-label="Side navigation menu" disablePadding>
+        <List style={{ maxWidth: "inherit" }} component="nav" className={classes.List} aria-label="Side navigation menu" disablePadding>
           {isExpanded && (
             <ListItem className={classes.ListItemUser}>
               <ListItemText className={classes.ListItemTextUserContainer}>
@@ -166,9 +166,11 @@ export const AccountSection = ({handleItemClick, isExpanded}) => {
               </ListItemIcon>
             </Tooltip>
             {isExpanded && (
-            <ListItemText classes={{ primary: classes.ListItemText, root: classes.ListItemTextWrapper }}>
-              {strings(stringKeys.feedback.send)}
-            </ListItemText>
+            <Tooltip title={strings(stringKeys.feedback.send)}>
+              <ListItemText classes={{ primary: classes.ListItemText, root: classes.ListItemTextWrapper }} primaryTypographyProps={{ noWrap: true }}>
+                {strings(stringKeys.feedback.send)}
+              </ListItemText>
+            </Tooltip>
             )}
           </ListItem>
           <ListItem button onClick={handleLogout} className={classes.ListItem}>
@@ -178,9 +180,11 @@ export const AccountSection = ({handleItemClick, isExpanded}) => {
               </ListItemIcon>
             </Tooltip>
             {isExpanded && (
-              <ListItemText classes={{ primary: classes.ListItemText, root: classes.ListItemTextWrapper }}>
-                {strings(stringKeys.user.logout)}
-              </ListItemText>
+              <Tooltip title={strings(stringKeys.user.logout)}>
+                <ListItemText classes={{ primary: classes.ListItemText, root: classes.ListItemTextWrapper }} primaryTypographyProps={{ noWrap: true }}>
+                  {strings(stringKeys.user.logout)}
+                </ListItemText>
+              </Tooltip>
             )}
           </ListItem>
         </List>

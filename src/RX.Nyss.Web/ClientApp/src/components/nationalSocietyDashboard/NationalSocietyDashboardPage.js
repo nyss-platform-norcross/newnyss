@@ -28,9 +28,7 @@ const NationalSocietyDashboardPageComponent = ({ nationalSocietyId, openDashboar
   const dashboardElement = useRef(null);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
-
-  const handleFiltersChange = (filters) =>
-    getDashboardData(nationalSocietyId, filters);
+  const handleFiltersChange = (filters) => getDashboardData(nationalSocietyId, filters);
 
   if (!props.filters) {
     return <Loading />;

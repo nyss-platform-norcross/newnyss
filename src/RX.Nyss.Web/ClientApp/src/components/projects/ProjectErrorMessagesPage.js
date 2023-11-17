@@ -16,6 +16,7 @@ import * as http from "../../utils/http";
 import { openErrorMessages } from "./logic/projectsActions";
 import styles from "./ProjectErrorMessagesPage.module.scss";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
+import TableHeader from "../common/tableHeader/TableHeader";
 
 const MESSAGE_MAX_LEN = 320;
 const MESSAGE_WARNING_LEN = 160;
@@ -79,57 +80,60 @@ const ProjectErrorMessagesPageComponent = (props) => {
   }
 
   return (
-    <Form onSubmit={onSubmit} fullWidth>
-      <Grid container spacing={4} fixed="true" style={{ maxWidth: 800 }}>
-        {errorMessages.map(itm => (
-          <Grid item xs={12} key={itm.key}>
-            <Card>
-              <CardContent>
-                <Typography variant="h3">{strings(`${itm.key}.title`)}</Typography>
-                {!form && (
-                  <Typography variant="body1" gutterBottom>
-                    {itm.message}
-                  </Typography>
-                )}
-                {form && (<>
-                  <TextInputField
-                    className={styles.input}
-                    name={itm.key}
-                    field={form.fields[itm.key]}
-                    multiline
-                  />
-                  <InputWarningMessage formField={form.fields[itm.key]} />
-                  </>
-                )}
-              </CardContent>
-            </Card>
+    <>
+      <TableHeader />
+      <Form onSubmit={onSubmit} fullWidth>
+        <Grid container spacing={4} fixed="true" style={{ maxWidth: 800 }}>
+          {errorMessages.map(itm => (
+            <Grid item xs={12} key={itm.key}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h3">{strings(`${itm.key}.title`)}</Typography>
+                  {!form && (
+                    <Typography variant="body1" gutterBottom>
+                      {itm.message}
+                    </Typography>
+                  )}
+                  {form && (<>
+                    <TextInputField
+                      className={styles.input}
+                      name={itm.key}
+                      field={form.fields[itm.key]}
+                      multiline
+                    />
+                    <InputWarningMessage formField={form.fields[itm.key]} />
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+          <Grid item xs={12}>
+            <FormActions className={styles.formsActions}>
+              {form && (
+                <>
+                  <CancelButton onClick={cancelEdit}>
+                    {strings(stringKeys.form.cancel)}
+                  </CancelButton>
+                  <SubmitButton isFetching={isSaving}>
+                    {strings(stringKeys.common.buttons.update)}
+                  </SubmitButton>
+                </>
+              )}
+              {!form && (
+                <TableActionsButton
+                  variant={"contained"}
+                  onClick={edit}
+                  roles={accessMap.projectErrorMessages.edit}
+                >
+                  {strings(stringKeys.common.buttons.edit)}
+                </TableActionsButton>
+              )}
+            </FormActions>
           </Grid>
-        ))}
-        <Grid item xs={12}>
-          <FormActions className={styles.formsActions}>
-            {form && (
-              <>
-                <CancelButton onClick={cancelEdit}>
-                  {strings(stringKeys.form.cancel)}
-                </CancelButton>
-                <SubmitButton isFetching={isSaving}>
-                  {strings(stringKeys.common.buttons.update)}
-                </SubmitButton>
-              </>
-            )}
-            {!form && (
-              <TableActionsButton
-                variant={"contained"}
-                onClick={edit}
-                roles={accessMap.projectErrorMessages.edit}
-              >
-                {strings(stringKeys.common.buttons.edit)}
-              </TableActionsButton>
-            )}
-          </FormActions>
         </Grid>
-      </Grid>
-    </Form>
+      </Form>
+    </>
   );
 };
 

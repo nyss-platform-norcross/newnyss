@@ -97,8 +97,8 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
           root: styles.buttonRoot
         }}
         >
-        <Typography variant='subtitle2'>
-          {page.title.toUpperCase()}
+        <Typography variant='subtitle2' style={{ textTransform: "uppercase" }}>
+          {page.title}
         </Typography>
         {page.subMenu?.length > 1 ? open ? <ExpandLessIcon fontSize='small'/> : <ExpandMoreIcon fontSize='small'/> : null}
       </Button>

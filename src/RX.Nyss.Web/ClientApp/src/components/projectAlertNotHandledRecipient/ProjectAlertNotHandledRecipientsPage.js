@@ -12,6 +12,7 @@ import Layout from "../layout/Layout";
 import { CancelButton } from "../common/buttons/cancelButton/CancelButton"
 import SubmitButton from "../common/buttons/submitButton/SubmitButton";
 import AddIcon from '@material-ui/icons/Add';
+import TableHeader from '../common/tableHeader/TableHeader';
 
 export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, projectId, organizations, getFormData, edit, create }) => {
   useMount(() => {
@@ -83,65 +84,69 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
 
   if(isFetchingFormData && isFetchingList) return <CircularProgress />
 
-  return !!unhandledRecipients && (
+  return (
     <>
-      <Typography variant="subtitle1">
-        {strings(stringKeys.projectAlertNotHandledRecipient.description)}
-      </Typography>
-      <Grid container style={{ marginTop: 10 }}>
-        {unhandledRecipients?.map((recipient) => (
+      <TableHeader/>
+      {!!unhandledRecipients && (
+      <>
+        <Typography variant="subtitle1">
+          {strings(stringKeys.projectAlertNotHandledRecipient.description)}
+        </Typography>
+        <Grid container style={{ marginTop: 10 }}>
+          {unhandledRecipients?.map((recipient) => (
+              <ProjectAlertNotHandledRecipientItem
+                key={`alertNotHandledRecipient_${recipient.userId}`}
+                unhandledRecipient={recipient}
+                unhandledRecipients={unhandledRecipients}
+                setUnhandledRecipients={setUnhandledRecipients}
+                isAdministrator={isAdministrator}
+                projectId={projectId}
+                getFormData={getFormData}
+                rtl={useRtlDirection}
+                isEditing={isEditing}
+                error={error}
+                setError={setError}
+                />
+                ))}
+          {isCreating && (
             <ProjectAlertNotHandledRecipientItem
-              key={`alertNotHandledRecipient_${recipient.userId}`}
-              unhandledRecipient={recipient}
-              unhandledRecipients={unhandledRecipients}
-              setUnhandledRecipients={setUnhandledRecipients}
+              key={`alertNotHandledRecipient_new`}
               isAdministrator={isAdministrator}
               projectId={projectId}
               getFormData={getFormData}
+              unhandledRecipient={newRecipient}
+              unhandledRecipients={unhandledRecipients}
+              setUnhandledRecipients={setUnhandledRecipients}
               rtl={useRtlDirection}
+              setNewRecipient={setNewRecipient}
+              isCreating={isCreating}
               isEditing={isEditing}
               error={error}
               setError={setError}
               />
-              ))}
-        {isCreating && (
-          <ProjectAlertNotHandledRecipientItem
-            key={`alertNotHandledRecipient_new`}
-            isAdministrator={isAdministrator}
-            projectId={projectId}
-            getFormData={getFormData}
-            unhandledRecipient={newRecipient}
-            unhandledRecipients={unhandledRecipients}
-            setUnhandledRecipients={setUnhandledRecipients}
-            rtl={useRtlDirection}
-            setNewRecipient={setNewRecipient}
-            isCreating={isCreating}
-            isEditing={isEditing}
-            error={error}
-            setError={setError}
-            />
-          )}
-      </Grid>
-      {(!isCreating && !isEditing) && (
-        <Grid style={{ marginTop: 20 }}>
-          <Button startIcon={<AddIcon />} color='primary' variant='contained' onClick={onAddClick}>{strings(stringKeys.projectAlertNotHandledRecipient.add)}</Button>
-          <Button color='primary' variant='outlined' style={{ marginLeft: 10 }} onClick={onEditClick}>{strings(stringKeys.common.buttons.edit)}</Button>
+            )}
         </Grid>
-      )}
-      {(isCreating || isEditing) && (
-        <Grid container style={{ marginTop: 20 }}>
-          <CancelButton
-            onClick={cancel}>
-              {strings(stringKeys.form.cancel)}
-            </CancelButton>
-          {isEditing && (
-            <SubmitButton onClick={onEdit} isFetching={isSaving}>{strings(stringKeys.form.confirm)}</SubmitButton>
-          )}
-          {isCreating && newRecipient && (
-            <SubmitButton onClick={onCreate} isFetching={isSaving}>{strings(stringKeys.common.buttons.add)}</SubmitButton>
-          )}
-        </Grid>
-      )}
+        {(!isCreating && !isEditing) && (
+          <Grid style={{ marginTop: 20 }}>
+            <Button startIcon={<AddIcon />} color='primary' variant='contained' onClick={onAddClick}>{strings(stringKeys.projectAlertNotHandledRecipient.add)}</Button>
+            <Button color='primary' variant='outlined' style={{ marginLeft: 10 }} onClick={onEditClick}>{strings(stringKeys.common.buttons.edit)}</Button>
+          </Grid>
+        )}
+        {(isCreating || isEditing) && (
+          <Grid container style={{ marginTop: 20 }}>
+            <CancelButton
+              onClick={cancel}>
+                {strings(stringKeys.form.cancel)}
+              </CancelButton>
+            {isEditing && (
+              <SubmitButton onClick={onEdit} isFetching={isSaving}>{strings(stringKeys.form.confirm)}</SubmitButton>
+            )}
+            {isCreating && newRecipient && (
+              <SubmitButton onClick={onCreate} isFetching={isSaving}>{strings(stringKeys.common.buttons.add)}</SubmitButton>
+            )}
+          </Grid>
+        )}
+      </>)}
     </>
   );
 }

@@ -1,10 +1,11 @@
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
 import * as dataCollectorsActions from './logic/dataCollectorsActions';
 import { withLayout } from '../../utils/layout';
 import Layout from '../layout/Layout';
 import TableActions from '../common/tableActions/TableActions';
+import TableHeader from '../common/tableHeader/TableHeader';
 import DataCollectorsTable from './components/DataCollectorsTable';
 import { useMount } from '../../utils/lifecycle';
 import { strings, stringKeys } from '../../strings';
@@ -12,6 +13,8 @@ import { TableActionsButton } from '../common/buttons/tableActionsButton/TableAc
 import { accessMap } from '../../authentication/accessMap';
 import { DataCollectorsFilters } from './components/DataCollectorsFilters';
 import { ReplaceSupervisorDialog } from './components/ReplaceSupervisorDialog';
+import { SubMenuTitle } from '../layout/SubMenuTitle';
+
 
 const DataCollectorsListPageComponent = ({getDataCollectorList, projectId, ...props}) => {
   useMount(() => {
@@ -23,8 +26,8 @@ const DataCollectorsListPageComponent = ({getDataCollectorList, projectId, ...pr
   const [replaceSupervisorDialogOpened, setReplaceSupervisorDialogOpened] = useState(false);
   const [selectedDataCollectors, setSelectedDataCollectors] = useState([]);
 
-  const handleFilterChange = useCallback((filters) =>
-    getDataCollectorList(projectId, filters), [getDataCollectorList, projectId]);
+  const handleFilterChange = (filters) =>
+    getDataCollectorList(projectId, filters);
 
   const handleReplaceSupervisor = (dataCollectors) => {
     setSelectedDataCollectors(dataCollectors);
@@ -37,32 +40,34 @@ const DataCollectorsListPageComponent = ({getDataCollectorList, projectId, ...pr
 
   return (
     <Fragment>
-      {!props.isClosed &&
-        <TableActions>
-          <TableActionsButton
-            onClick={() => props.exportToCsv(projectId, props.filters)}
-            variant="outlined"
-            roles={accessMap.dataCollectors.export}
-            isFetching={props.isExportingToCsv}
-          >
-            {strings(stringKeys.dataCollectors.exportCsv)}
-          </TableActionsButton>
-          <TableActionsButton  onClick={() => props.exportToExcel(projectId, props.filters)}
-             variant="outlined"
-             roles={accessMap.dataCollectors.export} isFetching={props.isExportingToExcel}
-          >
-            {strings(stringKeys.dataCollectors.exportExcel)}
-          </TableActionsButton>
-          <TableActionsButton
-            onClick={() => props.goToCreation(projectId)}
-            variant="contained"
-            add
-            rtl={useRtlDirection}
-          >
-            {strings(stringKeys.common.buttons.add)}
-          </TableActionsButton>
-        </TableActions>
-      }
+      <TableHeader>
+        {!props.isClosed &&
+          <TableActions>
+            <TableActionsButton
+              onClick={() => props.exportToCsv(projectId, props.filters)}
+              variant="outlined"
+              roles={accessMap.dataCollectors.export}
+              isFetching={props.isExportingToCsv}
+            >
+              {strings(stringKeys.dataCollectors.exportCsv)}
+            </TableActionsButton>
+            <TableActionsButton  onClick={() => props.exportToExcel(projectId, props.filters)}
+              variant="outlined"
+              roles={accessMap.dataCollectors.export} isFetching={props.isExportingToExcel}
+            >
+              {strings(stringKeys.dataCollectors.exportExcel)}
+            </TableActionsButton>
+            <TableActionsButton
+              onClick={() => props.goToCreation(projectId)}
+              variant="contained"
+              add
+              rtl={useRtlDirection}
+            >
+              {strings(stringKeys.common.buttons.add)}
+            </TableActionsButton>
+          </TableActions>
+        }
+      </TableHeader>
 
       <DataCollectorsFilters
         supervisors={props.supervisors}

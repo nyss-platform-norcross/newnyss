@@ -1,6 +1,6 @@
 import styles from "./NationalSocietyReportsListPage.module.scss";
 
-import { Fragment } from 'react';
+import { Fragment, useCallback } from 'react';
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
 import * as nationalSocietyReportsActions from './logic/nationalSocietyReportsActions';
@@ -17,18 +17,19 @@ const NationalSocietyIncorrectReportsListPageComponent = (props) => {
 
   const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
 
-  if (!props.data || !props.filters || !props.sorting) {
-    return null;
-  }
-
-  const handleFiltersChange = (filters) =>
-    props.getList(props.nationalSocietyId, props.page, filters, props.sorting);
+  //useCallback important to avoid infinite loop from useEffect in ReportFilters
+  const handleFiltersChange = useCallback((filters) =>
+    props.getList(props.nationalSocietyId, props.page, filters, props.sorting), [props.getList, props.nationalSocietyId, props.page, props.sorting]);
 
   const handlePageChange = (page) =>
     props.getList(props.nationalSocietyId, page, props.filters, props.sorting);
 
   const handleSortChange = (sorting) =>
     props.getList(props.nationalSocietyId, props.page, props.filters, sorting);
+
+  if (!props.data || !props.filters || !props.sorting) {
+    return null;
+  }
 
   return (
     <Fragment>

@@ -10,6 +10,7 @@ import { TableActionsButton } from '../common/buttons/tableActionsButton/TableAc
 import { withLayout } from "../../utils/layout";
 import Layout from "../layout/Layout";
 import { Typography } from '@material-ui/core';
+import TableHeader from '../common/tableHeader/TableHeader';
 
 const ProjectAlertRecipientsListPageComponent = (props) => {
   useMount(() => {
@@ -20,18 +21,20 @@ const ProjectAlertRecipientsListPageComponent = (props) => {
 
   return (
     <Fragment>
+      <TableHeader>
+        {!props.nationalSocietyIsArchived && !props.projectIsClosed &&
+        <TableActions>
+          <TableActionsButton
+            onClick={() => props.goToCreation(props.projectId)}
+            add
+            variant="contained"
+            rtl={useRtlDirection}
+          >
+            {strings(stringKeys.common.buttons.add)}
+          </TableActionsButton>
+        </TableActions>}
+      </TableHeader>
       <Typography variant="subtitle1">{strings(stringKeys.projectAlertRecipient.description)}</Typography>
-      {!props.nationalSocietyIsArchived && !props.projectIsClosed &&
-      <TableActions>
-        <TableActionsButton
-          onClick={() => props.goToCreation(props.projectId)}
-          add
-          variant="contained"
-          rtl={useRtlDirection}
-        >
-          {strings(stringKeys.common.buttons.add)}
-        </TableActionsButton>
-      </TableActions>}
       <ProjectAlertRecipientsTable
         list={props.list}
         isListFetching={props.isListFetching}

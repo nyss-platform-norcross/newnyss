@@ -9,8 +9,7 @@ namespace RX.Nyss.Data.Repositories;
 
 public interface IEidsrRepository
 {
-    List<EidsrDbReport> GetReportsForEidsr(int reportId);
-    public List<DhisDbReport> GetReportsForDhis(int reportId);
+    List<EidsrDbReport> GetReportsForEidsr(int alertId);
 }
 
 public class EidsrRepository : IEidsrRepository
@@ -43,27 +42,7 @@ public class EidsrRepository : IEidsrRepository
             EidsrDbReportData = aggregatedReport
         }).ToList();
     }
-
-    public List<DhisDbReport> GetReportsForDhis(int reportId)
-    {
-        var report = GetReport(reportId);
-
-        var englishContentLanguageId = GetEnglishContentLanguageId();
-
-        // create template based on alert's National Society config
-        var dhisDbReportTemplate = GetDhisReportTemplate(report?.ProjectHealthRisk?.Project?.NationalSociety?.EidsrConfiguration);
-
-        // convert alert's reports to Eidsr reports
-        var squashedReports = GetDhisReports(reportId, report.CreatedAt, englishContentLanguageId.Value);
-
-        // Pack template and Eidsr reports to one, ready to send object
-        return squashedReports.Select(aggregatedReport => new DhisDbReport
-        {
-            DhisDbReportTemplate = dhisDbReportTemplate,
-            DhisDbReportData = aggregatedReport
-        }).ToList();
-    }
-
+    
     private List<EidsrDbReportData> GetReports(int alertId, DateTime alertDate, int englishContentLanguageId)
     {
         var reportsOfAlertIds = _nyssContext.AlertReports
@@ -74,17 +53,6 @@ public class EidsrRepository : IEidsrRepository
             .ToList();
 
         return _reportsConverter.ConvertReports(reports, alertDate, englishContentLanguageId);
-    }
-
-    private List<DhisDbReportData> GetDhisReports(int reportId, DateTime reportDate, int englishContentLanguageId)
-    {
-        var reportsOfAlertIds = _nyssContext.AlertReports
-            .Where(x => x.ReportId == reportId).ToList();
-        var reports = GetReportFilterQuery().ToList();
-            //.Where(queriedReport => reportsOfAlertIds.Contains(queriedReport.Report.Id))
-            //.ToList();
-
-        return _reportsConverter.ConvertDhisReports(reports, reportDate, englishContentLanguageId);
     }
 
     private IQueryable<RawReport> GetReportFilterQuery()
@@ -139,18 +107,6 @@ public class EidsrRepository : IEidsrRepository
         return alert;
     }
 
-    private Report GetReport(int reportId)
-    {
-        var report = _nyssContext.Reports
-            .Include(x => x.ProjectHealthRisk)
-            .ThenInclude(x => x.Project)
-            .ThenInclude(x => x.NationalSociety)
-            .ThenInclude(x => x.EidsrConfiguration)
-            .FirstOrDefault(x => x.Id == reportId);
-
-        return report;
-    }
-
     private EidsrDbReportTemplate GetReportTemplate(EidsrConfiguration config)
     {
         if (config == null)
@@ -177,31 +133,5 @@ public class EidsrRepository : IEidsrRepository
 
         return template;
     }
-
-    private DhisDbReportTemplate GetDhisReportTemplate(EidsrConfiguration config)
-    {
-        if (config == null)
-        {
-            throw new Exception("EidsrConfiguration not set.");
-        }
-
-        var template = new DhisDbReportTemplate
-        {
-            EidsrApiProperties = new EidsrApiProperties
-            {
-                Url = config.ApiBaseUrl,
-                UserName = config.Username,
-                PasswordHash = config.PasswordHash,
-            },
-            Program = config.TrackerProgramId,
-            ReportLocationDataElementId = config.LocationDataElementId,
-            ReportHealthRiskDataElementId = config.ReportHealthRiskDataElementId,
-            ReportAgeAtLeastFiveDataElementId = config.ReportAgeAtLeastFiveDataElementId,
-            ReportSuspectedDiseaseDataElementId = config.SuspectedDiseaseDataElementId,
-            ReportAgeBelowFiveDataElementId = config.ReportAgeBelowFiveDataElementId,
-            ReportGenderDataElementId = config.GenderDataElementId
-        };
-
-        return template;
-    }
+    
 }

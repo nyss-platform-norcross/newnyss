@@ -31,23 +31,23 @@ export const dataCollectorsSagas = () => [
 ];
 
 function* openDataCollectorsList({ projectId }) {
-  const listStale = yield select(state => state.dataCollectors.listStale);
-  const listProjectId = yield select(state => state.dataCollectors.projectId);
-  const filtersStale = yield select(state => state.dataCollectors.filtersStale);
-
   yield put(actions.openList.request());
   try {
     yield openDataCollectorsModule(projectId);
 
-    const filtersData = listProjectId !== projectId || filtersStale
-      ? (yield call(http.get, `/api/dataCollector/filters?projectId=${projectId}`)).value
-      : yield select(state => state.dataCollectors.filtersData);
+    const filtersData = (yield call(http.get, `/api/dataCollector/filters?projectId=${projectId}`)).value
 
-    const filters = yield select(state => state.dataCollectors.filters);
+    const filters = {
+      supervisorId: null,
+      locations: null,
+      sex: null,
+      trainingStatus: "All",
+      deployedMode: "Deployed",
+      name: null,
+      pageNumber: 1
+    };
 
-    if (listStale || listProjectId !== projectId) {
-      yield call(getDataCollectors, { projectId, filters });
-    }
+    yield call(getDataCollectors, { projectId, filters });
 
     yield put(actions.openList.success(projectId, filtersData));
   } catch (error) {
@@ -77,7 +77,7 @@ function* openDataCollectorMapOverview({ projectId }) {
     endDate = endDate.set('hour', 0);
     endDate = endDate.set('minute', 0);
     endDate = endDate.set('second', 0);
-    const filters = (yield select(state => state.dataCollectors.mapOverviewFilters)) ||
+    const filters =
     {
       startDate: endDate.add(-7, 'day'),
       endDate: endDate

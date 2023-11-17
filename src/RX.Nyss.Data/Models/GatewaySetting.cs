@@ -25,5 +25,18 @@ namespace RX.Nyss.Data.Models
         public string TelerivetSendSmsApiKey { get; set; }
 
         public string TelerivetProjectId { get; set; }
+
+        public string GatewayApiKey { get; set; }
+
+        public string GatewayApiKeyName { get; set; }
+
+        public string? GatewayExtraKey { get; set; }
+
+        public string? GatewayExtraKeyName { get; set; }
+
+        public string GatewayUrl { get; set; }
+
+        public string GatewaySenderId { get; set; }
+
     }
 }
