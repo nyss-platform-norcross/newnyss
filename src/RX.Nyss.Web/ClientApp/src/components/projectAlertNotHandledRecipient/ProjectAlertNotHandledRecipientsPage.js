@@ -68,6 +68,10 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
       organizationId: newRecipient.organizationId,
     });
     setIsCreating(false);
+    setNewRecipient({
+      userId: '',
+      name: ''
+    })
   }
 
   const onAddClick = () => {
