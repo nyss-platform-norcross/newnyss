@@ -11,6 +11,7 @@ import { withLayout } from "../../utils/layout";
 import Layout from "../layout/Layout";
 import { CancelButton } from "../common/buttons/cancelButton/CancelButton"
 import SubmitButton from "../common/buttons/submitButton/SubmitButton";
+import AddIcon from '@material-ui/icons/Add';
 
 export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, projectId, organizations, getFormData, edit, create }) => {
   useMount(() => {
@@ -106,7 +107,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
       </Grid>
       {(!isCreating && !isEditing) && (
         <Grid style={{ marginTop: 20 }}>
-          <Button color='primary' variant='contained' onClick={onAddClick}>{strings(stringKeys.projectAlertNotHandledRecipient.add)}</Button>
+          <Button startIcon={<AddIcon />} color='primary' variant='contained' onClick={onAddClick}>{strings(stringKeys.projectAlertNotHandledRecipient.add)}</Button>
           <Button color='primary' variant='outlined' style={{ marginLeft: 10 }} onClick={onEditClick}>{strings(stringKeys.common.buttons.edit)}</Button>
         </Grid>
       )}
