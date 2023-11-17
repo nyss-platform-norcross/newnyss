@@ -38,10 +38,14 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
     userId: '',
     name: ''
   })
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
 
 
   const onEdit = () => {
+    if(organizations.every(org => org.users.some(user => unhandledRecipients.map(recipient => recipient.userId).includes(user.userId)))) {
+      setError("errorEdit");
+      return;
+    }
     edit(projectId, unhandledRecipients.map(recipient => ({ organizationId: recipient.organizationId, userId: recipient.userId })));
     setIsEditing(false);
   }
@@ -51,12 +55,12 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
     setUnhandledRecipients(recipients);
     setIsEditing(false);
     setIsCreating(false);
-    setError(false);
+    setError(null);
   }
 
   const onCreate = () => {
     if(newRecipient.userId === '') {
-      setError(true);
+      setError("errorAdd");
       return;
     }
     create(projectId, {
