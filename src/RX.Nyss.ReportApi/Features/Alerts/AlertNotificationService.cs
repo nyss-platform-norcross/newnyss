@@ -81,19 +81,27 @@ namespace RX.Nyss.ReportApi.Features.Alerts
                 .Concat(phoneNumbersOfHeadSupervisorsInAlert)
                 .ToListAsync();
 
-            if (gatewaySetting.GatewayType == GatewayType.Telerivet)
+            var message = await CreateNotificationMessageForNewAlert(alert);
+
+            switch (gatewaySetting.GatewayType)
             {
-                var message = await CreateNotificationMessageForNewAlert(alert);
-                foreach (var i in recipients)
-                {
-                    var l1 = (long)Convert.ToDouble(i);
-                    await _queuePublisherService.SendTelerivetSms(l1, message, gatewaySetting.TelerivetSendSmsApiKey, gatewaySetting.TelerivetProjectId);
-                }
+                case GatewayType.SmsEagle:
+                    await _queuePublisherService.SendSms(recipients, gatewaySetting, message);
+                    break;
+                case GatewayType.Telerivet:
+                    foreach (var r in recipients)
+                    {
+                        var recipient = long.Parse(r.PhoneNumber);
+                        await _queuePublisherService.SendTelerivetSms(recipient, message, gatewaySetting.TelerivetSendSmsApiKey, gatewaySetting.TelerivetProjectId);
+                    }
+                    break;
+                case GatewayType.SmsGateway:
+                    _loggerAdapter.Info("Could not find proper gateway!");
+                    break;
+                default:
+                    _loggerAdapter.Info("Could not find proper gateway!");
+                    break;
             }
-
-
-            //var message = await CreateNotificationMessageForNewAlert(alert);
-            //await _queuePublisherService.SendSms(recipients, gatewaySetting, message);
             await _queuePublisherService.QueueAlertCheck(alert.Id);
         }
 
@@ -104,25 +112,28 @@ namespace RX.Nyss.ReportApi.Features.Alerts
                 PhoneNumber = s.PhoneNumber,
                 Modem = s.Modem
             }).ToList();
-            if (gatewaySetting.GatewayType == GatewayType.SmsEagle)
+
+            var message = await CreateNotificationMessageForExistingAlert(alert);
+
+            switch (gatewaySetting.GatewayType)
             {
-                var message = await CreateNotificationMessageForExistingAlert(alert);
-
-                await _queuePublisherService.SendSms(phoneNumbers, gatewaySetting, message);
+                case GatewayType.SmsEagle:
+                    await _queuePublisherService.SendSms(phoneNumbers, gatewaySetting, message);
+                    break;
+                case GatewayType.Telerivet:
+                    foreach (var r in phoneNumbers)
+                    {
+                        var recipient = long.Parse(r.PhoneNumber);
+                        await _queuePublisherService.SendTelerivetSms(recipient, message, gatewaySetting.TelerivetSendSmsApiKey, gatewaySetting.TelerivetProjectId);
+                    }
+                    break;
+                case GatewayType.SmsGateway:
+                    _loggerAdapter.Info("Could not find proper gateway!");
+                    break;
+                default:
+                    _loggerAdapter.Info("Could not find proper gateway!");
+                    break;
             }
-
-            if (gatewaySetting.GatewayType == GatewayType.Telerivet)
-            {
-                var message = await CreateNotificationMessageForExistingAlert(alert);
-                foreach (var i in phoneNumbers)
-                {
-                    var l1 = (long)Convert.ToDouble(i);
-                    await _queuePublisherService.SendTelerivetSms(l1, message, gatewaySetting.TelerivetSendSmsApiKey, gatewaySetting.TelerivetProjectId);
-                }
-            }
-
-
-
         }
 
         public async Task<IEnumerable<SupervisorSmsRecipient>> GetSupervisorsConnectedToExistingAlert(int alertId) =>
