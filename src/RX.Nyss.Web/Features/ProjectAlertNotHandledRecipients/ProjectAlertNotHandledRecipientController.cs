@@ -35,7 +35,7 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
         /// Edits an alert not handled notification recipient for a project
         /// </summary>
         /// <param name="projectId">Id of the project</param>
-        /// <param name="dto">AlertNotHandledRecipient details</param>
+        /// <param name="dto">AlertNotHandledRecipients details</param>
         /// <returns></returns>
         [HttpPost("edit")]
         [NeedsRole(Role.Administrator, Role.Manager, Role.TechnicalAdvisor), NeedsPolicy(Policy.ProjectAccess)]
