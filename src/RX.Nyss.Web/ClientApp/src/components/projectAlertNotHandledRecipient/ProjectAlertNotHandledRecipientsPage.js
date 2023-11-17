@@ -38,6 +38,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
     userId: '',
     name: ''
   })
+  const [error, setError] = useState(false);
 
 
   const onEdit = () => {
@@ -50,10 +51,14 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
     setUnhandledRecipients(recipients);
     setIsEditing(false);
     setIsCreating(false);
-
+    setError(false);
   }
 
   const onCreate = () => {
+    if(newRecipient.userId === '') {
+      setError(true);
+      return;
+    }
     create(projectId, {
       userId: newRecipient.userId,
       organizationId: newRecipient.organizationId,
@@ -87,6 +92,8 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
               getFormData={getFormData}
               rtl={useRtlDirection}
               isEditing={isEditing}
+              error={error}
+              setError={setError}
               />
               ))}
         {isCreating && (
@@ -102,6 +109,8 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
             setNewRecipient={setNewRecipient}
             isCreating={isCreating}
             isEditing={isEditing}
+            error={error}
+            setError={setError}
             />
           )}
       </Grid>
