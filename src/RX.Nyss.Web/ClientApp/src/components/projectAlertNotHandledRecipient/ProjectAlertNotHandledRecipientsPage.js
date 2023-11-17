@@ -35,7 +35,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
   const [isCreating, setIsCreating] = useState(false);
   const [unhandledRecipients, setUnhandledRecipients] = useState(null);
   const [newRecipient, setNewRecipient] = useState({
-    userId: null,
+    userId: '',
     name: ''
   })
   const [error, setError] = useState(null);
@@ -59,7 +59,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({ openRecipients, proj
   }
 
   const onCreate = () => {
-    if(!newRecipient.userId) {
+    if(newRecipient.userId === '') {
       setError("errorAdd");
       return;
     }
