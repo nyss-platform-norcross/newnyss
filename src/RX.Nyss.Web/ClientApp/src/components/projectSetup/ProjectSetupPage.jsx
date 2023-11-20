@@ -5,6 +5,8 @@ import Layout from '../layout/Layout';
 import { Loading } from '../common/loading/Loading';
 import * as projectSetupActions from './logic/projectSetupActions';
 import { useMount } from '../../utils/lifecycle';
+import { SetupStepper } from '../common/stepper/SetupStepper'
+import Typography from '@material-ui/core/Typography';
 
 
 const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, setNewRegions, ...props}) => {
@@ -17,9 +19,43 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
     return <Loading />;
   }
 
+  const projectSetupSteps = [
+    {
+      name: 'Project name',
+      content: <Typography>Project name content</Typography>,
+      stepNumber: 0
+    },
+    {
+      name: 'Organization',
+      content: <Typography>Organization content</Typography>,
+      stepNumber: 1
+    },
+    {
+      name: 'Recipients',
+      content: <Typography>Recipient content</Typography>,
+      stepNumber: 2
+    },
+    {
+      name: 'Health risks',
+      content: <Typography>Health risk content</Typography>,
+      stepNumber: 3
+    },
+    {
+      name: 'Geographical structure',
+      content: <Typography>Geographical content</Typography>,
+      stepNumber: 4
+    },
+    {
+      name: 'Summary',
+      content: <Typography>Summary content</Typography>,
+      stepNumber: 5
+    },
+
+  ]
+
   return (
     <div>
-      <h2>Setup-form goes here</h2>
+      <SetupStepper steps={projectSetupSteps}/>
     </div>
   );
 }
