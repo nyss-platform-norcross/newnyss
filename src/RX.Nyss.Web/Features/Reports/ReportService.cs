@@ -116,12 +116,9 @@ public class ReportService : IReportService
         var result = baseQuery.Select(r => new ReportListResponseDto
         {
             Id = r.Id,
-            IsAnonymized = isSupervisor || isHeadSupervisor
-                    ? (currentRole == Role.HeadSupervisor && r.DataCollector.Supervisor.HeadSupervisor.Id != currentUserId)
-                    || (currentRole == Role.Supervisor && r.DataCollector.Supervisor.Id != currentUserId)
-                    : currentRole != Role.Administrator && !r.NationalSociety.NationalSocietyUsers.Any(
-                        nsu => (nsu.UserId == r.DataCollector.Supervisor.Id && nsu.OrganizationId == currentUserOrganization.Id)
-                            || (nsu.UserId == r.DataCollector.HeadSupervisor.Id && nsu.OrganizationId == currentUserOrganization.Id)),
+            IsAnonymized = currentRole != Role.Administrator && !r.NationalSociety.NationalSocietyUsers.Any(
+                    nsu => (nsu.UserId == r.DataCollector.Supervisor.Id && nsu.OrganizationId == currentUserOrganization.Id)
+                        || (nsu.UserId == r.DataCollector.HeadSupervisor.Id && nsu.OrganizationId == currentUserOrganization.Id)),
             OrganizationName = r.NationalSociety.NationalSocietyUsers
                     .Where(nsu => nsu.UserId == r.DataCollector.Supervisor.Id || nsu.UserId == r.DataCollector.HeadSupervisor.Id)
                     .Select(nsu => nsu.Organization.Name)
