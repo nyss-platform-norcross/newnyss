@@ -60,7 +60,15 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
   const styles = useStyles()
 
   const handleToggle = () => {
-    onItemClick(page);
+    if (!open && page.subMenu?.length > 1){
+      setOpen(true);
+    }
+    else if (open && page.subMenu?.length > 1){
+      setOpen(false);
+    }
+    else {
+      onItemClick(page);
+    }
   };
 
   const handleClose = (event) => {
