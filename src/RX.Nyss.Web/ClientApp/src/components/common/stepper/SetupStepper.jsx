@@ -126,7 +126,9 @@ export const SetupStepper = ({ steps, stepInputIsValid = true }) => {
         ))}
       </Stepper>
         <Grid container direction='column' alignItems='center'>
-          {getStepContent(steps, activeStep)}
+          <Grid container direction='column' alignItems='center' style={{ marginBottom: 50 }}>
+            {getStepContent(steps, activeStep)}
+          </Grid>
           <Grid container direction='column' alignItems='center'>
             <Grid item>
               {activeStep !== 0 && (
