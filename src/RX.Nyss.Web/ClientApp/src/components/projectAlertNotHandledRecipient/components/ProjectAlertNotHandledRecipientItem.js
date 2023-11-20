@@ -15,7 +15,7 @@ export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormDa
   const handleRecipientChange = (change) => {
     const user = users.filter(u => u.userId === change.target.value)[0];
     setUser(user);
-    setError(null);
+    setError(false);
     if(setNewRecipient) {
       setNewRecipient(user);
     } else {
@@ -47,7 +47,7 @@ export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormDa
               </MenuItem>
             ))}
           </Select>
-          {error && <Typography color="error" style={{ marginTop: 3 }} variant='subtitle2'>{strings(stringKeys.projectAlertNotHandledRecipient[error])}</Typography>}
+          {error && <Typography color="error" style={{ marginTop: 3 }} variant='subtitle2'>{strings(stringKeys.projectAlertNotHandledRecipient.error)}</Typography>}
         </Grid>
       )}
       {!isEditing && !isCreating && (

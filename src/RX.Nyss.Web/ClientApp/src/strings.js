@@ -359,8 +359,7 @@ export const stringKeys = {
     title: "projectAlertNotHandledRecipient.title",
     description: "projectAlertNotHandledRecipient.description",
     add: "projectAlertNotHandledRecipient.add",
-    errorAdd: "projectAlertNotHandledRecipient.errorAdd",
-    errorEdit: "projectAlertNotHandledRecipient.errorEdit"
+    error: "projectAlertNotHandledRecipient.error",
   },
   project: {
     title: "project.title",
