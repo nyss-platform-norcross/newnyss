@@ -93,12 +93,10 @@ export const CorrectReportsTable = ({ isListFetching, isMarkingAsError, goToEdit
   ];
 
   const canEdit = (row) =>
-    !row.isAnonymized
-    && (!row.isActivityReport || filters.dataCollectorType === DataCollectorType.unknownSender)
+    (!row.isActivityReport || filters.dataCollectorType === DataCollectorType.unknownSender)
     && row.status === reportStatus.new
     && !projectIsClosed
     && !row.dataCollectorIsDeleted;
-
   return (
     <Fragment>
       <TableContainer sticky>
@@ -124,11 +122,11 @@ export const CorrectReportsTable = ({ isListFetching, isMarkingAsError, goToEdit
               <TableCell style={{ width: '7%' }}>{strings(stringKeys.reports.list.femalesBelowFive)}</TableCell>
               <TableCell style={{ width: '8%' }}>{strings(stringKeys.reports.list.femalesAtLeastFive)}</TableCell>
               {filters.dataCollectorType === DataCollectorType.collectionPoint &&
-              <Fragment>
-                <TableCell style={{ width: '10%', minWidth: '50px' }}>{strings(stringKeys.reports.list.referredCount)}</TableCell>
-                <TableCell style={{ width: '10%', minWidth: '50px' }}>{strings(stringKeys.reports.list.deathCount)}</TableCell>
-                <TableCell style={{ width: '10%', minWidth: '50px' }}>{strings(stringKeys.reports.list.fromOtherVillagesCount)}</TableCell>
-              </Fragment>
+                <Fragment>
+                  <TableCell style={{ width: '10%', minWidth: '50px' }}>{strings(stringKeys.reports.list.referredCount)}</TableCell>
+                  <TableCell style={{ width: '10%', minWidth: '50px' }}>{strings(stringKeys.reports.list.deathCount)}</TableCell>
+                  <TableCell style={{ width: '10%', minWidth: '50px' }}>{strings(stringKeys.reports.list.fromOtherVillagesCount)}</TableCell>
+                </Fragment>
               }
               <TableCell style={{ width: '3%' }} />
             </TableRow>
@@ -148,11 +146,11 @@ export const CorrectReportsTable = ({ isListFetching, isMarkingAsError, goToEdit
                 <TableCell>{renderReportValue(row.countFemalesBelowFive)}</TableCell>
                 <TableCell>{renderReportValue(row.countFemalesAtLeastFive)}</TableCell>
                 {filters.dataCollectorType === DataCollectorType.collectionPoint &&
-                <Fragment>
-                  <TableCell>{renderReportValue(row.referredCount)}</TableCell>
-                  <TableCell>{renderReportValue(row.deathCount)}</TableCell>
-                  <TableCell>{renderReportValue(row.fromOtherVillagesCount)}</TableCell>
-                </Fragment>
+                  <Fragment>
+                    <TableCell>{renderReportValue(row.referredCount)}</TableCell>
+                    <TableCell>{renderReportValue(row.deathCount)}</TableCell>
+                    <TableCell>{renderReportValue(row.fromOtherVillagesCount)}</TableCell>
+                  </Fragment>
                 }
                 <TableCell>
                   <TableRowActions directionRtl={rtl}>
@@ -164,14 +162,14 @@ export const CorrectReportsTable = ({ isListFetching, isMarkingAsError, goToEdit
                       condition={canEdit(row)}
                       directionRtl={rtl}
                     />
-                    { !row.isActivityReport &&
-                    <TableRowMenu
-                      id={row.id}
-                      icon={<MoreVertIcon />}
-                      isFetching={isMarkingAsError[row.id]}
-                      items={getRowMenu(row)}
-                      directionRtl={rtl}
-                    />
+                    {!row.isActivityReport &&
+                      <TableRowMenu
+                        id={row.id}
+                        icon={<MoreVertIcon />}
+                        isFetching={isMarkingAsError[row.id]}
+                        items={getRowMenu(row)}
+                        directionRtl={rtl}
+                      />
                     }
                   </TableRowActions>
                 </TableCell>
