@@ -36,6 +36,13 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
 
         public async Task<Result> Create(int projectId, ProjectAlertNotHandledRecipientRequestDto dto)
         {
+            var userNotFound = await _nyssContext.Projects
+                .Where(p => p.Id == projectId)
+                .SelectMany(p => p.NationalSociety.NationalSocietyUsers).AllAsync(user => user.UserId != dto.UserId || user.OrganizationId != dto.OrganizationId);
+            if (userNotFound)
+            {
+                return Error(ResultKey.AlertNotHandledNotificationRecipient.NotFound);
+            }
             var exists = await _nyssContext.AlertNotHandledNotificationRecipients.AnyAsync(a => a.ProjectId == projectId && a.UserId == dto.UserId);
             if (exists)
             {
