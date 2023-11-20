@@ -54,11 +54,13 @@ function* openIncorrectReportsList({ projectId }) {
   try {
     yield openReportsModule(projectId);
 
+    const filtersData = yield call(http.get, `/api/report/filters?projectId=${projectId}`);
+
     if (listStale) {
       yield call(getIncorrectReports, { projectId });
     }
 
-    yield put(actions.openIncorrectReportsList.success(projectId));
+    yield put(actions.openIncorrectReportsList.success(projectId, filtersData.value));
   } catch (error) {
     yield put(actions.openIncorrectReportsList.failure(error.message));
   }

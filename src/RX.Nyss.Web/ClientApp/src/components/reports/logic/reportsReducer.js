@@ -21,7 +21,7 @@ export function reportsReducer(state = initialState.reports, action) {
       return { ...state, incorrectReportsListStale: state.incorrectReportsListStale || action.projectId !== state.listProjectId };
 
     case actions.OPEN_INCORRECT_REPORTS_LIST.SUCCESS:
-      return { ...state, listProjectId: action.projectId };
+      return { ...state, listProjectId: action.projectId, filtersData: action.filtersData };
 
     case actions.GET_CORRECT_REPORTS.REQUEST:
       return { ...state, correctReportsPaginatedListData: state.correctReportsListStale ? null : state.correctReportsPaginatedListData, listFetching: true };
