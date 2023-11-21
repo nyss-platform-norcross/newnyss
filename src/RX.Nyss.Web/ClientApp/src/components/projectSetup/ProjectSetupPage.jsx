@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { ProjectSetupOrganization } from './ProjectSetupOrganization';
 
 
-const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, setNewRegions, ...props}) => {
+const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, setNewRegions, organizations, ...props}) => {
 
   useMount(() => {
     openProjectSetup(nationalSocietyId);
@@ -28,7 +28,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
     },
     {
       name: 'Organization',
-      content: <Typography><ProjectSetupOrganization /></Typography>,
+      content: <Typography><ProjectSetupOrganization organizations={organizations}/></Typography>,
       stepNumber: 1
     },
     {
@@ -67,6 +67,7 @@ ProjectSetupPageComponent.propTypes = {
 const mapStateToProps = (state, ownProps) => ({
   nationalSocietyId: ownProps.match.params.nationalSocietyId,
   isFetching: state.projectSetup.formFetching,
+  organizations: state.projectSetup.formData?.organizations
 });
 
 const mapDispatchToProps = {
