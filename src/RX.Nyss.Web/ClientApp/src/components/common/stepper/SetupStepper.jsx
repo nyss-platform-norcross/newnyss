@@ -80,12 +80,15 @@ const getStepContent = (steps, stepIndex) => {
   return steps.find(step => step.stepNumber === stepIndex).content
 }
 
-export const SetupStepper = ({ steps, stepInputIsValid = true }) => {
+export const SetupStepper = ({ steps, stepInputIsValid, setStepInputIsValid }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (stepInputIsValid){
+      setStepInputIsValid(false);
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   };
 
   const handleBack = () => {
