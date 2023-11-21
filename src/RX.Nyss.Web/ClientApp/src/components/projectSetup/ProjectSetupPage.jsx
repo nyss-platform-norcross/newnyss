@@ -7,6 +7,7 @@ import * as projectSetupActions from './logic/projectSetupActions';
 import { useMount } from '../../utils/lifecycle';
 import { SetupStepper } from '../common/stepper/SetupStepper'
 import Typography from '@material-ui/core/Typography';
+import { ProjectSetupOrganization } from './ProjectSetupOrganization';
 
 
 const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, setNewRegions, ...props}) => {
@@ -27,7 +28,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
     },
     {
       name: 'Organization',
-      content: <Typography>Organization content</Typography>,
+      content: <Typography><ProjectSetupOrganization /></Typography>,
       stepNumber: 1
     },
     {
