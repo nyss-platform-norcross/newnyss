@@ -1,4 +1,4 @@
-import { Select, Typography } from "@material-ui/core";
+import { Select, Typography, MenuItem } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
@@ -9,14 +9,23 @@ const useStyles = makeStyles(() => ({
 
 }));
 
-export const ProjectSetupOrganization = ({rtl}) => {
+export const ProjectSetupOrganization = ({organizations, rtl}) => {
   const classes = useStyles();
+  
   return (
     <>
       <Typography>Choose organization</Typography>
       <Select 
-      className={`${rtl ? classes.rtl : ""}`}
+        className={`${rtl ? classes.rtl : ""}`}
       >
+        {organizations?.map(organization => 
+          <MenuItem
+            key={organization.name}
+            value={organization.id}
+          >
+            {organization.name}
+          </MenuItem>
+        )}
       </Select>
     </>
   );
