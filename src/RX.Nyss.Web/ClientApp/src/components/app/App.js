@@ -74,6 +74,8 @@ import { EidsrIntegrationEditPage } from "../eidsrIntegration/EidsrIntegrationEd
 import { FeedbackPage } from '../feedback/FeedbackPage';
 import { ProjectAlertNotHandledRecipientsPage } from '../projectAlertNotHandledRecipient/ProjectAlertNotHandledRecipientsPage'
 import { ProjectAlertRecipientsListPage } from '../projectAlertRecipients/ProjectAlertRecipientsListPage'
+import { ProjectSetupPage } from '../projectSetup/ProjectSetupPage';
+import { Administrator } from '../../authentication/roles';
 
 export const App = ({ history }) => {
   const direction = useSelector(state => state.appData.direction);
@@ -120,6 +122,8 @@ export const App = ({ history }) => {
             <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects/:projectId/dashboard' component={ProjectDashboardPage} roles={accessMap.projects.showDashboard} />
             <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects' component={ProjectsListPage} roles={accessMap.projects.list} />
             <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects/add' component={ProjectsCreatePage} roles={accessMap.projects.add} />
+            {/* Project Setup route is limited to administrators only while under development */}
+            <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects/setup' component={ProjectSetupPage} roles={[Administrator]} />
             <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects/:projectId/edit' component={ProjectsEditPage} roles={accessMap.projects.edit} />
             <Redirect exact from='/nationalsocieties/:nationalSocietyId/projects/:projectId/settings' to='/nationalsocieties/:nationalSocietyId/projects/:projectId/overview' roles={accessMap.projects.showOverview} />
             <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects/:projectId/overview' component={ProjectsOverviewPage} roles={accessMap.projects.showOverview} />

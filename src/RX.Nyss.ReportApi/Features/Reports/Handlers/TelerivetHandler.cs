@@ -95,11 +95,13 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
             if (sender != null)
             {
                 var res = sender.Substring(0, 1);
-                if (res != "+") { sender = string.Concat("+", sender);
+                if (res != "+")
+                {
+                    sender = string.Concat("+", sender);
                     sender = sender.Replace(" ", "");
                 }
             }
-            
+
             ErrorReportData errorReportData = null;
             AlertData alertData = null;
             ProjectHealthRisk projectHealthRisk = null;
@@ -174,7 +176,7 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                 await _nyssContext.SaveChangesAsync();
                 transactionScope.Complete();
             }
-            await SendNotifications(sender, 1, projectId, alertData, errorReportData, projectHealthRisk, gatewaySetting);
+            await SendNotifications(sender, alertData, errorReportData, projectHealthRisk, gatewaySetting);
         }
 
         public async Task<DataCollector> ValidateDataCollector(string phoneNumber, int gatewayNationalSocietyId)
@@ -223,7 +225,9 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                 try
                 {
                     convertedTimestamp = int.Parse(timestamp);
-                }catch (Exception e){
+                }
+                catch (Exception e)
+                {
                     _loggerAdapter.Warn(e.Message);
                     return new ReportValidationResult { IsSuccess = false };
                 }
@@ -293,8 +297,6 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
 
         private async Task SendNotifications(
             string senderPhoneNumber,
-            int? senderModemNumber,
-            int? projectId,
             AlertData alertData,
             ErrorReportData errorReportData,
             ProjectHealthRisk projectHealthRisk,

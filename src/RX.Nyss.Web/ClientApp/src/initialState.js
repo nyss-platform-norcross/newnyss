@@ -1,3 +1,5 @@
+import { projectSetupInitialState } from './components/projectSetup/logic/projectSetupReducer';
+
 export const initialState = {
   appData: {
     appReady: false,
@@ -172,6 +174,9 @@ export const initialState = {
       projectSummary: null,
       isFetching: false
     },
+  },
+  projectDashboard: {
+
   },
   projectDashboard: {
     name: null,
@@ -369,5 +374,8 @@ export const initialState = {
   },
   tracking: {
     appInsights: null,
+  },
+  projectSetup: {
+    ...projectSetupInitialState,
   }
 };
