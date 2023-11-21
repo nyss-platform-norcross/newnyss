@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from "react-redux";
 import { withLayout } from '../../utils/layout';
 import Layout from '../layout/Layout';
@@ -16,6 +16,8 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
     openProjectSetup(nationalSocietyId);
   });
 
+  const [stepInputIsValid, setStepInputIsValid] = useState(false);
+
   if (isFetching) {
     return <Loading />;
   }
@@ -28,7 +30,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
     },
     {
       name: 'Organization',
-      content: <Typography><ProjectSetupOrganization organizations={organizations}/></Typography>,
+      content: <Typography>Organization content</Typography>,
       stepNumber: 1
     },
     {
@@ -56,7 +58,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
 
   return (
     <div>
-      <SetupStepper steps={projectSetupSteps}/>
+      <SetupStepper steps={projectSetupSteps} stepInputIsValid={stepInputIsValid} setStepInputIsValid={setStepInputIsValid}/>
     </div>
   );
 }
