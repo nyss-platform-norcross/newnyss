@@ -31,7 +31,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
     },
     {
       name: 'Organization',
-      content: <Typography>Organization content</Typography>,
+      content: <ProjectSetupOrganization error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
       stepNumber: 1
     },
     {
@@ -70,7 +70,6 @@ ProjectSetupPageComponent.propTypes = {
 const mapStateToProps = (state, ownProps) => ({
   nationalSocietyId: ownProps.match.params.nationalSocietyId,
   isFetching: state.projectSetup.formFetching,
-  organizations: state.projectSetup.formData?.organizations
 });
 
 const mapDispatchToProps = {

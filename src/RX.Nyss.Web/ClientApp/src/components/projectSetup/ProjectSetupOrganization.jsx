@@ -1,8 +1,9 @@
-import { Select, MenuItem, InputLabel, Typography } from "@material-ui/core";
+import { Select, MenuItem, InputLabel, Typography, FormHelperText } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import * as projectSetupActions from './logic/projectSetupActions';
-import { useMount } from '../../utils/lifecycle';
+import { useState } from "react";
+import { useMount } from "../../utils/lifecycle";
 
 const useStyles = makeStyles(() => ({
   rtl: {
@@ -16,20 +17,31 @@ const useStyles = makeStyles(() => ({
   },
   inputField: {
     width: 270,
+  },
+  errorMessage: {
+    color: "red",
+    textAlign: "left",
+    width: 270
   }
-
 }));
 
-export const ProjectSetupOrganizationComponent = ({organizations, rtl, setStepInputIsValid, setOrganizationId, selectedOrganizationId}) => {
+export const ProjectSetupOrganizationComponent = ({organizations, rtl, setOrganizationId, selectedOrganizationId, error, setError, setIsNextStepInvalid }) => {
   const classes = useStyles();
-  
-  useMount(() => {
-    selectedOrganizationId && setStepInputIsValid(true);
-  });
+  const [selectedOrganization, setSelectedOrganization] = useState(undefined);
+  const errorMessage = "*Please select an organization";
 
+  useMount(() => {
+    selectedOrganizationId && setSelectedOrganization(organizations.find(org => org.id === selectedOrganizationId));
+  });
+  
   const handleChange = (event) => {
-    setOrganizationId(event.target.value);
-    setStepInputIsValid(true);
+    const eventOrganization = organizations.find(org => org.id === event.target.value);
+    if (eventOrganization){
+      setOrganizationId(event.target.value);
+      setIsNextStepInvalid(false);
+      setSelectedOrganization(eventOrganization);
+      setError(false);
+    }
   };
   
   return (
@@ -44,7 +56,7 @@ export const ProjectSetupOrganizationComponent = ({organizations, rtl, setStepIn
           if (selectedId === "") {
             return <Typography style={{ color: "#4F4F4F", fontSize: 12 }}>Select an organization</Typography>;
           }
-          const selectedOrganization = organizations.find(org => org.id === selectedId);
+
           return selectedOrganization ? selectedOrganization.name : "";
         }}
       >
@@ -57,6 +69,7 @@ export const ProjectSetupOrganizationComponent = ({organizations, rtl, setStepIn
           </MenuItem>
         )}
       </Select>
+      {error && <FormHelperText className={classes.errorMessage}>{errorMessage}</FormHelperText>}
     </>
   );
 };
