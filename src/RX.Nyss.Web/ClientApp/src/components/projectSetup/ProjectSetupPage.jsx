@@ -8,6 +8,7 @@ import { useMount } from '../../utils/lifecycle';
 import { SetupStepper } from '../common/stepper/SetupStepper'
 import Typography from '@material-ui/core/Typography';
 import { ProjectSetupName } from './ProjectSetupName'
+import { strings, stringKeys } from '../../strings';
 
 
 const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, setNewRegions, ...props}) => {
@@ -25,8 +26,8 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
 
   const projectSetupSteps = [
     {
-      name: 'Project name',
-      content: <ProjectSetupName />,
+      name: strings(stringKeys.projectSetup.projectName.name),
+      content: <ProjectSetupName error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
       stepNumber: 0
     },
     {

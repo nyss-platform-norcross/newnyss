@@ -414,6 +414,8 @@ export const stringKeys = {
   },
   projectSetup: {
     projectName: {
+      name: "projectSetup.projectName.name",
+      title: "projectSetup.projectName.title",
       error: "projectSetup.projectName.error"
     }
   },

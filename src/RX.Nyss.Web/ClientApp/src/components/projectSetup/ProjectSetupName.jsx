@@ -1,28 +1,37 @@
-import { TextField, Typography } from "@material-ui/core"
+import { InputLabel, TextField } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles';
 import * as projectSetupActions from './logic/projectSetupActions';
 import { connect } from "react-redux";
+import { strings, stringKeys } from '../../strings';
 
-const useStyles = makeStyles((theme) => ({
+
+const useStyles = makeStyles(() => ({
   input: {
     width: 270,
     "& .MuiInput-formControl": {
       marginTop: "0px !important"
     }
   },
+  inputLabel: {
+    fontSize: "16px",
+    fontWeight: 700,
+    marginBottom: 8,
+  }
 }));
 
-export const ProjectSetupNameComponent = ({ projectName, setProjectName }) => {
-  const classes = useStyles()
+const ProjectSetupNameComponent = ({ projectName, setProjectName, error, setError, setIsNextStepInvalid }) => {
+  const classes = useStyles();
 
   const handleChange = (event) => {
-    setProjectName(event.target.value)
+    setError(event.target.value === "")
+    setIsNextStepInvalid(false)
+    setProjectName(event.target.value);
   }
 
   return (
     <>
-      <Typography variant="h5">What is the project name?</Typography>
-      <TextField value={projectName} onChange={handleChange} className={classes.input} />
+      <InputLabel className={classes.inputLabel}>{strings(stringKeys.projectSetup.projectName.title)}</InputLabel>
+      <TextField value={projectName} onChange={handleChange} error={error} className={classes.input} helperText={error ? strings(stringKeys.projectSetup.projectName.error) : null}/>
     </>
   )
 }
