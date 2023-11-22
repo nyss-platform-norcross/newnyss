@@ -67,7 +67,7 @@ const ProjectHealthRisksEditPageComponent = (props) => {
       return;
     }
 
-    !preventSubmit && props.editHealthRisk(props.nationalSocietyId, props.projectId, getSaveFormModel(null, selectedHealthRisks));
+    !preventSubmit && props.editHealthRisk(props.nationalSocietyId, props.projectId, getSaveFormModel(form.getValues(), selectedHealthRisks));
   };
 
   const onHealthRiskChange = (value, eventData) => {

@@ -4,13 +4,13 @@ export const getSaveFormModel = (values, healthRisks) => (
     allowMultipleOrganizations: values?.allowMultipleOrganizations,
     timeZoneId: values?.timeZoneId,
     healthRisks: healthRisks && healthRisks.map(healthRisk => ({
-      id: healthRisk.id,
+      id: values[`healthRisk.${healthRisk.healthRiskId}.projectHealthRiskId`],
       healthRiskId: healthRisk.healthRiskId,
-      feedbackMessage: healthRisk.feedbackMessage,
-      caseDefinition: healthRisk.caseDefinition,
-      alertRuleCountThreshold: parseInt(healthRisk.alertRuleCountThreshold),
-      alertRuleDaysThreshold: parseInt(healthRisk.alertRuleDaysThreshold),
-      alertRuleKilometersThreshold: parseInt(healthRisk.alertRuleKilometersThreshold)
+      feedbackMessage: values[`healthRisk.${healthRisk.healthRiskId}.feedbackMessage`],
+      caseDefinition: values[`healthRisk.${healthRisk.healthRiskId}.caseDefinition`],
+      alertRuleCountThreshold: parseInt(values[`healthRisk.${healthRisk.healthRiskId}.alertRuleCountThreshold`]),
+      alertRuleDaysThreshold: parseInt(values[`healthRisk.${healthRisk.healthRiskId}.alertRuleDaysThreshold`]),
+      alertRuleKilometersThreshold: parseInt(values[`healthRisk.${healthRisk.healthRiskId}.alertRuleKilometersThreshold`])
     })),
     organizationId: values && values.organizationId ? parseInt(values?.organizationId) : null,
     alertNotHandledNotificationRecipientId: parseInt(values?.alertNotHandledNotificationRecipientId)
