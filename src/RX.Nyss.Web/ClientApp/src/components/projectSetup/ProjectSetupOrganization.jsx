@@ -1,4 +1,4 @@
-import { Select, MenuItem, InputLabel } from "@material-ui/core";
+import { Select, MenuItem, InputLabel, Typography } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import * as projectSetupActions from './logic/projectSetupActions';
@@ -39,6 +39,14 @@ export const ProjectSetupOrganizationComponent = ({organizations, rtl, setStepIn
         className={`${classes.inputField} ${rtl ? classes.rtl : ""}`}
         onChange={handleChange}
         value={selectedOrganizationId ? selectedOrganizationId : ""}
+        displayEmpty
+        renderValue={selectedId => {
+          if (selectedId === "") {
+            return <Typography style={{ color: "#4F4F4F", fontSize: 12 }}>Select an organization</Typography>;
+          }
+          const selectedOrganization = organizations.find(org => org.id === selectedId);
+          return selectedOrganization ? selectedOrganization.name : "";
+        }}
       >
         {organizations?.map(organization => 
           <MenuItem
