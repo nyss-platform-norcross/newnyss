@@ -80,6 +80,9 @@ export const ProjectsOverviewHealthRiskItem = ({ projectHealthRisk, rtl }) => {
                           <Typography className={styles.alertRuleData} gutterBottom>
                             {projectHealthRisk.alertRuleDaysThreshold}
                           </Typography>
+                          <Typography className={styles.alertRuleData} gutterBottom>
+                            {projectHealthRisk.alertRuleDaysThreshold == 1 ? strings(stringKeys.project.form.alertRuleDay) : strings(stringKeys.project.form.alertRuleDays)}
+                          </Typography>
                         </Grid>
                       </Grid>
 

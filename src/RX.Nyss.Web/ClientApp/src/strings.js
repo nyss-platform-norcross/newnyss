@@ -381,6 +381,8 @@ export const stringKeys = {
       alertsSection: "project.form.alertsSection",
       alertRuleCountThreshold: "project.form.alertRuleCountThreshold",
       alertRuleDaysThreshold: "project.form.alertRuleDaysThreshold",
+      alertRuleDays: "project.form.alertRuleDays",
+      alertRuleDay: "project.form.alertRuleDay",
       alertRuleKilometersThreshold: "project.form.alertRuleKilometersThreshold",
       alertRuleKilometer: "project.form.alertRuleKilometer",
       alertNotHandledNotificationRecipient: "project.form.alertNotHandledNotificationRecipient"
