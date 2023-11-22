@@ -80,15 +80,22 @@ const getStepContent = (steps, stepIndex) => {
   return steps.find(step => step.stepNumber === stepIndex).content
 }
 
-export const SetupStepper = ({ steps, stepInputIsValid = true }) => {
+export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsNextStepInvalid }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if(!error && !isNextStepInvalid) {
+      setActiveStep(prevActiveStep => prevActiveStep + 1);
+      setIsNextStepInvalid(true);
+    } else {
+      setError(true);
+    }
   };
 
   const handleBack = () => {
+    setError(false);
+    setIsNextStepInvalid(false);
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -142,7 +149,7 @@ export const SetupStepper = ({ steps, stepInputIsValid = true }) => {
                   {strings(stringKeys.common.buttons.previous)}
                 </Button>
               )}
-              <Button variant={stepInputIsValid ? "contained" : "outlined"} color="primary" onClick={activeStep === steps.length - 1 ? handleReset : handleNext}>
+              <Button variant={(!error && !isNextStepInvalid) ? "contained" : "outlined"} color="primary" onClick={activeStep === steps.length - 1 ? handleReset : handleNext}>
                 {activeStep === steps.length - 1 ? strings(stringKeys.common.buttons.finish) : strings(stringKeys.common.buttons.next)}
               </Button>
             </Grid>

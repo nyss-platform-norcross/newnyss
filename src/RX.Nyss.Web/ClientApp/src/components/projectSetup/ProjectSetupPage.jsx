@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from "react-redux";
 import { withLayout } from '../../utils/layout';
 import Layout from '../layout/Layout';
@@ -14,6 +14,9 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
   useMount(() => {
     openProjectSetup(nationalSocietyId);
   });
+
+  const [error, setError] = useState(false);
+  const [isNextStepInvalid, setIsNextStepInvalid] = useState(true);
 
   if (isFetching) {
     return <Loading />;
@@ -55,7 +58,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
 
   return (
     <div>
-      <SetupStepper steps={projectSetupSteps}/>
+      <SetupStepper steps={projectSetupSteps} error={error} setError={setError} isNextStepInvalid={isNextStepInvalid} setIsNextStepInvalid={setIsNextStepInvalid}/>
     </div>
   );
 }
