@@ -16,7 +16,8 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
     openProjectSetup(nationalSocietyId);
   });
 
-  const [stepInputIsValid, setStepInputIsValid] = useState(false);
+  const [error, setError] = useState(false);
+  const [isNextStepInvalid, setIsNextStepInvalid] = useState(true);
 
   if (isFetching) {
     return <Loading />;
@@ -58,7 +59,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
 
   return (
     <div>
-      <SetupStepper steps={projectSetupSteps} stepInputIsValid={stepInputIsValid} setStepInputIsValid={setStepInputIsValid}/>
+      <SetupStepper steps={projectSetupSteps} error={error} setError={setError} isNextStepInvalid={isNextStepInvalid} setIsNextStepInvalid={setIsNextStepInvalid}/>
     </div>
   );
 }
