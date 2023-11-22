@@ -1,4 +1,4 @@
-import { Select, Typography, MenuItem } from "@material-ui/core";
+import { Select, MenuItem, InputLabel } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
@@ -6,6 +6,14 @@ const useStyles = makeStyles(() => ({
     marginRight: "unset",
     marginLeft: "3ch",
   },
+  inputText: {
+    fontSize: "16px",
+    fontWeight: 700,
+    marginBottom: 8,
+  },
+  inputField: {
+    width: 270,
+  }
 
 }));
 
@@ -14,9 +22,9 @@ export const ProjectSetupOrganization = ({organizations, rtl}) => {
   
   return (
     <>
-      <Typography>Choose organization</Typography>
+      <InputLabel className={classes.inputText}>Choose organization</InputLabel>
       <Select 
-        className={`${rtl ? classes.rtl : ""}`}
+        className={`${classes.inputField} ${rtl ? classes.rtl : ""}`}
       >
         {organizations?.map(organization => 
           <MenuItem
