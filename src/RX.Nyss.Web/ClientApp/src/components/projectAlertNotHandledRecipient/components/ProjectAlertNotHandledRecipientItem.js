@@ -10,7 +10,7 @@ export const ProjectAlertNotHandledRecipientItem = ({ isAdministrator, getFormDa
 
   useEffect(() => {
     getFormData(projectId);
-  }, []);
+  }, [projectId, getFormData]);
 
   const handleRecipientChange = (change) => {
     const user = users.filter(u => u.userId === change.target.value)[0];

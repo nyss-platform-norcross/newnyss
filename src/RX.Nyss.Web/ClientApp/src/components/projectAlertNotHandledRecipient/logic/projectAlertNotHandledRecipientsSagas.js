@@ -75,10 +75,7 @@ function* getProjectAlertNotHandledRecipients(projectId) {
 function* getProjectAlertNotHandledRecipientsFormData({ projectId }) {
   yield put(actions.getFormData.request());
   try {
-    const response = yield call(http.getCached, {
-      path: `/api/projectAlertNotHandledRecipient/formData?projectId=${projectId}`,
-      dependencies: entityTypes.project(projectId)
-    });
+    const response = yield call(http.get, `/api/projectAlertNotHandledRecipient/formData?projectId=${projectId}`);
     yield put(actions.getFormData.success(response.value));
   } catch (error) {
     yield put(actions.getFormData.failure(error.message));
