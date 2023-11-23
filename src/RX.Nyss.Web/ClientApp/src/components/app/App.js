@@ -60,7 +60,6 @@ import { ProjectOrganizationsListPage } from '../projectOrganizations/ProjectOrg
 import { ProjectOrganizationsCreatePage } from '../projectOrganizations/ProjectOrganizationsCreatePage';
 import { EmailTranslationsListPage } from '../translations/EmailTranslationsListPage';
 import { SmsTranslationsListPage } from '../translations/SmsTranslationsListPage';
-import { ProjectAlertNotificationsPage } from '../projects/ProjectAlertNotificationPage';
 import { ProjectAlertRecipientsCreatePage } from '../projectAlertRecipients/ProjectAlertRecipientsCreatePage';
 import { ProjectAlertRecipientsEditPage } from '../projectAlertRecipients/ProjectAlertRecipientsEditPage';
 import { IncorrectReportsListPage } from '../reports/IncorrectReportsListPage';
@@ -73,6 +72,8 @@ import { useEffect } from 'react';
 import { EidsrIntegrationPage } from "../eidsrIntegration/EidsrIntegrationPage";
 import { EidsrIntegrationEditPage } from "../eidsrIntegration/EidsrIntegrationEditPage";
 import { FeedbackPage } from '../feedback/FeedbackPage';
+import { ProjectAlertNotHandledRecipientsPage } from '../projectAlertNotHandledRecipient/ProjectAlertNotHandledRecipientsPage'
+import { ProjectAlertRecipientsListPage } from '../projectAlertRecipients/ProjectAlertRecipientsListPage'
 import { ProjectSetupPage } from '../projectSetup/ProjectSetupPage';
 import { Administrator } from '../../authentication/roles';
 
@@ -158,9 +159,10 @@ export const App = ({ history }) => {
             <AuthRoute exact path='/projects/:projectId/organizations' component={ProjectOrganizationsListPage} roles={accessMap.projectOrganizations.list} />
             <AuthRoute exact path='/projects/:projectId/organizations/add' component={ProjectOrganizationsCreatePage} roles={accessMap.projectOrganizations.add} />
 
-            <AuthRoute exact path='/projects/:projectId/alertNotifications' component={ProjectAlertNotificationsPage} roles={accessMap.projectAlertNotifications.list} />
-            <AuthRoute exact path='/projects/:projectId/alertNotifications/addRecipient' component={ProjectAlertRecipientsCreatePage} roles={accessMap.projectAlertNotifications.addRecipient} />
-            <AuthRoute exact path='/projects/:projectId/alertNotifications/:alertRecipientId/editRecipient' component={ProjectAlertRecipientsEditPage} roles={accessMap.projectAlertNotifications.editRecipient} />
+            <AuthRoute exact path='/projects/:projectId/unhandledAlertNotifications' component={ProjectAlertNotHandledRecipientsPage} roles={accessMap.projectAlertNotifications.list} />
+            <AuthRoute exact path='/projects/:projectId/escalatedAlertNotifications/addRecipient' component={ProjectAlertRecipientsCreatePage} roles={accessMap.projectAlertNotifications.addRecipient} />
+            <AuthRoute exact path='/projects/:projectId/escalatedAlertNotifications/:alertRecipientId/editRecipient' component={ProjectAlertRecipientsEditPage} roles={accessMap.projectAlertNotifications.editRecipient} />
+            <AuthRoute exact path='/projects/:projectId/escalatedAlertNotifications' component={ProjectAlertRecipientsListPage} roles={accessMap.projectAlertNotifications.list} />
 
             <AuthRoute exact path='/projects/:projectId/errorMessages' component={ProjectErrorMessagesPage} roles={accessMap.projectErrorMessages.list} />
 

@@ -31,13 +31,19 @@ namespace RX.Nyss.Web.Tests.Features.ProjectAlertNotHandledRecipients
 
             _projectAlertNotHandledRecipientService = new ProjectAlertNotHandledRecipientService(_nyssContextMock, _authorizationServiceMock, logger);
 
-            var users = new List<User> { new ManagerUser { Id = 1 } };
+            var users = new List<User> { new ManagerUser { Id = 1 }, new TechnicalAdvisorUser { Id = 2 } };
             var userNationalSocieties = new List<UserNationalSociety>
             {
                 new UserNationalSociety
                 {
                     UserId = 1,
                     User = users[0],
+                    OrganizationId = 1
+                },
+                new UserNationalSociety
+                {
+                    UserId = 2,
+                    User = users[1],
                     OrganizationId = 1
                 }
             };
@@ -168,11 +174,19 @@ namespace RX.Nyss.Web.Tests.Features.ProjectAlertNotHandledRecipients
         {
             // Arrange
             var projectId = 1;
-            var dto = new ProjectAlertNotHandledRecipientRequestDto
+
+            var dto = new ProjectAlertNotHandledRecipientsRequestDto
             {
-                UserId = 2,
-                OrganizationId = 1
+                Recipients = new List<ProjectAlertNotHandledRecipientRequestDto>
+                {
+                    new ProjectAlertNotHandledRecipientRequestDto()
+                    {
+                        UserId = 2,
+                        OrganizationId = 1
+                    }
+                }
             };
+
 
             // Act
             var res = await _projectAlertNotHandledRecipientService.Edit(projectId, dto);
@@ -187,10 +201,16 @@ namespace RX.Nyss.Web.Tests.Features.ProjectAlertNotHandledRecipients
         {
             // Arrange
             var projectId = 1;
-            var dto = new ProjectAlertNotHandledRecipientRequestDto
+            var dto = new ProjectAlertNotHandledRecipientsRequestDto
             {
-                UserId = 2,
-                OrganizationId = 2
+                Recipients = new List<ProjectAlertNotHandledRecipientRequestDto>
+                {
+                    new ProjectAlertNotHandledRecipientRequestDto()
+                    {
+                        UserId = 2,
+                        OrganizationId = 2
+                    }
+                }
             };
 
             // Act
