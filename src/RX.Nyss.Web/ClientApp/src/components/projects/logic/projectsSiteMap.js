@@ -66,6 +66,21 @@ export const projectsSiteMap = [
   },
   {
     parentPath: "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
+    path: "/nationalsocieties/:nationalSocietyId/projects/:projectId/healthrisks",
+    title: () => strings(stringKeys.healthRisk.title),
+    placeholder: placeholders.projectSubMenu,
+    access: accessMap.projects.showOverview,
+    placeholderIndex: projectSubMenuOrder.healthRisks,
+    middleStepOnly: true,
+  },
+  {
+    parentPath: "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
+    path: "/nationalsocieties/:nationalSocietyId/projects/:projectId/editHealthRisks",
+    title: () => strings(stringKeys.project.form.healthRisksEditionTitle),
+    access: accessMap.projects.edit,
+  },
+  {
+    parentPath: "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
     path: "/projects/:projectId/escalatedAlertNotifications",
     title: () => strings(stringKeys.projectAlertRecipient.title),
     placeholder: placeholders.projectSubMenu,
