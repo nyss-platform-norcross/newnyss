@@ -24,7 +24,7 @@ const ProjectSetupNameComponent = ({ projectName, setProjectName, error, setErro
 
   const handleChange = (event) => {
     setError(event.target.value === "")
-    setIsNextStepInvalid(false)
+    setIsNextStepInvalid(event.target.value === "")
     setProjectName(event.target.value);
   }
 
