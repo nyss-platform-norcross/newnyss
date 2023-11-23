@@ -16,6 +16,7 @@ import { ProjectsHealthRiskItem } from './ProjectHealthRiskItem';
 import { getSaveFormModel } from './logic/projectsService';
 import { Loading } from '../common/loading/Loading';
 import { ValidationMessage } from '../forms/ValidationMessage';
+import { SubMenuTitle } from '../layout/SubMenuTitle';
 
 
 const ProjectHealthRisksEditPageComponent = (props) => {
@@ -91,6 +92,7 @@ const ProjectHealthRisksEditPageComponent = (props) => {
 
   return (
     <Fragment>
+      <SubMenuTitle />
       {props.error && <ValidationMessage message={props.error.message} />}
       <Form onSubmit={handleSubmit} fullWidth style={{ maxWidth: 800 }}>
         <Grid container spacing={2}>

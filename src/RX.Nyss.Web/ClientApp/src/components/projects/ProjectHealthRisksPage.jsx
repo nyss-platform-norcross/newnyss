@@ -13,6 +13,7 @@ import { accessMap } from '../../authentication/accessMap';
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { Chip, Grid, Typography } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
+import { SubMenuTitle } from '../layout/SubMenuTitle';
 
 const ProjectHealthRisksPageComponent = (props) => {
   useMount(() => {
@@ -27,6 +28,7 @@ const ProjectHealthRisksPageComponent = (props) => {
 
   return (
     <Fragment>
+      <SubMenuTitle />
       <Grid container spacing={4} fixed='true' style={{ maxWidth: 800 }}>
         
         <Grid item xs={12}>
