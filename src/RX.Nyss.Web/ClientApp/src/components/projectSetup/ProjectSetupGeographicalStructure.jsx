@@ -1,15 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect, useSelector } from "react-redux";
 import * as nationalSocietyStructureActions from "../nationalSocietyStructure/logic/nationalSocietyStructureActions";
 import { Grid, Typography } from "@material-ui/core";
 import * as roles from "../../authentication/roles";
 import { strings, stringKeys } from "../../strings";
 import { NationalSocietyLocationList } from "../nationalSocietyStructure/NationalSocietyLocationList";
+import * as projectSetupActions from './logic/projectSetupActions';
 
 export const ProjectSetupGeographicalStructureComponent = (props) => {
   const {
     openStructure,
     nationalSocietyId,
+    regions,
+    districts,
+    villages,
+    zones,
+    tempRegions,
+    tempDistricts,
+    tempVillages,
+    tempZones,
+    setRegions,
+    setDistricts,
+    setVillages,
+    setZones
   } = props;
 
   useEffect(() => {
@@ -25,23 +38,79 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
 
   const useRtlDirection = useSelector(state => state.appData.user.languageCode === 'ar');
 
+  useEffect(() => {
+    regions?.length > 0 && setRegions([...regions])
+    districts?.length > 0 && setDistricts([...districts])
+    villages?.length > 0 && setVillages([...villages])
+    zones?.length > 0 && setZones([...zones])
+  }, [regions, districts, villages, zones, setRegions, setDistricts, setVillages, setZones])
 
-  const [tempRegions, setTempRegions] = useState(props.regions);
-  const [tempDistricts, setTempDistricts] = useState(props.districts);
-  const [tempVillages, setTempVillages] = useState(props.villages);
-  const [tempZones, setTempZones] = useState(props.zones);
 
   const createRegion = (activeParentLocationId, name) => {
-    setTempRegions(prev => [...prev, { id: `new_region_${name}`, name: name }]);
+    setRegions([...tempRegions, { id: `new_region_${name}`, name: name }]);
   }
   const createDistrict = (activeParentLocationId, name) => {
-    setTempDistricts(prev => [...prev, { id: `new_district_${name}`, regionId: activeParentLocationId, name: name }]);
+    setDistricts([...tempDistricts, { id: `new_district_${name}`, regionId: activeParentLocationId, name: name }]);
   }
   const createVillage = (activeParentLocationId, name) => {
-    setTempVillages(prev => [...prev, { id: `new_village_${name}`, districtId: activeParentLocationId, name: name }]);
+    setVillages([...tempVillages, { id: `new_village_${name}`, districtId: activeParentLocationId, name: name }]);
   }
   const createZone = (activeParentLocationId, name) => {
-    setTempZones(prev => [...prev, { id: `new_zone_${name}`, villageId: activeParentLocationId, name: name }]);
+    setZones([...tempZones, { id: `new_zone_${name}`, villageId: activeParentLocationId, name: name }]);
+  }
+
+  const editRegion = (id, newName) => {
+    setRegions(() => {
+      const temp = tempRegions.map(region => {
+        if(region.id === id) region.name = newName;
+        return region;
+      });
+      return temp;
+    });
+    return;
+  }
+
+  const editDistrict = (id, newName) => {
+    setDistricts(() => {
+      const temp = tempDistricts.map(district => {
+        if(district.id === id) district.name = newName;
+        return district;
+      });
+      return temp;
+    });
+  }
+
+  const editVillage = (id, newName) => {
+    setVillages(() => {
+      const temp = tempVillages.map(village => {
+        if(village.id === id) village.name = newName;
+        return village;
+      });
+      return temp;
+    });
+  }
+
+  const editZone = (id, newName) => {
+    setZones(() => {
+      const temp = tempZones.map(zone => {
+        if(zone.id === id) zone.name = newName;
+        return zone;
+      });
+      return temp;
+    });
+  }
+
+  const removeRegion = (id) => {
+    setRegions(() => tempRegions.filter(region => region.id !== id));
+  }
+  const removeDistrict = (id) => {
+    setDistricts(() => tempDistricts.filter(district => district.id !== id));
+  }
+  const removeVillage = (id) => {
+    setVillages(() => tempVillages.filter(village => village.id !== id));
+  }
+  const removeZone = (id) => {
+    setZones(() => tempZones.filter(zone => zone.id !== id));
   }
 
   if(!props.regions) return null;
@@ -49,8 +118,8 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
   const manageLocation = {
     region: {
       create: createRegion,
-      edit: props.editRegion,
-      remove: props.removeRegion,
+      edit: editRegion,
+      remove: removeRegion,
       nextLocationType: "district",
       nextLocations: (location) => tempDistricts.filter(
         (district) => district.regionId === location.id
@@ -59,8 +128,8 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
     },
     district: {
       create: createDistrict,
-      edit: props.editDistrict,
-      remove: props.removeDistrict,
+      edit: editDistrict,
+      remove: removeDistrict,
       nextLocationType: "village",
       nextLocations: (location) => tempVillages.filter(
         (village) => village.districtId === location.id
@@ -69,8 +138,8 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
     },
     village: {
       create: createVillage,
-      edit: props.editVillage,
-      remove: props.removeVillage,
+      edit: editVillage,
+      remove: removeVillage,
       nextLocationType: "zone",
       nextLocations: (location) => tempZones.filter(
         (zone) => zone.villageId === location.id
@@ -79,8 +148,8 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
     },
     zone: {
       create: createZone,
-      edit: props.editZone,
-      remove: props.removeZone,
+      edit: editZone,
+      remove: removeZone,
       nextLocationType: null,
       nextLocations: () => null,
       addLocationLabel: strings(stringKeys.nationalSociety.structure.addZone, true)
@@ -118,6 +187,10 @@ const mapStateToProps = (state) => ({
   nationalSocietyIsArchived: state.appData.siteMap.parameters.nationalSocietyIsArchived,
   nationalSocietyHasCoordinator: state.appData.siteMap.parameters.nationalSocietyHasCoordinator,
   callingUserRoles: state.appData.user.roles,
+  tempRegions: state.projectSetup.regions,
+  tempDistricts: state.projectSetup.districts,
+  tempVillages: state.projectSetup.villages,
+  tempZones: state.projectSetup.zones,
 });
 
 const mapDispatchToProps = {
@@ -138,6 +211,11 @@ const mapDispatchToProps = {
   createZone: nationalSocietyStructureActions.createZone.invoke,
   editZone: nationalSocietyStructureActions.editZone.invoke,
   removeZone: nationalSocietyStructureActions.removeZone.invoke,
+
+  setRegions: projectSetupActions.setRegions,
+  setDistricts: projectSetupActions.setDistricts,
+  setVillages: projectSetupActions.setVillages,
+  setZones: projectSetupActions.setZones,
 };
 
 export const ProjectSetupGeographicalStructure = connect(mapStateToProps, mapDispatchToProps)(ProjectSetupGeographicalStructureComponent);

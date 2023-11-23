@@ -11,7 +11,9 @@ export const projectSetupInitialState = {
   formFetching: false,
   formData: null,
   regions: [],
-  newRegions: [],
+  districts: [],
+  villages: [],
+  zones: [],
 }
 
 export function projectSetupReducer(state = projectSetupInitialState, action) {
@@ -52,8 +54,17 @@ export function projectSetupReducer(state = projectSetupInitialState, action) {
     case actions.SET_HEALTH_RISKS:
       return { ...state,  healthRisks: action.healthRisks}
 
-    case actions.SET_NEW_REGIONS:
-      return { ...state, newRegions: action.newRegions }
+    case actions.SET_REGIONS:
+      return { ...state, regions: action.regions }
+
+    case actions.SET_DISTRICTS:
+      return { ...state, districts: action.districts }
+
+    case actions.SET_VILLAGES:
+      return { ...state, villages: action.villages }
+
+    case actions.SET_ZONES:
+      return { ...state, zones: action.zones }
 
     default:
       return state;

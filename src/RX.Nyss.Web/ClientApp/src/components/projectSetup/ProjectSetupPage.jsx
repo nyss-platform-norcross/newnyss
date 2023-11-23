@@ -8,8 +8,7 @@ import { useMount } from '../../utils/lifecycle';
 import { SetupStepper } from '../common/stepper/SetupStepper'
 import Typography from '@material-ui/core/Typography';
 
-
-const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, setNewRegions, ...props}) => {
+const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, ...props}) => {
 
   useMount(() => {
     openProjectSetup(nationalSocietyId);
@@ -77,7 +76,6 @@ const mapDispatchToProps = {
   setOrganizationId: projectSetupActions.setOrganizationId,
   setAlertNotHandledNotificationRecipientId: projectSetupActions.setAlertNotHandledNotificationRecipientId,
   setHealthRisks: projectSetupActions.setHealthRisks,
-  setNewRegions: projectSetupActions.setNewRegions,
 };
 
 export const ProjectSetupPage = withLayout(
