@@ -7,6 +7,7 @@ import * as projectSetupActions from './logic/projectSetupActions';
 import { useMount } from '../../utils/lifecycle';
 import { SetupStepper } from '../common/stepper/SetupStepper'
 import Typography from '@material-ui/core/Typography';
+import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStructure"
 import { strings, stringKeys } from "../../strings";
 
 const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, ...props}) => {
@@ -45,7 +46,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
     },
     {
       name: strings(stringKeys.projectSetup.geographicalStructure.name),
-      content: <Typography>Geographical content</Typography>,
+      content: <ProjectSetupGeographicalStructure />,
       stepNumber: 4
     },
     {
