@@ -96,7 +96,6 @@ const ProjectHealthRisksEditPageComponent = (props) => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <MultiSelect
-              label={strings(stringKeys.project.form.healthRisks)}
               options={healthRiskDataSource}
               value={getSelectedHealthRiskValue()}
               onChange={onHealthRiskChange}
