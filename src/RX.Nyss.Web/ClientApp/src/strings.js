@@ -415,6 +415,12 @@ export const stringKeys = {
   projectSetup: {
     projectName: {
       error: "projectSetup.projectName.error"
+    },
+    geographicalStructure: {
+      name: "projectSetup.geographicalStructure.name",
+      title: "projectSetup.geographicalStructure.title",
+      description: "projectSetup.geographicalStructure.description",
+
     }
   },
   dashboard: {

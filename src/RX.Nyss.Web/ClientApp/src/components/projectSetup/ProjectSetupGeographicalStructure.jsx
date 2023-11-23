@@ -159,9 +159,14 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
   return (
     <Grid style={{ width: "100%" }} container direction="column" alignItems="center">
       {!props.nationalSocietyIsArchived && (
-        <Typography variant="body1" style={{ marginBottom: 50 }}>
-          {strings(stringKeys.nationalSociety.structure.introduction)}
-        </Typography>
+        <>
+          <Typography variant="body1" style={{ fontWeight: 700 }}>
+            {strings(stringKeys.projectSetup.geographicalStructure.title)}
+          </Typography>
+          <Typography variant="body1" style={{ marginBottom: 50, color: "#4F4F4F" }}>
+            {strings(stringKeys.projectSetup.geographicalStructure.description)}
+          </Typography>
+        </>
       )}
         <Grid style={{ width: "100%" }}>
           <NationalSocietyLocationList
