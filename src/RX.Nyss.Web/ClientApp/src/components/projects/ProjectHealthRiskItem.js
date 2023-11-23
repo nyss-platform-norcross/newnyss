@@ -4,7 +4,7 @@ import { validators } from '../../utils/forms';
 import TextInputField from '../forms/TextInputField';
 import { useMount } from '../../utils/lifecycle';
 import { strings, stringKeys } from '../../strings';
-import { Card, CardContent, Typography, Grid } from '@material-ui/core';
+import { Card, CardContent, Typography, Grid, makeStyles, useTheme } from '@material-ui/core';
 
 export const ProjectsHealthRiskItem = ({ form, healthRisk, projectHealthRisk, rtl }) => {
   const [ready, setReady] = useState(false);
@@ -13,6 +13,25 @@ export const ProjectsHealthRiskItem = ({ form, healthRisk, projectHealthRisk, rt
   const healthRiskItemRef = useRef(null);
   const getHealthRiskItemRef = useCallback(node => healthRiskItemRef, []);
 
+  const useStyles = makeStyles({
+    cardBodyText: {
+      fontSize: 16,
+    },
+    healthRiskCode: {
+      fontSize: 16,
+      fontWeight: 700,
+    },
+    label: {
+      top: -15
+    },
+    content: {
+      margin: "20px -8px"
+    }
+  });
+
+  const classes = useStyles();
+
+  const theme = useTheme();
 
   useMount(() => {
     form.addField(`healthRisk.${healthRisk.healthRiskId}.projectHealthRiskId` || '', projectHealthRisk.id, [], healthRiskItemRef);
@@ -53,15 +72,15 @@ export const ProjectsHealthRiskItem = ({ form, healthRisk, projectHealthRisk, rt
   }, [form, reportCountThreshold, healthRisk]);
 
   const renderHeader = () =>
-    rtl ? (
+    !rtl ? (
       <Fragment>
-        <Typography variant="h2" className={styles.header}>{healthRisk.healthRiskCode}</Typography>
-        <Typography variant="h3" className={`${styles.header} ${styles.healthRiskName}`}>{healthRisk.healthRiskName}</Typography>
+        <Typography className={`${styles.header} ${classes.healthRiskCode}`}>{healthRisk.healthRiskCode}</Typography>
+        <Typography className={`${styles.header} ${styles.healthRiskName}`}>{healthRisk.healthRiskName}</Typography>
       </Fragment>
     ) : (
       <Fragment>
-        <Typography variant="h3" className={`${styles.header} ${styles.healthRiskNameRtl}`}>{healthRisk.healthRiskName}</Typography>
-        <Typography variant="h2" className={styles.header}>{healthRisk.healthRiskCode}</Typography>
+        <Typography className={`${styles.header} ${styles.healthRiskNameRtl}`}>{healthRisk.healthRiskName}</Typography>
+        <Typography className={`${styles.header} ${classes.healthRiskCode}`}>{healthRisk.healthRiskCode}</Typography>
       </Fragment>
     );
 
@@ -73,10 +92,11 @@ export const ProjectsHealthRiskItem = ({ form, healthRisk, projectHealthRisk, rt
     <Card ref={healthRiskItemRef}>
       <CardContent>
         {renderHeader()}
-        <Grid container spacing={2} className={styles.content}>
+        <Grid container spacing={2} className={classes.content}>
           <Grid item xs={12} sm={6}>
             <TextInputField
-              label={strings(stringKeys.project.form.caseDefinition)}
+              label={<Typography variant="h5">{strings(stringKeys.project.form.caseDefinition)}</Typography>}
+              classNameLabel={classes.label}
               name={`healthRisk.${healthRisk.healthRiskId}.caseDefinition`}
               field={form.fields[`healthRisk.${healthRisk.healthRiskId}.caseDefinition`]}
               multiline
@@ -86,7 +106,8 @@ export const ProjectsHealthRiskItem = ({ form, healthRisk, projectHealthRisk, rt
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextInputField
-              label={strings(stringKeys.project.form.feedbackMessage)}
+              label={<Typography variant="h5">{strings(stringKeys.project.form.feedbackMessage)}</Typography>}
+              classNameLabel={classes.label}
               name={`healthRisk.${healthRisk.healthRiskId}.feedbackMessage`}
               field={form.fields[`healthRisk.${healthRisk.healthRiskId}.feedbackMessage`]}
               multiline
@@ -96,10 +117,10 @@ export const ProjectsHealthRiskItem = ({ form, healthRisk, projectHealthRisk, rt
           </Grid>
         </Grid>
 
-        <Typography variant="h3">{strings(stringKeys.project.form.alertsSection)}</Typography>
+        <Typography variant="h5">{strings(stringKeys.project.form.alertsSection)}</Typography>
 
         {healthRisk.healthRiskType === 'Activity' && (
-          <Typography variant="body1" className={styles.disabled}>{strings(stringKeys.healthRisk.form.noAlertRule)}
+          <Typography className={`${styles.disabled} ${classes.cardBodyText}`}>{strings(stringKeys.healthRisk.form.noAlertRule)}
           </Typography>
         )}
 
@@ -108,7 +129,7 @@ export const ProjectsHealthRiskItem = ({ form, healthRisk, projectHealthRisk, rt
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
                 <TextInputField
-                  label={strings(stringKeys.project.form.alertRuleCountThreshold)}
+                  label={<Typography className={classes.cardBodyText}>{strings(stringKeys.project.form.alertRuleCountThreshold)}</Typography>}
                   name={`healthRisk.${healthRisk.healthRiskId}.alertRuleCountThreshold`}
                   field={form.fields[`healthRisk.${healthRisk.healthRiskId}.alertRuleCountThreshold`]}
                   inputMode={"numeric"}
@@ -119,7 +140,7 @@ export const ProjectsHealthRiskItem = ({ form, healthRisk, projectHealthRisk, rt
               {reportCountThreshold > 1 && (
                 <Grid item xs={12} sm={4}>
                 <TextInputField
-                  label={strings(stringKeys.project.form.alertRuleDaysThresholdEdit)}
+                  label={<Typography className={classes.cardBodyText}>{strings(stringKeys.project.form.alertRuleDaysThresholdEdit)}</Typography>}
                   name={`healthRisk.${healthRisk.healthRiskId}.alertRuleDaysThreshold`}
                   field={form.fields[`healthRisk.${healthRisk.healthRiskId}.alertRuleDaysThreshold`]}
                   inputMode={"numeric"}
@@ -131,7 +152,7 @@ export const ProjectsHealthRiskItem = ({ form, healthRisk, projectHealthRisk, rt
               {reportCountThreshold > 1 && (
                 <Grid item xs={12} sm={4}>
                   <TextInputField
-                  label={strings(stringKeys.project.form.alertRuleKilometersThresholdEdit)}
+                  label={<Typography className={classes.cardBodyText}>{strings(stringKeys.project.form.alertRuleKilometersThresholdEdit)}</Typography>}
                   name={`healthRisk.${healthRisk.healthRiskId}.alertRuleKilometersThreshold`}
                   field={form.fields[`healthRisk.${healthRisk.healthRiskId}.alertRuleKilometersThreshold`]}
                   inputMode={"numeric"}
