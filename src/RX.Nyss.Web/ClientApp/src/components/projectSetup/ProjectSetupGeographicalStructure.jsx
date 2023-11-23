@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
 import * as nationalSocietyStructureActions from "../nationalSocietyStructure/logic/nationalSocietyStructureActions";
 import { Grid, Typography } from "@material-ui/core";
@@ -25,41 +25,60 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
 
   const useRtlDirection = useSelector(state => state.appData.user.languageCode === 'ar');
 
+
+  const [tempRegions, setTempRegions] = useState(props.regions);
+  const [tempDistricts, setTempDistricts] = useState(props.districts);
+  const [tempVillages, setTempVillages] = useState(props.villages);
+  const [tempZones, setTempZones] = useState(props.zones);
+
+  const createRegion = (activeParentLocationId, name) => {
+    setTempRegions(prev => [...prev, { id: `new_region_${name}`, name: name }]);
+  }
+  const createDistrict = (activeParentLocationId, name) => {
+    setTempDistricts(prev => [...prev, { id: `new_district_${name}`, regionId: activeParentLocationId, name: name }]);
+  }
+  const createVillage = (activeParentLocationId, name) => {
+    setTempVillages(prev => [...prev, { id: `new_village_${name}`, districtId: activeParentLocationId, name: name }]);
+  }
+  const createZone = (activeParentLocationId, name) => {
+    setTempZones(prev => [...prev, { id: `new_zone_${name}`, villageId: activeParentLocationId, name: name }]);
+  }
+
   if(!props.regions) return null;
 
   const manageLocation = {
     region: {
-      create: props.createRegion,
+      create: createRegion,
       edit: props.editRegion,
       remove: props.removeRegion,
       nextLocationType: "district",
-      nextLocations: (location) => props.districts.filter(
+      nextLocations: (location) => tempDistricts.filter(
         (district) => district.regionId === location.id
       ),
       addLocationLabel: strings(stringKeys.nationalSociety.structure.addRegion, true)
     },
     district: {
-      create: props.createDistrict,
+      create: createDistrict,
       edit: props.editDistrict,
       remove: props.removeDistrict,
       nextLocationType: "village",
-      nextLocations: (location) => props.villages.filter(
+      nextLocations: (location) => tempVillages.filter(
         (village) => village.districtId === location.id
       ),
       addLocationLabel: strings(stringKeys.nationalSociety.structure.addDistrict, true)
     },
     village: {
-      create: props.createVillage,
+      create: createVillage,
       edit: props.editVillage,
       remove: props.removeVillage,
       nextLocationType: "zone",
-      nextLocations: (location) => props.zones.filter(
+      nextLocations: (location) => tempZones.filter(
         (zone) => zone.villageId === location.id
       ),
       addLocationLabel: strings(stringKeys.nationalSociety.structure.addVillage, true)
     },
     zone: {
-      create: props.createZone,
+      create: createZone,
       edit: props.editZone,
       remove: props.removeZone,
       nextLocationType: null,
@@ -77,7 +96,7 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
       )}
         <Grid style={{ width: "100%" }}>
           <NationalSocietyLocationList
-            locations={props.regions}
+            locations={tempRegions}
             locationType="region"
             activeParentLocationId={nationalSocietyId}
             manageLocation={manageLocation}
