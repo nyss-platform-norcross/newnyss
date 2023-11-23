@@ -6,10 +6,6 @@ import { useState } from "react";
 import { useMount } from "../../utils/lifecycle";
 
 const useStyles = makeStyles(() => ({
-  rtl: {
-    marginRight: "unset",
-    marginLeft: "3ch",
-  },
   inputText: {
     fontSize: "16px",
     fontWeight: 700,
@@ -48,7 +44,7 @@ export const ProjectSetupOrganizationComponent = ({organizations, rtl, setOrgani
     <>
       <InputLabel className={classes.inputText}>Choose organization</InputLabel>
       <Select 
-        className={`${classes.inputField} ${rtl ? classes.rtl : ""}`}
+        className={`${classes.inputField}`}
         onChange={handleChange}
         value={selectedOrganizationId ? selectedOrganizationId : ""}
         displayEmpty
