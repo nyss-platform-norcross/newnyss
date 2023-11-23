@@ -46,9 +46,9 @@ namespace RX.Nyss.ReportApi.Features.Reports
 
         public async Task<bool> ReceiveReport(Report report)
         {
-            if (report.Content == null)
+            if (report.Content == null || report.ReportSource != ReportSource.Nyss || report.ReportSource != ReportSource.SmsEagle)
             {
-                _loggerAdapter.Error("Received a report with null value.");
+                _loggerAdapter.Error("Received a report with null value or incorrect report source.");
                 return false;
             }
 
