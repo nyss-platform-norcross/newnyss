@@ -10,41 +10,6 @@ import StepConnector from '@material-ui/core/StepConnector';
 import CheckIcon from '@material-ui/icons/Check';
 import { strings, stringKeys } from '../../../strings';
 
-
-const dummySteps = [
-  {
-    name: 'Project name',
-    content: <Typography>Project name content</Typography>,
-    stepNumber: 0
-  },
-  {
-    name: 'Organization',
-    content: <Typography>Organization content</Typography>,
-    stepNumber: 1
-  },
-  {
-    name: 'Recipients',
-    content: <Typography>Recipient content</Typography>,
-    stepNumber: 2
-  },
-  {
-    name: 'Health risks',
-    content: <Typography>Health risk content</Typography>,
-    stepNumber: 3
-  },
-  {
-    name: 'Geographical structure',
-    content: <Typography>Geographical content</Typography>,
-    stepNumber: 4
-  },
-  {
-    name: 'Summary',
-    content: <Typography>Summary content</Typography>,
-    stepNumber: 5
-  },
-
-]
-
 const useStyles = makeStyles((theme) => ({
   stepper: {
     backgroundColor: 'inherit',
@@ -115,15 +80,22 @@ const getStepContent = (steps, stepIndex) => {
   return steps.find(step => step.stepNumber === stepIndex).content
 }
 
-export const SetupStepper = ({ steps = dummySteps, stepInputIsValid = true }) => {
+export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsNextStepInvalid }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if(!error && !isNextStepInvalid) {
+      setActiveStep(prevActiveStep => prevActiveStep + 1);
+      setIsNextStepInvalid(true);
+    } else {
+      setError(true);
+    }
   };
 
   const handleBack = () => {
+    setError(false);
+    setIsNextStepInvalid(false);
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -161,7 +133,9 @@ export const SetupStepper = ({ steps = dummySteps, stepInputIsValid = true }) =>
         ))}
       </Stepper>
         <Grid container direction='column' alignItems='center'>
-          {getStepContent(steps, activeStep)}
+          <Grid container direction='column' alignItems='center' style={{ margin: "50px 0 50px 0" }}>
+            {getStepContent(steps, activeStep)}
+          </Grid>
           <Grid container direction='column' alignItems='center'>
             <Grid item>
               {activeStep !== 0 && (
@@ -175,7 +149,7 @@ export const SetupStepper = ({ steps = dummySteps, stepInputIsValid = true }) =>
                   {strings(stringKeys.common.buttons.previous)}
                 </Button>
               )}
-              <Button variant={stepInputIsValid ? "contained" : "outlined"} color="primary" onClick={activeStep === steps.length - 1 ? handleReset : handleNext}>
+              <Button variant={(!error && !isNextStepInvalid) ? "contained" : "outlined"} color="primary" onClick={activeStep === steps.length - 1 ? handleReset : handleNext}>
                 {activeStep === steps.length - 1 ? strings(stringKeys.common.buttons.finish) : strings(stringKeys.common.buttons.next)}
               </Button>
             </Grid>

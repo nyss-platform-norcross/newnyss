@@ -415,6 +415,13 @@ export const stringKeys = {
       tooLongWarning: "project.settings.errorMessages.tooLongWarning",
     }
   },
+  projectSetup: {
+    projectName: {
+      name: "projectSetup.projectName.name",
+      title: "projectSetup.projectName.title",
+      error: "projectSetup.projectName.error"
+    }
+  },
   dashboard: {
     title: "dashboard.title",
     printTitle: "dashboard.printTitle",
