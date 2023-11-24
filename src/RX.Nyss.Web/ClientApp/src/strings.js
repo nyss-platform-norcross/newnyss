@@ -426,6 +426,12 @@ export const stringKeys = {
       name: "projectSetup.projectName.name",
       title: "projectSetup.projectName.title",
       error: "projectSetup.projectName.error"
+    },
+    projectOrganization: {
+      name: "projectSetup.organization.name",
+      title: "projectSetup.organization.title",
+      placeholder: "projectSetup.organization.placeholder",
+      error: "projectSetup.organization.error"
     }
   },
   dashboard: {
