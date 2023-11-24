@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useMount } from "../../utils/lifecycle";
 import { strings, stringKeys } from '../../strings';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   inputText: {
     fontSize: "16px",
     fontWeight: 700,
@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
     width: 270,
   },
   errorMessage: {
-    color: "red",
+    color: theme.palette.error.main,
     textAlign: "left",
     width: 270
   }
