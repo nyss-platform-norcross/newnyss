@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import * as projectSetupActions from './logic/projectSetupActions';
 import { useState } from "react";
 import { useMount } from "../../utils/lifecycle";
+import { strings, stringKeys } from '../../strings';
 
 const useStyles = makeStyles(() => ({
   inputText: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles(() => ({
 export const ProjectSetupOrganizationComponent = ({organizations, rtl, setOrganizationId, selectedOrganizationId, error, setError, setIsNextStepInvalid }) => {
   const classes = useStyles();
   const [selectedOrganization, setSelectedOrganization] = useState(undefined);
-  const errorMessage = "*Please select an organization";
+  const errorMessage = strings(stringKeys.projectSetup.projectOrganization.error);
 
   useMount(() => {
     selectedOrganizationId && setSelectedOrganization(organizations.find(org => org.id === selectedOrganizationId));
@@ -42,7 +43,7 @@ export const ProjectSetupOrganizationComponent = ({organizations, rtl, setOrgani
   
   return (
     <>
-      <InputLabel className={classes.inputText}>Choose organization</InputLabel>
+      <InputLabel className={classes.inputText}>{strings(stringKeys.projectSetup.projectOrganization.title)}</InputLabel>
       <Select 
         className={`${classes.inputField}`}
         onChange={handleChange}
@@ -50,7 +51,7 @@ export const ProjectSetupOrganizationComponent = ({organizations, rtl, setOrgani
         displayEmpty
         renderValue={selectedId => {
           if (selectedId === "") {
-            return <Typography style={{ color: "#4F4F4F", fontSize: 12 }}>Select an organization</Typography>;
+            return <Typography style={{ color: "#4F4F4F", fontSize: 12 }}>{strings(stringKeys.projectSetup.projectOrganization.placeholder)}</Typography>;
           }
 
           return selectedOrganization ? selectedOrganization.name : "";
