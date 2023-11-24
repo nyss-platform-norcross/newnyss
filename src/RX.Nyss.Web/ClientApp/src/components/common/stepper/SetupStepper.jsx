@@ -79,13 +79,16 @@ const Connector = withStyles({
 const getStepContent = (steps, stepIndex) => {
   return steps.find(step => step.stepNumber === stepIndex).content
 }
+const getStep = (steps, stepIndex) => {
+  return steps.find(step => step.stepNumber === stepIndex)
+}
 
 export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsNextStepInvalid }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
-    if(!error && !isNextStepInvalid) {
+    if(getStep(steps, activeStep).isOptional || (!error && !isNextStepInvalid)) {
       setActiveStep(prevActiveStep => prevActiveStep + 1);
       setIsNextStepInvalid(true);
     } else {
@@ -149,7 +152,7 @@ export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsN
                   {strings(stringKeys.common.buttons.previous)}
                 </Button>
               )}
-              <Button variant={(!error && !isNextStepInvalid) ? "contained" : "outlined"} color="primary" onClick={activeStep === steps.length - 1 ? handleReset : handleNext}>
+              <Button variant={(getStep(steps, activeStep).isOptional || (!error && !isNextStepInvalid)) ? "contained" : "outlined"} color="primary" onClick={activeStep === steps.length - 1 ? handleReset : handleNext}>
                 {activeStep === steps.length - 1 ? strings(stringKeys.common.buttons.finish) : strings(stringKeys.common.buttons.next)}
               </Button>
             </Grid>

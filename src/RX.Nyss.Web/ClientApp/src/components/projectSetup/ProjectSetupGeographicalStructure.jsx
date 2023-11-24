@@ -104,8 +104,6 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
     setZones([...tempZones.filter(zone => zone.id !== id)]);
   }
 
-  if(!props.regions) return null;
-
   const manageLocation = {
     region: {
       create: createRegion,

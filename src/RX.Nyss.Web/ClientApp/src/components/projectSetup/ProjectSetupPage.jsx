@@ -48,6 +48,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
       name: strings(stringKeys.projectSetup.geographicalStructure.name),
       content: <ProjectSetupGeographicalStructure />,
       stepNumber: 4
+      isOptional: true
     },
     {
       name: 'Summary',
