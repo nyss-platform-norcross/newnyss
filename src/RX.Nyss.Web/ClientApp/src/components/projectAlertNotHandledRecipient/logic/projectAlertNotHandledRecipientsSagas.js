@@ -1,4 +1,4 @@
-import { call, put, takeEvery, select } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import * as consts from "./projectAlertNotHandledRecipientsConstants";
 import * as actions from "./projectAlertNotHandledRecipientsActions";
 import * as appActions from "../../app/logic/appActions";
@@ -15,9 +15,7 @@ export const projectAlertNotHandledRecipientsSagas = () => [
 function* openProjectAlertNotHandledRecipients({ projectId }) {
   yield put(actions.openRecipients.request());
   try {
-    if (yield select(state => state.projectAlertNotHandledRecipients.listStale)) {
-      yield call(getProjectAlertNotHandledRecipients, projectId);
-    }
+    yield getProjectAlertNotHandledRecipients(projectId);
 
     yield put(actions.openRecipients.success(projectId));
   } catch (error) {
@@ -40,7 +38,7 @@ function* createAlertNotHandledRecipient({ projectId, data }) {
 function* editAlertNotHandledRecipient({ projectId, data }) {
   yield put(actions.edit.request());
   try {
-    const response = yield call(http.post, `/api/projectAlertNotHandledRecipient/edit?projectId=${projectId}`, data);
+    const response = yield call(http.post, `/api/projectAlertNotHandledRecipient/edit?projectId=${projectId}`, { recipients: data });
     yield put(actions.edit.success(response.value));
     yield put(appActions.showMessage(response.message.key));
     yield call(getProjectAlertNotHandledRecipients, projectId);
@@ -54,6 +52,21 @@ function* getProjectAlertNotHandledRecipients(projectId) {
   try {
     const response = yield call(http.get, `/api/projectAlertNotHandledRecipient/list?projectId=${projectId}`);
     yield put(actions.getRecipients.success(response.value));
+
+    const project = yield call(http.getCached, {
+      path: `/api/project/${projectId}/basicData`,
+      dependencies: [entityTypes.project(projectId)]
+    });
+
+    yield put(appActions.openModule.invoke(null, {
+      nationalSocietyId: project.value.nationalSociety.id,
+      nationalSocietyName: project.value.nationalSociety.name,
+      nationalSocietyCountry: project.value.nationalSociety.countryName,
+      projectId: project.value.id,
+      projectName: project.value.name,
+      projectIsClosed: project.value.isClosed,
+      allowMultipleOrganizations: project.value.allowMultipleOrganizations
+    }));
   } catch (error) {
     yield put(actions.getRecipients.failure(error.message));
   }
@@ -62,10 +75,7 @@ function* getProjectAlertNotHandledRecipients(projectId) {
 function* getProjectAlertNotHandledRecipientsFormData({ projectId }) {
   yield put(actions.getFormData.request());
   try {
-    const response = yield call(http.getCached, {
-      path: `/api/projectAlertNotHandledRecipient/formData?projectId=${projectId}`,
-      dependencies: entityTypes.project(projectId)
-    });
+    const response = yield call(http.get, `/api/projectAlertNotHandledRecipient/formData?projectId=${projectId}`);
     yield put(actions.getFormData.success(response.value));
   } catch (error) {
     yield put(actions.getFormData.failure(error.message));
