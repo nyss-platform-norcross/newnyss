@@ -28,7 +28,10 @@ export const ProjectSetupOrganizationComponent = ({organizations, rtl, setOrgani
   const errorMessage = strings(stringKeys.projectSetup.projectOrganization.error);
 
   useMount(() => {
-    selectedOrganizationId && setSelectedOrganization(organizations.find(org => org.id === selectedOrganizationId));
+    if (selectedOrganizationId) {
+      setSelectedOrganization(organizations.find(org => org.id === selectedOrganizationId));
+      setIsNextStepInvalid(false);
+    }  
   });
   
   const handleChange = (event) => {
