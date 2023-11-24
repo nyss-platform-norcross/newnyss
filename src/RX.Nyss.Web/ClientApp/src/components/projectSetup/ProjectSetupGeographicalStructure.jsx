@@ -60,57 +60,48 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
   }
 
   const editRegion = (id, newName) => {
-    setRegions(() => {
-      const temp = tempRegions.map(region => {
-        if(region.id === id) region.name = newName;
-        return region;
-      });
-      return temp;
+    const temp = tempRegions.map(region => {
+      if(region.id === id) region.name = newName;
+      return region;
     });
-    return;
+    setRegions(temp);
   }
 
   const editDistrict = (id, newName) => {
-    setDistricts(() => {
-      const temp = tempDistricts.map(district => {
-        if(district.id === id) district.name = newName;
-        return district;
-      });
-      return temp;
+    const temp = tempDistricts.map(district => {
+      if(district.id === id) district.name = newName;
+      return district;
     });
+    setDistricts(temp);
   }
 
   const editVillage = (id, newName) => {
-    setVillages(() => {
-      const temp = tempVillages.map(village => {
-        if(village.id === id) village.name = newName;
-        return village;
-      });
-      return temp;
+    const temp = tempVillages.map(village => {
+      if(village.id === id) village.name = newName;
+      return village;
     });
+    setVillages(temp);
   }
 
   const editZone = (id, newName) => {
-    setZones(() => {
-      const temp = tempZones.map(zone => {
-        if(zone.id === id) zone.name = newName;
-        return zone;
-      });
-      return temp;
+    const temp = tempZones.map(zone => {
+      if(zone.id === id) zone.name = newName;
+      return zone;
     });
+    setZones(temp);
   }
 
   const removeRegion = (id) => {
-    setRegions(() => tempRegions.filter(region => region.id !== id));
+    setRegions([...tempRegions.filter(region => region.id !== id)]);
   }
   const removeDistrict = (id) => {
-    setDistricts(() => tempDistricts.filter(district => district.id !== id));
+    setDistricts([...tempDistricts.filter(district => district.id !== id)]);
   }
   const removeVillage = (id) => {
-    setVillages(() => tempVillages.filter(village => village.id !== id));
+    setVillages([...tempVillages.filter(village => village.id !== id)]);
   }
   const removeZone = (id) => {
-    setZones(() => tempZones.filter(zone => zone.id !== id));
+    setZones([...tempZones.filter(zone => zone.id !== id)]);
   }
 
   if(!props.regions) return null;
