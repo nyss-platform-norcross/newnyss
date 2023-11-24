@@ -31,28 +31,55 @@ namespace RX.Nyss.Web.Tests.Features.ProjectAlertNotHandledRecipients
 
             _projectAlertNotHandledRecipientService = new ProjectAlertNotHandledRecipientService(_nyssContextMock, _authorizationServiceMock, logger);
 
-            var users = new List<User> { new ManagerUser { Id = 1 }, new TechnicalAdvisorUser { Id = 2 } };
+            var users = new List<User> { new ManagerUser { Id = 1, Role = Role.Manager, Name = "Manager" }, new TechnicalAdvisorUser { Id = 2, Role = Role.TechnicalAdvisor, Name = "TechnicalAdvisor" }, new SupervisorUser { Id = 3, Role = Role.Supervisor, Name = "Supervisor" } };
             var userNationalSocieties = new List<UserNationalSociety>
             {
                 new UserNationalSociety
                 {
                     UserId = 1,
                     User = users[0],
-                    OrganizationId = 1
+                    OrganizationId = 1,
+                    Organization = new Organization
+                    {
+                        Id = 1,
+                        Name = "Org"
+                    },
                 },
                 new UserNationalSociety
                 {
                     UserId = 2,
                     User = users[1],
-                    OrganizationId = 1
+                    OrganizationId = 1,
+                    Organization = new Organization
+                    {
+                        Id = 1,
+                        Name = "Org"
+                    },
+                },
+                new UserNationalSociety
+                {
+                    UserId = 3,
+                    User = users[2],
+                    OrganizationId = 1,
+                    Organization = new Organization
+                    {
+                        Id = 1,
+                        Name = "Org"
+                    },
                 }
             };
             var alertNotHandledRecipients = new List<AlertNotHandledNotificationRecipient>
             {
                 new AlertNotHandledNotificationRecipient
                 {
+                    User = users[0],
                     UserId = 1,
-                    ProjectId = 1
+                    ProjectId = 1,
+                    Organization = new Organization
+                    {
+                        Id = 1,
+                        Name = "Org"
+                    },
                 }
             };
             var projects = new List<Project>
@@ -63,45 +90,7 @@ namespace RX.Nyss.Web.Tests.Features.ProjectAlertNotHandledRecipients
                     AlertNotHandledNotificationRecipients = alertNotHandledRecipients,
                     NationalSociety = new NationalSociety
                     {
-                        NationalSocietyUsers = new List<UserNationalSociety>
-                        {
-                            new UserNationalSociety
-                            {
-                                User = new ManagerUser
-                                {
-                                    Role = Role.Manager
-                                },
-                                OrganizationId = 1,
-                                Organization = new Organization
-                                {
-                                    Name = "Org"
-                                }
-                            },
-                            new UserNationalSociety
-                            {
-                                User = new TechnicalAdvisorUser
-                                {
-                                    Role = Role.TechnicalAdvisor
-                                },
-                                OrganizationId = 1,
-                                Organization = new Organization
-                                {
-                                    Name = "Org"
-                                }
-                            },
-                            new UserNationalSociety
-                            {
-                                User = new SupervisorUser
-                                {
-                                    Role = Role.Supervisor
-                                },
-                                OrganizationId = 1,
-                                Organization = new Organization
-                                {
-                                    Name = "Org"
-                                }
-                            }
-                        }
+                        NationalSocietyUsers = userNationalSocieties
                     }
                 }
             };
@@ -114,6 +103,7 @@ namespace RX.Nyss.Web.Tests.Features.ProjectAlertNotHandledRecipients
                         Id = 1,
                         Name = "Org"
                     },
+                    OrganizationId = 1,
                     Project = projects[0],
                     ProjectId = 1
                 }
@@ -138,7 +128,7 @@ namespace RX.Nyss.Web.Tests.Features.ProjectAlertNotHandledRecipients
             var projectId = 1;
             var dto = new ProjectAlertNotHandledRecipientRequestDto
             {
-                UserId = 2,
+                UserId = 3,
                 OrganizationId = 1
             };
 
