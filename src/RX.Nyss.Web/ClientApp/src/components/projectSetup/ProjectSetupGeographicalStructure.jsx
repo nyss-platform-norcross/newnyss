@@ -49,7 +49,7 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
 
 
   const createRegion = (activeParentLocationId, name) => {
-    setRegions([...tempRegions, { id: `new_region_${name}`, name: name, canModify: true }]);
+    setRegions([...tempRegions, { id: `new_region_${name}`, nationalSocietyId: activeParentLocationId, name: name, canModify: true }]);
   }
   const createDistrict = (activeParentLocationId, name) => {
     setDistricts([...tempDistricts, { id: `new_district_${name}`, regionId: activeParentLocationId, name: name, canModify: true }]);
