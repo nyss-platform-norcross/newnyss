@@ -22,13 +22,13 @@ export function projectSetupReducer(state = projectSetupInitialState, action) {
       return { ...state, formData: null, formError: null }
 
     case actions.OPEN_PROJECT_SETUP.INVOKE:
-      return { ...state, formFetching: true, formData: null, regions: null };
+      return { ...state, formFetching: true, formData: null, regions: [] };
 
     case actions.OPEN_PROJECT_SETUP.REQUEST:
-      return { ...state, formFetching: true, formData: null, regions: null };
+      return { ...state, formFetching: true, formData: null, regions: [] };
 
     case actions.OPEN_PROJECT_SETUP.SUCCESS:
-      return { ...state, formFetching: false, formData: action.data.formData, regions: action.data.regions};
+      return { ...state, formFetching: false, formData: action.data.formData };
 
     case actions.OPEN_PROJECT_SETUP.FAILURE:
       return { ...state, formFetching: false, formError: action.error };

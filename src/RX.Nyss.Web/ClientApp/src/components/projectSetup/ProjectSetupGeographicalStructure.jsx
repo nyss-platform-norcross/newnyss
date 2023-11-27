@@ -39,11 +39,13 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
   const useRtlDirection = useSelector(state => state.appData.user.languageCode === 'ar');
 
   useEffect(() => {
-    regions?.length > 0 && setRegions([...regions])
-    districts?.length > 0 && setDistricts([...districts])
-    villages?.length > 0 && setVillages([...villages])
-    zones?.length > 0 && setZones([...zones])
-  }, [regions, districts, villages, zones, setRegions, setDistricts, setVillages, setZones])
+    if(tempRegions.length === 0) {
+      regions?.length > 0 && setRegions([...regions])
+      districts?.length > 0 && setDistricts([...districts])
+      villages?.length > 0 && setVillages([...villages])
+      zones?.length > 0 && setZones([...zones])
+    }
+  }, [tempRegions, regions, districts, villages, zones, setRegions, setDistricts, setVillages, setZones])
 
 
   const createRegion = (activeParentLocationId, name) => {
