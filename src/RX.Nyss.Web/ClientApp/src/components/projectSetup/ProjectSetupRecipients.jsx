@@ -1,8 +1,8 @@
-import { Select, MenuItem, InputLabel, Typography, FormHelperText } from "@material-ui/core";
+import { Select, MenuItem, InputLabel, Typography, FormHelperText, Box, Chip } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import * as projectSetupActions from './logic/projectSetupActions';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMount } from "../../utils/lifecycle";
 import { strings, stringKeys } from '../../strings';
 
@@ -22,28 +22,38 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotificationRecipientId, setAlertNotHandledNotificationRecipientId, error, setError, setIsNextStepInvalid }) => {
+const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotificationRecipientIds, setAlertNotHandledNotificationRecipientIds, error, setError, setIsNextStepInvalid }) => {
   const classes = useStyles();
-
-  const [selectedRecipient, setSelectedRecipient] = useState(undefined);
   const errorMessage = strings(stringKeys.projectSetup.projectRecipients.error);
+  const [availableRecipients, setAvailableRecipients] = useState(alertRecipients.filter(recipient => !alertNotHandledNotificationRecipientIds.includes(recipient.id)));
+  const [selectedRecipients, setSelectedRecipients] = useState(alertRecipients.filter(recipient => alertNotHandledNotificationRecipientIds.includes(recipient.id)));
 
   useMount(() => {
-    if (alertNotHandledNotificationRecipientId) {
-      setSelectedRecipient(alertRecipients.find(recipient => recipient.id === alertNotHandledNotificationRecipientId));
-      setIsNextStepInvalid(false);
-    }  
+    alertNotHandledNotificationRecipientIds.length > 0 && setIsNextStepInvalid(false);
   });
   
   const handleChange = (event) => {
-    const eventRecipient = alertRecipients.find(recipient => recipient.id === event.target.value);
+    const eventRecipient = availableRecipients.find(recipient => recipient.id === event.target.value);
+
     if (eventRecipient){
-      setAlertNotHandledNotificationRecipientId(event.target.value);
+      setSelectedRecipients(selectedRecipients => [...selectedRecipients, eventRecipient]);
+      setAvailableRecipients(availableRecipients.filter(recipient => recipient.id !== eventRecipient.id));
+      
       setIsNextStepInvalid(false);
-      setSelectedRecipient(eventRecipient);
       setError(false);
     }
   };
+
+  const handleDelete = (deselectedRecipientId) => {
+    setSelectedRecipients(selectedRecipients.filter(recipient => recipient.id !== deselectedRecipientId));
+    
+    const deselectedRecipient = alertRecipients.find(recipient => recipient.id === deselectedRecipientId);
+    setAvailableRecipients(availableRecipients => [...availableRecipients, deselectedRecipient]);
+  }
+
+  useEffect(() => {
+    setAlertNotHandledNotificationRecipientIds(selectedRecipients.map(recipient => recipient.id));
+  }, [selectedRecipients])
 
   return (
     <>
@@ -51,17 +61,13 @@ const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotifi
       <Select 
         className={`${classes.inputField}`}
         onChange={handleChange}
-        value={alertNotHandledNotificationRecipientId ? alertNotHandledNotificationRecipientId : ""}
+        value={""}
         displayEmpty
-        renderValue={selectedId => {
-          if (selectedId === "") {
+        renderValue={() => {
             return <Typography style={{ color: "#4F4F4F", fontSize: 12 }}>{strings(stringKeys.projectSetup.projectRecipients.placeholder)}</Typography>;
-          }
-
-          return selectedRecipient ? selectedRecipient.name : "";
         }}
       >
-        {alertRecipients?.map(recipient => 
+        {availableRecipients.length > 0 && availableRecipients.map(recipient => 
           <MenuItem
             key={recipient.id}
             value={recipient.id}
@@ -71,17 +77,22 @@ const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotifi
         )}
       </Select>
       {error && <FormHelperText className={classes.errorMessage}>{errorMessage}</FormHelperText>}
+      {selectedRecipients.map(recipient => (
+        <Box key={recipient.id}>
+          <Chip className={classes.chip} label={recipient.name} onDelete={() => handleDelete(recipient.id)}/> 
+        </Box>
+      ))}
     </>
   )
 }
 
 const mapStateToProps = (state) => ({
   alertRecipients: state.projectSetup.formData?.alertNotHandledRecipients,
-  alertNotHandledNotificationRecipientId: state.projectSetup.alertNotHandledNotificationRecipientId
+  alertNotHandledNotificationRecipientIds: state.projectSetup.alertNotHandledNotificationRecipientIds
 });
 
 const mapDispatchToProps = {
-  setAlertNotHandledNotificationRecipientId: projectSetupActions.setAlertNotHandledNotificationRecipientId,
+  setAlertNotHandledNotificationRecipientIds: projectSetupActions.setAlertNotHandledNotificationRecipientIds,
 };
 
 export const ProjectSetupRecipients = connect(mapStateToProps, mapDispatchToProps)(ProjectSetupRecipientsComponent);

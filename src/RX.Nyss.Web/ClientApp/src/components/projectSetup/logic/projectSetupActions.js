@@ -4,7 +4,7 @@ import {
   OPEN_ERROR_MESSAGES,
   SET_PROJECT_NAME,
   SET_ORGANIZATION_ID,
-  SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_ID,
+  SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_IDS,
   SET_HEALTH_RISKS,
   SET_NEW_REGIONS
 } from "./projectSetupConstants";
@@ -32,7 +32,7 @@ export const setProjectName = (projectName) => ({ type: SET_PROJECT_NAME, projec
 
 export const setOrganizationId = (organizationId) => ({ type: SET_ORGANIZATION_ID, organizationId })
 
-export const setAlertNotHandledNotificationRecipientId = (alertNotHandledNotificationRecipientId) => ({ type: SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_ID, alertNotHandledNotificationRecipientId })
+export const setAlertNotHandledNotificationRecipientIds = (alertNotHandledNotificationRecipientIds) => ({ type: SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_IDS, alertNotHandledNotificationRecipientIds })
 
 export const setHealthRisks = (healthRisks) => ({ type: SET_HEALTH_RISKS, healthRisks })
 
