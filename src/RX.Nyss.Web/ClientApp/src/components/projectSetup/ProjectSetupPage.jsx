@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { ProjectSetupOrganization } from './ProjectSetupOrganization';
 import { ProjectSetupName } from './ProjectSetupName'
 import { strings, stringKeys } from '../../strings';
+import { ProjectSetupRecipients } from './ProjectSetupRecipients';
 
 
 const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, setNewRegions, organizations, ...props}) => {
@@ -38,7 +39,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
     },
     {
       name: 'Recipients',
-      content: <Typography>Recipient content</Typography>,
+      content: <ProjectSetupRecipients error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
       stepNumber: 2
     },
     {
