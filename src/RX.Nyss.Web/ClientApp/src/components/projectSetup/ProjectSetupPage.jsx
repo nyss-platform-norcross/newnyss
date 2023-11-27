@@ -38,7 +38,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
       stepNumber: 1
     },
     {
-      name: 'Recipients',
+      name: strings(stringKeys.projectSetup.projectRecipients.name),
       content: <ProjectSetupRecipients error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
       stepNumber: 2
     },

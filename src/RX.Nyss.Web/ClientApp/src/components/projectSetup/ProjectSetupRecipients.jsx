@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import * as projectSetupActions from './logic/projectSetupActions';
 import { useState } from "react";
 import { useMount } from "../../utils/lifecycle";
+import { strings, stringKeys } from '../../strings';
 
 const useStyles = makeStyles((theme) => ({
   inputText: {
@@ -25,7 +26,7 @@ const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotifi
   const classes = useStyles();
 
   const [selectedRecipient, setSelectedRecipient] = useState(undefined);
-  const errorMessage = "*Please select an unhandled alert recipient";
+  const errorMessage = strings(stringKeys.projectSetup.projectRecipients.error);
 
   useMount(() => {
     if (alertNotHandledNotificationRecipientId) {
@@ -46,7 +47,7 @@ const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotifi
 
   return (
     <>
-      <InputLabel className={classes.inputText}>{"Who should be notified when an alert is unhandled?"}</InputLabel>
+      <InputLabel className={classes.inputText}>{strings(stringKeys.projectSetup.projectRecipients.title)}</InputLabel>
       <Select 
         className={`${classes.inputField}`}
         onChange={handleChange}
@@ -54,7 +55,7 @@ const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotifi
         displayEmpty
         renderValue={selectedId => {
           if (selectedId === "") {
-            return <Typography style={{ color: "#4F4F4F", fontSize: 12 }}>{"Choose recipient"}</Typography>;
+            return <Typography style={{ color: "#4F4F4F", fontSize: 12 }}>{strings(stringKeys.projectSetup.projectRecipients.placeholder)}</Typography>;
           }
 
           return selectedRecipient ? selectedRecipient.name : "";
