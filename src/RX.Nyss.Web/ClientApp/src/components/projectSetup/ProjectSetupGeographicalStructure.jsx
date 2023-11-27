@@ -213,7 +213,7 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
           <Typography variant="body1" style={{ fontWeight: 700 }}>
             {strings(stringKeys.projectSetup.geographicalStructure.title)}
           </Typography>
-          <Typography variant="body1" style={{ marginBottom: 50, color: "#4F4F4F" }}>
+          <Typography variant="body1" style={{ width: 450, textAlign: "center",  marginBottom: 50, color: "#4F4F4F" }}>
             {strings(stringKeys.projectSetup.geographicalStructure.description)}
           </Typography>
         </>
