@@ -63,7 +63,10 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
 
   const editRegion = (id, newName) => {
     const temp = tempRegions.map(region => {
-      if(region.id === id) region.name = newName;
+      if(region.id === id) {
+        region.name = newName;
+        region.id = `new_region_${newName}`;
+      }
       return region;
     });
     setRegions(temp);
@@ -71,7 +74,10 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
 
   const editDistrict = (id, newName) => {
     const temp = tempDistricts.map(district => {
-      if(district.id === id) district.name = newName;
+      if(district.id === id) {
+        district.name = newName;
+        district.id = `new_district_${newName}`;
+      }
       return district;
     });
     setDistricts(temp);
@@ -79,7 +85,10 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
 
   const editVillage = (id, newName) => {
     const temp = tempVillages.map(village => {
-      if(village.id === id) village.name = newName;
+      if(village.id === id) {
+        village.name = newName;
+        village.id = `new_village_${newName}`;
+      }
       return village;
     });
     setVillages(temp);
@@ -87,7 +96,10 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
 
   const editZone = (id, newName) => {
     const temp = tempZones.map(zone => {
-      if(zone.id === id) zone.name = newName;
+      if(zone.id === id) {
+        zone.name = newName;
+        zone.id = `new_zone_${newName}`;
+      }
       return zone;
     });
     setZones(temp);
