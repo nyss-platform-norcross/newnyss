@@ -1,4 +1,4 @@
-import { Select, MenuItem, InputLabel, Typography, FormHelperText, Box, Chip } from "@material-ui/core";
+import { Select, MenuItem, InputLabel, Typography, FormHelperText, Box, Chip, Grid } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import * as projectSetupActions from './logic/projectSetupActions';
@@ -19,7 +19,18 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.error.main,
     textAlign: "left",
     width: 270
-  }
+  },
+  chip: {
+    margin: '5px 2px',
+    backgroundColor: '#CDDDE7',
+    '&:focus': {
+      backgroundColor: '#CDDDE7',
+    },
+  },
+  chipContainer: {
+    maxWidth: '50rem',
+    marginTop: 30,
+  },
 }));
 
 const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotificationRecipientIds, setAlertNotHandledNotificationRecipientIds, error, setError, setIsNextStepInvalid }) => {
@@ -77,11 +88,13 @@ const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotifi
         )}
       </Select>
       {error && <FormHelperText className={classes.errorMessage}>{errorMessage}</FormHelperText>}
-      {selectedRecipients.map(recipient => (
-        <Box key={recipient.id}>
-          <Chip className={classes.chip} label={recipient.name} onDelete={() => handleDelete(recipient.id)}/> 
-        </Box>
-      ))}
+      <Grid container className={classes.chipContainer} direction="row">
+        {selectedRecipients.map(recipient => (
+          <Box key={recipient.id}>
+            <Chip className={classes.chip} label={recipient.name} onDelete={() => handleDelete(recipient.id)}/> 
+          </Box>
+        ))}
+      </Grid>
     </>
   )
 }
