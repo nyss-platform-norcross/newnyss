@@ -1,6 +1,6 @@
 import { InputLabel, Grid, Divider } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles';
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { strings, stringKeys } from '../../strings';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -47,16 +47,22 @@ const SummaryRow = ({ name, value }) => {
   )
 }
 
-const ProjectSetupSummaryComponent = () => {
-  const classes = useStyles()
+const ProjectSetupSummaryComponent = (props) => {
+  const { projectName, organizationId, recipients, healthRisks, regions, districts, villages, zones } = props;
+  const classes = useStyles();
+  const organizationName = useSelector(state => state.appData.formData?.organizations.find(org => org.id === organizationId));
+  // const newRegions = regions.filter(region => region.canModiy);
+  // const newDistricts = districts.filter(district => district.canModiy);
+  // const newVillages = villages.filter(village => village.canModiy);
+  // const newZones = zones.filter(zone => zone.canModiy);
 
   return (
     <>
       <InputLabel className={classes.inputLabel}>{strings(stringKeys.projectSetup.summary.title)}</InputLabel>
       <Card className={classes.card} variant="elevation">
         <CardContent className={classes.cardContent}>
-          <SummaryRow name="Project name" value="Test Project"/>
-          <SummaryRow name="Organization" value="Test Org"/>
+          <SummaryRow name={strings(stringKeys.projectSetup.projectName.name)} value={projectName}/>
+          <SummaryRow name={strings(stringKeys.projectSetup.projectOrganization.name)} value={organizationName ?? "Org"}/>
           <SummaryRow name="Unhandled alert notification recipients" value="Tonje Løfqvist"/>
         </CardContent>
       </Card>
@@ -66,6 +72,13 @@ const ProjectSetupSummaryComponent = () => {
 
 const mapStateToProps = (state) => ({
   projectName: state.projectSetup.projectName,
+  organizationId: state.projectSetup.organizationId,
+  recipients: state.projectSetup.alertNotHandledRecipients,
+  healthRisks: state.projectSetup.healthRisks,
+  regions: state.projectSetup.regions,
+  districts: state.projectSetup.districts,
+  villages: state.projectSetup.villages,
+  zones: state.projectSetup.zones,
 });
 
 const mapDispatchToProps = {
