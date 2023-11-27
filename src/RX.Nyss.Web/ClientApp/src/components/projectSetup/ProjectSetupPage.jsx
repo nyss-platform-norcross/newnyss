@@ -52,7 +52,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
       stepNumber: 4
     },
     {
-      name: 'Summary',
+      name: strings(stringKeys.projectSetup.summary.name),
       content: <Typography>Summary content</Typography>,
       stepNumber: 5
     },
