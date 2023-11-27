@@ -36,11 +36,15 @@ const useStyles = makeStyles((theme) => ({
 const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotificationRecipientIds, setAlertNotHandledNotificationRecipientIds, error, setError, setIsNextStepInvalid }) => {
   const classes = useStyles();
   const errorMessage = strings(stringKeys.projectSetup.projectRecipients.error);
-  const [availableRecipients, setAvailableRecipients] = useState(alertRecipients.filter(recipient => !alertNotHandledNotificationRecipientIds.includes(recipient.id)));
-  const [selectedRecipients, setSelectedRecipients] = useState(alertRecipients.filter(recipient => alertNotHandledNotificationRecipientIds.includes(recipient.id)));
-
+  const [availableRecipients, setAvailableRecipients] = useState([]);
+  const [selectedRecipients, setSelectedRecipients] = useState([]);
+  
   useMount(() => {
     alertNotHandledNotificationRecipientIds.length > 0 && setIsNextStepInvalid(false);
+    if(alertRecipients) {
+      setAvailableRecipients(alertRecipients.filter(recipient => !alertNotHandledNotificationRecipientIds.includes(recipient.id)));
+      setSelectedRecipients(alertRecipients.filter(recipient => alertNotHandledNotificationRecipientIds.includes(recipient.id)));
+    }
   });
   
   const handleChange = (event) => {
@@ -58,7 +62,7 @@ const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotifi
   const handleDelete = (deselectedRecipientId) => {
     setSelectedRecipients(selectedRecipients.filter(recipient => recipient.id !== deselectedRecipientId));
     
-    const deselectedRecipient = alertRecipients.find(recipient => recipient.id === deselectedRecipientId);
+    const deselectedRecipient = alertRecipients?.find(recipient => recipient.id === deselectedRecipientId);
     setAvailableRecipients(availableRecipients => [...availableRecipients, deselectedRecipient]);
   }
 
