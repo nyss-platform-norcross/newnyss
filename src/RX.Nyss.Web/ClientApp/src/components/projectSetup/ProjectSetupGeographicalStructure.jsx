@@ -40,25 +40,25 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
 
   useEffect(() => {
     if(tempRegions.length === 0) {
-      regions?.length > 0 && setRegions([...regions])
-      districts?.length > 0 && setDistricts([...districts])
-      villages?.length > 0 && setVillages([...villages])
-      zones?.length > 0 && setZones([...zones])
+      regions?.length > 0 && setRegions(regions.map(region => ({ ...region, canModify: false })))
+      districts?.length > 0 && setDistricts(districts.map(district => ({ ...district, canModify: false })))
+      villages?.length > 0 && setVillages(villages.map(village => ({ ...village, canModify: false })))
+      zones?.length > 0 && setZones(zones.map(zone => ({ ...zone, canModify: false })))
     }
   }, [tempRegions, regions, districts, villages, zones, setRegions, setDistricts, setVillages, setZones])
 
 
   const createRegion = (activeParentLocationId, name) => {
-    setRegions([...tempRegions, { id: `new_region_${name}`, name: name }]);
+    setRegions([...tempRegions, { id: `new_region_${name}`, name: name, canModify: true }]);
   }
   const createDistrict = (activeParentLocationId, name) => {
-    setDistricts([...tempDistricts, { id: `new_district_${name}`, regionId: activeParentLocationId, name: name }]);
+    setDistricts([...tempDistricts, { id: `new_district_${name}`, regionId: activeParentLocationId, name: name, canModify: true }]);
   }
   const createVillage = (activeParentLocationId, name) => {
-    setVillages([...tempVillages, { id: `new_village_${name}`, districtId: activeParentLocationId, name: name }]);
+    setVillages([...tempVillages, { id: `new_village_${name}`, districtId: activeParentLocationId, name: name, canModify: true }]);
   }
   const createZone = (activeParentLocationId, name) => {
-    setZones([...tempZones, { id: `new_zone_${name}`, villageId: activeParentLocationId, name: name }]);
+    setZones([...tempZones, { id: `new_zone_${name}`, villageId: activeParentLocationId, name: name, canModify: true }]);
   }
 
   const editRegion = (id, newName) => {
