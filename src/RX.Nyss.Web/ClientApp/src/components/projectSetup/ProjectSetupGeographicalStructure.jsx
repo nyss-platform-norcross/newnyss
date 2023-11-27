@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
 import * as nationalSocietyStructureActions from "../nationalSocietyStructure/logic/nationalSocietyStructureActions";
 import { Grid, Typography } from "@material-ui/core";
@@ -6,6 +6,9 @@ import * as roles from "../../authentication/roles";
 import { strings, stringKeys } from "../../strings";
 import { NationalSocietyLocationList } from "../nationalSocietyStructure/NationalSocietyLocationList";
 import * as projectSetupActions from './logic/projectSetupActions';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 export const ProjectSetupGeographicalStructureComponent = (props) => {
   const {
@@ -37,6 +40,14 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
     );
 
   const useRtlDirection = useSelector(state => state.appData.user.languageCode === 'ar');
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+
+  const handleClose = (_, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
 
   useEffect(() => {
     if(tempRegions.length === 0) {
@@ -47,21 +58,45 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
     }
   }, [tempRegions, regions, districts, villages, zones, setRegions, setDistricts, setVillages, setZones])
 
+  const locationExists = (name, locations) => {
+    return locations.some(location => location.name === name);
+  }
+
 
   const createRegion = (activeParentLocationId, name) => {
+    if(locationExists(name, tempRegions)) {
+      setOpenSnackbar(true);
+      return;
+    }
     setRegions([...tempRegions, { id: `new_region_${name}`, nationalSocietyId: activeParentLocationId, name: name, canModify: true }]);
   }
   const createDistrict = (activeParentLocationId, name) => {
+    if(locationExists(name, tempDistricts)) {
+      setOpenSnackbar(true);
+      return;
+    }
     setDistricts([...tempDistricts, { id: `new_district_${name}`, regionId: activeParentLocationId, name: name, canModify: true }]);
   }
   const createVillage = (activeParentLocationId, name) => {
+    if(locationExists(name, tempVillages)) {
+      setOpenSnackbar(true);
+      return;
+    }
     setVillages([...tempVillages, { id: `new_village_${name}`, districtId: activeParentLocationId, name: name, canModify: true }]);
   }
   const createZone = (activeParentLocationId, name) => {
+    if(locationExists(name, tempZones)) {
+      setOpenSnackbar(true);
+      return;
+    }
     setZones([...tempZones, { id: `new_zone_${name}`, villageId: activeParentLocationId, name: name, canModify: true }]);
   }
 
   const editRegion = (id, newName) => {
+    if(locationExists(newName, tempRegions)) {
+      setOpenSnackbar(true);
+      return;
+    }
     const temp = tempRegions.map(region => {
       if(region.id === id) {
         region.name = newName;
@@ -73,6 +108,10 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
   }
 
   const editDistrict = (id, newName) => {
+    if(locationExists(newName, tempDistricts)) {
+      setOpenSnackbar(true);
+      return;
+    }
     const temp = tempDistricts.map(district => {
       if(district.id === id) {
         district.name = newName;
@@ -84,6 +123,10 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
   }
 
   const editVillage = (id, newName) => {
+    if(locationExists(newName, tempVillages)) {
+      setOpenSnackbar(true);
+      return;
+    }
     const temp = tempVillages.map(village => {
       if(village.id === id) {
         village.name = newName;
@@ -95,6 +138,10 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
   }
 
   const editZone = (id, newName) => {
+    if(locationExists(newName, tempZones)) {
+      setOpenSnackbar(true);
+      return;
+    }
     const temp = tempZones.map(zone => {
       if(zone.id === id) {
         zone.name = newName;
@@ -181,6 +228,23 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
             rtl={useRtlDirection}
           />
         </Grid>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={openSnackbar}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          message={strings(stringKeys.projectSetup.geographicalStructure.error)}
+          action={
+            <React.Fragment>
+              <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </React.Fragment>
+          }
+      />
       </Grid>
   );
 }
