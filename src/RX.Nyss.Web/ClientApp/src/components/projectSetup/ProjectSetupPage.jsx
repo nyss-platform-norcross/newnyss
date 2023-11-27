@@ -13,7 +13,7 @@ import { strings, stringKeys } from '../../strings';
 import { ProjectSetupRecipients } from './ProjectSetupRecipients';
 
 
-const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, setNewRegions, organizations, ...props}) => {
+const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setHealthRisks, setNewRegions, organizations, ...props}) => {
 
   useMount(() => {
     openProjectSetup(nationalSocietyId);
@@ -77,8 +77,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   openProjectSetup: projectSetupActions.openSetup.invoke,
-  setOrganizationId: projectSetupActions.setOrganizationId,
-  setAlertNotHandledNotificationRecipientId: projectSetupActions.setAlertNotHandledNotificationRecipientId,
   setHealthRisks: projectSetupActions.setHealthRisks,
   setNewRegions: projectSetupActions.setNewRegions,
 };
