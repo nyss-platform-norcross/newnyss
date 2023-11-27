@@ -8,7 +8,9 @@ import { useMount } from '../../utils/lifecycle';
 import { SetupStepper } from '../common/stepper/SetupStepper'
 import Typography from '@material-ui/core/Typography';
 import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStructure"
-import { strings, stringKeys } from "../../strings";
+import { ProjectSetupOrganization } from './ProjectSetupOrganization';
+import { ProjectSetupName } from './ProjectSetupName'
+import { strings, stringKeys } from '../../strings';
 
 const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, ...props}) => {
 
@@ -25,13 +27,13 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
 
   const projectSetupSteps = [
     {
-      name: 'Project name',
-      content: <Typography>Project name content</Typography>,
+      name: strings(stringKeys.projectSetup.projectName.name),
+      content: <ProjectSetupName error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
       stepNumber: 0
     },
     {
-      name: 'Organization',
-      content: <Typography>Organization content</Typography>,
+      name: strings(stringKeys.projectSetup.projectOrganization.name),
+      content: <ProjectSetupOrganization error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
       stepNumber: 1
     },
     {
@@ -47,7 +49,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
     {
       name: strings(stringKeys.projectSetup.geographicalStructure.name),
       content: <ProjectSetupGeographicalStructure />,
-      stepNumber: 4
+      stepNumber: 4,
       isOptional: true
     },
     {
@@ -75,7 +77,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   openProjectSetup: projectSetupActions.openSetup.invoke,
-  setProjectName: projectSetupActions.setProjectName,
   setOrganizationId: projectSetupActions.setOrganizationId,
   setAlertNotHandledNotificationRecipientId: projectSetupActions.setAlertNotHandledNotificationRecipientId,
   setHealthRisks: projectSetupActions.setHealthRisks,

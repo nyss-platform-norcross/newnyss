@@ -15,7 +15,7 @@ export const NationalSocietyLocationList = (props) => {
   const [isEditingLocations, setIsEditingLocations] = useState(false)
 
   const headerHeight = 48;
-  const hasLocations = props.locations.length > 0
+  const hasLocations = props.locations?.length > 0
   const borderStyle = hasLocations ? "1px solid black" : "1px dashed black";
 
   const lowerCaseLocationType = props.locationType.toLowerCase();

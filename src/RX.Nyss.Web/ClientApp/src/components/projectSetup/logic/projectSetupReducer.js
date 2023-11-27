@@ -2,7 +2,7 @@ import * as actions from "./projectSetupConstants";
 import { LOCATION_CHANGE } from "connected-react-router";
 
 export const projectSetupInitialState = {
-  projectName: null,
+  projectName: "",
   allowMultipleOrganizations: null,
   timeZoneId: null,
   healthRisks: [],

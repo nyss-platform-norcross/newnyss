@@ -86,6 +86,7 @@ const getStep = (steps, stepIndex) => {
 export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsNextStepInvalid }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
+  const sortedSteps = steps.sort((stepA, stepB) => stepA.stepNumber - stepB.stepNumber);
 
   const handleNext = () => {
     if(getStep(steps, activeStep).isOptional || (!error && !isNextStepInvalid)) {
@@ -127,7 +128,7 @@ export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsN
   return (
     <>
       <Stepper activeStep={activeStep} alternativeLabel className={classes.stepper} connector={<Connector />}>
-        {steps.map((step) => (
+        {sortedSteps.map((step) => (
           <Step className={classes.step} key={step.name} onClick={() => onStepClick(step.stepNumber)}>
             <StepLabel StepIconComponent={StepIcon}>
               <Typography style={{ color: step.stepNumber >= activeStep ? "#7C7C7C" : "#D52B1E"}}>{step.name}</Typography>
@@ -136,7 +137,7 @@ export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsN
         ))}
       </Stepper>
         <Grid container direction='column' alignItems='center'>
-          <Grid container direction='column' alignItems='center' style={{ marginBottom: 50 }}>
+          <Grid container direction='column' alignItems='center' style={{ margin: "50px 0 50px 0" }}>
             {getStepContent(steps, activeStep)}
           </Grid>
           <Grid container direction='column' alignItems='center'>

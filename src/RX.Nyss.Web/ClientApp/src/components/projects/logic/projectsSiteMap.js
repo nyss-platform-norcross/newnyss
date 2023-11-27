@@ -11,6 +11,14 @@ export const projectTabMenuOrder = {
   settings: 40
 };
 
+const projectSubMenuOrder = {
+  general: 0,
+  healthRisks: 1,
+  unhandledAlertRecipients: 2,
+  escalatedAlertRecipients: 3,
+  errorMessages: 4,
+}
+
 export const projectsSiteMap = [
   {
     parentPath: "/nationalsocieties/:nationalSocietyId",
@@ -58,22 +66,46 @@ export const projectsSiteMap = [
   },
   {
     parentPath: "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
-    path: "/projects/:projectId/alertNotifications",
-    title: () => strings(stringKeys.projectAlertRecipient.title),
+    path: "/nationalsocieties/:nationalSocietyId/projects/:projectId/healthrisks",
+    title: () => strings(stringKeys.healthRisk.title),
     placeholder: placeholders.projectSubMenu,
-    access: accessMap.projectAlertNotifications.list,
-    placeholderIndex: 3,
+    access: accessMap.projects.showOverview,
+    placeholderIndex: projectSubMenuOrder.healthRisks,
     middleStepOnly: true,
   },
   {
-    parentPath: "/projects/:projectId/alertNotifications",
-    path: "/projects/:projectId/alertNotifications/addRecipient",
+    parentPath: "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
+    path: "/nationalsocieties/:nationalSocietyId/projects/:projectId/editHealthRisks",
+    title: () => strings(stringKeys.project.form.healthRisksEditionTitle),
+    access: accessMap.projects.edit,
+  },
+  {
+    parentPath: "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
+    path: "/projects/:projectId/escalatedAlertNotifications",
+    title: () => strings(stringKeys.projectAlertRecipient.title),
+    placeholder: placeholders.projectSubMenu,
+    access: accessMap.projectAlertNotifications.list,
+    placeholderIndex: projectSubMenuOrder.escalatedAlertRecipients,
+    middleStepOnly: true,
+  },
+  {
+    parentPath: "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
+    path: "/projects/:projectId/unhandledAlertNotifications",
+    title: () => strings(stringKeys.projectAlertNotHandledRecipient.title),
+    placeholder: placeholders.projectSubMenu,
+    access: accessMap.projectAlertNotifications.list,
+    placeholderIndex: projectSubMenuOrder.unhandledAlertRecipients,
+    middleStepOnly: true,
+  },
+  {
+    parentPath: "/projects/:projectId/escalatedAlertNotifications",
+    path: "/projects/:projectId/escalatedAlertNotifications/addRecipient",
     title: () => strings(stringKeys.projectAlertRecipient.form.creationTitle),
     access: accessMap.projectAlertNotifications.addRecipient
   },
   {
-    parentPath: "/projects/:projectId/alertNotifications",
-    path: "/projects/:projectId/alertNotifications/:alertRecipientId/editRecipient",
+    parentPath: "/projects/:projectId/escalatedAlertNotifications",
+    path: "/projects/:projectId/escalatedAlertNotifications/:alertRecipientId/editRecipient",
     title: () => strings(stringKeys.projectAlertRecipient.form.editionTitle),
     access: accessMap.projectAlertNotifications.editRecipient
   },
