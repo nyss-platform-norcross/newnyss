@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   chipContainer: {
+    justifyContent: "center",
     maxWidth: '50rem',
     marginTop: 30,
   },
