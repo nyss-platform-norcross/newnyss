@@ -89,39 +89,44 @@ const SummaryGeographicalStructureRow = ({ name, rows }) => {
           </Typography>
         </Grid>
         <Grid item xs={8}>
-          {rows.map(row => {
-            return (
-              <Grid item container direction="row" xs={12} alignItems="center" key={row.region.id}>
-                <Typography className={row.region.canModify && classes.newLocation}>
-                  {row.region.name}
-                </Typography>
-                {row.district && <TrendingFlatIcon className={classes.arrow}/>}
-                {row.district && (
-                  <>
-                    <Typography className={row.district.canModify && classes.newLocation}>
-                      {row.district.name}
-                    </Typography>
-                    {row.village && <TrendingFlatIcon fontSize="small" className={classes.arrow}/>}
-                  </>
-                )}
-                {row.village && (
-                  <>
-                    <Typography className={row.village.canModify && classes.newLocation}>
-                      {row.village.name}
-                    </Typography>
-                    {row.zone && <TrendingFlatIcon fontSize="small" className={classes.arrow}/>}
-                  </>
-                )}
-                {row.zone && (
-                  <>
-                    <Typography className={row.zone.canModify && classes.newLocation}>
-                      {row.zone.name}
-                    </Typography>
-                  </>
-                )}
-              </Grid>
-            )
-          })}
+          {rows.length > 0 ? (
+            rows.map(row => {
+              return (
+                <Grid item container direction="row" xs={12} alignItems="center" key={row.region.id}>
+                  <Typography className={row.region.canModify && classes.newLocation}>
+                    {row.region.name}
+                  </Typography>
+                  {row.district && <TrendingFlatIcon className={classes.arrow}/>}
+                  {row.district && (
+                    <>
+                      <Typography className={row.district.canModify && classes.newLocation}>
+                        {row.district.name}
+                      </Typography>
+                      {row.village && <TrendingFlatIcon fontSize="small" className={classes.arrow}/>}
+                    </>
+                  )}
+                  {row.village && (
+                    <>
+                      <Typography className={row.village.canModify && classes.newLocation}>
+                        {row.village.name}
+                      </Typography>
+                      {row.zone && <TrendingFlatIcon fontSize="small" className={classes.arrow}/>}
+                    </>
+                  )}
+                  {row.zone && (
+                    <>
+                      <Typography className={row.zone.canModify && classes.newLocation}>
+                        {row.zone.name}
+                      </Typography>
+                    </>
+                  )}
+                </Grid>
+              )
+            })
+          )
+          :
+          <Typography style={{ fontWeight: 700 }}>Not updated</Typography>
+        }
         </Grid>
       </Grid>
     </>
