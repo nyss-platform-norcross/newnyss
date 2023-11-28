@@ -10,7 +10,6 @@ import StepConnector from '@material-ui/core/StepConnector';
 import CheckIcon from '@material-ui/icons/Check';
 import { strings, stringKeys } from '../../../strings';
 import SubmitButton from '../buttons/submitButton/SubmitButton';
-import { goToList } from '../../projects/logic/projectsActions';
 
 const useStyles = makeStyles((theme) => ({
   stepper: {
@@ -178,19 +177,19 @@ export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsN
           </Grid>
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle classes={{ root: classes.dialogTitle }}>
-              <Typography style={{fontSize: 24, fontWeight: 600}}>Cancel project setup?</Typography>
+              <Typography style={{fontSize: 24, fontWeight: 600}}>{strings(stringKeys.projectSetup.cancelDialog.title)}</Typography>
             </DialogTitle>
             <DialogContent>
               <Typography style={{marginBottom: 20}} gutterBottom>
-               Are you sure you want to cancel the project setup?
+                {strings(stringKeys.projectSetup.cancelDialog.description)}
               </Typography>
             </DialogContent>
             <DialogActions style={{margin: "0 20px 10px 0"}}>
               <Button onClick={handleCancel} color="primary">
-                Yes, cancel
+                {strings(stringKeys.common.buttons.confirmCancelation)}
               </Button>
               <SubmitButton onClick={handleClose} color="primary" autoFocus>
-                No, continue
+              {strings(stringKeys.common.buttons.denyCancelation)}
               </SubmitButton>
             </DialogActions>
           </Dialog>

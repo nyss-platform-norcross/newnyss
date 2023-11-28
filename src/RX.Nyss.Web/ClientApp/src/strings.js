@@ -432,6 +432,10 @@ export const stringKeys = {
       title: "projectSetup.organization.title",
       placeholder: "projectSetup.organization.placeholder",
       error: "projectSetup.organization.error"
+    },
+    cancelDialog: {
+      title: "projectSetup.cancelDialog.title",
+      description: "projectSetup.cancelDialog.description",
     }
   },
   dashboard: {
@@ -1087,7 +1091,10 @@ export const stringKeys = {
       previous: "common.buttons.previous",
       finish: "common.buttons.finish",
       next: "common.buttons.next",
-      tryAgain: "common.buttons.tryAgain"
+      tryAgain: "common.buttons.tryAgain",
+      confirmCancelation: "common.buttons.confirmCancelation",
+      denyCancelation: "common.buttons.denyCancelation",
+      
     },
     boolean: {
       true: "common.true",
