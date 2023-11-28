@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   healthRisk: {
     backgroundColor: "#CDDDE7",
-    margin: 4
+    margin: "4px 4px 4px 0"
   },
   newLocation: {
     fontWeight: 700,
