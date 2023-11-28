@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { Grid, Dialog, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import StepConnector from '@material-ui/core/StepConnector';
 import CheckIcon from '@material-ui/icons/Check';
 import { strings, stringKeys } from '../../../strings';
+import SubmitButton from '../buttons/submitButton/SubmitButton';
+import { goToList } from '../../projects/logic/projectsActions';
 
 const useStyles = makeStyles((theme) => ({
   stepper: {
@@ -19,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
   },
   backButton: {
     marginRight: theme.spacing(1),
+  },
+  dialogTitle: {
+    fontSize: 240,
   },
 }));
 
@@ -80,10 +85,11 @@ const getStepContent = (steps, stepIndex) => {
   return steps.find(step => step.stepNumber === stepIndex).content
 }
 
-export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsNextStepInvalid }) => {
+export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsNextStepInvalid, goToList, nationalSocietyId }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const sortedSteps = steps.sort((stepA, stepB) => stepA.stepNumber - stepB.stepNumber);
+  const [open, setOpen] = useState(false);
 
   const handleNext = () => {
     if(!error && !isNextStepInvalid) {
@@ -101,8 +107,18 @@ export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsN
   };
 
   const handleReset = () => {
+    setOpen(true);
     setActiveStep(0);
   };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleCancel = () => {
+    goToList(nationalSocietyId);
+  };
+
 
   const StepIcon = (props) => {
     const classes = useColorlibStepIconStyles();
@@ -160,6 +176,24 @@ export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsN
               </Button>
             </Grid>
           </Grid>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle classes={{ root: classes.dialogTitle }}>
+              <Typography style={{fontSize: 24, fontWeight: 600}}>Cancel project setup?</Typography>
+            </DialogTitle>
+            <DialogContent>
+              <Typography style={{marginBottom: 20}} gutterBottom>
+               Are you sure you want to cancel the project setup?
+              </Typography>
+            </DialogContent>
+            <DialogActions style={{margin: "0 20px 10px 0"}}>
+              <Button onClick={handleCancel} color="primary">
+                Yes, cancel
+              </Button>
+              <SubmitButton onClick={handleClose} color="primary" autoFocus>
+                No, continue
+              </SubmitButton>
+            </DialogActions>
+          </Dialog>
         </Grid>
     </>
   );

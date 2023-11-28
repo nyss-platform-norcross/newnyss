@@ -4,6 +4,7 @@ import { withLayout } from '../../utils/layout';
 import Layout from '../layout/Layout';
 import { Loading } from '../common/loading/Loading';
 import * as projectSetupActions from './logic/projectSetupActions';
+import * as projectActions from '../projects/logic/projectsActions';
 import { useMount } from '../../utils/lifecycle';
 import { SetupStepper } from '../common/stepper/SetupStepper'
 import Typography from '@material-ui/core/Typography';
@@ -12,7 +13,7 @@ import { ProjectSetupName } from './ProjectSetupName'
 import { strings, stringKeys } from '../../strings';
 
 
-const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, setNewRegions, organizations, ...props}) => {
+const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, setNewRegions, organizations, goToList, ...props}) => {
 
   useMount(() => {
     openProjectSetup(nationalSocietyId);
@@ -61,7 +62,7 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
 
   return (
     <div>
-      <SetupStepper steps={projectSetupSteps} error={error} setError={setError} isNextStepInvalid={isNextStepInvalid} setIsNextStepInvalid={setIsNextStepInvalid}/>
+      <SetupStepper steps={projectSetupSteps} error={error} setError={setError} isNextStepInvalid={isNextStepInvalid} setIsNextStepInvalid={setIsNextStepInvalid} goToList={goToList} nationalSocietyId={nationalSocietyId}/>
     </div>
   );
 }
@@ -80,6 +81,7 @@ const mapDispatchToProps = {
   setAlertNotHandledNotificationRecipientId: projectSetupActions.setAlertNotHandledNotificationRecipientId,
   setHealthRisks: projectSetupActions.setHealthRisks,
   setNewRegions: projectSetupActions.setNewRegions,
+  goToList: projectActions.goToList,
 };
 
 export const ProjectSetupPage = withLayout(
