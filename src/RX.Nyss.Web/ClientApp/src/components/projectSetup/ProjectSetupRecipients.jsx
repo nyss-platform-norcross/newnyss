@@ -54,8 +54,6 @@ const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotifi
     if (eventRecipient){
       setSelectedRecipients(selectedRecipients => [...selectedRecipients, eventRecipient]);
       setAvailableRecipients(availableRecipients.filter(recipient => recipient.id !== eventRecipient.id));
-      
-      setIsNextStepInvalid(false);
       setError(false);
     }
   };
@@ -69,7 +67,11 @@ const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotifi
 
   useEffect(() => {
     setAlertNotHandledNotificationRecipientIds(selectedRecipients.map(recipient => recipient.id));
-  }, [selectedRecipients])
+  }, [selectedRecipients]);
+
+  useEffect(() => {
+    alertNotHandledNotificationRecipientIds > 0 ? setIsNextStepInvalid(false) : setIsNextStepInvalid(true);
+  }, [alertNotHandledNotificationRecipientIds]);
 
   return (
     <>
