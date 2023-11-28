@@ -189,8 +189,8 @@ const ProjectSetupSummaryComponent = (props) => {
 const mapStateToProps = (state) => ({
   projectName: state.projectSetup.projectName,
   organizationId: state.projectSetup.organizationId,
-  recipients: state.formData?.alertNotHandledNotificationRecipients,
-  organizations: state.formData?.organizations,
+  recipients: state.projectSetup.formData?.alertNotHandledNotificationRecipients,
+  organizations: state.projectSetup.formData?.organizations,
   recipientIds: state.projectSetup.alertNotHandledNotificationRecipientIds,
   healthRisks: state.projectSetup.healthRisks,
   regions: state.projectSetup.regions,
