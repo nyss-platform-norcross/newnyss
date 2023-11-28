@@ -59,7 +59,7 @@ export const ProjectSetupGeographicalStructureComponent = (props) => {
   }, [tempRegions, regions, districts, villages, zones, setRegions, setDistricts, setVillages, setZones])
 
   const locationExists = (name, locations) => {
-    return locations.some(location => location.name === name);
+    return locations.some(location => location.name.toLowerCase() === name.toLowerCase());
   }
 
 
