@@ -1,6 +1,6 @@
 import { InputLabel, Grid, Divider, Chip } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles';
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { strings, stringKeys } from '../../strings';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -69,7 +69,7 @@ const SummaryHealthRisksRow = ({ name, healthRisks }) => {
         </Grid>
         <Grid item xs={8}>
           {healthRisks.map(hr => (
-            <Chip label={hr.name} className={classes.healthRisk}/>
+            <Chip label={hr.name} className={classes.healthRisk} key={hr.id}/>
           ))}
         </Grid>
       </Grid>
@@ -91,7 +91,7 @@ const SummaryGeographicalStructureRow = ({ name, rows }) => {
         <Grid item xs={8}>
           {rows.map(row => {
             return (
-              <Grid item container direction="row" xs={12} alignItems="center">
+              <Grid item container direction="row" xs={12} alignItems="center" key={row.region.id}>
                 <Typography className={row.region.canModify && classes.newLocation}>
                   {row.region.name}
                 </Typography>
@@ -129,12 +129,14 @@ const SummaryGeographicalStructureRow = ({ name, rows }) => {
 }
 
 const ProjectSetupSummaryComponent = (props) => {
-  let { projectName, organizationId, recipients, recipientIds, healthRisks, regions, districts, villages, zones } = props;
+  let { projectName, organizations, organizationId, recipients, recipientIds, healthRisks, regions, districts, villages, zones } = props;
   const classes = useStyles();
-  const organizationName = useSelector(state => state.appData.formData?.organizations.find(org => org.id === organizationId));
+  const organizationName = organizations.find(org => org.id === organizationId).name;
+  // const selectedRecipients = recipients.filter(recipient => recipientIds.includes(recipient.id)).map(recipient => recipient.name);
 
+  // Dummy data
   const selectedRecipients = ["Ian", "Alvar", "Sondre", "Tonje", "Ian", "Alvar", "Sondre", "Tonje", "Ian", "Alvar", "Sondre", "Tonje", "Ian", "Alvar", "Sondre", "Tonje"]
-  const selectedHealthRisks = [{ name: "Fever and rash" }, { name: "Acute Watery Diaherra" }, { name: "Fever and body pain" }, { name: "Fever and neck stiffness" }]
+  const selectedHealthRisks = [{ name: "Fever and rash", id: 1 }, { name: "Acute Watery Diaherra", id: 2 }, { name: "Fever and body pain", id: 3 }, { name: "Fever and neck stiffness", id: 4 }]
   regions = [{ id: "reg1",  name: "Region1", nationalSocietyId: "ns" }, { id: "reg2",  name: "Region2", nationalSocietyId: "ns", canModify: true }]
   districts = [{ id: "dis1",  name: "District1", regionId: "reg1" }, { id: "dis2",  name: "District2", regionId: "reg2", canModify: true }]
   villages = [{ id: "vil1",  name: "Village1", districtId: "dis1" }, { id: "vil2",  name: "Village2", districtId: "dis2", canModify: true }]
@@ -173,8 +175,8 @@ const ProjectSetupSummaryComponent = (props) => {
       <InputLabel className={classes.inputLabel}>{strings(stringKeys.projectSetup.summary.title)}</InputLabel>
       <Card className={classes.card} variant="elevation">
         <CardContent className={classes.cardContent}>
-          <SummaryRow name={strings(stringKeys.projectSetup.projectName.name)} value={projectName !== "" ? projectName : "Project dummy name"}/>
-          <SummaryRow name={strings(stringKeys.projectSetup.projectOrganization.name)} value={organizationName ?? "Org"}/>
+          <SummaryRow name={strings(stringKeys.projectSetup.projectName.name)} value={projectName}/>
+          <SummaryRow name={strings(stringKeys.projectSetup.projectOrganization.name)} value={organizationName}/>
           <SummaryRow name="Unhandled alert notification recipients" value={selectedRecipients?.join(', ')}/>
           <SummaryHealthRisksRow name="Health risks" healthRisks={selectedHealthRisks} />
           <SummaryGeographicalStructureRow name="Geographical structure" rows={newLocationRows}/>
@@ -188,6 +190,7 @@ const mapStateToProps = (state) => ({
   projectName: state.projectSetup.projectName,
   organizationId: state.projectSetup.organizationId,
   recipients: state.formData?.alertNotHandledNotificationRecipients,
+  organizations: state.formData?.organizations,
   recipientIds: state.projectSetup.alertNotHandledNotificationRecipientIds,
   healthRisks: state.projectSetup.healthRisks,
   regions: state.projectSetup.regions,
