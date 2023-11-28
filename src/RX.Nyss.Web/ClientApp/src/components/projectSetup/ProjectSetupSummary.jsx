@@ -131,7 +131,7 @@ const SummaryGeographicalStructureRow = ({ name, rows }) => {
 const ProjectSetupSummaryComponent = (props) => {
   let { projectName, organizations, organizationId, recipients, recipientIds, healthRisks, regions, districts, villages, zones } = props;
   const classes = useStyles();
-  const organizationName = organizations.find(org => org.id === organizationId).name;
+  const organizationName = organizations?.find(org => org.id === organizationId).name;
   // const selectedRecipients = recipients.filter(recipient => recipientIds.includes(recipient.id)).map(recipient => recipient.name);
 
   // Dummy data

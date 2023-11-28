@@ -104,6 +104,10 @@ export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsN
     setActiveStep(0);
   };
 
+  const handleFinish = () => {
+    console.log("Finisihed")
+  }
+
   const StepIcon = (props) => {
     const classes = useColorlibStepIconStyles();
     const { active, completed, icon } = props;
@@ -150,7 +154,7 @@ export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsN
                   {strings(stringKeys.common.buttons.previous)}
                 </Button>
               )}
-              <Button variant={(!error && !isNextStepInvalid) ? "contained" : "outlined"} color="primary" onClick={activeStep === steps.length - 1 ? handleReset : handleNext}>
+              <Button variant={(activeStep === steps.length - 1 || (!error && !isNextStepInvalid)) ? "contained" : "outlined"} color="primary" onClick={activeStep === steps.length - 1 ? handleFinish : handleNext}>
                 {activeStep === steps.length - 1 ? strings(stringKeys.common.buttons.finish) : strings(stringKeys.common.buttons.next)}
               </Button>
             </Grid>
