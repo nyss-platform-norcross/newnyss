@@ -51,16 +51,6 @@ namespace RX.Nyss.Web.Features.Reports.Access
                 return userAndReportInSameNationalSociety;
             }
 
-            if (currentUser.Role == Role.Supervisor && reportData.Supervisor != currentUser)
-            {
-                return false;
-            }
-
-            if (currentUser.Role == Role.HeadSupervisor && (reportData.Supervisor != currentUser || reportData.Supervisor.HeadSupervisor != currentUser))
-            {
-                return false;
-            }
-
             var reportOrganizationId = await _nyssContext.UserNationalSocieties
                 .Where(uns => uns.UserId == reportData.Supervisor.Id)
                 .Select(uns => uns.OrganizationId)

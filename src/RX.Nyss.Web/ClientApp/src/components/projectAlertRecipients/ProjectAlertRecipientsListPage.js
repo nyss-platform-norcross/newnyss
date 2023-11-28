@@ -7,6 +7,9 @@ import ProjectAlertRecipientsTable from './ProjectAlertRecipientsTable';
 import { useMount } from '../../utils/lifecycle';
 import { strings, stringKeys } from '../../strings';
 import { TableActionsButton } from '../common/buttons/tableActionsButton/TableActionsButton';
+import { withLayout } from "../../utils/layout";
+import Layout from "../layout/Layout";
+import { Typography } from '@material-ui/core';
 import TableHeader from '../common/tableHeader/TableHeader';
 
 const ProjectAlertRecipientsListPageComponent = (props) => {
@@ -31,7 +34,7 @@ const ProjectAlertRecipientsListPageComponent = (props) => {
           </TableActionsButton>
         </TableActions>}
       </TableHeader>
-
+      <Typography variant="subtitle1">{strings(stringKeys.projectAlertRecipient.description)}</Typography>
       <ProjectAlertRecipientsTable
         list={props.list}
         isListFetching={props.isListFetching}
@@ -55,12 +58,13 @@ ProjectAlertRecipientsListPageComponent.propTypes = {
   list: PropTypes.array
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
   list: state.projectAlertRecipients.listData,
   isListFetching: state.projectAlertRecipients.listFetching,
   isRemoving: state.projectAlertRecipients.listRemoving,
   nationalSocietyIsArchived: state.appData.siteMap.parameters.nationalSocietyIsArchived,
-  projectIsClosed: state.appData.siteMap.parameters.projectIsClosed
+  projectIsClosed: state.appData.siteMap.parameters.projectIsClosed,
+  projectId: ownProps.match.params.projectId
 });
 
 const mapDispatchToProps = {
@@ -70,4 +74,8 @@ const mapDispatchToProps = {
   remove: projectAlertRecipientsActions.remove.invoke
 };
 
-export const ProjectAlertRecipientsListPage = connect(mapStateToProps, mapDispatchToProps)(ProjectAlertRecipientsListPageComponent);
+
+export const ProjectAlertRecipientsListPage = withLayout(
+  Layout,
+  connect(mapStateToProps, mapDispatchToProps)(ProjectAlertRecipientsListPageComponent)
+);

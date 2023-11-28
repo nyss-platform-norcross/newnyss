@@ -83,7 +83,25 @@ namespace RX.Nyss.ReportApi.Features.Alerts
 
             var message = await CreateNotificationMessageForNewAlert(alert);
 
-            await _queuePublisherService.SendSms(recipients, gatewaySetting, message);
+            switch (gatewaySetting.GatewayType)
+            {
+                case GatewayType.SmsEagle:
+                    await _queuePublisherService.SendSms(recipients, gatewaySetting, message);
+                    break;
+                case GatewayType.Telerivet:
+                    foreach (var r in recipients)
+                    {
+                        var recipient = long.Parse(r.PhoneNumber);
+                        await _queuePublisherService.SendTelerivetSms(recipient, message, gatewaySetting.TelerivetSendSmsApiKey, gatewaySetting.TelerivetProjectId);
+                    }
+                    break;
+                case GatewayType.SmsGateway:
+                    _loggerAdapter.Info("Could not find proper gateway!");
+                    break;
+                default:
+                    _loggerAdapter.Info("Could not find proper gateway!");
+                    break;
+            }
             await _queuePublisherService.QueueAlertCheck(alert.Id);
         }
 
@@ -94,9 +112,28 @@ namespace RX.Nyss.ReportApi.Features.Alerts
                 PhoneNumber = s.PhoneNumber,
                 Modem = s.Modem
             }).ToList();
+
             var message = await CreateNotificationMessageForExistingAlert(alert);
 
-            await _queuePublisherService.SendSms(phoneNumbers, gatewaySetting, message);
+            switch (gatewaySetting.GatewayType)
+            {
+                case GatewayType.SmsEagle:
+                    await _queuePublisherService.SendSms(phoneNumbers, gatewaySetting, message);
+                    break;
+                case GatewayType.Telerivet:
+                    foreach (var r in phoneNumbers)
+                    {
+                        var recipient = long.Parse(r.PhoneNumber);
+                        await _queuePublisherService.SendTelerivetSms(recipient, message, gatewaySetting.TelerivetSendSmsApiKey, gatewaySetting.TelerivetProjectId);
+                    }
+                    break;
+                case GatewayType.SmsGateway:
+                    _loggerAdapter.Info("Could not find proper gateway!");
+                    break;
+                default:
+                    _loggerAdapter.Info("Could not find proper gateway!");
+                    break;
+            }
         }
 
         public async Task<IEnumerable<SupervisorSmsRecipient>> GetSupervisorsConnectedToExistingAlert(int alertId) =>

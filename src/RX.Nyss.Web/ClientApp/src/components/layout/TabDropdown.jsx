@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { push } from "connected-react-router";
 
 import { Button, Typography, makeStyles } from '@material-ui/core';
@@ -14,6 +14,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 export const TabDropdownComponent = ({ page, onItemClick }) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
+  const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
 
   const useStyles = makeStyles({
     container: {
@@ -46,7 +47,7 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
     },
     menuItem: {
       display: "flex",
-      whiteSpace: "normal"
+      whiteSpace: "normal",
     },
     menuItemActive: {
       backgroundColor: "#E3E3E3"
@@ -60,7 +61,15 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
   const styles = useStyles()
 
   const handleToggle = () => {
-    onItemClick(page);
+    if (!open && page.subMenu?.length > 1){
+      setOpen(true);
+    }
+    else if (open && page.subMenu?.length > 1){
+      setOpen(false);
+    }
+    else {
+      onItemClick(page);
+    }
   };
 
   const handleClose = (event) => {
@@ -127,7 +136,7 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
             <MenuList className={styles.menuList} autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
               {page.subMenu?.map((menuItem, index) => (
                 <MenuItem className={`${styles.menuItem} ${menuItem.isActive && styles.menuItemActive} ${index === page.subMenu?.length-1 && styles.lastMenuItem}`} key={`menuItem_${menuItem.url}`} onClick={() => handleMenuItemClick(menuItem)}>
-                  <Typography variant="subtitle2">
+                  <Typography variant="subtitle2" style={{ textAlign: useRtlDirection ? "right" : "left" }}>
                     {menuItem.title}
                   </Typography>
                 </MenuItem>

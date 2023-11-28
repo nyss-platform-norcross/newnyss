@@ -3,12 +3,11 @@ import styles from "./TableActionsButton.module.scss"
 import React from "react";
 import { Button, CircularProgress } from '@material-ui/core';
 import { withAccessRestriction } from "../../hasAccess/HasAccess";
-import AddIcon from '@material-ui/icons/Add';
 
-const TableActionsButtonComponent = ({ onClick, add, isFetching, children, variant, rtl, style }) => (
+const TableActionsButtonComponent = ({ onClick, startIcon, isFetching, children, variant, style }) => (
   <Button
     onClick={onClick}
-    startIcon={add && <AddIcon className={rtl ? styles.rtl : null} />}
+    startIcon={startIcon}
     variant={variant}
     color="primary"
     className={styles.button}

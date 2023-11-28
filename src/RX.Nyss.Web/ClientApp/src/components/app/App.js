@@ -49,6 +49,8 @@ import DayJsUtils from '@date-io/dayjs';
 import { AlertsListPage } from '../alerts/AlertsListPage';
 import { AlertsAssessmentPage } from '../alerts/AlertsAssessmentPage';
 import { ProjectsOverviewPage } from '../projects/ProjectsOverviewPage';
+import { ProjectHealthRisksPage } from '../projects/ProjectHealthRisksPage';
+import { ProjectHealthRisksEditPage } from '../projects/ProjectHealthRisksEditPage';
 import { DataCollectorsPerformancePage } from '../dataCollectors/DataCollectorsPerformancePage';
 import { NationalSocietyDashboardPage } from '../nationalSocietyDashboard/NationalSocietyDashboardPage';
 import { TranslationsListPage } from '../translations/TranslationsListPage';
@@ -60,7 +62,6 @@ import { ProjectOrganizationsListPage } from '../projectOrganizations/ProjectOrg
 import { ProjectOrganizationsCreatePage } from '../projectOrganizations/ProjectOrganizationsCreatePage';
 import { EmailTranslationsListPage } from '../translations/EmailTranslationsListPage';
 import { SmsTranslationsListPage } from '../translations/SmsTranslationsListPage';
-import { ProjectAlertNotificationsPage } from '../projects/ProjectAlertNotificationPage';
 import { ProjectAlertRecipientsCreatePage } from '../projectAlertRecipients/ProjectAlertRecipientsCreatePage';
 import { ProjectAlertRecipientsEditPage } from '../projectAlertRecipients/ProjectAlertRecipientsEditPage';
 import { IncorrectReportsListPage } from '../reports/IncorrectReportsListPage';
@@ -73,6 +74,10 @@ import { useEffect } from 'react';
 import { EidsrIntegrationPage } from "../eidsrIntegration/EidsrIntegrationPage";
 import { EidsrIntegrationEditPage } from "../eidsrIntegration/EidsrIntegrationEditPage";
 import { FeedbackPage } from '../feedback/FeedbackPage';
+import { ProjectAlertNotHandledRecipientsPage } from '../projectAlertNotHandledRecipient/ProjectAlertNotHandledRecipientsPage'
+import { ProjectAlertRecipientsListPage } from '../projectAlertRecipients/ProjectAlertRecipientsListPage'
+//import { ProjectSetupPage } from '../projectSetup/ProjectSetupPage';
+//import { Administrator } from '../../authentication/roles';
 
 export const App = ({ history }) => {
   const direction = useSelector(state => state.appData.direction);
@@ -119,10 +124,15 @@ export const App = ({ history }) => {
             <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects/:projectId/dashboard' component={ProjectDashboardPage} roles={accessMap.projects.showDashboard} />
             <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects' component={ProjectsListPage} roles={accessMap.projects.list} />
             <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects/add' component={ProjectsCreatePage} roles={accessMap.projects.add} />
+            {/* Project Setup route is limited to administrators only while under development */}
+            {/*<AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects/setup' component={ProjectSetupPage} roles={[Administrator]} />*/}
+            
             <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects/:projectId/edit' component={ProjectsEditPage} roles={accessMap.projects.edit} />
             <Redirect exact from='/nationalsocieties/:nationalSocietyId/projects/:projectId/settings' to='/nationalsocieties/:nationalSocietyId/projects/:projectId/overview' roles={accessMap.projects.showOverview} />
             <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects/:projectId/overview' component={ProjectsOverviewPage} roles={accessMap.projects.showOverview} />
             <Redirect exact from='/nationalsocieties/:nationalSocietyId/projects/:projectId' to='/nationalsocieties/:nationalSocietyId/projects/:projectId/dashboard' />
+            <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects/:projectId/healthrisks' component={ProjectHealthRisksPage} roles={accessMap.projects.showOverview} />
+            <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/projects/:projectId/editHealthRisks' component={ProjectHealthRisksEditPage} roles={accessMap.projects.edit} />
 
             <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/users' component={NationalSocietyUsersListPage} roles={accessMap.nationalSocietyUsers.list} />
             <AuthRoute exact path='/nationalsocieties/:nationalSocietyId/users/add' component={NationalSocietyUsersCreatePage} roles={accessMap.nationalSocietyUsers.add} />
@@ -154,9 +164,10 @@ export const App = ({ history }) => {
             <AuthRoute exact path='/projects/:projectId/organizations' component={ProjectOrganizationsListPage} roles={accessMap.projectOrganizations.list} />
             <AuthRoute exact path='/projects/:projectId/organizations/add' component={ProjectOrganizationsCreatePage} roles={accessMap.projectOrganizations.add} />
 
-            <AuthRoute exact path='/projects/:projectId/alertNotifications' component={ProjectAlertNotificationsPage} roles={accessMap.projectAlertNotifications.list} />
-            <AuthRoute exact path='/projects/:projectId/alertNotifications/addRecipient' component={ProjectAlertRecipientsCreatePage} roles={accessMap.projectAlertNotifications.addRecipient} />
-            <AuthRoute exact path='/projects/:projectId/alertNotifications/:alertRecipientId/editRecipient' component={ProjectAlertRecipientsEditPage} roles={accessMap.projectAlertNotifications.editRecipient} />
+            <AuthRoute exact path='/projects/:projectId/unhandledAlertNotifications' component={ProjectAlertNotHandledRecipientsPage} roles={accessMap.projectAlertNotifications.list} />
+            <AuthRoute exact path='/projects/:projectId/escalatedAlertNotifications/addRecipient' component={ProjectAlertRecipientsCreatePage} roles={accessMap.projectAlertNotifications.addRecipient} />
+            <AuthRoute exact path='/projects/:projectId/escalatedAlertNotifications/:alertRecipientId/editRecipient' component={ProjectAlertRecipientsEditPage} roles={accessMap.projectAlertNotifications.editRecipient} />
+            <AuthRoute exact path='/projects/:projectId/escalatedAlertNotifications' component={ProjectAlertRecipientsListPage} roles={accessMap.projectAlertNotifications.list} />
 
             <AuthRoute exact path='/projects/:projectId/errorMessages' component={ProjectErrorMessagesPage} roles={accessMap.projectErrorMessages.list} />
 
