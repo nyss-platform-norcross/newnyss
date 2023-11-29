@@ -5,7 +5,7 @@ import { authSagas } from "../authentication/authSagas";
 import { nationalSocietiesSagas } from "../components/nationalSocieties/logic/nationalSocietiesSagas";
 import { smsGatewaysSagas } from "../components/smsGateways/logic/smsGatewaysSagas";
 import { projectsSagas } from "../components/projects/logic/projectsSagas";
-//import { projectSetupSagas } from "../components/projectSetup/logic/projectSetupSagas";
+import { projectSetupSagas } from "../components/projectSetup/logic/projectSetupSagas";
 import { globalCoordinatorsSagas } from "../components/globalCoordinators/logic/globalCoordinatorsSagas";
 import { healthRisksSagas } from "../components/healthRisks/logic/healthRisksSagas";
 import { suspectedDiseaseSagas } from "../components/suspectedDiseases/logic/suspectedDiseaseSagas";
@@ -37,7 +37,7 @@ function* rootSaga() {
     ...eidsrIntegrationSagas(),
     ...organizationsSagas(),
     ...projectsSagas(),
-    //...projectSetupSagas(),
+    ...projectSetupSagas(),
     ...projectDashboardSagas(),
     ...projectOrganizationsSagas(),
     ...projectAlertRecipientsSagas(),
