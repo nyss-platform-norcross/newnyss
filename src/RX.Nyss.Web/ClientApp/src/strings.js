@@ -458,6 +458,11 @@ export const stringKeys = {
       description: "projectSetup.geographicalStructure.description",
       error: "projectSetup.geographicalStructure.error",
     },
+    projectHealthRisks: {
+      name: "projectSetup.healthRisk.name",
+      title: "projectSetup.healthRisk.title",
+      placeholder: "projectSetup.healthRisk.placeholder",
+    },
   },
   dashboard: {
     title: "dashboard.title",
