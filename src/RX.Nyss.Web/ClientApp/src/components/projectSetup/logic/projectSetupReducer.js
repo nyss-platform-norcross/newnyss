@@ -33,13 +33,13 @@ export function projectSetupReducer(state = projectSetupInitialState, action) {
     case actions.OPEN_PROJECT_SETUP.FAILURE:
       return { ...state, formFetching: false, formError: action.error };
 
-    case actions.CREATE_PROJECT.REQUEST:
+    case actions.CREATE_PROJECT_FROM_SETUP.REQUEST:
       return { ...state, formSaving: true };
 
-    case actions.CREATE_PROJECT.SUCCESS:
+    case actions.CREATE_PROJECT_FROM_SETUP.SUCCESS:
       return { ...state, formSaving: false, listStale: true };
 
-    case actions.CREATE_PROJECT.FAILURE:
+    case actions.CREATE_PROJECT_FROM_SETUP.FAILURE:
       return { ...state, formSaving: false, formError: action.error };
 
     case actions.SET_PROJECT_NAME:

@@ -1,7 +1,7 @@
 import { nationalSocietiesSiteMap } from "./components/nationalSocieties/logic/nationalSocietiesSiteMap";
 import { smsGatewaysSiteMap } from "./components/smsGateways/logic/smsGatewaysSiteMap";
 import { projectsSiteMap } from "./components/projects/logic/projectsSiteMap";
-//import { projectSetupSiteMap } from "./components/projectSetup/logic/projectSetupSiteMap";
+import { projectSetupSiteMap } from "./components/projectSetup/logic/projectSetupSiteMap";
 import { globalCoordinatorsSiteMap } from "./components/globalCoordinators/logic/globalCoordinatorsSiteMap";
 import { healthRisksSiteMap } from "./components/healthRisks/logic/healthRisksSiteMap";
 import { suspectedDiseaseSiteMap } from "./components/suspectedDiseases/logic/suspectedDiseaseSiteMap";
@@ -32,7 +32,7 @@ export const siteMap = [
   ...suspectedDiseaseSiteMap,
   ...globalCoordinatorsSiteMap,
   ...projectsSiteMap,
-  //...projectSetupSiteMap,
+  ...projectSetupSiteMap,
   ...projectDashboardSiteMap,
   ...projectOrganizationsSiteMap,
   ...dataCollectorsSiteMap,
