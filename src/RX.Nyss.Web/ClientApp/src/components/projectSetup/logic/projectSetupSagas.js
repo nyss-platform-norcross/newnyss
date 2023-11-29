@@ -8,7 +8,7 @@ import { stringKeys } from "../../../strings";
 
 export const projectSetupSagas = () => [
   takeEvery(consts.OPEN_PROJECT_SETUP.INVOKE, openProjectSetup),
-  takeEvery(consts.CREATE_PROJECT.INVOKE, createProject),
+  takeEvery(consts.CREATE_PROJECT_FROM_SETUP.INVOKE, createProjectFromSetup),
 ];
 
 function* openProjectSetup({ nationalSocietyId }) {
@@ -25,15 +25,15 @@ function* openProjectSetup({ nationalSocietyId }) {
   }
 };
 
-function* createProject({ nationalSocietyId, data }) {
-  yield put(actions.create.request());
+function* createProjectFromSetup({ nationalSocietyId, data }) {
+  yield put(actions.createFromSetup.request());
   try {
     const response = yield call(http.post, `/api/project/create?nationalSocietyId=${nationalSocietyId}`, data);
-    yield put(actions.create.success(response.value));
+    yield put(actions.createFromSetup.success(response.value));
     yield put(actions.goToList(nationalSocietyId));
     yield put(appActions.showMessage(stringKeys.project.messages.create.success));
   } catch (error) {
-    yield put(actions.create.failure(error));
+    yield put(actions.createFromSetup.failure(error));
   }
 };
 

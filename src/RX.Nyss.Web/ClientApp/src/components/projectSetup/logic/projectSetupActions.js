@@ -1,6 +1,6 @@
 import { push } from "connected-react-router";
 import {
-  OPEN_PROJECT_SETUP, CREATE_PROJECT,
+  OPEN_PROJECT_SETUP, CREATE_PROJECT_FROM_SETUP,
   OPEN_ERROR_MESSAGES,
   SET_PROJECT_NAME,
   SET_ORGANIZATION_ID,
@@ -22,11 +22,11 @@ export const openSetup = {
   failure: (message) => ({ type: OPEN_PROJECT_SETUP.FAILURE, message })
 };
 
-export const create = {
-  invoke: (nationalSocietyId, data) => ({ type: CREATE_PROJECT.INVOKE, nationalSocietyId, data }),
-  request: () => ({ type: CREATE_PROJECT.REQUEST }),
-  success: () => ({ type: CREATE_PROJECT.SUCCESS }),
-  failure: (error) => ({ type: CREATE_PROJECT.FAILURE, error, suppressPopup: true  })
+export const createFromSetup = {
+  invoke: (nationalSocietyId, data) => ({ type: CREATE_PROJECT_FROM_SETUP.INVOKE, nationalSocietyId, data }),
+  request: () => ({ type: CREATE_PROJECT_FROM_SETUP.REQUEST }),
+  success: () => ({ type: CREATE_PROJECT_FROM_SETUP.SUCCESS }),
+  failure: (error) => ({ type: CREATE_PROJECT_FROM_SETUP.FAILURE, error, suppressPopup: true  })
 };
 
 export const openErrorMessages = (projectId) => ({ type: OPEN_ERROR_MESSAGES, projectId });
