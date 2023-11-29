@@ -1,4 +1,4 @@
-import { projectSetupInitialState } from './components/projectSetup/logic/projectSetupReducer';
+//import { projectSetupInitialState } from './components/projectSetup/logic/projectSetupReducer';
 
 export const initialState = {
   appData: {
@@ -376,6 +376,6 @@ export const initialState = {
     appInsights: null,
   },
   projectSetup: {
-    ...projectSetupInitialState,
+    //...projectSetupInitialState,
   }
 };

@@ -6,7 +6,10 @@ import {
   SET_ORGANIZATION_ID,
   SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_ID,
   SET_HEALTH_RISKS,
-  SET_NEW_REGIONS
+  SET_REGIONS,
+  SET_DISTRICTS,
+  SET_VILLAGES,
+  SET_ZONES
 } from "./projectSetupConstants";
 
 export const goToList = (nationalSocietyId) => push(`/nationalsocieties/${nationalSocietyId}/projects`);
@@ -36,6 +39,9 @@ export const setAlertNotHandledNotificationRecipientId = (alertNotHandledNotific
 
 export const setHealthRisks = (healthRisks) => ({ type: SET_HEALTH_RISKS, healthRisks })
 
-export const setNewRegions = (newRegions) => ({ type: SET_NEW_REGIONS, newRegions })
+export const setRegions = (regions) => ({ type: SET_REGIONS, regions })
+export const setDistricts = (districts) => ({ type: SET_DISTRICTS, districts })
+export const setVillages = (villages) => ({ type: SET_VILLAGES, villages })
+export const setZones = (zones) => ({ type: SET_ZONES, zones })
 
 

@@ -5,7 +5,7 @@ import { combineReducers } from "redux";
 import { nationalSocietiesReducer } from "../components/nationalSocieties/logic/nationalSocietiesReducer";
 import { smsGatewaysReducer } from "../components/smsGateways/logic/smsGatewaysReducer";
 import { projectsReducer } from "../components/projects/logic/projectsReducer";
-import { projectSetupReducer } from "../components/projectSetup/logic/projectSetupReducer";
+//import { projectSetupReducer } from "../components/projectSetup/logic/projectSetupReducer";
 import { requestReducer } from "../components/app/logic/requestReducer";
 import { globalCoordinatorsReducer } from "../components/globalCoordinators/logic/globalCoordinatorsReducer";
 import { healthRisksReducer } from "../components/healthRisks/logic/healthRisksReducer";
@@ -39,7 +39,7 @@ export const createRootReducer = (history) => combineReducers({
   eidsrIntegration: eidsrIntegrationReducer,
   organizations: organizationsReducer,
   projects: projectsReducer,
-  projectSetup: projectSetupReducer,
+  //projectSetup: projectSetupReducer,
   projectDashboard: projectDashboardReducer,
   projectOrganizations: projectOrganizationsReducer,
   projectAlertRecipients: projectAlertRecipientsReducer,

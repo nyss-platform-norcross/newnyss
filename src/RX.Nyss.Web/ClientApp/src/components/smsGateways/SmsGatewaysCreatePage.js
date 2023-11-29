@@ -56,8 +56,6 @@ const SmsGatewaysCreatePageComponent = (props) => {
       telerivetProjectId: [validators.requiredWhen(tp => tp.gatewayType.toString() === telerivet)],
       gatewayApiKey: [validators.requiredWhen(tp => tp.gatewayType.toString() === smsGateway)],
       gatewayApiKeyName: [validators.requiredWhen(tp => tp.gatewayType.toString() === smsGateway)],
-      //gatewayExtraKey: [validators.requiredWhen(tp => tp.gatewayType.toString() === smsGateway)],
-      //gatewayExtraKeyName: [validators.requiredWhen(tp => tp.gatewayType.toString() === smsGateway)],
       gatewayUrl: [validators.requiredWhen(tp => tp.gatewayType.toString() === smsGateway)],
       gatewaySenderId: [validators.requiredWhen(tp => tp.gatewayType.toString() === smsGateway)],
       emailAddress: [validators.emailWhen(_ => _.gatewayType.toString() === smsEagle && _.useIotHub === false)],
