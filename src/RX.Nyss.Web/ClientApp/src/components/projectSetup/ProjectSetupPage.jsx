@@ -7,11 +7,12 @@ import * as projectSetupActions from './logic/projectSetupActions';
 import { useMount } from '../../utils/lifecycle';
 import { SetupStepper } from '../common/stepper/SetupStepper'
 import Typography from '@material-ui/core/Typography';
+import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStructure"
+import { ProjectSetupOrganization } from './ProjectSetupOrganization';
 import { ProjectSetupName } from './ProjectSetupName'
 import { strings, stringKeys } from '../../strings';
 
-
-const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, setNewRegions, ...props}) => {
+const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, ...props}) => {
 
   useMount(() => {
     openProjectSetup(nationalSocietyId);
@@ -31,8 +32,8 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
       stepNumber: 0
     },
     {
-      name: 'Organization',
-      content: <Typography>Organization content</Typography>,
+      name: strings(stringKeys.projectSetup.projectOrganization.name),
+      content: <ProjectSetupOrganization error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
       stepNumber: 1
     },
     {
@@ -46,9 +47,10 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
       stepNumber: 3
     },
     {
-      name: 'Geographical structure',
-      content: <Typography>Geographical content</Typography>,
-      stepNumber: 4
+      name: strings(stringKeys.projectSetup.geographicalStructure.name),
+      content: <ProjectSetupGeographicalStructure />,
+      stepNumber: 4,
+      isOptional: true
     },
     {
       name: 'Summary',
@@ -78,7 +80,6 @@ const mapDispatchToProps = {
   setOrganizationId: projectSetupActions.setOrganizationId,
   setAlertNotHandledNotificationRecipientId: projectSetupActions.setAlertNotHandledNotificationRecipientId,
   setHealthRisks: projectSetupActions.setHealthRisks,
-  setNewRegions: projectSetupActions.setNewRegions,
 };
 
 export const ProjectSetupPage = withLayout(

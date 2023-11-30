@@ -116,7 +116,7 @@ export const NationalSocietyLocationListItem = (props) => {
             {!isZone && !props.isEditingLocations && (
                 <ExpandMore className={`${classes.icon} ${isCurrentOpen && classes.iconExpanded}`}/>
             )}
-            {props.isEditingLocations && (
+            {(props.isEditingLocations && (props.location.canModify ?? props.canModify)) && (
               <ListItemSecondaryAction className={classes.editContainer}>
                 <IconButton size="small" onClick={handleEdit}>
                   <EditIcon style={{color: "#D52B1E"}}/>

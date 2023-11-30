@@ -369,6 +369,7 @@ export const stringKeys = {
     form: {
       creationTitle: "project.form.creationTitle",
       editionTitle: "project.form.editionTitle",
+      healthRisksEditionTitle: "project.form.healthRisksEditionTitle",
       name: "project.form.name",
       allowMultipleOrganizations: "project.form.allowMultipleOrganizations",
       organization: "project.form.organization",
@@ -380,7 +381,12 @@ export const stringKeys = {
       alertsSection: "project.form.alertsSection",
       alertRuleCountThreshold: "project.form.alertRuleCountThreshold",
       alertRuleDaysThreshold: "project.form.alertRuleDaysThreshold",
+      alertRuleDaysThresholdEdit: "project.form.alertRuleDaysThresholdEdit",
+      alertRuleDays: "project.form.alertRuleDays",
+      alertRuleDay: "project.form.alertRuleDay",
       alertRuleKilometersThreshold: "project.form.alertRuleKilometersThreshold",
+      alertRuleKilometersThresholdEdit: "project.form.alertRuleKilometersThresholdEdit",
+      alertRuleKilometer: "project.form.alertRuleKilometer",
       alertNotHandledNotificationRecipient: "project.form.alertNotHandledNotificationRecipient"
     },
     messages: {
@@ -420,7 +426,19 @@ export const stringKeys = {
       name: "projectSetup.projectName.name",
       title: "projectSetup.projectName.title",
       error: "projectSetup.projectName.error"
-    }
+    },
+    projectOrganization: {
+      name: "projectSetup.organization.name",
+      title: "projectSetup.organization.title",
+      placeholder: "projectSetup.organization.placeholder",
+      error: "projectSetup.organization.error"
+    },
+    geographicalStructure: {
+      name: "projectSetup.geographicalStructure.name",
+      title: "projectSetup.geographicalStructure.title",
+      description: "projectSetup.geographicalStructure.description",
+      error: "projectSetup.geographicalStructure.error"
+    },
   },
   dashboard: {
     title: "dashboard.title",

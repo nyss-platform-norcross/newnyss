@@ -65,6 +65,17 @@ namespace RX.Nyss.Web.Features.Projects
             _projectService.Edit(projectId, projectRequestDto);
 
         /// <summary>
+        /// Updates a specified project's health risks.
+        /// </summary>
+        /// <param name="projectId">An identifier of project to be updated</param>
+        /// <param name="healthRisksRequestDto">A list of healthrisks</param>
+        /// <returns></returns>
+        [HttpPost("{projectId:int}/editProjectHealthRisks")]
+        [NeedsRole(Role.Administrator, Role.TechnicalAdvisor, Role.Manager, Role.Coordinator), NeedsPolicy(Policy.ProjectAccess)]
+        public Task<Result> EditProjectHealthRisks(int projectId, [FromBody] EditHealthRisksRequestDto healthRisksRequestDto) =>
+            _projectService.EditProjectHealthRisks(projectId, healthRisksRequestDto);
+
+        /// <summary>
         /// Closes a specified project.
         /// </summary>
         /// <param name="projectId">An identifier of project to be closed</param>
