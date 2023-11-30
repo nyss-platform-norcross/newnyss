@@ -54,17 +54,21 @@ export const NationalSocietyDashboardFilters = ({
 
   //Syncs locations from redux store with filter state and sets label for location filter to 'All' or "Region (+n)"
   //Neccecary if locations are added, edited or removed, to make all filters checked
-  const [locationsFilterLabel] = useLocationFilter(locations, localFilters, updateLocalFilters)
+  const [locationsFilterLabel] = useLocationFilter(
+    locations,
+    localFilters,
+    updateLocalFilters,
+  );
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("lg"));
 
   const collectionsTypes = {
     all: strings(stringKeys.dashboard.filters.allReportsType),
     dataCollector: strings(
-      stringKeys.dashboard.filters.dataCollectorReportsType
+      stringKeys.dashboard.filters.dataCollectorReportsType,
     ),
     dataCollectionPoint: strings(
-      stringKeys.dashboard.filters.dataCollectionPointReportsType
+      stringKeys.dashboard.filters.dataCollectionPointReportsType,
     ),
   };
 
@@ -75,12 +79,9 @@ export const NationalSocietyDashboardFilters = ({
     handleFiltersChange({ healthRisks: filteredHealthRisks });
 
   const handleOrganizationChange = (event) =>
-
     handleFiltersChange({
-        organizationId: event.target.value === 0 ? null : event.target.value,
-      })
-    ;
-
+      organizationId: event.target.value === 0 ? null : event.target.value,
+    });
   const handleDateFromChange = (date) =>
     handleFiltersChange({ startDate: convertToUtc(date) });
 
@@ -94,19 +95,15 @@ export const NationalSocietyDashboardFilters = ({
     handleFiltersChange({ dataCollectorType: event.target.value });
 
   const handleReportStatusChange = (event) =>
-
     handleFiltersChange({
-        reportStatus: {
-          ...localFilters.reportStatus,
-          [event.target.name]: event.target.checked,
-        },
-      })
-    ;
-
+      reportStatus: {
+        ...localFilters.reportStatus,
+        [event.target.name]: event.target.checked,
+      },
+    });
   const allLocationsSelected = () =>
     !localFilters.locations ||
     localFilters.locations.regionIds.length === locations.regions.length;
-
 
   if (!localFilters) {
     return null;
@@ -127,9 +124,9 @@ export const NationalSocietyDashboardFilters = ({
                   <Chip
                     icon={<DateRange />}
                     label={`${convertToLocalDate(localFilters.startDate).format(
-                      "YYYY-MM-DD"
+                      "YYYY-MM-DD",
                     )} - ${convertToLocalDate(localFilters.endDate).format(
-                      "YYYY-MM-DD"
+                      "YYYY-MM-DD",
                     )}`}
                     onClick={() => setIsFilterExpanded(!isFilterExpanded)}
                   />
@@ -158,8 +155,9 @@ export const NationalSocietyDashboardFilters = ({
               <Grid item>
                 <Chip
                   label={
-                    healthRisks.filter((hr) => hr.id === localFilters.healthRiskId)[0]
-                      .name
+                    healthRisks.filter(
+                      (hr) => hr.id === localFilters.healthRiskId,
+                    )[0].name
                   }
                   onDelete={() => handleFiltersChange({ healthRiskId: null })}
                   onClick={() => setIsFilterExpanded(!isFilterExpanded)}
@@ -182,12 +180,10 @@ export const NationalSocietyDashboardFilters = ({
                 <Chip
                   label={
                     organizations.filter(
-                      (o) => o.id === localFilters.organizationId
+                      (o) => o.id === localFilters.organizationId,
                     )[0].name
                   }
-                  onDelete={() =>
-                    handleFiltersChange({ organizationId: null })
-                  }
+                  onDelete={() => handleFiltersChange({ organizationId: null })}
                   onClick={() => setIsFilterExpanded(!isFilterExpanded)}
                 />
               </Grid>
@@ -199,14 +195,12 @@ export const NationalSocietyDashboardFilters = ({
                   <Chip
                     label={strings(stringKeys.filters.report.kept)}
                     onDelete={() =>
-
-                        handleFiltersChange({
-                          reportStatus: {
-                            ...localFilters.reportStatus,
-                            kept: false,
-                          },
-                        })
-
+                      handleFiltersChange({
+                        reportStatus: {
+                          ...localFilters.reportStatus,
+                          kept: false,
+                        },
+                      })
                     }
                     onClick={() => setIsFilterExpanded(!isFilterExpanded)}
                   />
@@ -219,14 +213,12 @@ export const NationalSocietyDashboardFilters = ({
                   <Chip
                     label={strings(stringKeys.filters.report.notCrossChecked)}
                     onDelete={() =>
-
-                        handleFiltersChange({
-                          reportStatus: {
-                            ...localFilters.reportStatus,
-                            notCrossChecked: false,
-                          },
-                        })
-
+                      handleFiltersChange({
+                        reportStatus: {
+                          ...localFilters.reportStatus,
+                          notCrossChecked: false,
+                        },
+                      })
                     }
                     onClick={() => setIsFilterExpanded(!isFilterExpanded)}
                   />
@@ -234,8 +226,9 @@ export const NationalSocietyDashboardFilters = ({
               )}
             <Grid
               item
-              className={`${styles.expandFilterButton} ${rtl ? styles.rtl : ""
-                }`}
+              className={`${styles.expandFilterButton} ${
+                rtl ? styles.rtl : ""
+              }`}
             >
               <IconButton
                 data-expanded={isFilterExpanded}
@@ -292,7 +285,7 @@ export const NationalSocietyDashboardFilters = ({
                   <FormControlLabel
                     className={styles.radio}
                     label={strings(
-                      stringKeys.dashboard.filters.timeGroupingDay
+                      stringKeys.dashboard.filters.timeGroupingDay,
                     )}
                     value={"Day"}
                     control={<Radio color="primary" />}
@@ -300,7 +293,7 @@ export const NationalSocietyDashboardFilters = ({
                   <FormControlLabel
                     className={styles.radio}
                     label={strings(
-                      stringKeys.dashboard.filters.timeGroupingWeek
+                      stringKeys.dashboard.filters.timeGroupingWeek,
                     )}
                     value={"Week"}
                     control={<Radio color="primary" />}
@@ -387,6 +380,6 @@ export const NationalSocietyDashboardFilters = ({
           </Grid>
         </CardContent>
       </ConditionalCollapse>
-    </Card >
+    </Card>
   );
 };

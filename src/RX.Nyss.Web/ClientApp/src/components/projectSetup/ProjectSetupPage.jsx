@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { withLayout } from '../../utils/layout';
 import Layout from '../layout/Layout';
@@ -13,8 +13,13 @@ import { ProjectSetupName } from './ProjectSetupName'
 import { strings, stringKeys } from '../../strings';
 import { ProjectSetupRecipients } from './ProjectSetupRecipients';
 
-const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, ...props}) => {
 
+const ProjectSetupPageComponent = ({
+  nationalSocietyId,
+  isFetching,
+  openProjectSetup,
+  ...props
+}) => {
   useMount(() => {
     openProjectSetup(nationalSocietyId);
   });
@@ -29,13 +34,25 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
   const projectSetupSteps = [
     {
       name: strings(stringKeys.projectSetup.projectName.name),
-      content: <ProjectSetupName error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
-      stepNumber: 0
+      content: (
+        <ProjectSetupName
+          error={error}
+          setError={setError}
+          setIsNextStepInvalid={setIsNextStepInvalid}
+        />
+      ),
+      stepNumber: 0,
     },
     {
       name: strings(stringKeys.projectSetup.projectOrganization.name),
-      content: <ProjectSetupOrganization error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
-      stepNumber: 1
+      content: (
+        <ProjectSetupOrganization
+          error={error}
+          setError={setError}
+          setIsNextStepInvalid={setIsNextStepInvalid}
+        />
+      ),
+      stepNumber: 1,
     },
     {
       name: strings(stringKeys.projectSetup.projectRecipients.name),
@@ -43,33 +60,37 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
       stepNumber: 2
     },
     {
-      name: 'Health risks',
+      name: "Health risks",
       content: <Typography>Health risk content</Typography>,
-      stepNumber: 3
+      stepNumber: 3,
     },
     {
       name: strings(stringKeys.projectSetup.geographicalStructure.name),
       content: <ProjectSetupGeographicalStructure />,
       stepNumber: 4,
-      isOptional: true
+      isOptional: true,
     },
     {
-      name: 'Summary',
+      name: "Summary",
       content: <Typography>Summary content</Typography>,
-      stepNumber: 5
+      stepNumber: 5,
     },
-
-  ]
+  ];
 
   return (
     <div>
-      <SetupStepper steps={projectSetupSteps} error={error} setError={setError} isNextStepInvalid={isNextStepInvalid} setIsNextStepInvalid={setIsNextStepInvalid}/>
+      <SetupStepper
+        steps={projectSetupSteps}
+        error={error}
+        setError={setError}
+        isNextStepInvalid={isNextStepInvalid}
+        setIsNextStepInvalid={setIsNextStepInvalid}
+      />
     </div>
   );
-}
-
-ProjectSetupPageComponent.propTypes = {
 };
+
+ProjectSetupPageComponent.propTypes = {};
 
 const mapStateToProps = (state, ownProps) => ({
   nationalSocietyId: ownProps.match.params.nationalSocietyId,
@@ -82,5 +103,5 @@ const mapDispatchToProps = {
 
 export const ProjectSetupPage = withLayout(
   Layout,
-  connect(mapStateToProps, mapDispatchToProps)(ProjectSetupPageComponent)
+  connect(mapStateToProps, mapDispatchToProps)(ProjectSetupPageComponent),
 );

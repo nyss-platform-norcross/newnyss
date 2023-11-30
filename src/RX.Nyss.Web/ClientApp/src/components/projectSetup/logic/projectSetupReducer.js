@@ -14,12 +14,12 @@ export const projectSetupInitialState = {
   districts: [],
   villages: [],
   zones: [],
-}
+};
 
 export function projectSetupReducer(state = projectSetupInitialState, action) {
   switch (action.type) {
     case LOCATION_CHANGE: // cleanup
-      return { ...state, formData: null, formError: null }
+      return { ...state, formData: null, formError: null };
 
     case actions.OPEN_PROJECT_SETUP.INVOKE:
       return { ...state, formFetching: true, formData: null, regions: [] };
@@ -43,30 +43,30 @@ export function projectSetupReducer(state = projectSetupInitialState, action) {
       return { ...state, formSaving: false, formError: action.error };
 
     case actions.SET_PROJECT_NAME:
-      return { ...state,  projectName: action.projectName}
+      return { ...state, projectName: action.projectName };
 
     case actions.SET_ORGANIZATION_ID:
-      return { ...state,  organizationId: action.organizationId}
+      return { ...state, organizationId: action.organizationId };
 
     case actions.SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_IDS:
       return { ...state,  alertNotHandledNotificationRecipientIds: action.alertNotHandledNotificationRecipientIds}
 
     case actions.SET_HEALTH_RISKS:
-      return { ...state,  healthRisks: action.healthRisks}
+      return { ...state, healthRisks: action.healthRisks };
 
     case actions.SET_REGIONS:
-      return { ...state, regions: action.regions }
+      return { ...state, regions: action.regions };
 
     case actions.SET_DISTRICTS:
-      return { ...state, districts: action.districts }
+      return { ...state, districts: action.districts };
 
     case actions.SET_VILLAGES:
-      return { ...state, villages: action.villages }
+      return { ...state, villages: action.villages };
 
     case actions.SET_ZONES:
-      return { ...state, zones: action.zones }
+      return { ...state, zones: action.zones };
 
     default:
       return state;
   }
-};
+}

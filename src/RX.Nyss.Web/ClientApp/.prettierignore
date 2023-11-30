@@ -2,13 +2,14 @@
 build
 coverage
 
-# Ignore all files
-*
 
 # Ignore markdown and yaml files
 **/*.md
 **/*.yml
 **/*.yaml
+
+# Ignore json files
+**/*.json
 
 
 # Ignore config folders

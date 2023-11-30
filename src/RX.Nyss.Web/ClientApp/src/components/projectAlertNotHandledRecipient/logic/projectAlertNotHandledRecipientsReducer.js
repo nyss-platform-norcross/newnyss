@@ -2,13 +2,19 @@ import * as actions from "./projectAlertNotHandledRecipientsConstants";
 import { initialState } from "../../../initialState";
 import { LOCATION_CHANGE } from "connected-react-router";
 
-export function projectAlertNotHandledRecipientsReducer(state = initialState.projectAlertNotHandledRecipients, action) {
+export function projectAlertNotHandledRecipientsReducer(
+  state = initialState.projectAlertNotHandledRecipients,
+  action,
+) {
   switch (action.type) {
     case LOCATION_CHANGE: // cleanup
-      return { ...state, formData: null, formError: null }
+      return { ...state, formData: null, formError: null };
 
     case actions.OPEN_ALERT_NOT_HANDLED_RECIPIENTS.INVOKE:
-      return { ...state, listStale: state.listStale || action.projectId !== state.projectId };
+      return {
+        ...state,
+        listStale: state.listStale || action.projectId !== state.projectId,
+      };
 
     case actions.OPEN_ALERT_NOT_HANDLED_RECIPIENTS.SUCCESS:
       return { ...state, projectId: action.projectId };
@@ -17,7 +23,12 @@ export function projectAlertNotHandledRecipientsReducer(state = initialState.pro
       return { ...state, listFetching: true, listData: [] };
 
     case actions.GET_ALERT_NOT_HANDLED_RECIPIENTS.SUCCESS:
-      return { ...state, listFetching: false, listData: action.recipients, listStale: false };
+      return {
+        ...state,
+        listFetching: false,
+        listData: action.recipients,
+        listStale: false,
+      };
 
     case actions.GET_ALERT_NOT_HANDLED_RECIPIENTS.FAILURE:
       return { ...state, listFetching: false, listData: [] };
@@ -52,4 +63,4 @@ export function projectAlertNotHandledRecipientsReducer(state = initialState.pro
     default:
       return state;
   }
-};
+}

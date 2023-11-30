@@ -1,15 +1,15 @@
-import React, { Fragment } from 'react';
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
-import * as suspectedDiseaseActions from './logic/suspectedDiseaseActions';
-import * as appActions from '../app/logic/appActions';
-import { withLayout } from '../../utils/layout';
-import Layout from '../layout/Layout';
-import TableActions from '../common/tableActions/TableActions';
-import SuspectedDiseaseTable from './SuspectedDiseaseTable';
-import { useMount } from '../../utils/lifecycle';
-import { strings, stringKeys } from '../../strings';
-import { TableActionsButton } from '../common/buttons/tableActionsButton/TableActionsButton';
+import * as suspectedDiseaseActions from "./logic/suspectedDiseaseActions";
+import * as appActions from "../app/logic/appActions";
+import { withLayout } from "../../utils/layout";
+import Layout from "../layout/Layout";
+import TableActions from "../common/tableActions/TableActions";
+import SuspectedDiseaseTable from "./SuspectedDiseaseTable";
+import { useMount } from "../../utils/lifecycle";
+import { strings, stringKeys } from "../../strings";
+import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 
 const SuspectedDiseaseListPageComponent = (props) => {
   useMount(() => {
@@ -17,7 +17,9 @@ const SuspectedDiseaseListPageComponent = (props) => {
     props.getList();
   });
 
-  const userLanguageCode = useSelector(state => state.appData.user.languageCode);
+  const userLanguageCode = useSelector(
+    (state) => state.appData.user.languageCode,
+  );
 
   return (
     <Fragment>
@@ -26,7 +28,7 @@ const SuspectedDiseaseListPageComponent = (props) => {
           onClick={props.goToCreation}
           add
           variant={"contained"}
-          rtl={userLanguageCode === 'ar'}
+          rtl={userLanguageCode === "ar"}
         >
           {strings(stringKeys.common.buttons.add)}
         </TableActionsButton>
@@ -39,11 +41,11 @@ const SuspectedDiseaseListPageComponent = (props) => {
         isListFetching={props.isListFetching}
         isRemoving={props.isRemoving}
         remove={props.remove}
-        rtl={userLanguageCode === 'ar'}
+        rtl={userLanguageCode === "ar"}
       />
     </Fragment>
   );
-}
+};
 
 SuspectedDiseaseListPageComponent.propTypes = {
   getSuspectedDisease: PropTypes.func,
@@ -51,13 +53,13 @@ SuspectedDiseaseListPageComponent.propTypes = {
   goToEdition: PropTypes.func,
   remove: PropTypes.func,
   isFetching: PropTypes.bool,
-  list: PropTypes.array
+  list: PropTypes.array,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   list: state.suspectedDiseases.listData,
   isListFetching: state.suspectedDiseases.listFetching,
-  isRemoving: state.suspectedDiseases.listRemoving
+  isRemoving: state.suspectedDiseases.listRemoving,
 });
 
 const mapDispatchToProps = {
@@ -65,10 +67,13 @@ const mapDispatchToProps = {
   goToCreation: suspectedDiseaseActions.goToCreation,
   goToEdition: suspectedDiseaseActions.goToEdition,
   remove: suspectedDiseaseActions.remove.invoke,
-  openModule: appActions.openModule.invoke
+  openModule: appActions.openModule.invoke,
 };
 
 export const SuspectedDiseaseListPage = withLayout(
   Layout,
-  connect(mapStateToProps, mapDispatchToProps)(SuspectedDiseaseListPageComponent)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(SuspectedDiseaseListPageComponent),
 );

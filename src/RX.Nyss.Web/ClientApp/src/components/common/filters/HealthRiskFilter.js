@@ -10,7 +10,7 @@ export const HealthRiskFilter = ({
   filteredHealthRisks,
   onChange,
   updateValue,
-  rtl
+  rtl,
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   // Checks off all boxes on mount
@@ -22,7 +22,9 @@ export const HealthRiskFilter = ({
   const handleHealthRiskChange = (event) => {
     const healthRiskId = parseInt(event.target.value);
     updateValue({
-      healthRisks: filteredHealthRisks.includes(healthRiskId) ? filteredHealthRisks.filter(hrId => hrId !== healthRiskId) : [...filteredHealthRisks, healthRiskId]
+      healthRisks: filteredHealthRisks.includes(healthRiskId)
+        ? filteredHealthRisks.filter((hrId) => hrId !== healthRiskId)
+        : [...filteredHealthRisks, healthRiskId],
     });
   };
 
@@ -41,9 +43,9 @@ export const HealthRiskFilter = ({
     selectedIds.length < 1 || selectedIds.length === allHealthRisks.length
       ? strings(stringKeys.dashboard.filters.healthRiskAll)
       : selectedIds.map(
-        (id) => allHealthRisks?.find((hr) => hr.id === id)?.name
-      )[0] +
-      `${selectedIds.length > 1 ? ` (+${selectedIds.length - 1})` : ""}`;
+          (id) => allHealthRisks?.find((hr) => hr.id === id)?.name,
+        )[0] +
+        `${selectedIds.length > 1 ? ` (+${selectedIds.length - 1})` : ""}`;
 
   // Uses the onChange function to fetch from backend
   const showResults = () => {
@@ -52,7 +54,14 @@ export const HealthRiskFilter = ({
   };
 
   return (
-    <DropdownPopover label={strings(stringKeys.dashboard.filters.healthRisk)} filterLabel={renderHealthRiskValues(filteredHealthRisks)} showResults={showResults} rtl={rtl} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}>
+    <DropdownPopover
+      label={strings(stringKeys.dashboard.filters.healthRisk)}
+      filterLabel={renderHealthRiskValues(filteredHealthRisks)}
+      showResults={showResults}
+      rtl={rtl}
+      dialogOpen={dialogOpen}
+      setDialogOpen={setDialogOpen}
+    >
       <SelectAll
         isSelectAllEnabled={
           filteredHealthRisks.length === allHealthRisks.length
@@ -65,7 +74,7 @@ export const HealthRiskFilter = ({
           key={`filter_healthRisk_${hr.id}`}
           value={hr.id}
           className={styles.healtRiskMenuItem}
-          >
+        >
           <Checkbox
             value={hr.id}
             color="primary"

@@ -1,7 +1,7 @@
 import styles from "./AlertsAssessmentReport.module.scss";
 
-import { Fragment } from 'react';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { Fragment } from "react";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { stringKeys, strings } from "../../../strings";
 import dayjs from "dayjs";
 import SubmitButton from "../../common/buttons/submitButton/SubmitButton";
@@ -29,38 +29,97 @@ const ReportFormLabel = ({ label, value }) => (
 
 const getReportIcon = (status, rtl) => {
   switch (status) {
-    case "Pending": return <Icon className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>hourglass_empty</Icon>;
-    case "Accepted": return <Icon className={`${styles.indicator} ${styles.accepted} ${rtl ? styles.rtl : ""}`}>check</Icon>;
-    case "Rejected": return <Icon className={`${styles.indicator} ${styles.rejected} ${rtl ? styles.rtl : ""}`}>clear</Icon>;
-    case "Closed": return <Icon className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>block</Icon>;
-    default: return <Icon className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>warning</Icon>;
+    case "Pending":
+      return (
+        <Icon className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
+          hourglass_empty
+        </Icon>
+      );
+    case "Accepted":
+      return (
+        <Icon
+          className={`${styles.indicator} ${styles.accepted} ${
+            rtl ? styles.rtl : ""
+          }`}
+        >
+          check
+        </Icon>
+      );
+    case "Rejected":
+      return (
+        <Icon
+          className={`${styles.indicator} ${styles.rejected} ${
+            rtl ? styles.rtl : ""
+          }`}
+        >
+          clear
+        </Icon>
+      );
+    case "Closed":
+      return (
+        <Icon className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
+          block
+        </Icon>
+      );
+    default:
+      return (
+        <Icon className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
+          warning
+        </Icon>
+      );
   }
-}
+};
 
-export const AlertsAssessmentReport = ({ alertId, escalatedAt, report, acceptReport, dismissReport, resetReport, status, projectIsClosed, rtl }) => {
-  const currentUserRoles = useSelector(state => state.appData.user.roles);
-  const showActions = status !== assessmentStatus.closed && status !== assessmentStatus.dismissed && report.status === "Pending" && !report.isAnonymized;
-  const showResetOption = status !== assessmentStatus.closed
-    && status !== assessmentStatus.dismissed
-    && (report.status === "Accepted" || report.status === "Rejected")
-    && (escalatedAt ? dayjs(report.acceptedAt || report.rejectedAt).isAfter(dayjs(escalatedAt)) : true)
-    && !report.isAnonymized;
+export const AlertsAssessmentReport = ({
+  alertId,
+  escalatedAt,
+  report,
+  acceptReport,
+  dismissReport,
+  resetReport,
+  status,
+  projectIsClosed,
+  rtl,
+}) => {
+  const currentUserRoles = useSelector((state) => state.appData.user.roles);
+  const showActions =
+    status !== assessmentStatus.closed &&
+    status !== assessmentStatus.dismissed &&
+    report.status === "Pending" &&
+    !report.isAnonymized;
+  const showResetOption =
+    status !== assessmentStatus.closed &&
+    status !== assessmentStatus.dismissed &&
+    (report.status === "Accepted" || report.status === "Rejected") &&
+    (escalatedAt
+      ? dayjs(report.acceptedAt || report.rejectedAt).isAfter(
+          dayjs(escalatedAt),
+        )
+      : true) &&
+    !report.isAnonymized;
 
   const fromOtherOrg = report.dataCollector == null;
 
-  const showSupervisorDetails = currentUserRoles.some(r => r === Manager || r === TechnicalAdvisor);
+  const showSupervisorDetails = currentUserRoles.some(
+    (r) => r === Manager || r === TechnicalAdvisor,
+  );
 
   return (
     <Accordion disabled={fromOtherOrg}>
       <AccordionSummary expandIcon={!fromOtherOrg && <ExpandMoreIcon />}>
         {getReportIcon(report.status, rtl)}
-        <span className={styles.time}>{dayjs(report.receivedAt).format('YYYY-MM-DD HH:mm')}</span>
+        <span className={styles.time}>
+          {dayjs(report.receivedAt).format("YYYY-MM-DD HH:mm")}
+        </span>
         <div className={styles.senderContainer}>
           <span className={styles.senderLabel}>
-
-            {strings(stringKeys.alerts.assess.report.sender)} {report.isAnonymized && strings(stringKeys.alerts.assess.report.linkedToSupervisor)}
+            {strings(stringKeys.alerts.assess.report.sender)}{" "}
+            {report.isAnonymized &&
+              strings(stringKeys.alerts.assess.report.linkedToSupervisor)}
           </span>
-          <span className={styles.sender}>{report.dataCollector || report.organization}</span>
+          <span className={styles.sender}>
+            {report.dataCollector || report.organization}
+          </span>
         </div>
       </AccordionSummary>
       <AccordionDetails className={styles.form}>
@@ -115,24 +174,45 @@ export const AlertsAssessmentReport = ({ alertId, escalatedAt, report, acceptRep
           <AccordionActions>
             {showActions && (
               <Fragment>
-                <SubmitButton onClick={() => dismissReport(alertId, report.id)} isFetching={report.isDismissing} regular>
+                <SubmitButton
+                  onClick={() => dismissReport(alertId, report.id)}
+                  isFetching={report.isDismissing}
+                  regular
+                >
                   {strings(stringKeys.alerts.assess.report.dismiss)}
                 </SubmitButton>
 
-                <SubmitButton onClick={() => acceptReport(alertId, report.id)} isFetching={report.isAccepting}>
+                <SubmitButton
+                  onClick={() => acceptReport(alertId, report.id)}
+                  isFetching={report.isAccepting}
+                >
                   {strings(stringKeys.alerts.assess.report.accept)}
                 </SubmitButton>
               </Fragment>
             )}
 
             {!showActions && (
-              <div className={styles.reportStatus}>{strings(stringKeys.alerts.constants.reportStatus[report.status])}</div>
+              <div className={styles.reportStatus}>
+                {strings(
+                  stringKeys.alerts.constants.reportStatus[report.status],
+                )}
+              </div>
             )}
 
             {showResetOption && (
               <Fragment>
-                <Button variant="text" color="primary" onClick={() => resetReport(alertId, report.id)} disabled={report.isResetting}>
-                  {report.isResetting && <CircularProgress size={16} className={styles.progressIcon} />}
+                <Button
+                  variant="text"
+                  color="primary"
+                  onClick={() => resetReport(alertId, report.id)}
+                  disabled={report.isResetting}
+                >
+                  {report.isResetting && (
+                    <CircularProgress
+                      size={16}
+                      className={styles.progressIcon}
+                    />
+                  )}
                   {strings(stringKeys.alerts.assess.report.reset)}
                 </Button>
               </Fragment>
@@ -142,4 +222,4 @@ export const AlertsAssessmentReport = ({ alertId, escalatedAt, report, acceptRep
       )}
     </Accordion>
   );
-}
+};

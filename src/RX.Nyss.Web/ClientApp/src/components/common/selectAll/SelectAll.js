@@ -26,7 +26,12 @@ export const SelectAll = ({
         }
         label={strings(stringKeys.filters.area.selectAll)}
       />
-      <Button size="small" variant="outlined" color="primary" onClick={showResults}>
+      <Button
+        size="small"
+        variant="outlined"
+        color="primary"
+        onClick={showResults}
+      >
         {strings(stringKeys.filters.area.showResults)}
       </Button>
       <hr className={styles.divider} />
