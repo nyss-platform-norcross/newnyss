@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { withLayout } from '../../utils/layout';
-import Layout from '../layout/Layout';
-import { Loading } from '../common/loading/Loading';
-import * as projectSetupActions from './logic/projectSetupActions';
-import { useMount } from '../../utils/lifecycle';
-import { SetupStepper } from '../common/stepper/SetupStepper'
-import Typography from '@material-ui/core/Typography';
-import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStructure"
-import { ProjectSetupOrganization } from './ProjectSetupOrganization';
-import { ProjectSetupName } from './ProjectSetupName'
-import { strings, stringKeys } from '../../strings';
+import { withLayout } from "../../utils/layout";
+import Layout from "../layout/Layout";
+import { Loading } from "../common/loading/Loading";
+import * as projectSetupActions from "./logic/projectSetupActions";
+import { useMount } from "../../utils/lifecycle";
+import { SetupStepper } from "../common/stepper/SetupStepper";
+import Typography from "@material-ui/core/Typography";
+import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStructure";
+import { ProjectSetupOrganization } from "./ProjectSetupOrganization";
+import { ProjectSetupName } from "./ProjectSetupName";
+import { strings, stringKeys } from "../../strings";
 
-const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, ...props}) => {
-
+const ProjectSetupPageComponent = ({
+  nationalSocietyId,
+  isFetching,
+  openProjectSetup,
+  setProjectName,
+  setOrganizationId,
+  setAlertNotHandledNotificationRecipient,
+  setHealthRisks,
+  ...props
+}) => {
   useMount(() => {
     openProjectSetup(nationalSocietyId);
   });
@@ -28,47 +36,63 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
   const projectSetupSteps = [
     {
       name: strings(stringKeys.projectSetup.projectName.name),
-      content: <ProjectSetupName error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
-      stepNumber: 0
+      content: (
+        <ProjectSetupName
+          error={error}
+          setError={setError}
+          setIsNextStepInvalid={setIsNextStepInvalid}
+        />
+      ),
+      stepNumber: 0,
     },
     {
       name: strings(stringKeys.projectSetup.projectOrganization.name),
-      content: <ProjectSetupOrganization error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
-      stepNumber: 1
+      content: (
+        <ProjectSetupOrganization
+          error={error}
+          setError={setError}
+          setIsNextStepInvalid={setIsNextStepInvalid}
+        />
+      ),
+      stepNumber: 1,
     },
     {
-      name: 'Recipients',
+      name: "Recipients",
       content: <Typography>Recipient content</Typography>,
-      stepNumber: 2
+      stepNumber: 2,
     },
     {
-      name: 'Health risks',
+      name: "Health risks",
       content: <Typography>Health risk content</Typography>,
-      stepNumber: 3
+      stepNumber: 3,
     },
     {
       name: strings(stringKeys.projectSetup.geographicalStructure.name),
       content: <ProjectSetupGeographicalStructure />,
       stepNumber: 4,
-      isOptional: true
+      isOptional: true,
     },
     {
-      name: 'Summary',
+      name: "Summary",
       content: <Typography>Summary content</Typography>,
-      stepNumber: 5
+      stepNumber: 5,
     },
-
-  ]
+  ];
 
   return (
     <div>
-      <SetupStepper steps={projectSetupSteps} error={error} setError={setError} isNextStepInvalid={isNextStepInvalid} setIsNextStepInvalid={setIsNextStepInvalid}/>
+      <SetupStepper
+        steps={projectSetupSteps}
+        error={error}
+        setError={setError}
+        isNextStepInvalid={isNextStepInvalid}
+        setIsNextStepInvalid={setIsNextStepInvalid}
+      />
     </div>
   );
-}
-
-ProjectSetupPageComponent.propTypes = {
 };
+
+ProjectSetupPageComponent.propTypes = {};
 
 const mapStateToProps = (state, ownProps) => ({
   nationalSocietyId: ownProps.match.params.nationalSocietyId,
@@ -78,11 +102,12 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   openProjectSetup: projectSetupActions.openSetup.invoke,
   setOrganizationId: projectSetupActions.setOrganizationId,
-  setAlertNotHandledNotificationRecipientId: projectSetupActions.setAlertNotHandledNotificationRecipientId,
+  setAlertNotHandledNotificationRecipientId:
+    projectSetupActions.setAlertNotHandledNotificationRecipientId,
   setHealthRisks: projectSetupActions.setHealthRisks,
 };
 
 export const ProjectSetupPage = withLayout(
   Layout,
-  connect(mapStateToProps, mapDispatchToProps)(ProjectSetupPageComponent)
+  connect(mapStateToProps, mapDispatchToProps)(ProjectSetupPageComponent),
 );

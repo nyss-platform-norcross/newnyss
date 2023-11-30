@@ -33,7 +33,9 @@ const ProjectDashboardPageComponent = ({
     openDashboard(props.match.params.projectId);
   });
 
-  const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
+  const useRtlDirection = useSelector(
+    (state) => state.appData.direction === "rtl",
+  );
 
   const dashboardElement = useRef(null);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
@@ -87,7 +89,9 @@ const ProjectDashboardPageComponent = ({
               data={props.reportsGroupedByLocation}
               detailsFetching={props.reportsGroupedByLocationDetailsFetching}
               details={props.reportsGroupedByLocationDetails}
-              getReportHealthRisks={(lat, long) => props.getReportHealthRisks(projectId, lat, long)}
+              getReportHealthRisks={(lat, long) =>
+                props.getReportHealthRisks(projectId, lat, long)
+              }
             />
           </Grid>
           <Grid item xs={12}>
@@ -106,9 +110,7 @@ const ProjectDashboardPageComponent = ({
             />
           </Grid>
           <Grid item sm={6} xs={12}>
-            <DashboardReportSexAgeTable
-              data={props.reportsGroupedByFeatures}
-            />
+            <DashboardReportSexAgeTable data={props.reportsGroupedByFeatures} />
           </Grid>
 
           {props.filters.reportsType === "dataCollectionPoint" && (
@@ -170,5 +172,5 @@ const mapDispatchToProps = {
 
 export const ProjectDashboardPage = withLayout(
   Layout,
-  connect(mapStateToProps, mapDispatchToProps)(ProjectDashboardPageComponent)
+  connect(mapStateToProps, mapDispatchToProps)(ProjectDashboardPageComponent),
 );

@@ -1,19 +1,19 @@
 import styles from "./ReportsListPage.module.scss";
 
-import React, { useState, Fragment, useCallback } from 'react';
+import React, { useState, Fragment, useCallback } from "react";
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
-import * as reportsActions from './logic/reportsActions';
-import TableActions from '../common/tableActions/TableActions';
-import { withLayout } from '../../utils/layout';
-import Layout from '../layout/Layout';
-import IncorrectReportsTable from './IncorrectReportsTable';
-import { useMount } from '../../utils/lifecycle';
-import { ReportFilters } from '../common/filters/ReportFilters';
+import * as reportsActions from "./logic/reportsActions";
+import TableActions from "../common/tableActions/TableActions";
+import { withLayout } from "../../utils/layout";
+import Layout from "../layout/Layout";
+import IncorrectReportsTable from "./IncorrectReportsTable";
+import { useMount } from "../../utils/lifecycle";
+import { ReportFilters } from "../common/filters/ReportFilters";
 import { strings, stringKeys } from "../../strings";
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { Hidden, Icon } from "@material-ui/core";
-import * as roles from '../../authentication/roles';
+import * as roles from "../../authentication/roles";
 import { SendReportDialog } from "./SendReportDialog";
 import * as appActions from "../app/logic/appActions";
 import TableHeader from "../common/tableHeader/TableHeader";
@@ -22,21 +22,33 @@ const Page = "incorrect";
 
 const IncorrectReportsListPageComponent = (props) => {
   const [open, setOpen] = useState(false);
-  const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
+  const useRtlDirection = useSelector(
+    (state) => state.appData.direction === "rtl",
+  );
 
-  const canSendReport = props.user && [roles.Administrator, roles.Manager, roles.TechnicalAdvisor, roles.Supervisor, roles.HeadSupervisor]
-    .some(neededRole => props.user.roles.some(userRole => userRole === neededRole));
+  const canSendReport =
+    props.user &&
+    [
+      roles.Administrator,
+      roles.Manager,
+      roles.TechnicalAdvisor,
+      roles.Supervisor,
+      roles.HeadSupervisor,
+    ].some((neededRole) =>
+      props.user.roles.some((userRole) => userRole === neededRole),
+    );
 
   useMount(() => {
     props.openReportsList(props.projectId);
   });
 
-  const handleRefresh = () =>
-    props.getList(props.projectId, 1);
+  const handleRefresh = () => props.getList(props.projectId, 1);
 
   //useCallback important to avoid infinite loop from useEffect in ReportFilters
-  const handleFiltersChange = useCallback((filters) =>
-    props.getList(props.projectId, 1, filters, props.sorting), [props.getList, props.projectId, props.sorting]);
+  const handleFiltersChange = useCallback(
+    (filters) => props.getList(props.projectId, 1, filters, props.sorting),
+    [props.getList, props.projectId, props.sorting],
+  );
 
   const handlePageChange = (page) =>
     props.getList(props.projectId, page, props.filters, props.sorting);
@@ -48,7 +60,7 @@ const IncorrectReportsListPageComponent = (props) => {
     e.stopPropagation();
     props.openSendReport(props.projectId);
     setOpen(true);
-  }
+  };
 
   function exportToCsv() {
     props.trackReportExport(Page, "Csv", props.projectId);
@@ -80,41 +92,38 @@ const IncorrectReportsListPageComponent = (props) => {
             <TableActionsButton
               onClick={handleRefresh}
               isFetching={props.isListFetching}
-              variant={"text"}>
+              variant={"text"}
+            >
               <Icon>refresh</Icon>
             </TableActionsButton>
           </Hidden>
 
-          <TableActionsButton
-            onClick={exportToCsv}
-            variant={"outlined"}
-          >
+          <TableActionsButton onClick={exportToCsv} variant={"outlined"}>
             {strings(stringKeys.reports.list.exportToCsv)}
           </TableActionsButton>
 
-          <TableActionsButton
-            onClick={exportToExcel}
-            variant={"outlined"}
-          >
+          <TableActionsButton onClick={exportToExcel} variant={"outlined"}>
             {strings(stringKeys.reports.list.exportToExcel)}
           </TableActionsButton>
 
-          {canSendReport &&
+          {canSendReport && (
             <TableActionsButton
               onClick={handleSendReport}
               variant={"contained"}
             >
               {strings(stringKeys.reports.list.sendReport)}
             </TableActionsButton>
-          }
+          )}
         </TableActions>
       </TableHeader>
 
       {open && (
-        <SendReportDialog close={() => setOpen(false)}
+        <SendReportDialog
+          close={() => setOpen(false)}
           projectId={props.projectId}
           openSendReport={props.openSendReport}
-          showMessage={props.showMessage} />
+          showMessage={props.showMessage}
+        />
       )}
 
       <div className={styles.filtersGrid}>
@@ -144,12 +153,12 @@ const IncorrectReportsListPageComponent = (props) => {
       />
     </Fragment>
   );
-}
+};
 
 IncorrectReportsListPageComponent.propTypes = {
   getReports: PropTypes.func,
   isFetching: PropTypes.bool,
-  list: PropTypes.array
+  list: PropTypes.array,
 };
 
 const mapStateToProps = (state, ownProps) => ({
@@ -160,7 +169,7 @@ const mapStateToProps = (state, ownProps) => ({
   filters: state.reports.incorrectReportsFilters,
   sorting: state.reports.incorrectReportsSorting,
   user: state.appData.user,
-  locations: state.reports.filtersData.locations
+  locations: state.reports.filtersData.locations,
 });
 
 const mapDispatchToProps = {
@@ -177,5 +186,8 @@ const mapDispatchToProps = {
 
 export const IncorrectReportsListPage = withLayout(
   Layout,
-  connect(mapStateToProps, mapDispatchToProps)(IncorrectReportsListPageComponent)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(IncorrectReportsListPageComponent),
 );

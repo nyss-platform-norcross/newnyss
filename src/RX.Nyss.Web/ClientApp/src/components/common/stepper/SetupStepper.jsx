@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import StepConnector from '@material-ui/core/StepConnector';
-import CheckIcon from '@material-ui/icons/Check';
-import { strings, stringKeys } from '../../../strings';
+import React, { useState } from "react";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { Grid } from "@material-ui/core";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import StepConnector from "@material-ui/core/StepConnector";
+import CheckIcon from "@material-ui/icons/Check";
+import { strings, stringKeys } from "../../../strings";
 
 const useStyles = makeStyles((theme) => ({
   stepper: {
-    backgroundColor: 'inherit',
+    backgroundColor: "inherit",
   },
   step: {
-    cursor: "pointer"
+    cursor: "pointer",
   },
   backButton: {
     marginRight: theme.spacing(1),
@@ -24,17 +24,17 @@ const useStyles = makeStyles((theme) => ({
 
 const useColorlibStepIconStyles = makeStyles({
   root: {
-    border: '1px solid #E3E3E3',
+    border: "1px solid #E3E3E3",
     zIndex: 1,
     width: 40,
     height: 40,
-    display: 'flex',
-    borderRadius: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    borderRadius: "50%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   active: {
-    border: '1px solid #D52B1E',
+    border: "1px solid #D52B1E",
     color: "#D52B1E",
   },
   activeText: {
@@ -47,23 +47,22 @@ const useColorlibStepIconStyles = makeStyles({
   },
   completed: {
     backgroundColor: "#D52B1E",
-    border: '1px solid #D52B1E',
-    color: '#D52B1E',
+    border: "1px solid #D52B1E",
+    color: "#D52B1E",
   },
 });
-
 
 const Connector = withStyles({
   alternativeLabel: {
     top: 22,
   },
   active: {
-    '& $line': {
+    "& $line": {
       backgroundColor: "#D52B1E",
     },
   },
   completed: {
-    '& $line': {
+    "& $line": {
       backgroundColor: "#D52B1E",
     },
   },
@@ -71,26 +70,37 @@ const Connector = withStyles({
     margin: "0 10px 0 10px",
     height: 3,
     border: 0,
-    backgroundColor: '#eaeaf0',
+    backgroundColor: "#eaeaf0",
     borderRadius: 1,
   },
 })(StepConnector);
 
 const getStepContent = (steps, stepIndex) => {
-  return steps.find(step => step.stepNumber === stepIndex).content
-}
+  return steps.find((step) => step.stepNumber === stepIndex).content;
+};
 const getStep = (steps, stepIndex) => {
-  return steps.find(step => step.stepNumber === stepIndex)
-}
+  return steps.find((step) => step.stepNumber === stepIndex);
+};
 
-export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsNextStepInvalid }) => {
+export const SetupStepper = ({
+  steps,
+  error,
+  setError,
+  isNextStepInvalid,
+  setIsNextStepInvalid,
+}) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
-  const sortedSteps = steps.sort((stepA, stepB) => stepA.stepNumber - stepB.stepNumber);
+  const sortedSteps = steps.sort(
+    (stepA, stepB) => stepA.stepNumber - stepB.stepNumber,
+  );
 
   const handleNext = () => {
-    if(getStep(steps, activeStep).isOptional || (!error && !isNextStepInvalid)) {
-      setActiveStep(prevActiveStep => prevActiveStep + 1);
+    if (
+      getStep(steps, activeStep).isOptional ||
+      (!error && !isNextStepInvalid)
+    ) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setIsNextStepInvalid(true);
     } else {
       setError(true);
@@ -113,57 +123,105 @@ export const SetupStepper = ({ steps, error, setError, isNextStepInvalid, setIsN
 
     return (
       <div
-        className={`${classes.root} ${active && classes.active} ${(completed || activeStep === steps.length - 1 ) && classes.completed}`}
+        className={`${classes.root} ${active && classes.active} ${
+          (completed || activeStep === steps.length - 1) && classes.completed
+        }`}
       >
-        <Typography className={`${active && classes.activeText} ${!completed && !active && classes.notCompletedText}`}>{completed || activeStep === steps.length - 1  ? <CheckIcon fontSize='small' style={{ marginTop: 5, color: "#ECECEC" }}/> : icon}</Typography>
+        <Typography
+          className={`${active && classes.activeText} ${
+            !completed && !active && classes.notCompletedText
+          }`}
+        >
+          {completed || activeStep === steps.length - 1 ? (
+            <CheckIcon
+              fontSize="small"
+              style={{ marginTop: 5, color: "#ECECEC" }}
+            />
+          ) : (
+            icon
+          )}
+        </Typography>
       </div>
     );
-  }
+  };
 
   const onStepClick = (stepNumber) => {
-    if(stepNumber > activeStep) return;
-    setActiveStep(stepNumber)
-  }
+    if (stepNumber > activeStep) return;
+    setActiveStep(stepNumber);
+  };
 
   return (
     <>
-      <Stepper activeStep={activeStep} alternativeLabel className={classes.stepper} connector={<Connector />}>
+      <Stepper
+        activeStep={activeStep}
+        alternativeLabel
+        className={classes.stepper}
+        connector={<Connector />}
+      >
         {sortedSteps.map((step) => (
-          <Step className={classes.step} key={step.name} onClick={() => onStepClick(step.stepNumber)}>
+          <Step
+            className={classes.step}
+            key={step.name}
+            onClick={() => onStepClick(step.stepNumber)}
+          >
             <StepLabel StepIconComponent={StepIcon}>
-              <Typography style={{ color: step.stepNumber >= activeStep ? "#7C7C7C" : "#D52B1E"}}>{step.name}</Typography>
+              <Typography
+                style={{
+                  color: step.stepNumber >= activeStep ? "#7C7C7C" : "#D52B1E",
+                }}
+              >
+                {step.name}
+              </Typography>
             </StepLabel>
           </Step>
         ))}
       </Stepper>
-        <Grid container direction='column' alignItems='center'>
-          <Grid container direction='column' alignItems='center' style={{ margin: "50px 0 50px 0" }}>
-            {getStepContent(steps, activeStep)}
+      <Grid container direction="column" alignItems="center">
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          style={{ margin: "50px 0 50px 0" }}
+        >
+          {getStepContent(steps, activeStep)}
+        </Grid>
+        <Grid container direction="column" alignItems="center">
+          <Grid item>
+            {activeStep !== 0 && (
+              <Button
+                color="primary"
+                variant="outlined"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                className={classes.backButton}
+              >
+                {strings(stringKeys.common.buttons.previous)}
+              </Button>
+            )}
+            <Button
+              variant={
+                getStep(steps, activeStep).isOptional ||
+                (!error && !isNextStepInvalid)
+                  ? "contained"
+                  : "outlined"
+              }
+              color="primary"
+              onClick={
+                activeStep === steps.length - 1 ? handleReset : handleNext
+              }
+            >
+              {activeStep === steps.length - 1
+                ? strings(stringKeys.common.buttons.finish)
+                : strings(stringKeys.common.buttons.next)}
+            </Button>
           </Grid>
-          <Grid container direction='column' alignItems='center'>
-            <Grid item>
-              {activeStep !== 0 && (
-                <Button
-                  color="primary"
-                  variant='outlined'
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  className={classes.backButton}
-                >
-                  {strings(stringKeys.common.buttons.previous)}
-                </Button>
-              )}
-              <Button variant={(getStep(steps, activeStep).isOptional || (!error && !isNextStepInvalid)) ? "contained" : "outlined"} color="primary" onClick={activeStep === steps.length - 1 ? handleReset : handleNext}>
-                {activeStep === steps.length - 1 ? strings(stringKeys.common.buttons.finish) : strings(stringKeys.common.buttons.next)}
-              </Button>
-            </Grid>
-            <Grid item style={{ marginTop: 10 }}>
-              <Button color="primary" onClick={handleReset}>
-                {strings(stringKeys.form.cancel)}
-              </Button>
-            </Grid>
+          <Grid item style={{ marginTop: 10 }}>
+            <Button color="primary" onClick={handleReset}>
+              {strings(stringKeys.form.cancel)}
+            </Button>
           </Grid>
         </Grid>
+      </Grid>
     </>
   );
-}
+};
