@@ -35,38 +35,42 @@ public class SmsEagleReportReceiver
         [Blob("%AuthorizedApiKeysBlobPath%", FileAccess.Read)] string authorizedApiKeys)
     {
         var maxContentLength = _config.MaxContentLength;
-        var contentLength = httpRequest.Content.Headers.ContentLength;
-        if (contentLength == null || contentLength > maxContentLength)
+        if (httpRequest.Content != null)
         {
-            _logger.Log(LogLevel.Warning, $"Received an SMS Eagle request with length more than {maxContentLength} bytes. (length: {contentLength.ToString() ?? "N/A"})");
-            return new BadRequestResult();
+            if (httpRequest.Content.Headers.ContentLength == null || httpRequest.Content.Headers.ContentLength > maxContentLength)
+            {
+                _logger.Log(LogLevel.Warning, $"Received an SMS Eagle request with length more than {maxContentLength} bytes. (length: {httpRequest.Content.Headers.ContentLength.ToString() ?? "N/A"})");
+                return new BadRequestResult();
+            }
+
+            var httpRequestContent = await httpRequest.Content.ReadAsStringAsync();
+            _logger.Log(LogLevel.Debug, $"Received SMS Eagle report: {httpRequestContent}.{Environment.NewLine}HTTP request: {httpRequest}");
+
+            if (string.IsNullOrWhiteSpace(httpRequestContent))
+            {
+                _logger.Log(LogLevel.Warning, "Received an empty SMS Eagle report.");
+                return new BadRequestResult();
+            }
+
+            var decodedHttpRequestContent = HttpUtility.UrlDecode(httpRequestContent);
+
+            if (!VerifyApiKey(authorizedApiKeys, decodedHttpRequestContent))
+            {
+                return new UnauthorizedResult();
+            }
+
+            var report = new Report
+            {
+                Content = httpRequestContent,
+                ReportSource = ReportSource.SmsEagle
+            };
+
+            await _reportPublisherService.AddReportToQueue(report);
+            return new OkResult();
         }
+        _logger.Log(LogLevel.Warning, $"Received an SMS Gateway request with NULL content");
+        return new BadRequestResult();
 
-        var httpRequestContent = await httpRequest.Content.ReadAsStringAsync();
-        _logger.Log(LogLevel.Debug, $"Received SMS Eagle report: {httpRequestContent}.{Environment.NewLine}HTTP request: {httpRequest}");
-
-        if (string.IsNullOrWhiteSpace(httpRequestContent))
-        {
-            _logger.Log(LogLevel.Warning, "Received an empty SMS Eagle report.");
-            return new BadRequestResult();
-        }
-
-        var decodedHttpRequestContent = HttpUtility.UrlDecode(httpRequestContent);
-
-        if (!VerifyApiKey(authorizedApiKeys, decodedHttpRequestContent))
-        {
-            return new UnauthorizedResult();
-        }
-
-        var report = new Report
-        {
-            Content = httpRequestContent,
-            ReportSource = ReportSource.SmsEagle
-        };
-
-        await _reportPublisherService.AddReportToQueue(report);
-
-        return new OkResult();
     }
 
     private bool VerifyApiKey(string authorizedApiKeys, string decodedHttpRequestContent)

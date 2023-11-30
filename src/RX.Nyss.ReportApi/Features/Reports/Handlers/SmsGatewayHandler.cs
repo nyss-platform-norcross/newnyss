@@ -122,7 +122,11 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                     var reportData = reportValidationResult.ReportData;
 
                     var epiDate = _dateTimeProvider.GetEpiDate(reportValidationResult.ReportData.ReceivedAt, gatewaySetting.NationalSociety.EpiWeekStartDay);
-
+                    var phoneNumber = "";
+                    if (reportData.DataCollector != null)
+                    {
+                        phoneNumber = reportData.DataCollector.PhoneNumber ?? "";
+                    }
                     var report = new Report
                     {
                         IsTraining = reportData.DataCollector?.IsInTrainingMode ?? false,
@@ -133,7 +137,7 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                         DataCollector = reportData.DataCollector,
                         EpiWeek = epiDate.EpiWeek,
                         EpiYear = epiDate.EpiYear,
-                        PhoneNumber = reportData.DataCollector.PhoneNumber,
+                        PhoneNumber = phoneNumber,
                         Location = reportData.DataCollector?.DataCollectorLocations.Count == 1
                             ? reportData.DataCollector.DataCollectorLocations.First().Location
                             : null,
