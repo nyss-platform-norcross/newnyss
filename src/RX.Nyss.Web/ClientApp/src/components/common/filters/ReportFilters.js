@@ -46,13 +46,16 @@ export const ReportFilters = ({
 
   //Syncs locations from redux store with filter state and sets label for location filter to 'All' or "Region (+n)"
   //Neccecary if locations are added, edited or removed, to make all filters checked
-  const [locationsFilterLabel] = useLocationFilter(locations, localFilters, updateLocalFilters)
-
+  const [locationsFilterLabel] = useLocationFilter(
+    locations,
+    localFilters,
+    updateLocalFilters,
+  );
 
   const handleLocationChange = (newValue) => {
     handleFiltersChange({
-        locations: newValue,
-      })
+      locations: newValue,
+    });
   };
 
   const handleHealthRiskChange = (filteredHealthRisks) =>
@@ -68,18 +71,18 @@ export const ReportFilters = ({
     handleFiltersChange({ correctedState: event.target.value });
 
   const handleReportStatusChange = (event) =>
-      handleFiltersChange({
-        reportStatus: {
-          ...localFilters.reportStatus,
-          [event.target.name]: event.target.checked,
-        },
-      });
+    handleFiltersChange({
+      reportStatus: {
+        ...localFilters.reportStatus,
+        [event.target.name]: event.target.checked,
+      },
+    });
 
   const handleTrainingStatusChange = (event) =>
-      handleFiltersChange({
-        ...localFilters,
-        trainingStatus: event.target.value,
-      });
+    handleFiltersChange({
+      ...localFilters,
+      trainingStatus: event.target.value,
+    });
 
   if (!localFilters) {
     return null;
@@ -111,7 +114,7 @@ export const ReportFilters = ({
               >
                 <MenuItem value={DataCollectorType.unknownSender}>
                   {strings(
-                    stringKeys.filters.report.unknownSenderReportListType
+                    stringKeys.filters.report.unknownSenderReportListType,
                   )}
                 </MenuItem>
                 <MenuItem value={DataCollectorType.human}>
@@ -155,7 +158,7 @@ export const ReportFilters = ({
                         key={`errorfilter_${errorType}`}
                       >
                         {strings(
-                          stringKeys.filters.report.errorTypes[errorType]
+                          stringKeys.filters.report.errorTypes[errorType],
                         )}
                       </MenuItem>
                     ))}
@@ -179,7 +182,7 @@ export const ReportFilters = ({
                     {correctedStateTypes.map((state) => (
                       <MenuItem value={state} key={`correctedState_${state}`}>
                         {strings(
-                          stringKeys.filters.report.correctedStates[state]
+                          stringKeys.filters.report.correctedStates[state],
                         )}
                       </MenuItem>
                     ))}
@@ -205,7 +208,7 @@ export const ReportFilters = ({
                       className={styles.radio}
                       label={strings(
                         stringKeys.dataCollectors.constants.trainingStatus
-                          .Trained
+                          .Trained,
                       )}
                       value={"Trained"}
                       control={<Radio color="primary" />}
@@ -214,7 +217,7 @@ export const ReportFilters = ({
                       className={styles.radio}
                       label={strings(
                         stringKeys.dataCollectors.constants.trainingStatus
-                          .InTraining
+                          .InTraining,
                       )}
                       value={"InTraining"}
                       control={<Radio color="primary" />}

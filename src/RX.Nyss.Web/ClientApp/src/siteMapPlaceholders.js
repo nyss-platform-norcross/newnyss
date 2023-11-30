@@ -3,5 +3,5 @@ export const placeholders = {
   leftMenu: "leftMenu",
   tabMenu: "tabMenu",
   projectTabMenu: "projectTabMenu",
-  projectSubMenu: "projectSubMenu"
+  projectSubMenu: "projectSubMenu",
 };

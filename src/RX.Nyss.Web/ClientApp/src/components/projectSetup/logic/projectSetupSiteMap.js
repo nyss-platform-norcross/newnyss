@@ -6,6 +6,6 @@ export const projectSetupSiteMap = [
     parentPath: "/nationalsocieties/:nationalSocietyId/projects",
     path: "/nationalsocieties/:nationalSocietyId/projects/setup",
     title: () => strings(stringKeys.project.form.creationTitle),
-    access: accessMap.projects.add
+    access: accessMap.projects.add,
   },
 ];

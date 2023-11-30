@@ -1,5 +1,5 @@
-import styles from "./DataCollectorsPerformanceMapFilters.module.scss"
-import { Grid } from '@material-ui/core';
+import styles from "./DataCollectorsPerformanceMapFilters.module.scss";
+import { Grid } from "@material-ui/core";
 import { strings, stringKeys } from "../../../strings";
 import { DatePicker } from "../../forms/DatePicker";
 import { convertToLocalDate, convertToUtc } from "../../../utils/date";
@@ -13,11 +13,10 @@ export const DataCollectorsPerformanceMapFilters = ({ filters, onChange }) => {
   const handleFiltersChange = (filters) =>
     onChange(updateLocalFilters(filters));
 
-
-  const handleDateFromChange = date =>
+  const handleDateFromChange = (date) =>
     handleFiltersChange({ startDate: convertToUtc(date) });
 
-  const handleDateToChange = date =>
+  const handleDateToChange = (date) =>
     handleFiltersChange({ endDate: convertToUtc(date) });
 
   return (
@@ -39,4 +38,4 @@ export const DataCollectorsPerformanceMapFilters = ({ filters, onChange }) => {
       </Grid>
     </Grid>
   );
-}
+};
