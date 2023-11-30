@@ -34,20 +34,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotificationRecipientIds, setAlertNotHandledNotificationRecipientIds, error, setError, setIsNextStepInvalid }) => {
+const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotificationRecipientIds, setAlertNotHandledNotificationRecipientIds, error, setError, setIsNextStepInvalid, selectedOrganizationId }) => {
   const classes = useStyles();
   const errorMessage = strings(stringKeys.projectSetup.projectRecipients.error);
   const [availableRecipients, setAvailableRecipients] = useState([]);
   const [selectedRecipients, setSelectedRecipients] = useState([]);
   
-  useMount(() => {
-    alertNotHandledNotificationRecipientIds.length > 0 && setIsNextStepInvalid(false);
-    if(alertRecipients) {
-      setAvailableRecipients(alertRecipients.filter(recipient => !alertNotHandledNotificationRecipientIds.includes(recipient.id)));
-      setSelectedRecipients(alertRecipients.filter(recipient => alertNotHandledNotificationRecipientIds.includes(recipient.id)));
+  useMount(() => {    
+    if(alertRecipients){
+      const recipientsWithinSelectedOrganization = alertRecipients.filter(recipient => recipient.organizationId === selectedOrganizationId);
+      
+      setAvailableRecipients(recipientsWithinSelectedOrganization.filter(recipient => !alertNotHandledNotificationRecipientIds.includes(recipient.id)));
+      setSelectedRecipients(recipientsWithinSelectedOrganization.filter(recipient => alertNotHandledNotificationRecipientIds.includes(recipient.id)));
     }
   });
-  
+
   const handleChange = (event) => {
     const eventRecipient = availableRecipients.find(recipient => recipient.id === event.target.value);
 
@@ -70,7 +71,7 @@ const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotifi
   }, [selectedRecipients]);
 
   useEffect(() => {
-    alertNotHandledNotificationRecipientIds > 0 ? setIsNextStepInvalid(false) : setIsNextStepInvalid(true);
+    alertNotHandledNotificationRecipientIds.length > 0 ? setIsNextStepInvalid(false) : setIsNextStepInvalid(true);
   }, [alertNotHandledNotificationRecipientIds]);
 
   return (
@@ -108,7 +109,8 @@ const ProjectSetupRecipientsComponent = ({alertRecipients, alertNotHandledNotifi
 
 const mapStateToProps = (state) => ({
   alertRecipients: state.projectSetup.formData?.alertNotHandledRecipients,
-  alertNotHandledNotificationRecipientIds: state.projectSetup.alertNotHandledNotificationRecipientIds
+  alertNotHandledNotificationRecipientIds: state.projectSetup.alertNotHandledNotificationRecipientIds,
+  selectedOrganizationId: state.projectSetup.organizationId
 });
 
 const mapDispatchToProps = {
