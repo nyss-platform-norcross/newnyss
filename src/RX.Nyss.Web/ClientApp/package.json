@@ -67,7 +67,7 @@
     "lint": "eslint ./src/"
   },
   "lint-staged": {
-    "placehodler": "prettier --write"
+    "*.{js, jsx, scss}": "prettier --write"
   },
   "browserslist": {
     "production": [
