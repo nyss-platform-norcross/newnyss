@@ -65,6 +65,15 @@ namespace RX.Nyss.ReportApi.Features.Alerts
                         : null
                 });
 
+            var _phoneNumbersOfSupervisorsInAlert = _nyssContext.AlertReports
+                .Where(ar => ar.Alert.Id == alert.Id && ar.Report.DataCollector.Supervisor != null)
+                .Select(ar => ar.Report.DataCollector.Supervisor)
+                .Distinct()
+                .Select(s => new SendGatewaySmsRecipient
+                {
+                    PhoneNumber = s.PhoneNumber
+                });
+
             var phoneNumbersOfHeadSupervisorsInAlert = _nyssContext.AlertReports
                 .Where(ar => ar.Alert.Id == alert.Id && ar.Report.DataCollector.HeadSupervisor != null)
                 .Select(ar => ar.Report.DataCollector.HeadSupervisor)
@@ -76,9 +85,21 @@ namespace RX.Nyss.ReportApi.Features.Alerts
                         ? s.Modem.ModemId
                         : null
                 });
+            var _phoneNumbersOfHeadSupervisorsInAlert = _nyssContext.AlertReports
+                .Where(ar => ar.Alert.Id == alert.Id && ar.Report.DataCollector.HeadSupervisor != null)
+                .Select(ar => ar.Report.DataCollector.HeadSupervisor)
+                .Distinct()
+                .Select(s => new SendGatewaySmsRecipient
+                {
+                    PhoneNumber = s.PhoneNumber
+                });
 
             var recipients = await phoneNumbersOfSupervisorsInAlert
                 .Concat(phoneNumbersOfHeadSupervisorsInAlert)
+                .ToListAsync();
+
+            var _recipients = await _phoneNumbersOfSupervisorsInAlert
+                .Concat(_phoneNumbersOfHeadSupervisorsInAlert)
                 .ToListAsync();
 
             var message = await CreateNotificationMessageForNewAlert(alert);
@@ -96,6 +117,9 @@ namespace RX.Nyss.ReportApi.Features.Alerts
                     }
                     break;
                 case GatewayType.SmsGateway:
+                    await _queuePublisherService.SendGatewayHttpSms(_recipients, gatewaySetting, message);
+                    break;
+                case GatewayType.Unknown:
                     _loggerAdapter.Info("Could not find proper gateway!");
                     break;
                 default:
@@ -113,6 +137,11 @@ namespace RX.Nyss.ReportApi.Features.Alerts
                 Modem = s.Modem
             }).ToList();
 
+            var _phoneNumbers = supervisors.Select(s => new SendGatewaySmsRecipient
+            {
+                PhoneNumber = s.PhoneNumber
+            }).ToList();
+
             var message = await CreateNotificationMessageForExistingAlert(alert);
 
             switch (gatewaySetting.GatewayType)
@@ -128,6 +157,9 @@ namespace RX.Nyss.ReportApi.Features.Alerts
                     }
                     break;
                 case GatewayType.SmsGateway:
+                    await _queuePublisherService.SendGatewayHttpSms(_phoneNumbers, gatewaySetting, message);
+                    break;
+                case GatewayType.Unknown:
                     _loggerAdapter.Info("Could not find proper gateway!");
                     break;
                 default:
