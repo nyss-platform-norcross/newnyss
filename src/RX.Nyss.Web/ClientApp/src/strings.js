@@ -438,7 +438,13 @@ export const stringKeys = {
       title: "projectSetup.projectRecipients.title",
       placeholder: "projectSetup.projectRecipients.placeholder",
       error: "projectSetup.projectRecipients.error"
-    }
+    },
+    geographicalStructure: {
+      name: "projectSetup.geographicalStructure.name",
+      title: "projectSetup.geographicalStructure.title",
+      description: "projectSetup.geographicalStructure.description",
+      error: "projectSetup.geographicalStructure.error"
+    },
   },
   dashboard: {
     title: "dashboard.title",

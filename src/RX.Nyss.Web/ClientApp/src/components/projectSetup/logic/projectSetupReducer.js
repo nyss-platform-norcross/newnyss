@@ -11,7 +11,9 @@ export const projectSetupInitialState = {
   formFetching: false,
   formData: null,
   regions: [],
-  newRegions: [],
+  districts: [],
+  villages: [],
+  zones: [],
 }
 
 export function projectSetupReducer(state = projectSetupInitialState, action) {
@@ -20,24 +22,24 @@ export function projectSetupReducer(state = projectSetupInitialState, action) {
       return { ...state, formData: null, formError: null }
 
     case actions.OPEN_PROJECT_SETUP.INVOKE:
-      return { ...state, formFetching: true, formData: null, regions: null };
+      return { ...state, formFetching: true, formData: null, regions: [] };
 
     case actions.OPEN_PROJECT_SETUP.REQUEST:
-      return { ...state, formFetching: true, formData: null, regions: null };
+      return { ...state, formFetching: true, formData: null, regions: [] };
 
     case actions.OPEN_PROJECT_SETUP.SUCCESS:
-      return { ...state, formFetching: false, formData: action.data.formData, regions: action.data.regions};
+      return { ...state, formFetching: false, formData: action.data.formData };
 
     case actions.OPEN_PROJECT_SETUP.FAILURE:
       return { ...state, formFetching: false, formError: action.error };
 
-    case actions.CREATE_PROJECT.REQUEST:
+    case actions.CREATE_PROJECT_FROM_SETUP.REQUEST:
       return { ...state, formSaving: true };
 
-    case actions.CREATE_PROJECT.SUCCESS:
+    case actions.CREATE_PROJECT_FROM_SETUP.SUCCESS:
       return { ...state, formSaving: false, listStale: true };
 
-    case actions.CREATE_PROJECT.FAILURE:
+    case actions.CREATE_PROJECT_FROM_SETUP.FAILURE:
       return { ...state, formSaving: false, formError: action.error };
 
     case actions.SET_PROJECT_NAME:
@@ -52,8 +54,17 @@ export function projectSetupReducer(state = projectSetupInitialState, action) {
     case actions.SET_HEALTH_RISKS:
       return { ...state,  healthRisks: action.healthRisks}
 
-    case actions.SET_NEW_REGIONS:
-      return { ...state, newRegions: action.newRegions }
+    case actions.SET_REGIONS:
+      return { ...state, regions: action.regions }
+
+    case actions.SET_DISTRICTS:
+      return { ...state, districts: action.districts }
+
+    case actions.SET_VILLAGES:
+      return { ...state, villages: action.villages }
+
+    case actions.SET_ZONES:
+      return { ...state, zones: action.zones }
 
     default:
       return state;

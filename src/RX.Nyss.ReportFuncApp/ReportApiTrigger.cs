@@ -33,11 +33,11 @@ namespace RX.Nyss.ReportFuncApp
             var content = new StringContent(JsonConvert.SerializeObject(report), Encoding.UTF8, "application/json");
             var postResult = await client.PostAsync(new Uri(_reportApiBaseUrl, "api/Report"), content);
 
-            /*if (!postResult.IsSuccessStatusCode)
+            if (!postResult.IsSuccessStatusCode)
             {
                 _logger.LogError($"Status code: {(int)postResult.StatusCode} ReasonPhrase: {postResult.ReasonPhrase}");
                 throw new Exception($"A report '{report}' was not handled properly by the Report API.");
-            }*/
+            }
         }
     }
 }
