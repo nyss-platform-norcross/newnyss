@@ -33,54 +33,48 @@ public class TelerivetReportReceiver
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "enqueueTelerivetReport")] HttpRequestMessage httpRequest,
         [Blob("%AuthorizedApiKeysBlobPath%", FileAccess.Read)] string authorizedApiKeys)
     {
-        var maxContentLength = _config.MaxContentLength;
-        if (httpRequest.Content != null)
+        if (httpRequest.Content.Headers.ContentLength == null)
         {
-            if (httpRequest.Content.Headers.ContentLength == null || httpRequest.Content.Headers.ContentLength > maxContentLength)
-            {
-                _logger.Log(LogLevel.Warning, "Received an empty Telerivet report.");
-                return new BadRequestResult();
-            }
-
-            var httpRequestContent = await httpRequest.Content.ReadAsStringAsync();
-            _logger.Log(LogLevel.Debug, $"Received Telerivet report: {httpRequestContent}.{Environment.NewLine}HTTP request: {httpRequest}");
-
-            if (string.IsNullOrWhiteSpace(httpRequestContent))
-            {
-                _logger.Log(LogLevel.Warning, "Received an empty Telerivet report.");
-                return new BadRequestResult();
-            }
-
-            var decodedHttpRequestContent = HttpUtility.UrlDecode(httpRequestContent);
-            var result = HttpUtility.ParseQueryString(decodedHttpRequestContent);
-
-            /*foreach (var key in result.AllKeys)
-            {
-                var value = result[key];
-                Console.WriteLine("{0}: {1}", key, value);
-            }*/
-
-            if (!VerifyApiKey(authorizedApiKeys, decodedHttpRequestContent))
-            {
-                return new UnauthorizedResult();
-            }
-
-            var report = new TelerivetReport
-            {
-                TimeCreated = result["time_created"],
-                TimeUpdated = result["time_updated"],
-                MessageContent = result["content"],
-                FromNumber = result["from_number_e164"],
-                ApiKey = result["apikey"],
-                ProjectId = result["project_id"],
-                ReportSource = ReportSource.Telerivet
-            };
-
-            await _reportPublisherService.AddTelerivetReportToQueue(report);
-            return new OkResult();
+            _logger.Log(LogLevel.Warning, "Received a Telerivet report with header content length null.");
+            return new BadRequestResult();
         }
-        _logger.Log(LogLevel.Warning, $"Received an SMS Gateway request with NULL content");
-        return new BadRequestResult();
+
+        var httpRequestContent = await httpRequest.Content.ReadAsStringAsync();
+        _logger.Log(LogLevel.Debug, $"Received Telerivet report: {httpRequestContent}.{Environment.NewLine}HTTP request: {httpRequest}");
+
+        if (string.IsNullOrWhiteSpace(httpRequestContent))
+        {
+            _logger.Log(LogLevel.Warning, "Received an empty Telerivet report.");
+            return new BadRequestResult();
+        }
+
+        var decodedHttpRequestContent = HttpUtility.UrlDecode(httpRequestContent);
+        var result = HttpUtility.ParseQueryString(decodedHttpRequestContent);
+
+        /*foreach (var key in result.AllKeys)
+        {
+            var value = result[key];
+            Console.WriteLine("{0}: {1}", key, value);
+        }*/
+
+        if (!VerifyApiKey(authorizedApiKeys, decodedHttpRequestContent))
+        {
+            return new UnauthorizedResult();
+        }
+
+        var report = new TelerivetReport
+        {
+            TimeCreated = result["time_created"],
+            TimeUpdated = result["time_updated"],
+            MessageContent = result["content"],
+            FromNumber = result["from_number_e164"],
+            ApiKey = result["apikey"],
+            ProjectId = result["project_id"],
+            ReportSource = ReportSource.Telerivet
+        };
+
+        await _reportPublisherService.AddTelerivetReportToQueue(report);
+        return new OkResult();
     }
 
     private bool VerifyApiKey(string authorizedApiKeys, string decodedHttpRequestContent)
