@@ -16,9 +16,16 @@ import {
   AccordionActions,
   Divider,
   Icon,
+  Typography,
+  Chip
 } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { Manager, TechnicalAdvisor } from "../../../authentication/roles";
+import { makeStyles } from "@material-ui/core/styles";
+
+
+var relativeTime = require('dayjs/plugin/relativeTime')
+dayjs.extend(relativeTime)
 
 const ReportFormLabel = ({ label, value }) => (
   <div className={styles.container}>
@@ -31,7 +38,7 @@ const getReportIcon = (status, rtl) => {
   switch (status) {
     case "Pending":
       return (
-        <Icon className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
+        <Icon fontSize="small" className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
           hourglass_empty
         </Icon>
       );
@@ -70,6 +77,34 @@ const getReportIcon = (status, rtl) => {
   }
 };
 
+const useStyles = makeStyles(() => ({
+  summary: {
+    border: "1px solid #E3E3E3",
+  },
+  time: {
+    fontSize: 14,
+    color: "#4F4F4F"
+  },
+  report: {
+    fontWeight: 700,
+  },
+  chip: {
+    marginRight: 20,
+  },
+  Pending: {
+    backgroundColor: "#FFE497"
+  },
+  Accepted: {
+    backgroundColor: "#D6F9D5"
+  },
+  Rejected: {
+    backgroundColor: "#E3E3E3"
+  },
+  Closed: {
+    backgroundColor: "#E3E3E3"
+  },
+}));
+
 export const AlertsAssessmentReport = ({
   alertId,
   escalatedAt,
@@ -104,23 +139,49 @@ export const AlertsAssessmentReport = ({
     (r) => r === Manager || r === TechnicalAdvisor,
   );
 
+  const classes = useStyles()
+
   return (
     <Accordion disabled={fromOtherOrg}>
-      <AccordionSummary expandIcon={!fromOtherOrg && <ExpandMoreIcon />}>
-        {getReportIcon(report.status, rtl)}
-        <span className={styles.time}>
-          {dayjs(report.receivedAt).format("YYYY-MM-DD HH:mm")}
-        </span>
-        <div className={styles.senderContainer}>
+      <AccordionSummary className={classes.summary} expandIcon={!fromOtherOrg && <ExpandMoreIcon />}>
+        <Grid container alignContent="center">
+          <Grid container alignItems="center" item xs={4}>
+            <Typography className={classes.time}>
+              Sent {dayjs(dayjs(report.receivedAt).format("YYYY-MM-DD HH:mm")).fromNow()}
+            </Typography>
+          </Grid>
+          <Grid container alignItems="center" item xs={4}>
+            <Typography variant="body2" className={classes.report}>
+              Report ID #{report.id}
+            </Typography>
+          </Grid>
+          <Grid container alignItems="center" item xs={4} justifyContent="flex-end">
+            <Chip
+              label={
+                <Grid container justifyContent="center" alignItems="center">
+                  <Grid item>
+                    {getReportIcon(report.status, rtl)}
+                  </Grid>
+                  <Grid item>
+                    {strings(stringKeys.reports.status[report.status])}
+                  </Grid>
+                </Grid>
+              }
+              className={`${classes[report.status]} ${classes.chip}`}
+            />
+          </Grid>
+        {/* {getReportIcon(report.status, rtl)} */}
+        {/* <div className={styles.senderContainer}>
           <span className={styles.senderLabel}>
-            {strings(stringKeys.alerts.assess.report.sender)}{" "}
-            {report.isAnonymized &&
-              strings(stringKeys.alerts.assess.report.linkedToSupervisor)}
-          </span>
-          <span className={styles.sender}>
+          {strings(stringKeys.alerts.assess.report.sender)}{" "}
+          {report.isAnonymized &&
+            strings(stringKeys.alerts.assess.report.linkedToSupervisor)}
+            </span>
+            <span className={styles.sender}>
             {report.dataCollector || report.organization}
-          </span>
-        </div>
+            </span>
+          </div> */}
+        </Grid>
       </AccordionSummary>
       <AccordionDetails className={styles.form}>
         <Grid container spacing={2}>
