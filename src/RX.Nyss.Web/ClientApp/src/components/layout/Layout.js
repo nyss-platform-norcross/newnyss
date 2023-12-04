@@ -5,6 +5,8 @@ import { BaseLayout } from "./BaseLayout";
 import styles from "./Layout.module.scss";
 import { MessagePopup } from "./MessagePopup";
 import { TabMenu } from "./TabMenu";
+import { Typography, makeStyles } from "@material-ui/core";
+import { useSelector } from "react-redux";
 
 const pageContentId = "pageContent";
 
@@ -13,7 +15,32 @@ export const resetPageContentScroll = () => {
   element && element.scrollTo(0, 0);
 };
 
+const useStyles = makeStyles({
+  header: {
+    color: "#000",
+    fontSize: 32,
+    fontWeight: 700,
+    textAlign: "center",
+    margin: "20px 0 20px 0",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 600
+  }
+});
+
 const Layout = ({ fillPage, children }) => {
+  const classes = useStyles();
+  const nationalSocietyName = useSelector(
+    (state) => state.appData.siteMap.parameters.nationalSocietyName
+  );
+  const projectName = useSelector(
+    (state) => state.appData.siteMap.parameters.projectName
+  );
+  const title = useSelector(
+    (state) => state.appData.siteMap.title
+  );
+
   return (
     <BaseLayout>
       <SideMenu />
@@ -31,6 +58,14 @@ const Layout = ({ fillPage, children }) => {
             }`}
           >
             <div className={fillPage ? styles.fillPage : null}>
+              {(nationalSocietyName && !projectName) && (
+                <Typography className={classes.header}>{nationalSocietyName}</Typography>
+              )}
+              {projectName ? (
+                <Typography className={classes.header}>{projectName}</Typography>
+              ) : (
+                <div className={classes.title}>{title}</div>
+              )}
               <TabMenu />
               {children}
             </div>
