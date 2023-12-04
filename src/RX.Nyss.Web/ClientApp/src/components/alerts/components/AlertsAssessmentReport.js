@@ -45,6 +45,7 @@ const getReportIcon = (status, rtl) => {
     case "Accepted":
       return (
         <Icon
+          fontSize="small"
           className={`${styles.indicator} ${styles.accepted} ${
             rtl ? styles.rtl : ""
           }`}
@@ -55,6 +56,7 @@ const getReportIcon = (status, rtl) => {
     case "Rejected":
       return (
         <Icon
+          fontSize="small"
           className={`${styles.indicator} ${styles.rejected} ${
             rtl ? styles.rtl : ""
           }`}
@@ -64,13 +66,13 @@ const getReportIcon = (status, rtl) => {
       );
     case "Closed":
       return (
-        <Icon className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
+        <Icon fontSize="small" className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
           block
         </Icon>
       );
     default:
       return (
-        <Icon className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
+        <Icon fontSize="small" className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
           warning
         </Icon>
       );
@@ -159,7 +161,7 @@ export const AlertsAssessmentReport = ({
             <Chip
               label={
                 <Grid container justifyContent="center" alignItems="center">
-                  <Grid item>
+                  <Grid item style={{ marginRight: 5 }}>
                     {getReportIcon(report.status, rtl)}
                   </Grid>
                   <Grid item>
