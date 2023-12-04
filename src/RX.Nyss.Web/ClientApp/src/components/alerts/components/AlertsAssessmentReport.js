@@ -15,14 +15,13 @@ import {
   AccordionSummary,
   AccordionActions,
   Divider,
-  Icon,
   Typography,
-  Chip
 } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { Manager, TechnicalAdvisor } from "../../../authentication/roles";
 import { makeStyles } from "@material-ui/core/styles";
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import { ReportStatusChip } from "../../common/chip/ReportStatusChip";
 
 var relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
@@ -35,82 +34,7 @@ const ReportFormLabel = ({ label, value }) => (
   </Grid>
 );
 
-const getReportIcon = (status, rtl) => {
-  switch (status) {
-    case "Pending":
-      return (
-        <Icon fontSize="small" className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
-          hourglass_empty
-        </Icon>
-      );
-    case "Accepted":
-      return (
-        <Icon
-          fontSize="small"
-          className={`${styles.indicator} ${styles.accepted} ${
-            rtl ? styles.rtl : ""
-          }`}
-        >
-          check
-        </Icon>
-      );
-    case "Rejected":
-      return (
-        <Icon
-          fontSize="small"
-          className={`${styles.indicator} ${styles.rejected} ${
-            rtl ? styles.rtl : ""
-          }`}
-        >
-          clear
-        </Icon>
-      );
-    case "Closed":
-      return (
-        <Icon fontSize="small" className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
-          block
-        </Icon>
-      );
-    default:
-      return (
-        <Icon fontSize="small" className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
-          warning
-        </Icon>
-      );
-  }
-};
 
-const useStyles = makeStyles(() => ({
-  accordion: {
-    border: "1px solid #E3E3E3",
-  },
-  summary: {
-    height: "40px !important",
-    minHeight: "40px !important",
-  },
-  time: {
-    fontSize: 14,
-    color: "#4F4F4F"
-  },
-  report: {
-    fontWeight: 700,
-  },
-  chip: {
-    marginRight: 20,
-  },
-  Pending: {
-    backgroundColor: "#FFE497"
-  },
-  Accepted: {
-    backgroundColor: "#D6F9D5"
-  },
-  Rejected: {
-    backgroundColor: "#E3E3E3"
-  },
-  Closed: {
-    backgroundColor: "#E3E3E3"
-  },
-}));
 
 export const AlertsAssessmentReport = ({
   alertId,
@@ -146,8 +70,27 @@ export const AlertsAssessmentReport = ({
     (r) => r === Manager || r === TechnicalAdvisor,
   );
 
+  const useStyles = makeStyles(() => ({
+    accordion: {
+      border: "1px solid #E3E3E3",
+    },
+    summary: {
+      height: "40px !important",
+      minHeight: "40px !important",
+    },
+    time: {
+      fontSize: 14,
+      color: "#4F4F4F"
+    },
+    report: {
+      fontWeight: 700,
+    },
+    chip: {
+      padding: rtl ? "0 0 0 20px" : "0 20px 0 0"
+    }
+  }));
   const classes = useStyles();
-  console.log(report)
+
   return (
     <Accordion disabled={fromOtherOrg} className={classes.accordion}>
       <AccordionSummary className={classes.summary} expandIcon={!fromOtherOrg && <ExpandMoreIcon />}>
@@ -162,20 +105,8 @@ export const AlertsAssessmentReport = ({
               Report ID #{report.id}
             </Typography>
           </Grid>
-          <Grid container alignItems="center" item xs={4} justifyContent="flex-end">
-            <Chip
-              label={
-                <Grid container justifyContent="center" alignItems="center">
-                  <Grid item style={{ marginRight: 5 }}>
-                    {getReportIcon(report.status, rtl)}
-                  </Grid>
-                  <Grid item>
-                    {strings(stringKeys.reports.status[report.status])}
-                  </Grid>
-                </Grid>
-              }
-              className={`${classes[report.status]} ${classes.chip}`}
-            />
+          <Grid className={classes.chip} container alignItems="center" item xs={4} justifyContent="flex-end">
+            <ReportStatusChip report={report} rtl={rtl}/>
           </Grid>
         </Grid>
       </AccordionSummary>
