@@ -1,25 +1,23 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { withLayout } from "../../utils/layout";
-import Layout from "../layout/Layout";
-import { Loading } from "../common/loading/Loading";
-import * as projectSetupActions from "./logic/projectSetupActions";
-import { useMount } from "../../utils/lifecycle";
-import { SetupStepper } from "../common/stepper/SetupStepper";
-import Typography from "@material-ui/core/Typography";
-import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStructure";
-import { ProjectSetupOrganization } from "./ProjectSetupOrganization";
-import { ProjectSetupName } from "./ProjectSetupName";
-import { strings, stringKeys } from "../../strings";
+import { withLayout } from '../../utils/layout';
+import Layout from '../layout/Layout';
+import { Loading } from '../common/loading/Loading';
+import * as projectSetupActions from './logic/projectSetupActions';
+import { useMount } from '../../utils/lifecycle';
+import { SetupStepper } from '../common/stepper/SetupStepper'
+import Typography from '@material-ui/core/Typography';
+import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStructure"
+import { ProjectSetupOrganization } from './ProjectSetupOrganization';
+import { ProjectSetupName } from './ProjectSetupName'
+import { strings, stringKeys } from '../../strings';
+import { ProjectSetupRecipients } from './ProjectSetupRecipients';
+
 
 const ProjectSetupPageComponent = ({
   nationalSocietyId,
   isFetching,
   openProjectSetup,
-  setProjectName,
-  setOrganizationId,
-  setAlertNotHandledNotificationRecipient,
-  setHealthRisks,
   ...props
 }) => {
   useMount(() => {
@@ -57,9 +55,9 @@ const ProjectSetupPageComponent = ({
       stepNumber: 1,
     },
     {
-      name: "Recipients",
-      content: <Typography>Recipient content</Typography>,
-      stepNumber: 2,
+      name: strings(stringKeys.projectSetup.projectRecipients.name),
+      content: <ProjectSetupRecipients error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
+      stepNumber: 2
     },
     {
       name: "Health risks",
@@ -101,10 +99,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   openProjectSetup: projectSetupActions.openSetup.invoke,
-  setOrganizationId: projectSetupActions.setOrganizationId,
-  setAlertNotHandledNotificationRecipientId:
-    projectSetupActions.setAlertNotHandledNotificationRecipientId,
-  setHealthRisks: projectSetupActions.setHealthRisks,
 };
 
 export const ProjectSetupPage = withLayout(

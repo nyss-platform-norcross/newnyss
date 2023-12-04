@@ -442,6 +442,12 @@ export const stringKeys = {
       placeholder: "projectSetup.organization.placeholder",
       error: "projectSetup.organization.error",
     },
+    projectRecipients: {
+      name: "projectSetup.projectRecipients.name",
+      title: "projectSetup.projectRecipients.title",
+      placeholder: "projectSetup.projectRecipients.placeholder",
+      error: "projectSetup.projectRecipients.error"
+    },
     geographicalStructure: {
       name: "projectSetup.geographicalStructure.name",
       title: "projectSetup.geographicalStructure.title",

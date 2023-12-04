@@ -523,7 +523,8 @@ namespace RX.Nyss.Web.Features.Projects
                         .Select(uns => new ProjectFormDataResponseDto.AlertNotHandledRecipientDto
                         {
                             Id = uns.UserId,
-                            Name = uns.User.Name
+                            Name = uns.User.Name,
+                            OrganizationId = uns.OrganizationId
                         })
                         .ToList()
                 })
