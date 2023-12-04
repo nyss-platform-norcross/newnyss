@@ -27,11 +27,17 @@ import { makeStyles } from "@material-ui/core/styles";
 var relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 
+// const ReportFormLabel = ({ label, value }) => (
+//   <div className={styles.container}>
+//     <div className={styles.key}>{label}</div>
+//     <div className={styles.value}>{value}</div>
+//   </div>
+// );
 const ReportFormLabel = ({ label, value }) => (
-  <div className={styles.container}>
-    <div className={styles.key}>{label}</div>
-    <div className={styles.value}>{value}</div>
-  </div>
+  <Grid container direction="column" style={{ maxWidth: "fit-content", margin: "10px 50px 0 0" }}>
+    <Typography style={{ fontWeight: 700, fontSize: 12 }}>{label}</Typography>
+    <Typography variant="body2" style={{ marginTop: 5 }}>{value}</Typography>
+  </Grid>
 );
 
 const getReportIcon = (status, rtl) => {
@@ -80,8 +86,11 @@ const getReportIcon = (status, rtl) => {
 };
 
 const useStyles = makeStyles(() => ({
-  summary: {
+  accordion: {
     border: "1px solid #E3E3E3",
+  },
+  summary: {
+    height: "40px !important",
   },
   time: {
     fontSize: 14,
@@ -144,7 +153,7 @@ export const AlertsAssessmentReport = ({
   const classes = useStyles()
 
   return (
-    <Accordion disabled={fromOtherOrg}>
+    <Accordion disabled={fromOtherOrg} className={classes.accordion}>
       <AccordionSummary className={classes.summary} expandIcon={!fromOtherOrg && <ExpandMoreIcon />}>
         <Grid container alignContent="center">
           <Grid container alignItems="center" item xs={4}>
@@ -172,40 +181,30 @@ export const AlertsAssessmentReport = ({
               className={`${classes[report.status]} ${classes.chip}`}
             />
           </Grid>
-        {/* {getReportIcon(report.status, rtl)} */}
-        {/* <div className={styles.senderContainer}>
-          <span className={styles.senderLabel}>
-          {strings(stringKeys.alerts.assess.report.sender)}{" "}
-          {report.isAnonymized &&
-            strings(stringKeys.alerts.assess.report.linkedToSupervisor)}
-            </span>
-            <span className={styles.sender}>
-            {report.dataCollector || report.organization}
-            </span>
-          </div> */}
         </Grid>
       </AccordionSummary>
-      <AccordionDetails className={styles.form}>
-        <Grid container spacing={2}>
-          <Grid item xs={6} xl={3}>
+      <AccordionDetails>
+        <Grid container>
+          <Divider style={{ width: "100%", marginTop: -8 }}/>
+          <Grid container item xs={4} direction="column">
+            <ReportFormLabel
+              label={strings(stringKeys.alerts.assess.report.sender)}
+              value={report.isAnonymized ? strings(stringKeys.alerts.assess.report.linkedToSupervisor) : (report.dataCollector || report.organization)}
+            />
             <ReportFormLabel
               label={strings(stringKeys.alerts.assess.report.phoneNumber)}
               value={report.phoneNumber}
             />
-            <ReportFormLabel
-              label={strings(stringKeys.alerts.assess.report.village)}
-              value={report.village}
-            />
-            <ReportFormLabel
-              label={strings(stringKeys.alerts.assess.report.district)}
-              value={report.district}
-            />
-            <ReportFormLabel
-              label={strings(stringKeys.alerts.assess.report.region)}
-              value={report.region}
-            />
           </Grid>
-          <Grid item xs={6} xl={3}>
+          <Grid container item xs={8}>
+            <ReportFormLabel
+              label={"Date"}
+              value={dayjs(report.receivedAt).format("YYYY-MM-DD HH:mm")}
+            />
+            <ReportFormLabel
+              label={"Time"}
+              value={dayjs(report.receivedAt).format("HH:mm")}
+            />
             {report.sex && (
               <ReportFormLabel
                 label={strings(stringKeys.alerts.assess.report.sex)}
@@ -218,10 +217,6 @@ export const AlertsAssessmentReport = ({
                 value={strings(stringKeys.alerts.constants.age[report.age])}
               />
             )}
-            <ReportFormLabel
-              label={strings(stringKeys.alerts.assess.report.id)}
-              value={report.id}
-            />
             {showSupervisorDetails && (
               <ReportFormLabel
                 label={strings(stringKeys.roles.Supervisor)}
@@ -229,6 +224,20 @@ export const AlertsAssessmentReport = ({
               />
             )}
           </Grid>
+          {/* <Grid item xs={6} xl={3}>
+            <ReportFormLabel
+              label={strings(stringKeys.alerts.assess.report.village)}
+              value={report.village}
+            />
+            <ReportFormLabel
+              label={strings(stringKeys.alerts.assess.report.district)}
+              value={report.district}
+            />
+            <ReportFormLabel
+              label={strings(stringKeys.alerts.assess.report.region)}
+              value={report.region}
+            />
+          </Grid> */}
         </Grid>
       </AccordionDetails>
       {!projectIsClosed && (
