@@ -31,6 +31,7 @@ import {
   renderDataCollectorDisplayName,
   renderReportValue,
 } from "./logic/reportsService";
+import { ReportStatusChip } from "../common/chip/ReportStatusChip";
 
 export const CorrectReportsTable = ({
   isListFetching,
@@ -138,7 +139,7 @@ export const CorrectReportsTable = ({
                   {strings(stringKeys.reports.list.date)}
                 </TableSortLabel>
               </TableCell>
-              <TableCell style={{ width: "6%" }}>
+              <TableCell style={{ width: "6%", minWidth: 185 }}>
                 {strings(stringKeys.reports.list.status)}
               </TableCell>
               <TableCell style={{ width: "12%" }}>
@@ -186,10 +187,7 @@ export const CorrectReportsTable = ({
                   {dayjs(row.dateTime).format("YYYY-MM-DD HH:mm")}
                 </TableCell>
                 <TableCell>
-                  {dashIfEmpty(
-                    !row.isActivityReport &&
-                      strings(stringKeys.reports.status[row.status]),
-                  )}
+                  {row.isActivityReport ? "-" : <ReportStatusChip report={row} rtl={rtl}/>}
                 </TableCell>
                 <TableCell className={styles.phoneNumber}>
                   {renderDataCollectorDisplayName(row)}
