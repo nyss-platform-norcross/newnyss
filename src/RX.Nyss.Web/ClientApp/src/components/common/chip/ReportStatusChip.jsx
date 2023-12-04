@@ -12,6 +12,12 @@ const getReportIcon = (status, rtl) => {
           hourglass_empty
         </Icon>
       );
+    case "New":
+      return (
+        <Icon fontSize="small" >
+          hourglass_empty
+        </Icon>
+      );
     case "Accepted":
       return (
         <Icon
@@ -51,6 +57,9 @@ const getReportIcon = (status, rtl) => {
 
 const useStyles = makeStyles(() => ({
   Pending: {
+    backgroundColor: "#FFE497"
+  },
+  New: {
     backgroundColor: "#FFE497"
   },
   Accepted: {
