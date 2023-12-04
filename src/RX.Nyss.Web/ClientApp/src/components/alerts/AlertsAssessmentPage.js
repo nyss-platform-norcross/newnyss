@@ -14,6 +14,7 @@ import { assessmentStatus } from "./logic/alertsConstants";
 import { AlertsAssessmentActions } from "./components/AlertsAssessmentActions";
 import AlertNotificationRecipients from "./components/AlertNotificationRecipients";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
+import { sortByReportStatus } from "../../utils/sortReportByStatus";
 
 const getAssessmentStatusInformation = (status) => {
   switch (status) {
@@ -112,7 +113,7 @@ const AlertsAssessmentPageComponent = ({
         </div>
 
         <Grid container spacing={2}>
-          {data.reports.map((report) => (
+          {data.reports.sort(sortByReportStatus).map((report) => (
             <Grid item xs={12} key={`report_${report.id}`}>
               <AlertsAssessmentReport
                 report={report}
