@@ -1,7 +1,7 @@
 import { nationalSocietiesSiteMap } from "./components/nationalSocieties/logic/nationalSocietiesSiteMap";
 import { smsGatewaysSiteMap } from "./components/smsGateways/logic/smsGatewaysSiteMap";
 import { projectsSiteMap } from "./components/projects/logic/projectsSiteMap";
-//import { projectSetupSiteMap } from "./components/projectSetup/logic/projectSetupSiteMap";
+import { projectSetupSiteMap } from "./components/projectSetup/logic/projectSetupSiteMap";
 import { globalCoordinatorsSiteMap } from "./components/globalCoordinators/logic/globalCoordinatorsSiteMap";
 import { healthRisksSiteMap } from "./components/healthRisks/logic/healthRisksSiteMap";
 import { suspectedDiseaseSiteMap } from "./components/suspectedDiseases/logic/suspectedDiseaseSiteMap";
@@ -13,7 +13,7 @@ import { nationalSocietyStructureSiteMap } from "./components/nationalSocietyStr
 import { projectDashboardSiteMap } from "./components/projectDashboard/logic/projectDashboardSiteMap";
 import { agreementsSiteMap } from "./components/agreements/logic/agreementsSiteMap";
 import { alertsSiteMap } from "./components/alerts/logic/alertsSiteMap";
-import { alertEventsSiteMap} from "./components/alertEvents/logic/alertEventsSiteMap";
+import { alertEventsSiteMap } from "./components/alertEvents/logic/alertEventsSiteMap";
 import { nationalSocietyDashboardSiteMap } from "./components/nationalSocietyDashboard/logic/nationalSocietyDashboardSiteMap";
 import { translationsSiteMap } from "./components/translations/logic/translationsSiteMap";
 import { organizationsSiteMap } from "./components/organizations/logic/organizationsSiteMap";
@@ -32,7 +32,7 @@ export const siteMap = [
   ...suspectedDiseaseSiteMap,
   ...globalCoordinatorsSiteMap,
   ...projectsSiteMap,
-  //...projectSetupSiteMap,
+  ...projectSetupSiteMap,
   ...projectDashboardSiteMap,
   ...projectOrganizationsSiteMap,
   ...dataCollectorsSiteMap,
@@ -43,5 +43,5 @@ export const siteMap = [
   ...alertEventsSiteMap,
   ...translationsSiteMap,
   ...eidsrIntegrationSiteMap,
-  ...feedbackSiteMap
+  ...feedbackSiteMap,
 ];

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { withLayout } from '../../utils/layout';
 import Layout from '../layout/Layout';
@@ -12,10 +12,16 @@ import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStr
 import { ProjectSetupOrganization } from './ProjectSetupOrganization';
 import { ProjectSetupName } from './ProjectSetupName'
 import { strings, stringKeys } from '../../strings';
+import { ProjectSetupRecipients } from './ProjectSetupRecipients';
 
 
-const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSetup, setProjectName, setOrganizationId, setAlertNotHandledNotificationRecipient, setHealthRisks, organizations, goToList, ...props}) => {
-
+const ProjectSetupPageComponent = ({
+  nationalSocietyId,
+  isFetching,
+  openProjectSetup,
+  goToList,
+  ...props
+}) => {
   useMount(() => {
     openProjectSetup(nationalSocietyId);
   });
@@ -30,47 +36,65 @@ const ProjectSetupPageComponent = ({nationalSocietyId, isFetching, openProjectSe
   const projectSetupSteps = [
     {
       name: strings(stringKeys.projectSetup.projectName.name),
-      content: <ProjectSetupName error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
-      stepNumber: 0
+      content: (
+        <ProjectSetupName
+          error={error}
+          setError={setError}
+          setIsNextStepInvalid={setIsNextStepInvalid}
+        />
+      ),
+      stepNumber: 0,
     },
     {
       name: strings(stringKeys.projectSetup.projectOrganization.name),
-      content: <ProjectSetupOrganization error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
-      stepNumber: 1
+      content: (
+        <ProjectSetupOrganization
+          error={error}
+          setError={setError}
+          setIsNextStepInvalid={setIsNextStepInvalid}
+        />
+      ),
+      stepNumber: 1,
     },
     {
-      name: 'Recipients',
-      content: <Typography>Recipient content</Typography>,
+      name: strings(stringKeys.projectSetup.projectRecipients.name),
+      content: <ProjectSetupRecipients error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
       stepNumber: 2
     },
     {
-      name: 'Health risks',
+      name: "Health risks",
       content: <Typography>Health risk content</Typography>,
-      stepNumber: 3
+      stepNumber: 3,
     },
     {
       name: strings(stringKeys.projectSetup.geographicalStructure.name),
       content: <ProjectSetupGeographicalStructure />,
       stepNumber: 4,
-      isOptional: true
+      isOptional: true,
     },
     {
-      name: 'Summary',
+      name: "Summary",
       content: <Typography>Summary content</Typography>,
-      stepNumber: 5
+      stepNumber: 5,
     },
-
-  ]
+  ];
 
   return (
     <div>
-      <SetupStepper steps={projectSetupSteps} error={error} setError={setError} isNextStepInvalid={isNextStepInvalid} setIsNextStepInvalid={setIsNextStepInvalid} goToList={goToList} nationalSocietyId={nationalSocietyId}/>
+      <SetupStepper
+        steps={projectSetupSteps}
+        error={error}
+        setError={setError}
+        isNextStepInvalid={isNextStepInvalid}
+        setIsNextStepInvalid={setIsNextStepInvalid}
+        goToList={goToList} 
+        nationalSocietyId={nationalSocietyId}
+      />
     </div>
   );
-}
-
-ProjectSetupPageComponent.propTypes = {
 };
+
+ProjectSetupPageComponent.propTypes = {};
 
 const mapStateToProps = (state, ownProps) => ({
   nationalSocietyId: ownProps.match.params.nationalSocietyId,
@@ -79,13 +103,10 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   openProjectSetup: projectSetupActions.openSetup.invoke,
-  setOrganizationId: projectSetupActions.setOrganizationId,
-  setAlertNotHandledNotificationRecipientId: projectSetupActions.setAlertNotHandledNotificationRecipientId,
-  setHealthRisks: projectSetupActions.setHealthRisks,
   goToList: projectActions.goToList,
 };
 
 export const ProjectSetupPage = withLayout(
   Layout,
-  connect(mapStateToProps, mapDispatchToProps)(ProjectSetupPageComponent)
+  connect(mapStateToProps, mapDispatchToProps)(ProjectSetupPageComponent),
 );

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Web;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RX.Nyss.Common.Services.StringsResources;
 using RX.Nyss.Common.Utils;
@@ -132,6 +133,11 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
 
                     var epiDate = _dateTimeProvider.GetEpiDate(reportValidationResult.ReportData.ReceivedAt, gatewaySetting.NationalSociety.EpiWeekStartDay);
 
+                    var phoneNumber = "";
+                    if (reportData.DataCollector != null)
+                    {
+                        phoneNumber = reportData.DataCollector.PhoneNumber ?? "";
+                    }
                     var report = new Report
                     {
                         IsTraining = reportData.DataCollector?.IsInTrainingMode ?? false,
@@ -142,7 +148,7 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                         DataCollector = reportData.DataCollector,
                         EpiWeek = epiDate.EpiWeek,
                         EpiYear = epiDate.EpiYear,
-                        PhoneNumber = reportData.DataCollector.PhoneNumber,
+                        PhoneNumber = phoneNumber,
                         Location = reportData.DataCollector?.DataCollectorLocations.Count == 1
                             ? reportData.DataCollector.DataCollectorLocations.First().Location
                             : null,
@@ -303,7 +309,7 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
 
                 await _queuePublisherService.SendSms(recipients, gatewaySetting, projectHealthRisk.FeedbackMessage);
 
-                if (alertData != null && alertData.Alert != null)
+                if (alertData.Alert != null)
                 {
                     if (alertData.IsExistingAlert)
                     {

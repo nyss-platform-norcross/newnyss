@@ -5,7 +5,7 @@ import { authSagas } from "../authentication/authSagas";
 import { nationalSocietiesSagas } from "../components/nationalSocieties/logic/nationalSocietiesSagas";
 import { smsGatewaysSagas } from "../components/smsGateways/logic/smsGatewaysSagas";
 import { projectsSagas } from "../components/projects/logic/projectsSagas";
-//import { projectSetupSagas } from "../components/projectSetup/logic/projectSetupSagas";
+import { projectSetupSagas } from "../components/projectSetup/logic/projectSetupSagas";
 import { globalCoordinatorsSagas } from "../components/globalCoordinators/logic/globalCoordinatorsSagas";
 import { healthRisksSagas } from "../components/healthRisks/logic/healthRisksSagas";
 import { suspectedDiseaseSagas } from "../components/suspectedDiseases/logic/suspectedDiseaseSagas";
@@ -17,7 +17,7 @@ import { nationalSocietyReportsSagas } from "../components/nationalSocietyReport
 import { nationalSocietyStructureSagas } from "../components/nationalSocietyStructure/logic/nationalSocietyStructureSagas";
 import { projectDashboardSagas } from "../components/projectDashboard/logic/projectDashboardSagas";
 import { alertsSagas } from "../components/alerts/logic/alertsSagas";
-import { alertEventsSagas} from "../components/alertEvents/logic/alertEventsSagas";
+import { alertEventsSagas } from "../components/alertEvents/logic/alertEventsSagas";
 import { nationalSocietyDashboardSagas } from "../components/nationalSocietyDashboard/logic/nationalSocietyDashboardSagas";
 import { translationsSagas } from "../components/translations/logic/translationsSagas";
 import { organizationsSagas } from "../components/organizations/logic/organizationsSagas";
@@ -37,7 +37,7 @@ function* rootSaga() {
     ...eidsrIntegrationSagas(),
     ...organizationsSagas(),
     ...projectsSagas(),
-    //...projectSetupSagas(),
+    ...projectSetupSagas(),
     ...projectDashboardSagas(),
     ...projectOrganizationsSagas(),
     ...projectAlertRecipientsSagas(),
@@ -58,5 +58,4 @@ function* rootSaga() {
   ]);
 }
 
-export const getRootSaga = () =>
-  autoRestart(rootSaga);
+export const getRootSaga = () => autoRestart(rootSaga);

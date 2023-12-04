@@ -1,29 +1,35 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
-import * as dataCollectorsActions from './logic/dataCollectorsActions';
-import { withLayout } from '../../utils/layout';
-import Layout from '../layout/Layout';
-import TableActions from '../common/tableActions/TableActions';
-import TableHeader from '../common/tableHeader/TableHeader';
-import DataCollectorsTable from './components/DataCollectorsTable';
-import { useMount } from '../../utils/lifecycle';
-import { strings, stringKeys } from '../../strings';
-import { TableActionsButton } from '../common/buttons/tableActionsButton/TableActionsButton';
-import { accessMap } from '../../authentication/accessMap';
-import { DataCollectorsFilters } from './components/DataCollectorsFilters';
-import { ReplaceSupervisorDialog } from './components/ReplaceSupervisorDialog';
-import { SubMenuTitle } from '../layout/SubMenuTitle';
+import * as dataCollectorsActions from "./logic/dataCollectorsActions";
+import { withLayout } from "../../utils/layout";
+import Layout from "../layout/Layout";
+import TableActions from "../common/tableActions/TableActions";
+import TableHeader from "../common/tableHeader/TableHeader";
+import DataCollectorsTable from "./components/DataCollectorsTable";
+import { useMount } from "../../utils/lifecycle";
+import { strings, stringKeys } from "../../strings";
+import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
+import { accessMap } from "../../authentication/accessMap";
+import { DataCollectorsFilters } from "./components/DataCollectorsFilters";
+import { ReplaceSupervisorDialog } from "./components/ReplaceSupervisorDialog";
+import { SubMenuTitle } from "../layout/SubMenuTitle";
 
-
-const DataCollectorsListPageComponent = ({getDataCollectorList, projectId, ...props}) => {
+const DataCollectorsListPageComponent = ({
+  getDataCollectorList,
+  projectId,
+  ...props
+}) => {
   useMount(() => {
     props.openDataCollectorsList(projectId, props.filters);
   });
 
-  const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
+  const useRtlDirection = useSelector(
+    (state) => state.appData.direction === "rtl",
+  );
 
-  const [replaceSupervisorDialogOpened, setReplaceSupervisorDialogOpened] = useState(false);
+  const [replaceSupervisorDialogOpened, setReplaceSupervisorDialogOpened] =
+    useState(false);
   const [selectedDataCollectors, setSelectedDataCollectors] = useState([]);
 
   const handleFilterChange = (filters) =>
@@ -32,16 +38,16 @@ const DataCollectorsListPageComponent = ({getDataCollectorList, projectId, ...pr
   const handleReplaceSupervisor = (dataCollectors) => {
     setSelectedDataCollectors(dataCollectors);
     setReplaceSupervisorDialogOpened(true);
-  }
+  };
 
   const onChangePage = (e, page) => {
     getDataCollectorList(projectId, { ...props.filters, pageNumber: page });
-  }
+  };
 
   return (
     <Fragment>
       <TableHeader>
-        {!props.isClosed &&
+        {!props.isClosed && (
           <TableActions>
             <TableActionsButton
               onClick={() => props.exportToCsv(projectId, props.filters)}
@@ -51,9 +57,11 @@ const DataCollectorsListPageComponent = ({getDataCollectorList, projectId, ...pr
             >
               {strings(stringKeys.dataCollectors.exportCsv)}
             </TableActionsButton>
-            <TableActionsButton  onClick={() => props.exportToExcel(projectId, props.filters)}
+            <TableActionsButton
+              onClick={() => props.exportToExcel(projectId, props.filters)}
               variant="outlined"
-              roles={accessMap.dataCollectors.export} isFetching={props.isExportingToExcel}
+              roles={accessMap.dataCollectors.export}
+              isFetching={props.isExportingToExcel}
             >
               {strings(stringKeys.dataCollectors.exportExcel)}
             </TableActionsButton>
@@ -66,7 +74,7 @@ const DataCollectorsListPageComponent = ({getDataCollectorList, projectId, ...pr
               {strings(stringKeys.common.buttons.add)}
             </TableActionsButton>
           </TableActions>
-        }
+        )}
       </TableHeader>
 
       <DataCollectorsFilters
@@ -109,7 +117,7 @@ const DataCollectorsListPageComponent = ({getDataCollectorList, projectId, ...pr
       />
     </Fragment>
   );
-}
+};
 
 DataCollectorsListPageComponent.propTypes = {
   getDataCollectors: PropTypes.func,
@@ -118,7 +126,7 @@ DataCollectorsListPageComponent.propTypes = {
   remove: PropTypes.func,
   isFetching: PropTypes.bool,
   listData: PropTypes.object,
-  isClosed: PropTypes.bool
+  isClosed: PropTypes.bool,
 };
 
 const mapStateToProps = (state, ownProps) => ({
@@ -134,7 +142,7 @@ const mapStateToProps = (state, ownProps) => ({
   filters: state.dataCollectors.filters,
   callingUserRoles: state.appData.user.roles,
   isExportingToExcel: state.dataCollectors.isExportingToExcel,
-  isExportingToCsv: state.dataCollectors.isExportingToCsv
+  isExportingToCsv: state.dataCollectors.isExportingToCsv,
 });
 
 const mapDispatchToProps = {
@@ -149,10 +157,10 @@ const mapDispatchToProps = {
   exportToExcel: dataCollectorsActions.exportToExcel.invoke,
   exportToCsv: dataCollectorsActions.exportToCsv.invoke,
   replaceSupervisor: dataCollectorsActions.replaceSupervisor.invoke,
-  setDeployedState: dataCollectorsActions.setDeployedState.invoke
+  setDeployedState: dataCollectorsActions.setDeployedState.invoke,
 };
 
 export const DataCollectorsListPage = withLayout(
   Layout,
-  connect(mapStateToProps, mapDispatchToProps)(DataCollectorsListPageComponent)
+  connect(mapStateToProps, mapDispatchToProps)(DataCollectorsListPageComponent),
 );

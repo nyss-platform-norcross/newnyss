@@ -1,25 +1,31 @@
-import { Fragment } from 'react';
+import { Fragment } from "react";
 import PropTypes from "prop-types";
-import { connect,  useSelector } from "react-redux";
-import { withLayout } from '../../utils/layout';
-import Layout from '../layout/Layout';
-import { useMount } from '../../utils/lifecycle';
-import DataCollectorsPerformanceTable from './components/DataCollectorsPerformanceTable';
-import * as dataCollectorActions from './logic/dataCollectorsActions';
-import { DataCollectorsPerformanceFilters } from './components/DataCollectorsPerformanceFilters';
-import { DataCollectorsPerformanceTableLegend } from './components/DataCollectorsPerformanceTableLegend';
-import TableActions from '../common/tableActions/TableActions';
-import { TableActionsButton } from '../common/buttons/tableActionsButton/TableActionsButton';
-import { stringKeys, strings } from '../../strings';
-import { accessMap } from '../../authentication/accessMap';
-import TableHeader from '../common/tableHeader/TableHeader';
+import { connect, useSelector } from "react-redux";
+import { withLayout } from "../../utils/layout";
+import Layout from "../layout/Layout";
+import { useMount } from "../../utils/lifecycle";
+import DataCollectorsPerformanceTable from "./components/DataCollectorsPerformanceTable";
+import * as dataCollectorActions from "./logic/dataCollectorsActions";
+import { DataCollectorsPerformanceFilters } from "./components/DataCollectorsPerformanceFilters";
+import { DataCollectorsPerformanceTableLegend } from "./components/DataCollectorsPerformanceTableLegend";
+import TableActions from "../common/tableActions/TableActions";
+import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
+import { stringKeys, strings } from "../../strings";
+import { accessMap } from "../../authentication/accessMap";
+import TableHeader from "../common/tableHeader/TableHeader";
 
-const DataCollectorsPerformancePageComponent = ({ projectId, getDataCollectorPerformanceList, ...props }) => {
+const DataCollectorsPerformancePageComponent = ({
+  projectId,
+  getDataCollectorPerformanceList,
+  ...props
+}) => {
   useMount(() => {
     props.openDataCollectorsPerformanceList(projectId, props.filters);
   });
 
-  const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
+  const useRtlDirection = useSelector(
+    (state) => state.appData.direction === "rtl",
+  );
 
   const handleFilterChange = (filters) =>
     getDataCollectorPerformanceList(projectId, filters);
@@ -64,12 +70,12 @@ const DataCollectorsPerformancePageComponent = ({ projectId, getDataCollectorPer
       />
     </Fragment>
   );
-}
+};
 
 DataCollectorsPerformancePageComponent.propTypes = {
   openDataCollectorsPerformanceList: PropTypes.func,
   isFetching: PropTypes.bool,
-  list: PropTypes.array
+  list: PropTypes.array,
 };
 
 const mapStateToProps = (state, ownProps) => ({
@@ -87,12 +93,17 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = {
-  openDataCollectorsPerformanceList: dataCollectorActions.openDataCollectorsPerformanceList.invoke,
-  getDataCollectorPerformanceList: dataCollectorActions.getDataCollectorsPerformanceList.invoke,
-  exportPerformance: dataCollectorActions.exportDataCollectorPerformance.invoke
+  openDataCollectorsPerformanceList:
+    dataCollectorActions.openDataCollectorsPerformanceList.invoke,
+  getDataCollectorPerformanceList:
+    dataCollectorActions.getDataCollectorsPerformanceList.invoke,
+  exportPerformance: dataCollectorActions.exportDataCollectorPerformance.invoke,
 };
 
 export const DataCollectorsPerformancePage = withLayout(
   Layout,
-  connect(mapStateToProps, mapDispatchToProps)(DataCollectorsPerformancePageComponent)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(DataCollectorsPerformancePageComponent),
 );

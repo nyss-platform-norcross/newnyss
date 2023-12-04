@@ -14,20 +14,27 @@ const AlertNotificationRecipients = ({ recipients }) => {
     <Table className={styles.table}>
       <TableHead>
         <TableRow>
-          <TableCell>{strings(stringKeys.alerts.assess.escalatedTo.role)}</TableCell>
-          <TableCell>{strings(stringKeys.alerts.assess.escalatedTo.organization)}</TableCell>
-          <TableCell>{strings(stringKeys.alerts.assess.escalatedTo.phoneNumber)}</TableCell>
+          <TableCell>
+            {strings(stringKeys.alerts.assess.escalatedTo.role)}
+          </TableCell>
+          <TableCell>
+            {strings(stringKeys.alerts.assess.escalatedTo.organization)}
+          </TableCell>
+          <TableCell>
+            {strings(stringKeys.alerts.assess.escalatedTo.phoneNumber)}
+          </TableCell>
           <TableCell>{strings(stringKeys.common.email)}</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {recipients.map((recipient, i) => 
-        <TableRow key={`recipient_${i}`}>
-          <TableCell>{recipient.role}</TableCell>
-          <TableCell>{recipient.organization}</TableCell>
-          <TableCell>{recipient.phoneNumber}</TableCell>
-          <TableCell>{recipient.email}</TableCell>
-        </TableRow>)}
+        {recipients.map((recipient, i) => (
+          <TableRow key={`recipient_${i}`}>
+            <TableCell>{recipient.role}</TableCell>
+            <TableCell>{recipient.organization}</TableCell>
+            <TableCell>{recipient.phoneNumber}</TableCell>
+            <TableCell>{recipient.email}</TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );

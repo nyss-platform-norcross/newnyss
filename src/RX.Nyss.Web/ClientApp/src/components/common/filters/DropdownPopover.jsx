@@ -4,8 +4,15 @@ import { Fragment, useState } from "react";
 import { Popover, TextField } from "@material-ui/core";
 import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
 
-
-export const DropdownPopover = ({ children, label, filterLabel, showResults, rtl, dialogOpen, setDialogOpen }) => {
+export const DropdownPopover = ({
+  children,
+  label,
+  filterLabel,
+  showResults,
+  rtl,
+  dialogOpen,
+  setDialogOpen,
+}) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleDropdownClick = (event) => {
@@ -15,8 +22,8 @@ export const DropdownPopover = ({ children, label, filterLabel, showResults, rtl
   };
 
   const handleKeyUp = (event) => {
-    if(event.key === "Enter" || event.key === " ") handleDropdownClick(event);
-  }
+    if (event.key === "Enter" || event.key === " ") handleDropdownClick(event);
+  };
 
   return (
     <Fragment>
@@ -56,5 +63,5 @@ export const DropdownPopover = ({ children, label, filterLabel, showResults, rtl
         {children}
       </Popover>
     </Fragment>
-  )
-}
+  );
+};

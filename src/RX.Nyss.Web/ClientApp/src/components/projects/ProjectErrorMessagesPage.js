@@ -28,7 +28,9 @@ const ProjectErrorMessagesPageComponent = (props) => {
 
   async function fetchData() {
     props.openErrorMessages(props.projectId);
-    setErrorMessages(await http.get(`/api/project/${props.projectId}/errorMessages`));
+    setErrorMessages(
+      await http.get(`/api/project/${props.projectId}/errorMessages`),
+    );
   }
 
   function edit() {
@@ -37,7 +39,10 @@ const ProjectErrorMessagesPageComponent = (props) => {
 
     errorMessages.forEach((itm) => {
       fields[itm.key] = itm.message;
-      validation[itm.key] = [validators.required, validators.maxLength(MESSAGE_MAX_LEN)];
+      validation[itm.key] = [
+        validators.required,
+        validators.maxLength(MESSAGE_MAX_LEN),
+      ];
     });
 
     setForm(createForm(fields, validation));
@@ -84,24 +89,27 @@ const ProjectErrorMessagesPageComponent = (props) => {
       <TableHeader />
       <Form onSubmit={onSubmit} fullWidth>
         <Grid container spacing={4} fixed="true" style={{ maxWidth: 800 }}>
-          {errorMessages.map(itm => (
+          {errorMessages.map((itm) => (
             <Grid item xs={12} key={itm.key}>
               <Card>
                 <CardContent>
-                  <Typography variant="h3">{strings(`${itm.key}.title`)}</Typography>
+                  <Typography variant="h3">
+                    {strings(`${itm.key}.title`)}
+                  </Typography>
                   {!form && (
                     <Typography variant="body1" gutterBottom>
                       {itm.message}
                     </Typography>
                   )}
-                  {form && (<>
-                    <TextInputField
-                      className={styles.input}
-                      name={itm.key}
-                      field={form.fields[itm.key]}
-                      multiline
-                    />
-                    <InputWarningMessage formField={form.fields[itm.key]} />
+                  {form && (
+                    <>
+                      <TextInputField
+                        className={styles.input}
+                        name={itm.key}
+                        field={form.fields[itm.key]}
+                        multiline
+                      />
+                      <InputWarningMessage formField={form.fields[itm.key]} />
                     </>
                   )}
                 </CardContent>
@@ -141,9 +149,10 @@ const InputWarningMessage = ({ formField }) => {
   const [message, setMessage] = useState("");
 
   function validate(value) {
-    const message = value.length > MESSAGE_WARNING_LEN
-      ? strings(stringKeys.project.errorMessages.tooLongWarning)
-      : "";
+    const message =
+      value.length > MESSAGE_WARNING_LEN
+        ? strings(stringKeys.project.errorMessages.tooLongWarning)
+        : "";
 
     setMessage(message);
   }
@@ -156,10 +165,8 @@ const InputWarningMessage = ({ formField }) => {
     validate(formField.value);
   }, []);
 
-  return (
-    <p className={styles.inputWarningMsg}>{message}</p>
-  )
-}
+  return <p className={styles.inputWarningMsg}>{message}</p>;
+};
 
 const mapStateToProps = (_, ownProps) => ({
   projectId: ownProps.match.params.projectId,
@@ -173,6 +180,6 @@ export const ProjectErrorMessagesPage = withLayout(
   Layout,
   connect(
     mapStateToProps,
-    mapDispatchToProps
-  )(ProjectErrorMessagesPageComponent)
+    mapDispatchToProps,
+  )(ProjectErrorMessagesPageComponent),
 );

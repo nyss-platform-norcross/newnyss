@@ -1,36 +1,38 @@
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment, useCallback } from "react";
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
-import * as alertsActions from './logic/alertsActions';
-import { withLayout } from '../../utils/layout';
-import Layout from '../layout/Layout';
-import AlertsTable from './components/AlertsTable';
-import { useMount } from '../../utils/lifecycle';
-import { AlertsFilters } from './components/AlertsFilters';
-import TableActions from '../common/tableActions/TableActions';
-import { TableActionsButton } from '../common/buttons/tableActionsButton/TableActionsButton';
-import { stringKeys, strings } from '../../strings';
-import { Loading } from '../common/loading/Loading';
-import TableHeader from '../common/tableHeader/TableHeader';
+import * as alertsActions from "./logic/alertsActions";
+import { withLayout } from "../../utils/layout";
+import Layout from "../layout/Layout";
+import AlertsTable from "./components/AlertsTable";
+import { useMount } from "../../utils/lifecycle";
+import { AlertsFilters } from "./components/AlertsFilters";
+import TableActions from "../common/tableActions/TableActions";
+import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
+import { stringKeys, strings } from "../../strings";
+import { Loading } from "../common/loading/Loading";
+import TableHeader from "../common/tableHeader/TableHeader";
 
-const AlertsListPageComponent = ({
-  openAlertsList,
-  ...props
-}) => {
+const AlertsListPageComponent = ({ openAlertsList, ...props }) => {
   useMount(() => {
     openAlertsList(props.projectId);
   });
 
-  const useRtlDirection = useSelector(state => state.appData.direction === 'rtl');
+  const useRtlDirection = useSelector(
+    (state) => state.appData.direction === "rtl",
+  );
 
   //useCallback important to avoid infinite loop from useEffect in AlertsFilters
-  const handleFilterChange = useCallback((filters) => {
-    props.getAlerts(props.projectId, 1, filters); // 1 is the default page number
-  }, [props.getAlerts, props.projectId]);
+  const handleFilterChange = useCallback(
+    (filters) => {
+      props.getAlerts(props.projectId, 1, filters); // 1 is the default page number
+    },
+    [props.getAlerts, props.projectId],
+  );
 
   const handlePageChange = (page) => {
     props.getList(props.projectId, page, props.filters);
-  }
+  };
 
   if (!props.filters) {
     return <Loading />;
@@ -38,7 +40,6 @@ const AlertsListPageComponent = ({
 
   return (
     <Fragment>
-
       <TableHeader>
         <TableActions>
           <TableActionsButton
@@ -73,12 +74,12 @@ const AlertsListPageComponent = ({
       />
     </Fragment>
   );
-}
+};
 
 AlertsListPageComponent.propTypes = {
   getList: PropTypes.func,
   isFetching: PropTypes.bool,
-  list: PropTypes.array
+  list: PropTypes.array,
 };
 
 const mapStateToProps = (state, ownProps) => ({
@@ -95,10 +96,10 @@ const mapDispatchToProps = {
   openAlertsList: alertsActions.openList.invoke,
   goToAssessment: alertsActions.goToAssessment,
   getAlerts: alertsActions.getAlerts.invoke,
-  export: alertsActions.exportAlerts.invoke
+  export: alertsActions.exportAlerts.invoke,
 };
 
 export const AlertsListPage = withLayout(
   Layout,
-  connect(mapStateToProps, mapDispatchToProps)(AlertsListPageComponent)
+  connect(mapStateToProps, mapDispatchToProps)(AlertsListPageComponent),
 );
