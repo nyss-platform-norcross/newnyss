@@ -52,7 +52,7 @@ const TabMenuComponent = ({
             <Tab
               key={`tabMenu_${item.url}`}
               label={item.title}
-              onClick={() => onItemClick(item)}
+              onClick={item.isActive ? () => null : () => onItemClick(item)}
             />
           ))}
         </Tabs>
