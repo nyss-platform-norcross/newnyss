@@ -6,7 +6,7 @@ import * as alertsActions from "./logic/alertsActions";
 import Layout from "../layout/Layout";
 import { Loading } from "../common/loading/Loading";
 import { useMount } from "../../utils/lifecycle";
-import { Grid, Divider } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { stringKeys, strings } from "../../strings";
 import DisplayField from "../forms/DisplayField";
 import { AlertsAssessmentReport } from "./components/AlertsAssessmentReport";
@@ -14,26 +14,21 @@ import { assessmentStatus } from "./logic/alertsConstants";
 import { AlertsAssessmentActions } from "./components/AlertsAssessmentActions";
 import AlertNotificationRecipients from "./components/AlertNotificationRecipients";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
+import { makeStyles } from "@material-ui/core/styles";
 
-const getAssessmentStatusInformation = (status) => {
-  switch (status) {
-    case assessmentStatus.open:
-    case assessmentStatus.toEscalate:
-    case assessmentStatus.toDismiss:
-      return stringKeys.alerts.assess.introduction;
+const useStyles = makeStyles(() => ({
+  infoBox: {
+    padding: 10,
+    backgroundColor: "#F4F4F4",
+    border: "1px solid #E3E3E3",
+    borderRadius: 5,
+    margin: "20px 0 20px 0",
+    width: "fit-content",
+    maxWidth: 350
+  },
+}));
 
-    case assessmentStatus.closed:
-      return stringKeys.alerts.assess.statusDescription.closed;
-    case assessmentStatus.escalated:
-      return stringKeys.alerts.assess.statusDescription.escalated;
-    case assessmentStatus.dismissed:
-      return stringKeys.alerts.assess.statusDescription.dismissed;
-    case assessmentStatus.rejected:
-      return stringKeys.alerts.assess.statusDescription.rejected;
-    default:
-      throw new Error("Wrong status");
-  }
-};
+const isLargerThanOne = (number) => number > 1;
 
 const AlertsAssessmentPageComponent = ({
   alertId,
@@ -44,6 +39,8 @@ const AlertsAssessmentPageComponent = ({
   useMount(() => {
     props.openAssessment(projectId, alertId);
   });
+
+  const classes = useStyles()
 
   const useRtlDirection = useSelector(
     (state) => state.appData.direction === "rtl",
@@ -72,14 +69,6 @@ const AlertsAssessmentPageComponent = ({
     <Fragment>
       <SubMenuTitle />
       <div className={styles.form}>
-        <DisplayField
-          label={strings(getAssessmentStatusInformation(data.assessmentStatus))}
-          value={strings(
-            stringKeys.alerts.constants.escalatedOutcomes[
-              data.escalatedOutcome
-            ],
-          )}
-        />
 
         {data.assessmentStatus === assessmentStatus.closed && data.comments && (
           <DisplayField
@@ -88,14 +77,29 @@ const AlertsAssessmentPageComponent = ({
           />
         )}
 
-        <Divider />
-
-        <DisplayField
-          label={strings(stringKeys.alerts.assess.caseDefinition)}
-          value={data.caseDefinition}
-        />
-
-        <Divider />
+        <Grid container className={classes.infoBox}>
+          <Typography variant="body2">{data.caseDefinition}</Typography>
+        </Grid>
+        <Grid container className={classes.infoBox}>
+          <Typography style={{ display: "flex", flexDirection: "row" }} variant="body2">
+            <>
+              <Typography variant="body2" style={{ marginRight: 5 }}>Threshold:</Typography>
+              <strong style={{ marginRight: 5 }}>{data.healthRiskCountThreshold} {isLargerThanOne(data.healthRiskCountThreshold) ? "reports" : "report"}</strong>
+            </>
+            {data.healthRiskDaysThreshold && (
+              <>
+                <Typography variant="body2" style={{ marginRight: 5 }}>in</Typography>
+                <strong style={{ marginRight: 5 }}>{data.healthRiskDaysThreshold} {isLargerThanOne(data.healthRiskDaysThreshold) ? "days" : "day"}</strong>
+              </>
+            )}
+            {data.healthRiskKilometersThreshold && (
+              <>
+                <Typography variant="body2" style={{ marginRight: 5 }}>within</Typography>
+                <strong style={{ marginRight: 5 }}>{data.healthRiskKilometersThreshold} km</strong>
+              </>
+            )}
+          </Typography>
+        </Grid>
 
         {data.recipientsNotified && data.escalatedTo.length > 0 && (
           <>
