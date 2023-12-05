@@ -448,6 +448,10 @@ export const stringKeys = {
       placeholder: "projectSetup.projectRecipients.placeholder",
       error: "projectSetup.projectRecipients.error"
     },
+    cancelDialog: {
+      title: "projectSetup.cancelDialog.title",
+      description: "projectSetup.cancelDialog.description",
+    },
     geographicalStructure: {
       name: "projectSetup.geographicalStructure.name",
       title: "projectSetup.geographicalStructure.title",
@@ -1147,6 +1151,9 @@ export const stringKeys = {
       finish: "common.buttons.finish",
       next: "common.buttons.next",
       tryAgain: "common.buttons.tryAgain",
+      confirmCancelation: "common.buttons.confirmCancelation",
+      denyCancelation: "common.buttons.denyCancelation",
+      
     },
     boolean: {
       true: "common.true",

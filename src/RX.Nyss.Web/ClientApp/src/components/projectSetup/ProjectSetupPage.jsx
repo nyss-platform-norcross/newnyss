@@ -4,6 +4,7 @@ import { withLayout } from '../../utils/layout';
 import Layout from '../layout/Layout';
 import { Loading } from '../common/loading/Loading';
 import * as projectSetupActions from './logic/projectSetupActions';
+import * as projectActions from '../projects/logic/projectsActions';
 import { useMount } from '../../utils/lifecycle';
 import { SetupStepper } from '../common/stepper/SetupStepper'
 import Typography from '@material-ui/core/Typography';
@@ -18,6 +19,7 @@ const ProjectSetupPageComponent = ({
   nationalSocietyId,
   isFetching,
   openProjectSetup,
+  goToList,
   ...props
 }) => {
   useMount(() => {
@@ -85,6 +87,8 @@ const ProjectSetupPageComponent = ({
         setError={setError}
         isNextStepInvalid={isNextStepInvalid}
         setIsNextStepInvalid={setIsNextStepInvalid}
+        goToList={goToList} 
+        nationalSocietyId={nationalSocietyId}
       />
     </div>
   );
@@ -99,6 +103,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   openProjectSetup: projectSetupActions.openSetup.invoke,
+  goToList: projectActions.goToList,
 };
 
 export const ProjectSetupPage = withLayout(
