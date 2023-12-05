@@ -86,6 +86,7 @@ export function appReducer(state = initialState.appData, action) {
           tabMenu: [],
           projectTabMenu: [],
           title: null,
+          subTitle: null,
         },
       };
 

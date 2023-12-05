@@ -128,6 +128,7 @@ export const openModule = {
     tabMenu,
     projectTabMenu,
     title,
+    subTitle,
   ) => ({
     type: actions.OPEN_MODULE.SUCCESS,
     path,
@@ -137,6 +138,7 @@ export const openModule = {
     tabMenu,
     projectTabMenu,
     title,
+    subTitle,
   }),
 
   failure: (message) => ({ type: actions.OPEN_MODULE.FAILURE, message }),
