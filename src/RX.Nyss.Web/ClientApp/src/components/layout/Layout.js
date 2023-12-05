@@ -61,10 +61,8 @@ const Layout = ({ fillPage, children }) => {
               {(nationalSocietyName && !projectName) && (
                 <Typography className={classes.header}>{nationalSocietyName}</Typography>
               )}
-              {projectName ? (
+              {projectName && (
                 <Typography className={classes.header}>{projectName}</Typography>
-              ) : (
-                <div className={classes.title}>{title}</div>
               )}
               <TabMenu />
               {children}
