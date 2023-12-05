@@ -46,15 +46,15 @@ namespace RX.Nyss.ReportApi.Features.Reports
 
         public async Task<bool> ReceiveReport(Report report)
         {
-            if (report.Content == null)
+            /*if (report.Content == null)
             {
                 _loggerAdapter.Error("Received a report with null value or incorrect report source.");
                 return false;
-            }
+            }*/
 
-            _loggerAdapter.Debug($"Received report: {report}");
+            _loggerAdapter.Info($"Received report content: {report.Content}");
 
-            switch (report.ReportSource)
+            /*switch (report.ReportSource)
             {
                 case ReportSource.SmsEagle:
                     await _smsEagleHandler.Handle(report.Content);
@@ -70,7 +70,9 @@ namespace RX.Nyss.ReportApi.Features.Reports
                 default:
                     _loggerAdapter.Error($"Could not find a proper handler to handle a report '{report}'.");
                     break;
-            }
+            }*/
+
+            await _smsEagleHandler.Handle(report.Content);
 
             return true;
         }
