@@ -18,7 +18,7 @@ export const resetPageContentScroll = () => {
 const useStyles = makeStyles({
   header: {
     color: "#000",
-    fontSize: 32,
+    fontSize: 30,
     fontWeight: 700,
     textAlign: "center",
     margin: "20px 0 20px 0",
@@ -62,7 +62,7 @@ const Layout = ({ fillPage, children }) => {
                 <Typography className={classes.header}>{nationalSocietyName}</Typography>
               )}
               {projectName && (
-                <Typography className={classes.header}>{projectName}</Typography>
+                <Typography className={classes.header}>{nationalSocietyName} - {projectName}</Typography>
               )}
               <TabMenu />
               {children}
