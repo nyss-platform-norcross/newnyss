@@ -73,7 +73,7 @@ export const AlertsTable = ({
               <TableCell style={{ width: "18%" }}>
                 {strings(stringKeys.alerts.list.village)}
               </TableCell>
-              <TableCell style={{ width: "7%" }}>
+              <TableCell align="center" style={{ width: "7%" }}>
                 <TableSortLabel
                   hideSortIcon={false}
                   active={filters.orderBy === statusColumn}
@@ -110,7 +110,7 @@ export const AlertsTable = ({
                     .filter((l) => l)
                     .join(", ")}
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <AlertStatusChip status={row.status}/>
                 </TableCell>
                 <TableCell>{row.id}</TableCell>
