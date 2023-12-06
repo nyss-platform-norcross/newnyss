@@ -85,10 +85,32 @@ const ProjectErrorMessagesPageComponent = (props) => {
   }
 
   return (
-    <>
-      <TableHeader />
+    <Grid style={{ maxWidth: 800 }}>
+      <TableHeader>
+        <FormActions className={styles.formsActions}>
+          {form && (
+            <>
+              <CancelButton onClick={cancelEdit}>
+                {strings(stringKeys.form.cancel)}
+              </CancelButton>
+              <SubmitButton isFetching={isSaving}>
+                {strings(stringKeys.common.buttons.update)}
+              </SubmitButton>
+            </>
+          )}
+          {!form && (
+            <TableActionsButton
+              variant={"contained"}
+              onClick={edit}
+              roles={accessMap.projectErrorMessages.edit}
+            >
+              {strings(stringKeys.common.buttons.edit)}
+            </TableActionsButton>
+          )}
+        </FormActions>
+      </TableHeader>
       <Form onSubmit={onSubmit} fullWidth>
-        <Grid container spacing={4} fixed="true" style={{ maxWidth: 800 }}>
+        <Grid container spacing={4} fixed="true">
           {errorMessages.map((itm) => (
             <Grid item xs={12} key={itm.key}>
               <Card>
@@ -116,32 +138,9 @@ const ProjectErrorMessagesPageComponent = (props) => {
               </Card>
             </Grid>
           ))}
-          <Grid item xs={12}>
-            <FormActions className={styles.formsActions}>
-              {form && (
-                <>
-                  <CancelButton onClick={cancelEdit}>
-                    {strings(stringKeys.form.cancel)}
-                  </CancelButton>
-                  <SubmitButton isFetching={isSaving}>
-                    {strings(stringKeys.common.buttons.update)}
-                  </SubmitButton>
-                </>
-              )}
-              {!form && (
-                <TableActionsButton
-                  variant={"contained"}
-                  onClick={edit}
-                  roles={accessMap.projectErrorMessages.edit}
-                >
-                  {strings(stringKeys.common.buttons.edit)}
-                </TableActionsButton>
-              )}
-            </FormActions>
-          </Grid>
         </Grid>
       </Form>
-    </>
+    </Grid>
   );
 };
 
