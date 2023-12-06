@@ -12,11 +12,14 @@ import { stringKeys, strings } from "../../strings";
 import { CreateAlertEventDialog } from "./components/CreateAlertEventDialog";
 import TableActions from "../common/tableActions/TableActions";
 import { Grid, Typography } from "@material-ui/core";
+import { AlertStatusChip } from "../common/chip/AlertStatusChip";
+import * as alertsActions from "../alerts/logic/alertsActions";
 
 const AlertEventsLogPageComponent = ({
   alertId,
   projectId,
   data,
+  alert,
   ...props
 }) => {
   const useRtlDirection = useSelector(
@@ -26,6 +29,7 @@ const AlertEventsLogPageComponent = ({
 
   useMount(() => {
     props.openEventLog(projectId, alertId);
+    props.openAssessment(projectId, alertId);
   });
 
   useEffect(() => {
@@ -34,17 +38,17 @@ const AlertEventsLogPageComponent = ({
     }
   }, [props.data, props.match]);
 
-  if (props.isFetching || !data) {
+  if (props.isFetching || !data || !alert) {
     return <Loading />;
   }
-
   return (
     <Fragment>
-      <Grid container justifyContent="space-between" alignItems="flex-end" style={{ marginBottom: 10 }}>
+      <Grid container justifyContent="space-between" style={{ marginBottom: 10 }}>
         <Grid style={{ width: "fit-content" }}>
-          <Grid container>
+          <Grid container alignItems="center">
             <Typography style={{ fontSize: 24, fontWeight: 700, marginRight: 10 }}>{props.title}</Typography>
-            <Typography variant="body2" style={{ alignSelf: "center" }} >{`#${alertId}`}</Typography>
+            <Typography variant="body2" style={{ alignSelf: "center", marginRight: 15 }} >{`#${alertId}`}</Typography>
+            <AlertStatusChip status={alert.assessmentStatus}/>
           </Grid>
           <Typography variant="body2" style={{ marginTop: 10 }}>{props.subTitle}</Typography>
         </Grid>
@@ -89,11 +93,13 @@ const mapStateToProps = (state, ownProps) => ({
   isSaving: state.alertEvents.formSaving,
   isRemoving: state.alertEvents.logRemoving,
   data: state.alertEvents.logItems,
+  alert: state.alerts.formData,
   title: state.appData.siteMap.parameters.title,
   subTitle: state.appData.siteMap.parameters.subTitle,
 });
 
 const mapDispatchToProps = {
+  openAssessment: alertsActions.openAssessment.invoke,
   openEventLog: alertEventsActions.openEventLog.invoke,
   openCreation: alertEventsActions.openCreation.invoke,
   create: alertEventsActions.create.invoke,
