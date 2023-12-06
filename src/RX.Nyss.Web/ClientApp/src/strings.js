@@ -871,6 +871,7 @@ export const stringKeys = {
       introduction: "alerts.assess.introduction",
       reports: "alerts.assess.reports",
       closeReason: "alerts.assess.closeReason",
+      goBack: "alerts.assess.goBack",
       statusDescription: {
         closed: "alerts.assess.statusDescription.closed",
         escalated: "alerts.assess.statusDescription.escalated",
@@ -1153,7 +1154,7 @@ export const stringKeys = {
       tryAgain: "common.buttons.tryAgain",
       confirmCancelation: "common.buttons.confirmCancelation",
       denyCancelation: "common.buttons.denyCancelation",
-      
+
     },
     boolean: {
       true: "common.true",
