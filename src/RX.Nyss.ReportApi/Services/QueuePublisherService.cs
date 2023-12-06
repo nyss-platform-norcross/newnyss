@@ -50,8 +50,8 @@ namespace RX.Nyss.ReportApi.Services
         {
             if (!string.IsNullOrEmpty(gatewaySetting.IotHubDeviceName))
             {
-                var specifyModemWhenSending = gatewaySetting.Modems.Any();
-                await SendSmsViaIotHub(gatewaySetting.IotHubDeviceName, recipients, message, specifyModemWhenSending);
+                //var specifyModemWhenSending = gatewaySetting.Modems.Any();
+                await SendSmsViaIotHub(gatewaySetting.IotHubDeviceName, recipients, message, false);
             }
             else if (!string.IsNullOrEmpty(gatewaySetting.EmailAddress))
             {
