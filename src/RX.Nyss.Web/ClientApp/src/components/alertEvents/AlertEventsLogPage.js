@@ -11,7 +11,7 @@ import { accessMap } from "../../authentication/accessMap";
 import { stringKeys, strings } from "../../strings";
 import { CreateAlertEventDialog } from "./components/CreateAlertEventDialog";
 import TableActions from "../common/tableActions/TableActions";
-import TableHeader from "../common/tableHeader/TableHeader";
+import { Grid, Typography } from "@material-ui/core";
 
 const AlertEventsLogPageComponent = ({
   alertId,
@@ -40,7 +40,14 @@ const AlertEventsLogPageComponent = ({
 
   return (
     <Fragment>
-      <TableHeader>
+      <Grid container justifyContent="space-between" alignItems="flex-end" style={{ marginBottom: 10 }}>
+        <Grid style={{ width: "fit-content" }}>
+          <Grid container>
+            <Typography style={{ fontSize: 24, fontWeight: 700, marginRight: 10 }}>{props.title}</Typography>
+            <Typography variant="body2" style={{ alignSelf: "center" }} >{`#${alertId}`}</Typography>
+          </Grid>
+          <Typography variant="body2" style={{ marginTop: 10 }}>{props.subTitle}</Typography>
+        </Grid>
         <TableActions>
           <TableActionsButton
             onClick={() => setCreateDialogOpened(true)}
@@ -48,11 +55,11 @@ const AlertEventsLogPageComponent = ({
             roles={accessMap.alertEvents.add}
             add
             rtl={useRtlDirection}
-          >
+            >
             {strings(stringKeys.common.buttons.add)}
           </TableActionsButton>
         </TableActions>
-      </TableHeader>
+      </Grid>
 
       <AlertEventsTable
         alertId={alertId}
@@ -82,6 +89,8 @@ const mapStateToProps = (state, ownProps) => ({
   isSaving: state.alertEvents.formSaving,
   isRemoving: state.alertEvents.logRemoving,
   data: state.alertEvents.logItems,
+  title: state.appData.siteMap.parameters.title,
+  subTitle: state.appData.siteMap.parameters.subTitle,
 });
 
 const mapDispatchToProps = {
