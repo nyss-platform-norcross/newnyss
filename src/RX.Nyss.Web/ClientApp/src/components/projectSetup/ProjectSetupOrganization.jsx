@@ -4,6 +4,8 @@ import {
   InputLabel,
   Typography,
   FormHelperText,
+  Checkbox,
+  FormControlLabel
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -36,6 +38,8 @@ export const ProjectSetupOrganizationComponent = ({
   error,
   setError,
   setIsNextStepInvalid,
+  allowMultipleOrganizations,
+  setAllowMultipleOrganizations
 }) => {
   const classes = useStyles();
   const [selectedOrganization, setSelectedOrganization] = useState(undefined);
@@ -99,6 +103,20 @@ export const ProjectSetupOrganizationComponent = ({
           {errorMessage}
         </FormHelperText>
       )}
+      <FormControlLabel
+        style={{ marginTop: 20 }}
+        control={
+          <Checkbox
+            checked={allowMultipleOrganizations}
+            onChange={(e) => setAllowMultipleOrganizations(e.target.checked)}
+            name="allowMultipleOrganizations"
+            color="primary"
+          />
+        }
+        label={strings(
+          stringKeys.project.form.allowMultipleOrganizations,
+        )}
+      />
     </>
   );
 };
@@ -106,10 +124,12 @@ export const ProjectSetupOrganizationComponent = ({
 const mapStateToProps = (state) => ({
   organizations: state.projectSetup.formData?.organizations,
   selectedOrganizationId: state.projectSetup.organizationId,
+  allowMultipleOrganizations: state.projectSetup.allowMultipleOrganizations,
 });
 
 const mapDispatchToProps = {
   setOrganizationId: projectSetupActions.setOrganizationId,
+  setAllowMultipleOrganizations: projectSetupActions.setAllowMultipleOrganizations
 };
 
 export const ProjectSetupOrganization = connect(

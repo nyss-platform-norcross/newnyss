@@ -3,7 +3,7 @@ import { LOCATION_CHANGE } from "connected-react-router";
 
 export const projectSetupInitialState = {
   projectName: "",
-  allowMultipleOrganizations: null,
+  allowMultipleOrganizations: false,
   timeZoneId: null,
   healthRisks: [],
   organizationId: null,
@@ -47,6 +47,9 @@ export function projectSetupReducer(state = projectSetupInitialState, action) {
 
     case actions.SET_ORGANIZATION_ID:
       return { ...state, organizationId: action.organizationId };
+
+    case actions.SET_ALLOW_MULTIPLE_ORGANIZATIONS:
+      return { ...state, allowMultipleOrganizations: action.allowMultipleOrganizations };
 
     case actions.SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_IDS:
       return { ...state,  alertNotHandledNotificationRecipientIds: action.alertNotHandledNotificationRecipientIds}
