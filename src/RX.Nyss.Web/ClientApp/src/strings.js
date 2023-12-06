@@ -920,6 +920,8 @@ export const stringKeys = {
         age: "alerts.assess.report.age",
         id: "alerts.assess.report.id",
         linkedToSupervisor: "alerts.assess.report.linkedToSupervisor",
+        sent: "alerts.assess.report.sent",
+        reportId: "alerts.assess.report.reportId",
       },
       escalatedTo: {
         title: "alerts.assess.escalatedTo.title",

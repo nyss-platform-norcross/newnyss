@@ -97,12 +97,12 @@ export const AlertsAssessmentReport = ({
         <Grid container alignContent="center">
           <Grid container alignItems="center" item xs={4}>
             <Typography className={classes.time}>
-              Sent {dayjs(dayjs(report.receivedAt).format("YYYY-MM-DD HH:mm")).fromNow()}
+              {strings(stringKeys.alerts.assess.report.sent)} {dayjs(dayjs(report.receivedAt).format("YYYY-MM-DD HH:mm")).fromNow()}
             </Typography>
           </Grid>
           <Grid container alignItems="center" item xs={4}>
             <Typography variant="body2" className={classes.report}>
-              Report ID #{report.id}
+            {strings(stringKeys.alerts.assess.report.reportId)} #{report.id}
             </Typography>
           </Grid>
           <Grid className={classes.chip} container alignItems="center" item xs={4} justifyContent="flex-end">
