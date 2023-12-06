@@ -933,6 +933,16 @@ export const stringKeys = {
         organization: "alerts.assess.escalatedTo.organization",
         phoneNumber: "alerts.assess.escalatedTo.phoneNumber",
       },
+      thresholdInfo: {
+        threshold: "alerts.assess.alert.threshold",
+        reports: "alerts.assess.alert.reports",
+        report: "alerts.assess.alert.report",
+        days: "alerts.assess.alert.days",
+        day: "alerts.assess.alert.day",
+        in: "alerts.assess.alert.in",
+        within: "alerts.assess.alert.within",
+        kilometers: "alerts.assess.alert.kilometers",
+      }
     },
     eventLog: {
       title: "alerts.eventLog.title",

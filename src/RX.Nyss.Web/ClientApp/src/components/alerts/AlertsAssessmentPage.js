@@ -83,19 +83,19 @@ const AlertsAssessmentPageComponent = ({
         <Grid container className={classes.infoBox}>
           <Typography style={{ display: "flex", flexDirection: "row" }} variant="body2">
             <>
-              <Typography variant="body2" style={{ marginRight: 5 }}>Threshold:</Typography>
-              <strong style={{ marginRight: 5 }}>{data.healthRiskCountThreshold} {isLargerThanOne(data.healthRiskCountThreshold) ? "reports" : "report"}</strong>
+              <Typography variant="body2" style={{ marginRight: 5 }}>{strings(stringKeys.alerts.assess.thresholdInfo.threshold)}:</Typography>
+              <strong style={{ marginRight: 5 }}>{data.healthRiskCountThreshold} {isLargerThanOne(data.healthRiskCountThreshold) ? strings(stringKeys.alerts.assess.thresholdInfo.reports) : strings(stringKeys.alerts.assess.thresholdInfo.report)}</strong>
             </>
             {data.healthRiskDaysThreshold && (
               <>
-                <Typography variant="body2" style={{ marginRight: 5 }}>in</Typography>
-                <strong style={{ marginRight: 5 }}>{data.healthRiskDaysThreshold} {isLargerThanOne(data.healthRiskDaysThreshold) ? "days" : "day"}</strong>
+                <Typography variant="body2" style={{ marginRight: 5 }}>{strings(stringKeys.alerts.assess.thresholdInfo.in)}</Typography>
+                <strong style={{ marginRight: 5 }}>{data.healthRiskDaysThreshold} {isLargerThanOne(data.healthRiskDaysThreshold) ? strings(stringKeys.alerts.assess.thresholdInfo.days) : strings(stringKeys.alerts.assess.thresholdInfo.day)}</strong>
               </>
             )}
             {data.healthRiskKilometersThreshold && (
               <>
-                <Typography variant="body2" style={{ marginRight: 5 }}>within</Typography>
-                <strong style={{ marginRight: 5 }}>{data.healthRiskKilometersThreshold} km</strong>
+                <Typography variant="body2" style={{ marginRight: 5 }}>{strings(stringKeys.alerts.assess.thresholdInfo.within)}</Typography>
+                <strong style={{ marginRight: 5 }}>{data.healthRiskKilometersThreshold} {strings(stringKeys.alerts.assess.thresholdInfo.kilometers)}</strong>
               </>
             )}
           </Typography>
