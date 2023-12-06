@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import { AlertStatusChip } from "../../common/chip/AlertStatusChip";
 
 export const AlertsTable = ({
   isListFetching,
@@ -110,7 +111,7 @@ export const AlertsTable = ({
                     .join(", ")}
                 </TableCell>
                 <TableCell>
-                  {strings(stringKeys.alerts.constants.alertStatus[row.status])}
+                  <AlertStatusChip status={row.status}/>
                 </TableCell>
                 <TableCell>{row.id}</TableCell>
               </TableRow>

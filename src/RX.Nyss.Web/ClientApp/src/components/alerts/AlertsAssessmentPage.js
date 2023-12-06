@@ -13,6 +13,7 @@ import { AlertsAssessmentReport } from "./components/AlertsAssessmentReport";
 import { assessmentStatus } from "./logic/alertsConstants";
 import { AlertsAssessmentActions } from "./components/AlertsAssessmentActions";
 import AlertNotificationRecipients from "./components/AlertNotificationRecipients";
+import { AlertStatusChip } from "../common/chip/AlertStatusChip";
 
 const getAssessmentStatusInformation = (status) => {
   switch (status) {
@@ -67,12 +68,12 @@ const AlertsAssessmentPageComponent = ({
     return <Loading />;
   }
 
-
   return (
     <Fragment>
-      <Grid container>
+      <Grid container alignItems="center">
         <Typography style={{ fontSize: 24, fontWeight: 700, marginRight: 10 }}>{props.title}</Typography>
-        <Typography variant="body2" style={{ alignSelf: "center" }} >{`#${alertId}`}</Typography>
+        <Typography variant="body2" style={{ alignSelf: "center", marginRight: 15 }} >{`#${alertId}`}</Typography>
+        <AlertStatusChip status={data.assessmentStatus}/>
       </Grid>
       <Typography variant="body2" style={{ marginTop: 10 }}>{props.subTitle}</Typography>
       <div className={styles.form}>
