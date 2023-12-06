@@ -71,8 +71,6 @@ namespace RX.Nyss.ReportApi.Features.Reports
                     _loggerAdapter.Error($"Could not find a proper handler to handle a report '{report}'.");
                     break;
             }
-
-            await _smsEagleHandler.Handle(report.Content);
             return true;
         }
 
