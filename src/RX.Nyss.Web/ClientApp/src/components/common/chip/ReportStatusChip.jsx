@@ -8,13 +8,13 @@ const getReportIcon = (status, rtl) => {
   switch (status) {
     case "Pending":
       return (
-        <Icon fontSize="small" >
+        <Icon fontSize="small" className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
           hourglass_empty
         </Icon>
       );
     case "New":
       return (
-        <Icon fontSize="small" >
+        <Icon fontSize="small" className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
           hourglass_empty
         </Icon>
       );
@@ -79,7 +79,7 @@ export const ReportStatusChip = ({ report, rtl }) => {
     <Chip
       label={
         <Grid container justifyContent="center" alignItems="center">
-          <Grid item style={{ margin: rtl ? "0 0 0 5px" : "0 5px 0 0" }}>
+          <Grid container alignItems="center" item style={{ margin: rtl ? "0 0 0 5px" : "0 5px 0 0", width: "fit-content" }}>
             {getReportIcon(report.status, rtl)}
           </Grid>
           <Grid item>
