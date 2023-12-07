@@ -90,9 +90,9 @@ const SummaryGeographicalStructureRow = ({ name, rows }) => {
         </Grid>
         <Grid item xs={8}>
           {rows.length > 0 ? (
-            rows.map(row => {
+            rows.map((row, index) => {
               return (
-                <Grid item container direction="row" xs={12} alignItems="center" key={row.region.id}>
+                <Grid item container direction="row" xs={12} alignItems="center" key={`${row.region.id}_${index}`}>
                   <Typography className={row.region.canModify && classes.newLocation}>
                     {row.region.name}
                   </Typography>
@@ -141,38 +141,92 @@ const ProjectSetupSummaryComponent = (props) => {
 
   // Dummy data
   const selectedHealthRisks = [{ name: "Fever and rash", id: 1 }, { name: "Acute Watery Diaherra", id: 2 }, { name: "Fever and body pain", id: 3 }, { name: "Fever and neck stiffness", id: 4 }]
-  regions = [{ id: "reg1",  name: "Region1", nationalSocietyId: "ns" }, { id: "reg2",  name: "Region2", nationalSocietyId: "ns", canModify: true }]
-  districts = [{ id: "dis1",  name: "District1", regionId: "reg1" }, { id: "dis2",  name: "District2", regionId: "reg2", canModify: true }]
-  villages = [{ id: "vil1",  name: "Village1", districtId: "dis1" }, { id: "vil2",  name: "Village2", districtId: "dis2", canModify: true }]
-  zones = [{ id: "zon1",  name: "Zone1", villageId: "vil1", canModify: true }]
 
   let allLocationRows = []
-  regions.forEach(region => allLocationRows.push({ region: region }))
+  regions.forEach(region => allLocationRows.push({ region: region, districts: [], villages: [], zones: [] }))
+
   districts.forEach(district => {
     allLocationRows.forEach(row => {
-      if (district.regionId === row.region.id) {
-        row.district = district
-        return;
+      if (district.regionId === row.region?.id) {
+        row.districts = [...row.districts, district];
       }
     })
   })
   villages.forEach(village => {
     allLocationRows.forEach(row => {
-      if (village.districtId === row.district.id) {
-        row.village = village
-        return;
+      const district = row.districts.find(district => district.id === village.districtId);
+      if (district) {
+        row.villages = [...row.villages, village];
       }
     })
   })
   zones.forEach(zone => {
     allLocationRows.forEach(row => {
-      if (zone.villageId === row.village.id) {
-        row.zone = zone
-        return;
+      const village = row.villages.find(village => village.id === zone.villageId);
+      if (village) {
+        row.zones = [...row.zones, zone];
       }
     })
   })
-  const newLocationRows = allLocationRows.filter(row => row.region.canModify || row.district.canModify || row.village.canModify || row.zone.canModify)
+
+  const newLocationRows = []
+  allLocationRows.forEach(row => {
+    const newZones = row.zones.filter(district => district.canModify)
+    if(newZones.length > 0) {
+      newZones.forEach(zone => {
+        const village = row.villages.find(village => village.id === zone.villageId);
+        const district = row.districts.find(district => district.id === village.districtId);
+        newLocationRows.push({
+          region: row.region,
+          district: district,
+          village: village,
+          zone: zone
+        })
+      })
+    }
+    const newVillages = row.villages.filter(village => village.canModify)
+    if(newVillages.length > 0) {
+      newVillages.forEach(village => {
+        if(!newLocationRows.some(location => location.village?.id === village.id)) {
+          const district = row.districts.find(district => district.id === village.districtId);
+          newLocationRows.push({
+            region: row.region,
+            district: district,
+            village: village,
+            zone: null
+          })
+        }
+      })
+    }
+    const newDistricts = row.districts.filter(district => district.canModify)
+    if(newDistricts.length > 0) {
+      newDistricts.forEach(district => {
+        if(!newLocationRows.some(location => location.district?.id === district.id)) {
+          newLocationRows.push({
+            region: row.region,
+            district: district,
+            village: null,
+            zone: null
+          })
+        }
+      })
+    }
+  })
+  const newRegions = allLocationRows.filter(row => row.region.canModify).map(row => row.region);
+  if(newRegions.length > 0) {
+    newRegions.forEach(region => {
+      if(newLocationRows.every(location => location.region.id !== region.id)) {
+        console.log(newLocationRows)
+        console.log(region)
+        newLocationRows.push({
+          region: region,
+          district: null,
+          village: null,
+          zone: null
+        })
+      }
+    })
+  }
 
   return (
     <>

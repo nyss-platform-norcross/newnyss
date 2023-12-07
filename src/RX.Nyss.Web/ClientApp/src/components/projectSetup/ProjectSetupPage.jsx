@@ -70,13 +70,13 @@ const ProjectSetupPageComponent = ({
     {
       name: strings(stringKeys.projectSetup.geographicalStructure.name),
       content: <ProjectSetupGeographicalStructure />,
-      stepNumber: 4,
+      stepNumber: 3,
       isOptional: true,
     },
     {
       name: strings(stringKeys.projectSetup.summary.name),
       content: <ProjectSetupSummary />,
-      stepNumber: 3
+      stepNumber: 4
     },
   ];
 
