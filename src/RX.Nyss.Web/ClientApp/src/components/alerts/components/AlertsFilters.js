@@ -1,14 +1,26 @@
 import styles from "./AlertsFilters.module.scss";
-import { Grid, TextField, MenuItem, Card, CardContent } from '@material-ui/core';
+import {
+  Grid,
+  TextField,
+  MenuItem,
+  Card,
+  CardContent,
+} from "@material-ui/core";
 import LocationFilter from "../../common/filters/LocationFilter";
 import { strings, stringKeys } from "../../../strings";
-import {alertStatusFilters} from "../logic/alertsConstants";
-import {DatePicker} from "../../forms/DatePicker";
-import {convertToLocalDate, convertToUtc} from "../../../utils/date";
+import { alertStatusFilters } from "../logic/alertsConstants";
+import { DatePicker } from "../../forms/DatePicker";
+import { convertToLocalDate, convertToUtc } from "../../../utils/date";
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";
 
-export const AlertsFilters = ({ filters, locations, healthRisks, onChange, rtl }) => {
+export const AlertsFilters = ({
+  filters,
+  locations,
+  healthRisks,
+  onChange,
+  rtl,
+}) => {
   //Reducer for local filters state
   const [localFilters, updateLocalFilters] = useLocalFilters(filters);
 
@@ -19,19 +31,25 @@ export const AlertsFilters = ({ filters, locations, healthRisks, onChange, rtl }
 
   //Syncs locations from redux store with filter state and sets label for location filter to 'All' or "Region (+n)"
   //Neccecary if locations are added, edited or removed, to make all filters checked
-  const [locationsFilterLabel] = useLocationFilter(locations, localFilters, updateLocalFilters)
+  const [locationsFilterLabel] = useLocationFilter(
+    locations,
+    localFilters,
+    updateLocalFilters,
+  );
 
   const handleLocationChange = (newValue) => {
     handleFiltersChange({ locations: newValue });
-  }
+  };
 
   const handleHealthRiskChange = (event) => {
-    handleFiltersChange({ healthRiskId: event.target.value > 0 ? event.target.value : null });
-  }
+    handleFiltersChange({
+      healthRiskId: event.target.value > 0 ? event.target.value : null,
+    });
+  };
 
   const handleStatusChange = (event) => {
     handleFiltersChange({ status: event.target.value });
-  }
+  };
 
   const handleDateFromChange = (date) =>
     handleFiltersChange({ startDate: convertToUtc(date) });
@@ -55,8 +73,7 @@ export const AlertsFilters = ({ filters, locations, healthRisks, onChange, rtl }
               onChange={handleDateFromChange}
               className={styles.filterItem}
               InputLabelProps={{ shrink: true }}
-            >
-            </DatePicker>
+            ></DatePicker>
           </Grid>
           <Grid item>
             <DatePicker
@@ -66,8 +83,7 @@ export const AlertsFilters = ({ filters, locations, healthRisks, onChange, rtl }
               onChange={handleDateToChange}
               className={styles.filterItem}
               InputLabelProps={{ shrink: true }}
-            >
-            </DatePicker>
+            ></DatePicker>
           </Grid>
           <Grid item>
             <LocationFilter
@@ -88,9 +104,11 @@ export const AlertsFilters = ({ filters, locations, healthRisks, onChange, rtl }
               className={styles.filterItem}
               InputLabelProps={{ shrink: true }}
             >
-              <MenuItem value={0}>{strings(stringKeys.alerts.filters.healthRisksAll)}</MenuItem>
+              <MenuItem value={0}>
+                {strings(stringKeys.alerts.filters.healthRisksAll)}
+              </MenuItem>
 
-              {healthRisks.map(hr => (
+              {healthRisks.map((hr) => (
                 <MenuItem key={`filter_healthRisk_${hr.id}`} value={hr.id}>
                   {hr.name}
                 </MenuItem>
@@ -102,21 +120,20 @@ export const AlertsFilters = ({ filters, locations, healthRisks, onChange, rtl }
             <TextField
               select
               label={strings(stringKeys.alerts.filters.status)}
-              value={localFilters.status || 'All'}
+              value={localFilters.status || "All"}
               onChange={handleStatusChange}
               className={styles.filterItem}
               InputLabelProps={{ shrink: true }}
             >
-              {Object.values(alertStatusFilters).map(status => (
+              {Object.values(alertStatusFilters).map((status) => (
                 <MenuItem key={`filter_status_${status}`} value={status}>
                   {strings(stringKeys.alerts.constants.alertStatus[status])}
                 </MenuItem>
               ))}
             </TextField>
           </Grid>
-
         </Grid>
       </CardContent>
     </Card>
   );
-}
+};

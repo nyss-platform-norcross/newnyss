@@ -35,7 +35,7 @@ public class TelerivetReportReceiver
     {
         if (httpRequest.Content.Headers.ContentLength == null)
         {
-            _logger.Log(LogLevel.Warning, "Received an empty Telerivet report.");
+            _logger.Log(LogLevel.Warning, "Received a Telerivet report with header content length null.");
             return new BadRequestResult();
         }
 

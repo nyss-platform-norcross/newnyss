@@ -13,5 +13,5 @@ export const getSaveFormModel = (values, healthRisks) =>
       alertRuleKilometersThreshold: parseInt(values[`healthRisk.${healthRisk.healthRiskId}.alertRuleKilometersThreshold`])
     })),
     organizationId: values.organizationId ? parseInt(values.organizationId) : null,
-    alertNotHandledNotificationRecipientId: parseInt(values.alertNotHandledNotificationRecipientId)
+    alertNotHandledNotificationRecipientIds: values.alertNotHandledNotificationRecipientIds.map(recipient => parseInt(recipient.id))
   });

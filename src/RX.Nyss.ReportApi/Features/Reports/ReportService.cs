@@ -48,11 +48,11 @@ namespace RX.Nyss.ReportApi.Features.Reports
         {
             if (report.Content == null)
             {
-                _loggerAdapter.Error("Received a report with null value.");
+                _loggerAdapter.Error("Received a report with null value or incorrect report source.");
                 return false;
             }
 
-            _loggerAdapter.Debug($"Received report: {report}");
+            _loggerAdapter.Info($"Received report content: {report.Content}");
 
             switch (report.ReportSource)
             {
@@ -62,11 +62,15 @@ namespace RX.Nyss.ReportApi.Features.Reports
                 case ReportSource.Nyss:
                     await _nyssReportHandler.Handle(report.Content);
                     break;
+                case ReportSource.SmsGateway:
+                    await _smsGatewayHandler.Handle(report.Content);
+                    break;
+                case ReportSource.Telerivet:
+                    break;
                 default:
                     _loggerAdapter.Error($"Could not find a proper handler to handle a report '{report}'.");
                     break;
             }
-
             return true;
         }
 
@@ -92,18 +96,6 @@ namespace RX.Nyss.ReportApi.Features.Reports
                 return false;
             }
 
-            return true;
-        }
-
-        public async Task<bool> ReceiveDigitalGatewayReport(Report report)
-        {
-            if (report == null)
-            {
-                _loggerAdapter.Error("Received a report with null value.");
-                return false;
-            }
-
-            _loggerAdapter.Debug($"Received report:{report}");
             return true;
         }
 

@@ -18,6 +18,7 @@ namespace RX.Nyss.ReportApi.Features.Reports
 
         // Report comes from SMSEagle/Nyss manual button and is forwarded to Nyss
         [HttpPost]
+        [Route("registerReport")]
         public async Task<IActionResult> Post([FromBody] Report report) =>
             await _reportService.ReceiveReport(report)
                 ? (StatusCodeResult)new OkResult()
