@@ -137,10 +137,9 @@ const ProjectSetupSummaryComponent = (props) => {
   let { projectName, organizations, organizationId, recipients, recipientIds, healthRisks, regions, districts, villages, zones } = props;
   const classes = useStyles();
   const organizationName = organizations?.find(org => org.id === organizationId).name;
-  // const selectedRecipients = recipients.filter(recipient => recipientIds.includes(recipient.id)).map(recipient => recipient.name);
+  const selectedRecipients = recipients?.filter(recipient => recipientIds.includes(recipient.id)).map(recipient => recipient.name);
 
   // Dummy data
-  const selectedRecipients = ["Ian", "Alvar", "Sondre", "Tonje", "Ian", "Alvar", "Sondre", "Tonje", "Ian", "Alvar", "Sondre", "Tonje", "Ian", "Alvar", "Sondre", "Tonje"]
   const selectedHealthRisks = [{ name: "Fever and rash", id: 1 }, { name: "Acute Watery Diaherra", id: 2 }, { name: "Fever and body pain", id: 3 }, { name: "Fever and neck stiffness", id: 4 }]
   regions = [{ id: "reg1",  name: "Region1", nationalSocietyId: "ns" }, { id: "reg2",  name: "Region2", nationalSocietyId: "ns", canModify: true }]
   districts = [{ id: "dis1",  name: "District1", regionId: "reg1" }, { id: "dis2",  name: "District2", regionId: "reg2", canModify: true }]
@@ -194,7 +193,7 @@ const ProjectSetupSummaryComponent = (props) => {
 const mapStateToProps = (state) => ({
   projectName: state.projectSetup.projectName,
   organizationId: state.projectSetup.organizationId,
-  recipients: state.projectSetup.formData?.alertNotHandledNotificationRecipients,
+  recipients: state.projectSetup.formData?.alertNotHandledRecipients,
   organizations: state.projectSetup.formData?.organizations,
   recipientIds: state.projectSetup.alertNotHandledNotificationRecipientIds,
   healthRisks: state.projectSetup.healthRisks,
