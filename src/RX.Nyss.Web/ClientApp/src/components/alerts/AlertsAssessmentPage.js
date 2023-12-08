@@ -6,14 +6,14 @@ import * as alertsActions from "./logic/alertsActions";
 import Layout from "../layout/Layout";
 import { Loading } from "../common/loading/Loading";
 import { useMount } from "../../utils/lifecycle";
-import { Grid, Divider } from "@material-ui/core";
+import { Grid, Divider, Typography } from "@material-ui/core";
 import { stringKeys, strings } from "../../strings";
 import DisplayField from "../forms/DisplayField";
 import { AlertsAssessmentReport } from "./components/AlertsAssessmentReport";
 import { assessmentStatus } from "./logic/alertsConstants";
 import { AlertsAssessmentActions } from "./components/AlertsAssessmentActions";
 import AlertNotificationRecipients from "./components/AlertNotificationRecipients";
-import { SubMenuTitle } from "../layout/SubMenuTitle";
+import { AlertStatusChip } from "../common/chip/AlertStatusChip";
 
 const getAssessmentStatusInformation = (status) => {
   switch (status) {
@@ -70,7 +70,12 @@ const AlertsAssessmentPageComponent = ({
 
   return (
     <Fragment>
-      <SubMenuTitle />
+      <Grid container alignItems="center">
+        <Typography style={{ fontSize: 24, fontWeight: 700, marginRight: 10 }}>{props.title}</Typography>
+        <Typography variant="body2" style={{ alignSelf: "center", marginRight: 15 }} >{`#${alertId}`}</Typography>
+        <AlertStatusChip status={data.assessmentStatus}/>
+      </Grid>
+      <Typography variant="body2" style={{ marginTop: 10 }}>{props.subTitle}</Typography>
       <div className={styles.form}>
         <DisplayField
           label={strings(getAssessmentStatusInformation(data.assessmentStatus))}
@@ -174,6 +179,8 @@ const mapStateToProps = (state, ownProps) => ({
   isPendingAlertState: state.alerts.isPendingAlertState,
   validateEidsrResult: state.alerts.formData?.validateEidsrResult,
   isLoadingValidateEidsr: state.alerts.isLoadingValidateEidsr,
+  title: state.appData.siteMap.parameters.title,
+  subTitle: state.appData.siteMap.parameters.subTitle,
 });
 
 const mapDispatchToProps = {
