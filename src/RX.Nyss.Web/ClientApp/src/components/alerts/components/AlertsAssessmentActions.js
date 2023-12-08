@@ -138,7 +138,7 @@ export const AlertsAssessmentActions = ({
           </Grid>
           <Grid item container xs={6} justifyContent="flex-end">
             <CancelButton onClick={() => props.goToList(projectId)}>
-              {strings(stringKeys.form.cancel)}
+              {strings(stringKeys.alerts.assess.goBack)}
             </CancelButton>
             {!props.isPendingAlertState && (
               <Fragment>
