@@ -872,6 +872,11 @@ export const stringKeys = {
       reports: "alerts.assess.reports",
       closeReason: "alerts.assess.closeReason",
       goBack: "alerts.assess.goBack",
+      status: {
+        Open: "alerts.assess.status.open",
+        Closed: "alerts.assess.status.closed",
+        Escalated: "alerts.assess.status.escalated",
+      },
       statusDescription: {
         closed: "alerts.assess.statusDescription.closed",
         escalated: "alerts.assess.statusDescription.escalated",
