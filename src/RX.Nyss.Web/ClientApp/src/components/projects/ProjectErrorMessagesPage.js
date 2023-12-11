@@ -17,6 +17,7 @@ import { openErrorMessages } from "./logic/projectsActions";
 import styles from "./ProjectErrorMessagesPage.module.scss";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
 import TableHeader from "../common/tableHeader/TableHeader";
+import EditIcon from "@material-ui/icons/Edit";
 
 const MESSAGE_MAX_LEN = 320;
 const MESSAGE_WARNING_LEN = 160;
@@ -100,6 +101,7 @@ const ProjectErrorMessagesPageComponent = (props) => {
           )}
           {!form && (
             <TableActionsButton
+              startIcon={<EditIcon />}
               variant={"contained"}
               onClick={edit}
               roles={accessMap.projectErrorMessages.edit}
