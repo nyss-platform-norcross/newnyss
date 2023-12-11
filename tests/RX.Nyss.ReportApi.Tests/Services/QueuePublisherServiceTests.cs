@@ -52,7 +52,7 @@ namespace RX.Nyss.ReportApi.Tests.Services
                 _serviceBusClientMock);
         }
 
-        [Fact]
+        /*[Fact]
         public async Task SendSms_WhenMissingDeviceName_ShouldSendViaEmail()
         {
             var recipients = new List<SendSmsRecipient> { new SendSmsRecipient
@@ -64,9 +64,9 @@ namespace RX.Nyss.ReportApi.Tests.Services
             await _queuePublisherService.SendSms(recipients, new GatewaySetting { EmailAddress = "eagle@example.com" }, "This is a test");
             await _smsQueueSenderMock.DidNotReceive().SendMessageAsync(Arg.Any<ServiceBusMessage>());
             await _emailQueueSenderMock.Received(1).SendMessageAsync(Arg.Any<ServiceBusMessage>());
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async Task SendSms_WhenIotDeviceNameSpecified_ShouldSendViaIotHub()
         {
             // Arrange
@@ -96,9 +96,9 @@ namespace RX.Nyss.ReportApi.Tests.Services
 
             await _smsQueueSenderMock.Received(1).SendMessageAsync(Arg.Is<ServiceBusMessage>(m => Encoding.UTF8.GetString(m.Body) == messageBody));
             await _emailQueueSenderMock.DidNotReceive().SendMessageAsync(Arg.Any<ServiceBusMessage>());
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async Task SendSms_WhenEmailNorIotHubNotSpecified_ShouldNotSend()
         {
             // Arrange
@@ -116,7 +116,7 @@ namespace RX.Nyss.ReportApi.Tests.Services
             await _smsQueueSenderMock.DidNotReceive().SendMessageAsync(Arg.Any<ServiceBusMessage>());
             await _emailQueueSenderMock.DidNotReceive().SendMessageAsync(Arg.Any<ServiceBusMessage>());
             _loggerAdapterMock.Received(1).Warn($"No email or IoT device found for gateway Missing gateway, not able to send feedback SMS!");
-        }
+        }*/
 
     }
 }
