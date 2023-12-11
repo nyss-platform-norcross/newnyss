@@ -105,7 +105,7 @@ namespace RX.Nyss.ReportApi.Services
             {
 
                 var cloudToDeviceMethod = new CloudToDeviceMethod("send_sms", TimeSpan.FromSeconds(30));
-                cloudToDeviceMethod.SetPayloadJson(JsonConvert.SerializeObject(new SmsIoTHubMessage
+                var sendSms = new SmsIoTHubMessage
                 {
                     To = recipient.PhoneNumber,
                     Message = smsMessage,
@@ -113,16 +113,18 @@ namespace RX.Nyss.ReportApi.Services
                         ? recipient.Modem
                         : null,
                     Unicode = "1"
-                }, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+                };
+                cloudToDeviceMethod.SetPayloadJson(JsonConvert.SerializeObject(sendSms, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
 
-                return _iotHubServiceClient.InvokeDeviceMethodAsync(iotHubDeviceName, cloudToDeviceMethod);
+                var response = _iotHubServiceClient.InvokeDeviceMethodAsync(iotHubDeviceName, cloudToDeviceMethod);
 
-                //var response = _iotHubServiceClient.InvokeDeviceMethodAsync(iotHubDeviceName, cloudToDeviceMethod);
-
-                /*if (response.Status != 200)
+                if (response.Status == TaskStatus.Faulted)
                 {
-                    throw new Exception($"Failed to send sms to device {iotHubDeviceName}, {response.GetPayloadAsJson()}");
-                }*/
+                    throw new Exception($"Failed to send sms to device {iotHubDeviceName}");
+                }
+
+                var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(sendSms)));
+                return _sendSmsQueueSender.SendMessageAsync(message);
 
                 /*var sendSms = new SendSmsMessage
                 {
