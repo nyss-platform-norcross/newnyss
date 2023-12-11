@@ -125,11 +125,11 @@ export const AlertsAssessmentReport = ({
           </Grid>
           <Grid container item xs={8}>
             <ReportFormLabel
-              label={"Date"}
+              label={strings(stringKeys.alerts.assess.report.date)}
               value={dayjs(report.receivedAt).format("YYYY-MM-DD")}
             />
             <ReportFormLabel
-              label={"Time"}
+              label={strings(stringKeys.alerts.assess.report.time)}
               value={dayjs(report.receivedAt).format("HH:mm")}
             />
             {report.sex && (
