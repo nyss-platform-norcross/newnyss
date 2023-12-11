@@ -1,10 +1,19 @@
+import React, { useEffect, useState } from "react";
 import { ApplicationInsights } from "@microsoft/applicationinsights-web";
 
 let ai;
 
 export const ApplicationInsightsProvider = ({connectionString, children}) => {
-  ai = new ApplicationInsights({ config: { connectionString: connectionString } });
-  ai.loadAppInsights();
+  const [activated, setActivated] = useState(false);
+
+  useEffect(() => {
+      if (!activated && connectionString) {
+          ai = new ApplicationInsights({ config: { connectionString: connectionString } });
+          ai.loadAppInsights();
+
+          setActivated(true);
+      }
+  }, [activated, connectionString]);
 
   return <>{children}</>;
 };
