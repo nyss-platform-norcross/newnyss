@@ -6,6 +6,7 @@ export const projectSetupInitialState = {
   allowMultipleOrganizations: null,
   timeZoneId: null,
   healthRisks: [],
+  requiredHealthRisks: [],
   organizationId: null,
   alertNotHandledNotificationRecipientIds: [],
   formFetching: false,
@@ -53,6 +54,9 @@ export function projectSetupReducer(state = projectSetupInitialState, action) {
 
     case actions.SET_HEALTH_RISKS:
       return { ...state, healthRisks: action.healthRisks };
+
+    case actions.SET_REQUIRED_HEALTH_RISKS:
+      return { ...state, requiredHealthRisks: action.requiredHealthRisks };
 
     case actions.SET_REGIONS:
       return { ...state, regions: action.regions };
