@@ -10,7 +10,6 @@
     <UserSecretsId>a53b196f-5472-4183-8faa-92af93f592f4</UserSecretsId>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
@@ -30,7 +29,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.9" />
-<!--    Depricated. Use https://www.nuget.org/packages/Azure.Storage.Blobs/-->
+    <!--    Depricated. Use https://www.nuget.org/packages/Azure.Storage.Blobs/-->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">
@@ -51,11 +50,16 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="Telerivet.NET" Version="1.7.1" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\RX.Nyss.Common\RX.Nyss.Common.csproj" />
     <ProjectReference Include="..\RX.Nyss.Data\RX.Nyss.Data.csproj" />
   </ItemGroup>
+
+  <!-- Attach Husky. Restores and installs husky on dotnet restore. Automatically configures husky so new developers do not have to manually install the tool -->
+  <Target Name="Husky" BeforeTargets="Restore;CollectPackageReferences" Condition="'$(HUSKY)' != 0">
+    <Exec Command="dotnet tool restore" StandardOutputImportance="Low" StandardErrorImportance="High" />
+    <Exec Command="dotnet husky install" StandardOutputImportance="Low" StandardErrorImportance="High" WorkingDirectory="../.." />
+  </Target>
 
   <ItemGroup>
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" />
@@ -87,7 +91,6 @@
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
-
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
       <DistFiles Include="$(SpaRoot)build\**" />
@@ -98,5 +101,4 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
-
 </Project>
