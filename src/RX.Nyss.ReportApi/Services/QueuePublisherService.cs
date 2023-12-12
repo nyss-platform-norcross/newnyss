@@ -35,7 +35,7 @@ namespace RX.Nyss.ReportApi.Services
         private readonly INyssReportApiConfig _config;
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly ILoggerAdapter _loggerAdapter;
-        private readonly ServiceClient _iotHubServiceClient;
+        //private readonly ServiceClient _iotHubServiceClient;
 
         public QueuePublisherService(INyssReportApiConfig config, IDateTimeProvider dateTimeProvider, ILoggerAdapter loggerAdapter, ServiceBusClient serviceBusClient)
         {
@@ -45,7 +45,7 @@ namespace RX.Nyss.ReportApi.Services
             _sendEmailQueueSender = serviceBusClient.CreateSender(config.ServiceBusQueues.SendEmailQueue);
             _checkAlertQueueSender = serviceBusClient.CreateSender(config.ServiceBusQueues.CheckAlertQueue);
             _sendSmsQueueSender = serviceBusClient.CreateSender(config.ServiceBusQueues.SendSmsQueue);
-            _iotHubServiceClient = ServiceClient.CreateFromConnectionString(config.ConnectionStrings.IotHubService);
+            //_iotHubServiceClient = ServiceClient.CreateFromConnectionString(config.ConnectionStrings.IotHubService);
         }
 
         public async Task SendSms(List<SendSmsRecipient> recipients, GatewaySetting gatewaySetting, string message)
@@ -104,7 +104,7 @@ namespace RX.Nyss.ReportApi.Services
             await Task.WhenAll(recipients.Select(recipient =>
             {
 
-                var cloudToDeviceMethod = new CloudToDeviceMethod("send_sms", TimeSpan.FromSeconds(30));
+                /*var cloudToDeviceMethod = new CloudToDeviceMethod("send_sms", TimeSpan.FromSeconds(30));
                 var sendSms = new SmsIoTHubMessage
                 {
                     To = recipient.PhoneNumber,
@@ -124,9 +124,9 @@ namespace RX.Nyss.ReportApi.Services
                 }
 
                 var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(sendSms)));
-                return _sendSmsQueueSender.SendMessageAsync(message);
+                return _sendSmsQueueSender.SendMessageAsync(message);*/
 
-                /*var sendSms = new SendSmsMessage
+                var sendSms = new SendSmsMessage
                 {
                     IotHubDeviceName = iotHubDeviceName,
                     PhoneNumber = recipient.PhoneNumber,
@@ -136,13 +136,13 @@ namespace RX.Nyss.ReportApi.Services
                         : null
                 };
 
-                var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(sendSms)))
-                {
+                var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(sendSms)));
+                /*{
                     Subject = "RX.Nyss.ReportApi",
                     ApplicationProperties = { { "IotHubDevice", iotHubDeviceName } }
-                };
+                };*/
 
-                return _sendSmsQueueSender.SendMessageAsync(message);*/
+                return _sendSmsQueueSender.SendMessageAsync(message);
             }));
 
         public async Task SendGatewayHttpSms(List<SendGatewaySmsRecipient> recipients, GatewaySetting gatewaySetting, string message)
