@@ -29,6 +29,7 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import WarningIcon from "@material-ui/icons/Warning";
 import LiveHelpIcon from "@material-ui/icons/LiveHelp";
 import { districtValidator } from "./components/districtValidator";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const EidsrIntegrationEditPageComponent = (props) => {
   const [form, setForm] = useState(null);
@@ -37,6 +38,9 @@ const EidsrIntegrationEditPageComponent = (props) => {
 
   useMount(() => {
     props.getEidsrIntegration(props.nationalSocietyId);
+
+    // Track page view
+    trackPageView("EidsrIntegrationEditPage");
   });
 
   useEffect(() => {

@@ -16,6 +16,7 @@ import { useMount } from "../../utils/lifecycle";
 import { Grid } from "@material-ui/core";
 import { stringKeys, strings } from "../../strings";
 import { ValidationMessage } from "../forms/ValidationMessage";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const GlobalCoordinatorsCreatePageComponent = (props) => {
   const [form] = useState(() => {
@@ -44,6 +45,9 @@ const GlobalCoordinatorsCreatePageComponent = (props) => {
 
   useMount(() => {
     props.openModule(props.match.path, props.match.params);
+
+    // Track page view
+    trackPageView("GlobalCoordinatorsCreatePage");
   });
 
   const handleSubmit = (e) => {

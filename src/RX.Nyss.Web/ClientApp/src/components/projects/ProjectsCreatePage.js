@@ -26,6 +26,7 @@ import { ValidationMessage } from "../forms/ValidationMessage";
 import CheckboxField from "../forms/CheckboxField";
 import * as roles from "../../authentication/roles";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const ProjectsCreatePageComponent = (props) => {
   const [healthRiskDataSource, setHealthRiskDataSource] = useState([]);
@@ -89,6 +90,9 @@ const ProjectsCreatePageComponent = (props) => {
 
   useMount(() => {
     props.openCreation(props.nationalSocietyId);
+
+    // Track page view
+    trackPageView("ProjectsCreatePage");
   });
 
   const handleSubmit = (e) => {

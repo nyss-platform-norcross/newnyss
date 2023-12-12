@@ -11,10 +11,14 @@ import { strings, stringKeys } from "../../strings";
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { useCallback } from "react";
 import * as roles from "../../authentication/roles";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const OrganizationsListPageComponent = (props) => {
   useMount(() => {
     props.openOrganizationsList(props.nationalSocietyId);
+
+    // Track page view
+    trackPageView("OrganizationsListPage");
   });
 
   const useRtlDirection = useSelector(

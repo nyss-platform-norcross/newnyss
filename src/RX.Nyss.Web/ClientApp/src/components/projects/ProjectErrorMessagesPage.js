@@ -18,6 +18,8 @@ import styles from "./ProjectErrorMessagesPage.module.scss";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
 import TableHeader from "../common/tableHeader/TableHeader";
 import EditIcon from "@material-ui/icons/Edit";
+import { trackPageView } from "../../utils/appInsightsHelper";
+import { useMount } from "../../utils/lifecycle";
 
 const MESSAGE_MAX_LEN = 320;
 const MESSAGE_WARNING_LEN = 160;
@@ -25,6 +27,12 @@ const MESSAGE_WARNING_LEN = 160;
 const ProjectErrorMessagesPageComponent = (props) => {
   const [errorMessages, setErrorMessages] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
+
+  useMount(() => {
+    // Track page view
+    trackPageView("ProjectOrganizationsListPage");
+  });
+
   const [form, setForm] = useState(null);
 
   async function fetchData() {

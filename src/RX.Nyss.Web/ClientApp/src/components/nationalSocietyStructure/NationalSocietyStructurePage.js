@@ -8,9 +8,16 @@ import { strings, stringKeys } from "../../strings";
 import { NationalSocietyLocationList } from "./NationalSocietyLocationList";
 import * as roles from "../../authentication/roles";
 import { useSelector } from "react-redux";
+import { trackPageView } from "../../utils/appInsightsHelper";
+import { useMount } from "../../utils/lifecycle";
 
 const NationalSocietyStructurePageComponent = (props) => {
   const { openStructure, nationalSocietyId } = props;
+
+  useMount(() => {
+    // Track page view
+    trackPageView("NationalSocietyIncorrectReportsListPage");
+  });
 
   useEffect(() => {
     openStructure(nationalSocietyId);

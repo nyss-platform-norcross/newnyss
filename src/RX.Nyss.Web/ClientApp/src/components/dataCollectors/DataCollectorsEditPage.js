@@ -23,8 +23,9 @@ import { MenuItem, Button, Grid, Typography } from "@material-ui/core";
 import { HeadSupervisor, Supervisor } from "../../authentication/roles";
 import CheckboxField from "../forms/CheckboxField";
 import { DataCollectorLocationItem } from "./components/DataCollectorLocationItem";
-import { getBirthDecades, parseBirthDecade } from "../../utils/birthYear";
+import { getBirthDecades } from "../../utils/birthYear";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const DataCollectorsEditPageComponent = (props) => {
   const currentUserRoles = useSelector((state) => state.appData.user.roles);
@@ -39,6 +40,8 @@ const DataCollectorsEditPageComponent = (props) => {
 
   useMount(() => {
     props.openEdition(props.dataCollectorId);
+    // Track page view
+    trackPageView("DataCollectorsEditPage");
   });
 
   useEffect(() => {

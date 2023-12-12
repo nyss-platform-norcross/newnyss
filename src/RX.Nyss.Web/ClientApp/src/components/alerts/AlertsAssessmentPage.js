@@ -17,6 +17,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
 import { sortByReportStatus } from "../../utils/sortReportByStatus";
 import { AlertStatusChip } from "../common/chip/AlertStatusChip";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const useStyles = makeStyles(() => ({
   infoBox: {
@@ -40,6 +41,9 @@ const AlertsAssessmentPageComponent = ({
 }) => {
   useMount(() => {
     props.openAssessment(projectId, alertId);
+
+    // Track page view
+    trackPageView("AlertsAssessmentPage");
   });
 
   const classes = useStyles();

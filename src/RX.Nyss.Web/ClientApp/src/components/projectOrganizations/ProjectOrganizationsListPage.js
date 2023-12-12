@@ -10,10 +10,14 @@ import { useMount } from "../../utils/lifecycle";
 import { strings, stringKeys } from "../../strings";
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { accessMap } from "../../authentication/accessMap";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const ProjectOrganizationsListPageComponent = (props) => {
   useMount(() => {
     props.openProjectOrganizationsList(props.projectId);
+
+    // Track page view
+    trackPageView("ProjectOrganizationsListPage");
   });
 
   const useRtlDirection = useSelector(

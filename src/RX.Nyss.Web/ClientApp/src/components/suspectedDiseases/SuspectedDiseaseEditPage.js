@@ -15,12 +15,16 @@ import { useMount } from "../../utils/lifecycle";
 import { getSaveFormModel } from "./logic/suspectedDiseaseService";
 import { strings, stringKeys, stringsFormat } from "../../strings";
 import { ValidationMessage } from "../forms/ValidationMessage";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const SuspectedDiseaseEditPageComponent = (props) => {
   const [form, setForm] = useState(null);
 
   useMount(() => {
     props.openEdition(props.match);
+
+    // Track page view
+    trackPageView("SuspectedDiseaseEditPage");
   });
 
   useEffect(() => {

@@ -4,11 +4,18 @@ import { useDispatch } from "react-redux";
 import { stringKeys } from "../../strings";
 import { BaseLayout } from "./BaseLayout";
 import { ROUTE_CHANGED } from "../app/logic/appConstans";
+import { trackPageView } from "../../utils/appInsightsHelper";
+import { useMount } from "../../utils/lifecycle";
 
 export const NotFoundPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [error, setError] = useState(stringKeys.error.errorPage.notFound);
+
+  useMount(() => {
+    // Track page view
+    trackPageView("HealthRisksListPage");
+  });
 
   const returnHome = () => {
     setError(null);

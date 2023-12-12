@@ -11,11 +11,15 @@ import { useMount } from "../../utils/lifecycle";
 import { strings, stringKeys } from "../../strings";
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { accessMap } from "../../authentication/accessMap";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const GlobalCoordinatorsListPageComponent = (props) => {
   useMount(() => {
     props.openModule(props.match.path, props.match.params);
     props.getList();
+
+    // Track page view
+    trackPageView("GlobalCoordinatorsListPage");
   });
 
   const userLanguageCode = useSelector(

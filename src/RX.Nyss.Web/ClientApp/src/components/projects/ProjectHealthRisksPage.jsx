@@ -14,6 +14,7 @@ import { TableActionsButton } from "../common/buttons/tableActionsButton/TableAc
 import { Chip, Grid, Typography, makeStyles } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const useStyles = makeStyles({
   formActions: {
@@ -26,6 +27,9 @@ const ProjectHealthRisksPageComponent = (props) => {
 
   useMount(() => {
     props.openHealthRisksOverview(props.nationalSocietyId, props.projectId);
+  
+    // Track page view
+    trackPageView("ProjectHealthRisksPage");
   });
 
   const useRtlDirection = useSelector(

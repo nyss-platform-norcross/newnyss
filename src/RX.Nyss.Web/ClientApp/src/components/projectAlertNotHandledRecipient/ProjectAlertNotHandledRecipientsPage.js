@@ -14,6 +14,7 @@ import SubmitButton from "../common/buttons/submitButton/SubmitButton";
 import AddIcon from "@material-ui/icons/Add";
 import TableHeader from "../common/tableHeader/TableHeader";
 import EditIcon from "@material-ui/icons/Edit";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 export const ProjectAlertNotHandledRecipientsComponent = ({
   openRecipients,
@@ -25,6 +26,9 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
 }) => {
   useMount(() => {
     openRecipients(projectId);
+
+    // Track page view
+    trackPageView("ProjectAlertNotHandledRecipients");
   });
 
   useEffect(() => {

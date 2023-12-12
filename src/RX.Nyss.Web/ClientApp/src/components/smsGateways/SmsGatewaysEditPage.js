@@ -35,6 +35,7 @@ import {
 import RefreshIcon from "@material-ui/icons/Refresh";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { v4 as uuidv4 } from "uuid";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const SmsGatewaysEditPageComponent = (props) => {
   const [form, setForm] = useState(null);
@@ -46,6 +47,9 @@ const SmsGatewaysEditPageComponent = (props) => {
 
   useMount(() => {
     props.openEdition(props.nationalSocietyId, props.smsGatewayId);
+
+    // Track page view
+    trackPageView("SmsGatewaysEditPage");
   });
 
   const { listAvailableIotDevices } = props;

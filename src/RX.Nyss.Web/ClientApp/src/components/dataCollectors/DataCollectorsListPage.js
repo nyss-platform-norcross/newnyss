@@ -13,7 +13,7 @@ import { TableActionsButton } from "../common/buttons/tableActionsButton/TableAc
 import { accessMap } from "../../authentication/accessMap";
 import { DataCollectorsFilters } from "./components/DataCollectorsFilters";
 import { ReplaceSupervisorDialog } from "./components/ReplaceSupervisorDialog";
-import { SubMenuTitle } from "../layout/SubMenuTitle";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const DataCollectorsListPageComponent = ({
   getDataCollectorList,
@@ -22,6 +22,9 @@ const DataCollectorsListPageComponent = ({
 }) => {
   useMount(() => {
     props.openDataCollectorsList(projectId, props.filters);
+
+    // Track page view
+    trackPageView("DataCollectorsListPage");
   });
 
   const useRtlDirection = useSelector(

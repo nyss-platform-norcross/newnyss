@@ -15,6 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { sendFeedback } from "../app/logic/appActions";
 import GoBackToButton from "../common/buttons/goBackToButton/GoBackToButton";
 import { goBack } from "connected-react-router";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const useStyles = makeStyles({
   input: {
@@ -57,6 +58,9 @@ const Feedback = ({ openModule, match, goBack }) => {
   useMount(() => {
     openModule(match.path, match.params);
     setHasSent(false);
+  
+    // Track page view
+    trackPageView("FeedbackPage");
   });
 
   const handleSubmit = (e) => {

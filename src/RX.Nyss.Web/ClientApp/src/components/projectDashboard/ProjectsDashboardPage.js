@@ -18,6 +18,7 @@ import { DashboardDataCollectionPointChart } from "../dashboardCharts/DashboardD
 import { strings, stringKeys } from "../../strings";
 import { DashboardReportVillageChart } from "../dashboardCharts/DashboardReportVillageChart";
 import SubmitButton from "../common/buttons/submitButton/SubmitButton";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const ProjectDashboardPageComponent = ({
   openDashboard,
@@ -31,6 +32,9 @@ const ProjectDashboardPageComponent = ({
 }) => {
   useMount(() => {
     openDashboard(props.match.params.projectId);
+
+    // Track page view
+    trackPageView("ProjectDashboardPage");
   });
 
   const useRtlDirection = useSelector(

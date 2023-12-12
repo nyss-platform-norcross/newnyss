@@ -14,12 +14,16 @@ import { Grid } from "@material-ui/core";
 import { Loading } from "../common/loading/Loading";
 import { useMount } from "../../utils/lifecycle";
 import { strings, stringKeys } from "../../strings";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const GlobalCoordinatorsEditPageComponent = (props) => {
   const [form, setForm] = useState(null);
 
   useMount(() => {
     props.openEdition(props.match);
+
+    // Track page view
+    trackPageView("GlobalCoordinatorsEditPage");
   });
 
   useEffect(() => {

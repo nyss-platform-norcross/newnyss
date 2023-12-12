@@ -9,10 +9,14 @@ import { useMount } from "../../utils/lifecycle";
 import { Fragment } from "react";
 import { TranslationsFilters } from "./TranslationsFilters";
 import { LinearProgress } from "@material-ui/core";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const TranslationsListPageComponent = (props) => {
   useMount(() => {
     props.openTranslationsList(props.match.path, props.match.params);
+
+    // Track page view
+    trackPageView("TranslationsListPage");
   });
 
   return (
