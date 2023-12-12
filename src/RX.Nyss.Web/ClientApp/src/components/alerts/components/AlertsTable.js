@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { AlertStatusChip } from "../../common/chip/AlertStatusChip";
+import { trackEvent } from "../../../utils/appInsightsHelper";
 
 export const AlertsTable = ({
   isListFetching,
@@ -43,6 +44,12 @@ export const AlertsTable = ({
   const handleSortChange = (event, column) => {
     const isAscending = filters.orderBy === column && filters.sortAscending;
     onSort({ ...filters, orderBy: column, sortAscending: !isAscending });
+  };
+
+  const handleGoToAssessment = (projectId, AlertId) => {
+    // Track goToAlertAssessment event
+    trackEvent("goToAlertAssessment", { projectId, AlertId });
+    goToAssessment(projectId, AlertId);
   };
 
   if (!list.length) {
@@ -93,7 +100,7 @@ export const AlertsTable = ({
               <TableRow
                 key={row.id}
                 hover
-                onClick={() => goToAssessment(projectId, row.id)}
+                onClick={() => handleGoToAssessment(projectId, row.id)}
                 className={styles.clickableRow}
               >
                 <TableCell>
