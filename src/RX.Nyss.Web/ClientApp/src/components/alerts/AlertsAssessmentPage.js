@@ -14,6 +14,8 @@ import { assessmentStatus } from "./logic/alertsConstants";
 import { AlertsAssessmentActions } from "./components/AlertsAssessmentActions";
 import AlertNotificationRecipients from "./components/AlertNotificationRecipients";
 import { makeStyles } from "@material-ui/core/styles";
+import { SubMenuTitle } from "../layout/SubMenuTitle";
+import { sortByReportStatus } from "../../utils/sortReportByStatus";
 import { AlertStatusChip } from "../common/chip/AlertStatusChip";
 
 const useStyles = makeStyles(() => ({
@@ -149,7 +151,7 @@ const AlertsAssessmentPageComponent = ({
         </div>
 
         <Grid container spacing={2}>
-          {data.reports.map((report) => (
+          {data.reports.sort(sortByReportStatus).map((report) => (
             <Grid item xs={12} key={`report_${report.id}`}>
               <AlertsAssessmentReport
                 report={report}

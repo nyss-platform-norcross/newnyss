@@ -31,10 +31,9 @@ public class SmsService : ISmsService
 
     public async Task SendSms(SendSmsMessage message, string whitelistedPhoneNumbers)
     {
-        //var isWhitelisted = _config.MailConfig.SendFeedbackSmsToAll || _whitelistValidator.IsWhiteListedPhoneNumber(whitelistedPhoneNumbers, message.PhoneNumber);
-
-        //if (isWhitelisted)
-        //{
+        var isWhitelisted = _config.MailConfig.SendFeedbackSmsToAll || _whitelistValidator.IsWhiteListedPhoneNumber(whitelistedPhoneNumbers, message.PhoneNumber);
+        if (isWhitelisted)
+        {
             _logger.LogDebug($"Sending sms to phone number ending with '{message.PhoneNumber.SubstringFromEnd(4)}...' through IOT device {message.IotHubDeviceName}...");
 
             var cloudToDeviceMethod = new CloudToDeviceMethod("send_sms", TimeSpan.FromSeconds(60));
@@ -52,6 +51,6 @@ public class SmsService : ISmsService
             {
                 throw new Exception($"Failed to send sms to device {message.IotHubDeviceName}, {response.GetPayloadAsJson()}");
             }
-        //}
+        }
     }
 }
