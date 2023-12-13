@@ -52,7 +52,7 @@ namespace RX.Nyss.ReportApi.Features.Reports
                 return false;
             }
 
-            _loggerAdapter.Debug($"Received report: {report}");
+            _loggerAdapter.Info($"Received report content: {report.Content}");
 
             switch (report.ReportSource)
             {
@@ -71,7 +71,6 @@ namespace RX.Nyss.ReportApi.Features.Reports
                     _loggerAdapter.Error($"Could not find a proper handler to handle a report '{report}'.");
                     break;
             }
-
             return true;
         }
 

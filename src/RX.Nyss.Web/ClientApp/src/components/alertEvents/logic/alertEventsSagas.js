@@ -28,11 +28,10 @@ function* openEventLog({ projectId, alertId }) {
     );
     const data = response.value;
 
-    const title = `${strings(stringKeys.alerts.eventLog.title, true)} - ${
-      data.healthRisk
-    } ${dayjs(data.date).format("YYYY-MM-DD HH:mm")}`;
+    const title = data.healthRisk;
+    const subTitle = dayjs(data.createdAt).format("YYYY-MM-DD HH:mm");
 
-    yield openAlertEventsModule(projectId, title);
+    yield openAlertEventsModule(projectId, title, subTitle);
 
     yield put(actions.openEventLog.success(alertId, data));
   } catch (error) {
@@ -124,7 +123,7 @@ function* deleteAlertEvent({ alertId, alertEventLogId }) {
   }
 }
 
-function* openAlertEventsModule(projectId, title) {
+function* openAlertEventsModule(projectId, title, subTitle) {
   const project = yield call(http.getCached, {
     path: `/api/project/${projectId}/basicData`,
     dependencies: [entityTypes.project(projectId)],
@@ -138,6 +137,7 @@ function* openAlertEventsModule(projectId, title) {
       projectId: project.value.id,
       projectName: project.value.name,
       title: title,
+      subTitle: subTitle,
       projectIsClosed: project.value.isClosed,
     }),
   );

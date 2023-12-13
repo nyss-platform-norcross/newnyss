@@ -25,16 +25,14 @@ const ProjectAlertRecipientsListPageComponent = (props) => {
     <Fragment>
       <TableHeader>
         {!props.nationalSocietyIsArchived && !props.projectIsClosed && (
-          <TableActions>
-            <TableActionsButton
-              onClick={() => props.goToCreation(props.projectId)}
-              add
-              variant="contained"
-              rtl={useRtlDirection}
-            >
-              {strings(stringKeys.common.buttons.add)}
-            </TableActionsButton>
-          </TableActions>
+          <TableActionsButton
+            onClick={() => props.goToCreation(props.projectId)}
+            add
+            variant="contained"
+            rtl={useRtlDirection}
+          >
+            {strings(stringKeys.common.buttons.add)}
+          </TableActionsButton>
         )}
       </TableHeader>
       <Typography variant="subtitle1">

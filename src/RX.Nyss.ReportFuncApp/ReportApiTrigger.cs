@@ -31,7 +31,7 @@ namespace RX.Nyss.ReportFuncApp
 
             var client = _httpClientFactory.CreateClient();
             var content = new StringContent(JsonConvert.SerializeObject(report), Encoding.UTF8, "application/json");
-            var postResult = await client.PostAsync(new Uri(_reportApiBaseUrl, "api/Report"), content);
+            var postResult = await client.PostAsync(new Uri(_reportApiBaseUrl, "api/Report/registerReport"), content);
 
             if (!postResult.IsSuccessStatusCode)
             {

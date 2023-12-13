@@ -7,6 +7,7 @@ import {
   SET_ORGANIZATION_ID,
   SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_IDS,
   SET_HEALTH_RISKS,
+  SET_REQUIRED_HEALTH_RISKS,
   SET_REGIONS,
   SET_DISTRICTS,
   SET_VILLAGES,
@@ -58,11 +59,23 @@ export const setOrganizationId = (organizationId) => ({
   organizationId,
 });
 
-export const setAlertNotHandledNotificationRecipientIds = (alertNotHandledNotificationRecipientIds) => ({ type: SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_IDS, alertNotHandledNotificationRecipientIds })
+export const setAlertNotHandledNotificationRecipientIds = (
+  alertNotHandledNotificationRecipientIds,
+) => ({
+  type: SET_ALERT_NOT_HANDLED_NOTIFICATION_RECIPIENT_IDS,
+  alertNotHandledNotificationRecipientIds,
+});
 
-export const setHealthRisks = (healthRisks) => ({ type: SET_HEALTH_RISKS, healthRisks })
+export const setHealthRisks = (healthRisks) => ({
+  type: SET_HEALTH_RISKS,
+  healthRisks,
+});
+export const setRequiredHealthRisks = (requiredHealthRisks) => ({
+  type: SET_REQUIRED_HEALTH_RISKS,
+  requiredHealthRisks,
+});
 
-export const setRegions = (regions) => ({ type: SET_REGIONS, regions })
-export const setDistricts = (districts) => ({ type: SET_DISTRICTS, districts })
-export const setVillages = (villages) => ({ type: SET_VILLAGES, villages })
-export const setZones = (zones) => ({ type: SET_ZONES, zones })
+export const setRegions = (regions) => ({ type: SET_REGIONS, regions });
+export const setDistricts = (districts) => ({ type: SET_DISTRICTS, districts });
+export const setVillages = (villages) => ({ type: SET_VILLAGES, villages });
+export const setZones = (zones) => ({ type: SET_ZONES, zones });

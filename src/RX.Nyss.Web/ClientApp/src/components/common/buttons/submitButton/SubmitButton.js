@@ -10,6 +10,7 @@ export const SubmitButton = ({
   children,
   wide,
   disabled,
+  underline
 }) => {
   return (
     <Button
@@ -18,7 +19,7 @@ export const SubmitButton = ({
       onClick={onClick}
       disabled={isFetching || disabled}
       type="submit"
-      className={wide ? styles.wide : null}
+      className={`${wide && styles.wide} ${underline && styles.underline}`}
     >
       {isFetching && (
         <CircularProgress size={16} className={styles.progressIcon} />

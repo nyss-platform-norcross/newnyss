@@ -1,20 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using RX.Nyss.Common.Utils;
 using RX.Nyss.Common.Utils.Logging;
-using RX.Nyss.Data.Concepts;
 using RX.Nyss.Data.Models;
 using RX.Nyss.ReportApi.Configuration;
 using RX.Nyss.ReportApi.Features.Common;
 using Telerivet.Client;
-
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace RX.Nyss.ReportApi.Services
 {
@@ -50,8 +47,8 @@ namespace RX.Nyss.ReportApi.Services
         {
             if (!string.IsNullOrEmpty(gatewaySetting.IotHubDeviceName))
             {
-                var specifyModemWhenSending = gatewaySetting.Modems.Any();
-                await SendSmsViaIotHub(gatewaySetting.IotHubDeviceName, recipients, message, specifyModemWhenSending);
+                //var specifyModemWhenSending = gatewaySetting.Modems.Any();
+                await SendSmsViaIotHub(gatewaySetting.IotHubDeviceName, recipients, message, false);
             }
             else if (!string.IsNullOrEmpty(gatewaySetting.EmailAddress))
             {
@@ -111,12 +108,7 @@ namespace RX.Nyss.ReportApi.Services
                         : null
                 };
 
-                var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(sendSms)))
-                {
-                    Subject = "RX.Nyss.ReportApi",
-                    ApplicationProperties = { { "IotHubDevice", iotHubDeviceName } }
-                };
-
+                var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(sendSms)));
                 return _sendSmsQueueSender.SendMessageAsync(message);
             }));
 

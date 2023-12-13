@@ -11,11 +11,20 @@ import * as projectsActions from "./logic/projectsActions";
 import { ProjectsOverviewHealthRiskItem } from "./ProjectsOverviewHealthRiskItem";
 import { accessMap } from "../../authentication/accessMap";
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
-import { Chip, Grid, Typography } from "@material-ui/core";
+import { Chip, Grid, Typography, makeStyles } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
 
+const useStyles = makeStyles({
+  formActions: {
+    marginTop: 0
+  }
+});
+
+
 const ProjectHealthRisksPageComponent = (props) => {
+  const classes = useStyles()
+
   useMount(() => {
     props.openHealthRisksOverview(props.nationalSocietyId, props.projectId);
   });
@@ -30,28 +39,28 @@ const ProjectHealthRisksPageComponent = (props) => {
 
   return (
     <Fragment>
-      <SubMenuTitle />
       <Grid container spacing={4} fixed="true" style={{ maxWidth: 800 }}>
         <Grid item xs={12}>
-          {!props.isClosed && (
-            <FormActions>
-              <TableActionsButton
-                startIcon={<EditIcon />}
-                onClick={() =>
-                  props.openHealthRisksEdition(
-                    props.nationalSocietyId,
-                    props.projectId,
-                  )
-                }
-                roles={accessMap.projects.edit}
-                variant={"contained"}
-                style={{ marginBottom: 16 }}
-              >
-                {strings(stringKeys.common.buttons.edit)}
-              </TableActionsButton>
-            </FormActions>
-          )}
-
+          <Grid container justifyContent="space-between" alignItems="center">
+            <SubMenuTitle />
+            {!props.isClosed && (
+              <FormActions className={classes.formActions}>
+                <TableActionsButton
+                  startIcon={<EditIcon />}
+                  onClick={() =>
+                    props.openHealthRisksEdition(
+                      props.nationalSocietyId,
+                      props.projectId,
+                    )
+                  }
+                  roles={accessMap.projects.edit}
+                  variant={"contained"}
+                >
+                  {strings(stringKeys.common.buttons.edit)}
+                </TableActionsButton>
+              </FormActions>
+            )}
+          </Grid>
           {props.data.projectHealthRisks.map((hr) => (
             <Chip
               key={`projectsHealthRiskItemIcon_${hr.healthRiskId}`}
