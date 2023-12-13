@@ -12,6 +12,7 @@ import {
   SET_DISTRICTS,
   SET_VILLAGES,
   SET_ZONES,
+  SET_ALLOW_MULTIPLE_ORGANIZATIONS,
 } from "./projectSetupConstants";
 
 export const goToList = (nationalSocietyId) =>
@@ -57,6 +58,11 @@ export const setProjectName = (projectName) => ({
 export const setOrganizationId = (organizationId) => ({
   type: SET_ORGANIZATION_ID,
   organizationId,
+});
+
+export const setAllowMultipleOrganizations = (allowMultipleOrganizations) => ({
+  type: SET_ALLOW_MULTIPLE_ORGANIZATIONS,
+  allowMultipleOrganizations,
 });
 
 export const setAlertNotHandledNotificationRecipientIds = (
