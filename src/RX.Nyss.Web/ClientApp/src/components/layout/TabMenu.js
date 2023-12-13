@@ -7,15 +7,7 @@ import { push } from "connected-react-router";
 import { Tabs, Tab, Grid } from "@material-ui/core";
 import { TabDropdown } from "./TabDropdown";
 
-
-
-const TabMenuComponent = ({
-  projectTabMenu,
-  tabMenu,
-  push,
-  currentUrl,
-}) => {
-
+const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl }) => {
   const onItemClick = (item) => {
     push(item.url);
   };

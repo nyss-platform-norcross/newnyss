@@ -188,7 +188,11 @@ export const CorrectReportsTable = ({
                   {dayjs(row.dateTime).format("YYYY-MM-DD HH:mm")}
                 </TableCell>
                 <TableCell align="center">
-                  {row.isActivityReport ? "-" : <ReportStatusChip report={row} rtl={rtl}/>}
+                  {row.isActivityReport ? (
+                    "-"
+                  ) : (
+                    <ReportStatusChip report={row} rtl={rtl} />
+                  )}
                 </TableCell>
                 <TableCell className={styles.phoneNumber}>
                   {renderDataCollectorDisplayName(row)}

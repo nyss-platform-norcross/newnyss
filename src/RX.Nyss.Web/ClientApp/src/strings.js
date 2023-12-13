@@ -446,7 +446,11 @@ export const stringKeys = {
       name: "projectSetup.projectRecipients.name",
       title: "projectSetup.projectRecipients.title",
       placeholder: "projectSetup.projectRecipients.placeholder",
-      error: "projectSetup.projectRecipients.error"
+      error: "projectSetup.projectRecipients.error",
+    },
+    cancelDialog: {
+      title: "projectSetup.cancelDialog.title",
+      description: "projectSetup.cancelDialog.description",
     },
     cancelDialog: {
       title: "projectSetup.cancelDialog.title",
@@ -944,13 +948,23 @@ export const stringKeys = {
         sent: "alerts.assess.report.sent",
         reportId: "alerts.assess.report.reportId",
         date: "alerts.assess.report.date",
-        time: "alerts.assess.report.time"
+        time: "alerts.assess.report.time",
       },
       escalatedTo: {
         title: "alerts.assess.escalatedTo.title",
         role: "alerts.assess.escalatedTo.role",
         organization: "alerts.assess.escalatedTo.organization",
         phoneNumber: "alerts.assess.escalatedTo.phoneNumber",
+      },
+      thresholdInfo: {
+        threshold: "alerts.assess.alert.threshold",
+        reports: "alerts.assess.alert.reports",
+        report: "alerts.assess.alert.report",
+        days: "alerts.assess.alert.days",
+        day: "alerts.assess.alert.day",
+        in: "alerts.assess.alert.in",
+        within: "alerts.assess.alert.within",
+        kilometers: "alerts.assess.alert.kilometers",
       },
     },
     eventLog: {
@@ -1168,7 +1182,6 @@ export const stringKeys = {
       tryAgain: "common.buttons.tryAgain",
       confirmCancelation: "common.buttons.confirmCancelation",
       denyCancelation: "common.buttons.denyCancelation",
-
     },
     boolean: {
       true: "common.true",

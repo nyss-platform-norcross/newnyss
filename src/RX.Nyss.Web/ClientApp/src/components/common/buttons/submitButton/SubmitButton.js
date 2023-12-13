@@ -10,7 +10,7 @@ export const SubmitButton = ({
   children,
   wide,
   disabled,
-  underline
+  underline,
 }) => {
   return (
     <Button

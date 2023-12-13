@@ -17,13 +17,12 @@ import { SubMenuTitle } from "../layout/SubMenuTitle";
 
 const useStyles = makeStyles({
   formActions: {
-    marginTop: 0
-  }
+    marginTop: 0,
+  },
 });
 
-
 const ProjectHealthRisksPageComponent = (props) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   useMount(() => {
     props.openHealthRisksOverview(props.nationalSocietyId, props.projectId);

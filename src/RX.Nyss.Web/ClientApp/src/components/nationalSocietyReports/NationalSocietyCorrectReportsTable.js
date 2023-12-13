@@ -136,7 +136,7 @@ export const NationalSocietyCorrectReportsTable = ({
                 <span>{dayjs(row.dateTime).format("YYYY-MM-DD HH:mm")}</span>
               </TableCell>
               <TableCell align="center">
-                <ReportStatusChip report={row} rtl={rtl}/>
+                <ReportStatusChip report={row} rtl={rtl} />
               </TableCell>
               <TableCell>{dashIfEmpty(row.projectName)}</TableCell>
               <TableCell className={styles.phoneNumber}>

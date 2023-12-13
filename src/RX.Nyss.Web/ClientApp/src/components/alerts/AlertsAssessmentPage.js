@@ -6,36 +6,31 @@ import * as alertsActions from "./logic/alertsActions";
 import Layout from "../layout/Layout";
 import { Loading } from "../common/loading/Loading";
 import { useMount } from "../../utils/lifecycle";
-import { Grid, Divider, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { stringKeys, strings } from "../../strings";
 import DisplayField from "../forms/DisplayField";
 import { AlertsAssessmentReport } from "./components/AlertsAssessmentReport";
 import { assessmentStatus } from "./logic/alertsConstants";
 import { AlertsAssessmentActions } from "./components/AlertsAssessmentActions";
 import AlertNotificationRecipients from "./components/AlertNotificationRecipients";
+import { makeStyles } from "@material-ui/core/styles";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
 import { sortByReportStatus } from "../../utils/sortReportByStatus";
 import { AlertStatusChip } from "../common/chip/AlertStatusChip";
 
-const getAssessmentStatusInformation = (status) => {
-  switch (status) {
-    case assessmentStatus.open:
-    case assessmentStatus.toEscalate:
-    case assessmentStatus.toDismiss:
-      return stringKeys.alerts.assess.introduction;
+const useStyles = makeStyles(() => ({
+  infoBox: {
+    padding: 10,
+    backgroundColor: "#F4F4F4",
+    border: "1px solid #E3E3E3",
+    borderRadius: 5,
+    margin: "20px 0 20px 0",
+    width: "fit-content",
+    maxWidth: 350,
+  },
+}));
 
-    case assessmentStatus.closed:
-      return stringKeys.alerts.assess.statusDescription.closed;
-    case assessmentStatus.escalated:
-      return stringKeys.alerts.assess.statusDescription.escalated;
-    case assessmentStatus.dismissed:
-      return stringKeys.alerts.assess.statusDescription.dismissed;
-    case assessmentStatus.rejected:
-      return stringKeys.alerts.assess.statusDescription.rejected;
-    default:
-      throw new Error("Wrong status");
-  }
-};
+const isLargerThanOne = (number) => number > 1;
 
 const AlertsAssessmentPageComponent = ({
   alertId,
@@ -46,6 +41,8 @@ const AlertsAssessmentPageComponent = ({
   useMount(() => {
     props.openAssessment(projectId, alertId);
   });
+
+  const classes = useStyles();
 
   const useRtlDirection = useSelector(
     (state) => state.appData.direction === "rtl",
@@ -73,21 +70,19 @@ const AlertsAssessmentPageComponent = ({
   return (
     <Fragment>
       <Grid container alignItems="center">
-        <Typography style={{ fontSize: 24, fontWeight: 700, marginRight: 10 }}>{props.title}</Typography>
-        <Typography variant="body2" style={{ alignSelf: "center", marginRight: 15 }} >{`#${alertId}`}</Typography>
-        <AlertStatusChip status={data.assessmentStatus}/>
+        <Typography style={{ fontSize: 24, fontWeight: 700, marginRight: 10 }}>
+          {props.title}
+        </Typography>
+        <Typography
+          variant="body2"
+          style={{ alignSelf: "center", marginRight: 15 }}
+        >{`#${alertId}`}</Typography>
+        <AlertStatusChip status={data.assessmentStatus} />
       </Grid>
-      <Typography variant="body2" style={{ marginTop: 10 }}>{props.subTitle}</Typography>
+      <Typography variant="body2" style={{ marginTop: 10 }}>
+        {props.subTitle}
+      </Typography>
       <div className={styles.form}>
-        <DisplayField
-          label={strings(getAssessmentStatusInformation(data.assessmentStatus))}
-          value={strings(
-            stringKeys.alerts.constants.escalatedOutcomes[
-              data.escalatedOutcome
-            ],
-          )}
-        />
-
         {data.assessmentStatus === assessmentStatus.closed && data.comments && (
           <DisplayField
             label={strings(stringKeys.alerts.assess.closeReason)}
@@ -95,14 +90,51 @@ const AlertsAssessmentPageComponent = ({
           />
         )}
 
-        <Divider />
-
-        <DisplayField
-          label={strings(stringKeys.alerts.assess.caseDefinition)}
-          value={data.caseDefinition}
-        />
-
-        <Divider />
+        <Grid container className={classes.infoBox}>
+          <Typography variant="body2">{data.caseDefinition}</Typography>
+        </Grid>
+        <Grid container className={classes.infoBox}>
+          <Typography
+            style={{ display: "flex", flexDirection: "row" }}
+            variant="body2"
+          >
+            <>
+              <Typography variant="body2" style={{ marginRight: 5 }}>
+                {strings(stringKeys.alerts.assess.thresholdInfo.threshold)}:
+              </Typography>
+              <strong style={{ marginRight: 5 }}>
+                {data.healthRiskCountThreshold}{" "}
+                {isLargerThanOne(data.healthRiskCountThreshold)
+                  ? strings(stringKeys.alerts.assess.thresholdInfo.reports)
+                  : strings(stringKeys.alerts.assess.thresholdInfo.report)}
+              </strong>
+            </>
+            {data.healthRiskDaysThreshold && (
+              <>
+                <Typography variant="body2" style={{ marginRight: 5 }}>
+                  {strings(stringKeys.alerts.assess.thresholdInfo.in)}
+                </Typography>
+                <strong style={{ marginRight: 5 }}>
+                  {data.healthRiskDaysThreshold}{" "}
+                  {isLargerThanOne(data.healthRiskDaysThreshold)
+                    ? strings(stringKeys.alerts.assess.thresholdInfo.days)
+                    : strings(stringKeys.alerts.assess.thresholdInfo.day)}
+                </strong>
+              </>
+            )}
+            {data.healthRiskKilometersThreshold && (
+              <>
+                <Typography variant="body2" style={{ marginRight: 5 }}>
+                  {strings(stringKeys.alerts.assess.thresholdInfo.within)}
+                </Typography>
+                <strong style={{ marginRight: 5 }}>
+                  {data.healthRiskKilometersThreshold}{" "}
+                  {strings(stringKeys.alerts.assess.thresholdInfo.kilometers)}
+                </strong>
+              </>
+            )}
+          </Typography>
+        </Grid>
 
         {data.recipientsNotified && data.escalatedTo.length > 0 && (
           <>

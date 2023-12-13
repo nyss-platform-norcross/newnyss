@@ -43,26 +43,39 @@ const AlertEventsLogPageComponent = ({
   }
   return (
     <Fragment>
-      <Grid container justifyContent="space-between" style={{ marginBottom: 10 }}>
-        <Grid style={{ width: "fit-content" }}>
+      <Grid
+        container
+        justifyContent="space-between"
+        style={{ marginBottom: 10 }}
+      >
+        <Grid item style={{ width: "100%" }}>
           <Grid container alignItems="center">
-            <Typography style={{ fontSize: 24, fontWeight: 700, marginRight: 10 }}>{props.title}</Typography>
-            <Typography variant="body2" style={{ alignSelf: "center", marginRight: 15 }} >{`#${alertId}`}</Typography>
-            <AlertStatusChip status={alert.assessmentStatus}/>
-          </Grid>
-          <Typography variant="body2" style={{ marginTop: 10 }}>{props.subTitle}</Typography>
-        </Grid>
-        <TableActions>
-          <TableActionsButton
-            onClick={() => setCreateDialogOpened(true)}
-            variant="contained"
-            roles={accessMap.alertEvents.add}
-            add
-            rtl={useRtlDirection}
+            <Typography
+              style={{ fontSize: 24, fontWeight: 700, marginRight: 10 }}
             >
-            {strings(stringKeys.common.buttons.add)}
-          </TableActionsButton>
-        </TableActions>
+              {props.title}
+            </Typography>
+            <Typography
+              variant="body2"
+              style={{ alignSelf: "center", marginRight: 15 }}
+            >{`#${alertId}`}</Typography>
+            <AlertStatusChip status={alert.assessmentStatus} />
+          </Grid>
+          <Grid item container justifyContent="space-between">
+            <Typography variant="body2" style={{ marginTop: 10 }}>
+              {props.subTitle}
+            </Typography>
+            <TableActionsButton
+              onClick={() => setCreateDialogOpened(true)}
+              variant="contained"
+              roles={accessMap.alertEvents.add}
+              add
+              rtl={useRtlDirection}
+            >
+              {strings(stringKeys.common.buttons.add)}
+            </TableActionsButton>
+          </Grid>
+        </Grid>
       </Grid>
 
       <AlertEventsTable

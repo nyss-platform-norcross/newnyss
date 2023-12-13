@@ -111,7 +111,7 @@ export const AlertsTable = ({
                     .join(", ")}
                 </TableCell>
                 <TableCell align="center">
-                  <AlertStatusChip status={row.status}/>
+                  <AlertStatusChip status={row.status} />
                 </TableCell>
                 <TableCell>{row.id}</TableCell>
               </TableRow>

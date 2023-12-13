@@ -18,8 +18,8 @@ const useStyles = makeStyles({
     fontSize: 16,
   },
   formActions: {
-    marginTop: 0
-  }
+    marginTop: 0,
+  },
 });
 
 const ProjectsOverviewPageComponent = (props) => {
@@ -38,7 +38,7 @@ const ProjectsOverviewPageComponent = (props) => {
       <Grid container spacing={4} fixed="true" style={{ maxWidth: 800 }}>
         <Grid item xs={12}>
           <Grid container justifyContent="space-between" alignItems="center">
-          <SubMenuTitle />
+            <SubMenuTitle />
             {!props.isClosed && (
               <FormActions className={classes.formActions}>
                 <TableActionsButton
@@ -48,7 +48,7 @@ const ProjectsOverviewPageComponent = (props) => {
                   }
                   roles={accessMap.projects.edit}
                   variant={"contained"}
-                  >
+                >
                   {strings(stringKeys.common.buttons.edit)}
                 </TableActionsButton>
               </FormActions>

@@ -20,21 +20,24 @@ import {
 import { useSelector } from "react-redux";
 import { Manager, TechnicalAdvisor } from "../../../authentication/roles";
 import { makeStyles } from "@material-ui/core/styles";
-import LocationOnIcon from '@material-ui/icons/LocationOn';
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { ReportStatusChip } from "../../common/chip/ReportStatusChip";
 
-var relativeTime = require('dayjs/plugin/relativeTime')
-dayjs.extend(relativeTime)
-
+var relativeTime = require("dayjs/plugin/relativeTime");
+dayjs.extend(relativeTime);
 
 const ReportFormLabel = ({ label, value }) => (
-  <Grid container direction="column" style={{ maxWidth: "fit-content", margin: "10px 50px 0 0" }}>
+  <Grid
+    container
+    direction="column"
+    style={{ maxWidth: "fit-content", margin: "10px 50px 0 0" }}
+  >
     <Typography style={{ fontWeight: 700, fontSize: 12 }}>{label}</Typography>
-    <Typography variant="body2" style={{ marginTop: 5 }}>{value}</Typography>
+    <Typography variant="body2" style={{ marginTop: 5 }}>
+      {value}
+    </Typography>
   </Grid>
 );
-
-
 
 export const AlertsAssessmentReport = ({
   alertId,
@@ -80,43 +83,60 @@ export const AlertsAssessmentReport = ({
     },
     time: {
       fontSize: 14,
-      color: "#4F4F4F"
+      color: "#4F4F4F",
     },
     report: {
       fontWeight: 700,
     },
     chip: {
-      padding: rtl ? "0 0 0 20px" : "0 20px 0 0"
-    }
+      padding: rtl ? "0 0 0 20px" : "0 20px 0 0",
+    },
   }));
   const classes = useStyles();
 
   return (
     <Accordion disabled={fromOtherOrg} className={classes.accordion}>
-      <AccordionSummary className={classes.summary} expandIcon={!fromOtherOrg && <ExpandMoreIcon />}>
+      <AccordionSummary
+        className={classes.summary}
+        expandIcon={!fromOtherOrg && <ExpandMoreIcon />}
+      >
         <Grid container alignContent="center">
           <Grid container alignItems="center" item xs={4}>
             <Typography className={classes.time}>
-              {strings(stringKeys.alerts.assess.report.sent)} {dayjs(dayjs(report.receivedAt).format("YYYY-MM-DD HH:mm")).fromNow()}
+              {strings(stringKeys.alerts.assess.report.sent)}{" "}
+              {dayjs(
+                dayjs(report.receivedAt).format("YYYY-MM-DD HH:mm"),
+              ).fromNow()}
             </Typography>
           </Grid>
           <Grid container alignItems="center" item xs={4}>
             <Typography variant="body2" className={classes.report}>
-            {strings(stringKeys.alerts.assess.report.reportId)} #{report.id}
+              {strings(stringKeys.alerts.assess.report.reportId)} #{report.id}
             </Typography>
           </Grid>
-          <Grid className={classes.chip} container alignItems="center" item xs={4} justifyContent="flex-end">
-            <ReportStatusChip report={report} rtl={rtl}/>
+          <Grid
+            className={classes.chip}
+            container
+            alignItems="center"
+            item
+            xs={4}
+            justifyContent="flex-end"
+          >
+            <ReportStatusChip report={report} rtl={rtl} />
           </Grid>
         </Grid>
       </AccordionSummary>
       <AccordionDetails>
         <Grid container>
-          <Divider style={{ width: "100%", marginTop: -8 }}/>
+          <Divider style={{ width: "100%", marginTop: -8 }} />
           <Grid container item xs={4} direction="column">
             <ReportFormLabel
               label={strings(stringKeys.alerts.assess.report.sender)}
-              value={report.isAnonymized ? strings(stringKeys.alerts.assess.report.linkedToSupervisor) : (report.dataCollector || report.organization)}
+              value={
+                report.isAnonymized
+                  ? strings(stringKeys.alerts.assess.report.linkedToSupervisor)
+                  : report.dataCollector || report.organization
+              }
             />
             <ReportFormLabel
               label={strings(stringKeys.alerts.assess.report.phoneNumber)}
@@ -156,8 +176,12 @@ export const AlertsAssessmentReport = ({
       <Grid container style={{ padding: "8px 16px 16px" }}>
         <Grid container item xs={4}>
           <Grid container alignItems="center">
-            <LocationOnIcon fontSize="small"/>
-            <Typography variant="body2">{`${report.district ? report.region + ", " : report.region} ${report.village ? report.district + ", " : report.district} ${report.zone ? report.village + ", " : report.village} ${report.zone ? report.zone : ""}`}</Typography>
+            <LocationOnIcon fontSize="small" />
+            <Typography variant="body2">{`${
+              report.district ? report.region + ", " : report.region
+            } ${report.village ? report.district + ", " : report.district} ${
+              report.zone ? report.village + ", " : report.village
+            } ${report.zone ? report.zone : ""}`}</Typography>
           </Grid>
         </Grid>
         <Grid container item xs={8} justifyContent="flex-end">
@@ -190,7 +214,6 @@ export const AlertsAssessmentReport = ({
                     style={{ textDecoration: "underline" }}
                     onClick={() => resetReport(alertId, report.id)}
                     disabled={report.isResetting}
-
                   >
                     {report.isResetting && (
                       <CircularProgress
