@@ -13,6 +13,7 @@ import { CancelButton } from "../common/buttons/cancelButton/CancelButton";
 import SubmitButton from "../common/buttons/submitButton/SubmitButton";
 import AddIcon from "@material-ui/icons/Add";
 import TableHeader from "../common/tableHeader/TableHeader";
+import EditIcon from "@material-ui/icons/Edit";
 
 export const ProjectAlertNotHandledRecipientsComponent = ({
   openRecipients,
@@ -180,6 +181,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
                 {strings(stringKeys.projectAlertNotHandledRecipient.add)}
               </Button>
               <Button
+                startIcon={<EditIcon />}
                 color="primary"
                 variant="outlined"
                 style={{ marginLeft: 10 }}

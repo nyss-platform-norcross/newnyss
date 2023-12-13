@@ -13,8 +13,8 @@ import { AlertsAssessmentReport } from "./components/AlertsAssessmentReport";
 import { assessmentStatus } from "./logic/alertsConstants";
 import { AlertsAssessmentActions } from "./components/AlertsAssessmentActions";
 import AlertNotificationRecipients from "./components/AlertNotificationRecipients";
-import { SubMenuTitle } from "../layout/SubMenuTitle";
 import { makeStyles } from "@material-ui/core/styles";
+import { AlertStatusChip } from "../common/chip/AlertStatusChip";
 
 const useStyles = makeStyles(() => ({
   infoBox: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
     borderRadius: 5,
     margin: "20px 0 20px 0",
     width: "fit-content",
-    maxWidth: 350
+    maxWidth: 350,
   },
 }));
 
@@ -40,7 +40,7 @@ const AlertsAssessmentPageComponent = ({
     props.openAssessment(projectId, alertId);
   });
 
-  const classes = useStyles()
+  const classes = useStyles();
 
   const useRtlDirection = useSelector(
     (state) => state.appData.direction === "rtl",
@@ -67,9 +67,20 @@ const AlertsAssessmentPageComponent = ({
 
   return (
     <Fragment>
-      <SubMenuTitle />
+      <Grid container alignItems="center">
+        <Typography style={{ fontSize: 24, fontWeight: 700, marginRight: 10 }}>
+          {props.title}
+        </Typography>
+        <Typography
+          variant="body2"
+          style={{ alignSelf: "center", marginRight: 15 }}
+        >{`#${alertId}`}</Typography>
+        <AlertStatusChip status={data.assessmentStatus} />
+      </Grid>
+      <Typography variant="body2" style={{ marginTop: 10 }}>
+        {props.subTitle}
+      </Typography>
       <div className={styles.form}>
-
         {data.assessmentStatus === assessmentStatus.closed && data.comments && (
           <DisplayField
             label={strings(stringKeys.alerts.assess.closeReason)}
@@ -81,21 +92,43 @@ const AlertsAssessmentPageComponent = ({
           <Typography variant="body2">{data.caseDefinition}</Typography>
         </Grid>
         <Grid container className={classes.infoBox}>
-          <Typography style={{ display: "flex", flexDirection: "row" }} variant="body2">
+          <Typography
+            style={{ display: "flex", flexDirection: "row" }}
+            variant="body2"
+          >
             <>
-              <Typography variant="body2" style={{ marginRight: 5 }}>{strings(stringKeys.alerts.assess.thresholdInfo.threshold)}:</Typography>
-              <strong style={{ marginRight: 5 }}>{data.healthRiskCountThreshold} {isLargerThanOne(data.healthRiskCountThreshold) ? strings(stringKeys.alerts.assess.thresholdInfo.reports) : strings(stringKeys.alerts.assess.thresholdInfo.report)}</strong>
+              <Typography variant="body2" style={{ marginRight: 5 }}>
+                {strings(stringKeys.alerts.assess.thresholdInfo.threshold)}:
+              </Typography>
+              <strong style={{ marginRight: 5 }}>
+                {data.healthRiskCountThreshold}{" "}
+                {isLargerThanOne(data.healthRiskCountThreshold)
+                  ? strings(stringKeys.alerts.assess.thresholdInfo.reports)
+                  : strings(stringKeys.alerts.assess.thresholdInfo.report)}
+              </strong>
             </>
             {data.healthRiskDaysThreshold && (
               <>
-                <Typography variant="body2" style={{ marginRight: 5 }}>{strings(stringKeys.alerts.assess.thresholdInfo.in)}</Typography>
-                <strong style={{ marginRight: 5 }}>{data.healthRiskDaysThreshold} {isLargerThanOne(data.healthRiskDaysThreshold) ? strings(stringKeys.alerts.assess.thresholdInfo.days) : strings(stringKeys.alerts.assess.thresholdInfo.day)}</strong>
+                <Typography variant="body2" style={{ marginRight: 5 }}>
+                  {strings(stringKeys.alerts.assess.thresholdInfo.in)}
+                </Typography>
+                <strong style={{ marginRight: 5 }}>
+                  {data.healthRiskDaysThreshold}{" "}
+                  {isLargerThanOne(data.healthRiskDaysThreshold)
+                    ? strings(stringKeys.alerts.assess.thresholdInfo.days)
+                    : strings(stringKeys.alerts.assess.thresholdInfo.day)}
+                </strong>
               </>
             )}
             {data.healthRiskKilometersThreshold && (
               <>
-                <Typography variant="body2" style={{ marginRight: 5 }}>{strings(stringKeys.alerts.assess.thresholdInfo.within)}</Typography>
-                <strong style={{ marginRight: 5 }}>{data.healthRiskKilometersThreshold} {strings(stringKeys.alerts.assess.thresholdInfo.kilometers)}</strong>
+                <Typography variant="body2" style={{ marginRight: 5 }}>
+                  {strings(stringKeys.alerts.assess.thresholdInfo.within)}
+                </Typography>
+                <strong style={{ marginRight: 5 }}>
+                  {data.healthRiskKilometersThreshold}{" "}
+                  {strings(stringKeys.alerts.assess.thresholdInfo.kilometers)}
+                </strong>
               </>
             )}
           </Typography>
@@ -178,6 +211,8 @@ const mapStateToProps = (state, ownProps) => ({
   isPendingAlertState: state.alerts.isPendingAlertState,
   validateEidsrResult: state.alerts.formData?.validateEidsrResult,
   isLoadingValidateEidsr: state.alerts.isLoadingValidateEidsr,
+  title: state.appData.siteMap.parameters.title,
+  subTitle: state.appData.siteMap.parameters.subTitle,
 });
 
 const mapDispatchToProps = {

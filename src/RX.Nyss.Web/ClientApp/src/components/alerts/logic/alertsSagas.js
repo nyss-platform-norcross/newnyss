@@ -103,11 +103,10 @@ function* openAlertsAssessment({ projectId, alertId }) {
       `/api/alert/${alertId}/get?utcOffset=${getUtcOffset()}`,
     );
 
-    const title = `${strings(stringKeys.alerts.details.title, true)} - ${
-      data.healthRisk
-    } ${dayjs(data.createdAt).format("YYYY-MM-DD HH:mm")}`;
+    const title = `${data.healthRisk}`;
+    const subTitle = `${dayjs(data.createdAt).format("YYYY-MM-DD HH:mm")}`;
 
-    yield openAlertsModule(projectId, title);
+    yield openAlertsModule(projectId, title, subTitle);
     yield put(actions.openAssessment.success(alertId, data));
   } catch (error) {
     yield put(actions.openAssessment.failure(error.message));
@@ -270,7 +269,7 @@ function* exportAlerts({ projectId, filters }) {
   }
 }
 
-function* openAlertsModule(projectId, title) {
+function* openAlertsModule(projectId, title, subTitle) {
   const project = yield call(http.getCached, {
     path: `/api/project/${projectId}/basicData`,
     dependencies: [entityTypes.project(projectId)],
@@ -284,6 +283,7 @@ function* openAlertsModule(projectId, title) {
       projectId: project.value.id,
       projectName: project.value.name,
       title: title,
+      subTitle: subTitle,
       projectIsClosed: project.value.isClosed,
     }),
   );

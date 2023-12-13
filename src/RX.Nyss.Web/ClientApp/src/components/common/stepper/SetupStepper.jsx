@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import {
+  Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@material-ui/core";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -9,6 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import StepConnector from "@material-ui/core/StepConnector";
 import CheckIcon from "@material-ui/icons/Check";
 import { strings, stringKeys } from "../../../strings";
+import SubmitButton from "../buttons/submitButton/SubmitButton";
 
 const useStyles = makeStyles((theme) => ({
   stepper: {
@@ -19,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
   },
   backButton: {
     marginRight: theme.spacing(1),
+  },
+  dialogTitle: {
+    fontSize: 240,
   },
 }));
 
@@ -88,12 +98,15 @@ export const SetupStepper = ({
   setError,
   isNextStepInvalid,
   setIsNextStepInvalid,
+  goToList,
+  nationalSocietyId,
 }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const sortedSteps = steps.sort(
     (stepA, stepB) => stepA.stepNumber - stepB.stepNumber,
   );
+  const [open, setOpen] = useState(false);
 
   const handleNext = () => {
     if (
@@ -114,7 +127,15 @@ export const SetupStepper = ({
   };
 
   const handleReset = () => {
-    setActiveStep(0);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleCancel = () => {
+    goToList(nationalSocietyId);
   };
 
   const StepIcon = (props) => {
@@ -220,6 +241,26 @@ export const SetupStepper = ({
               {strings(stringKeys.form.cancel)}
             </Button>
           </Grid>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle classes={{ root: classes.dialogTitle }}>
+              <Typography style={{ fontSize: 24, fontWeight: 600 }}>
+                {strings(stringKeys.projectSetup.cancelDialog.title)}
+              </Typography>
+            </DialogTitle>
+            <DialogContent>
+              <Typography style={{ marginBottom: 20 }} gutterBottom>
+                {strings(stringKeys.projectSetup.cancelDialog.description)}
+              </Typography>
+            </DialogContent>
+            <DialogActions style={{ margin: "0 20px 10px 0" }}>
+              <Button onClick={handleCancel} color="primary">
+                {strings(stringKeys.common.buttons.confirmCancelation)}
+              </Button>
+              <SubmitButton onClick={handleClose} color="primary" autoFocus>
+                {strings(stringKeys.common.buttons.denyCancelation)}
+              </SubmitButton>
+            </DialogActions>
+          </Dialog>
         </Grid>
       </Grid>
     </>

@@ -1,23 +1,26 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { withLayout } from '../../utils/layout';
-import Layout from '../layout/Layout';
-import { Loading } from '../common/loading/Loading';
-import * as projectSetupActions from './logic/projectSetupActions';
-import { useMount } from '../../utils/lifecycle';
-import { SetupStepper } from '../common/stepper/SetupStepper'
-import Typography from '@material-ui/core/Typography';
-import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStructure"
-import { ProjectSetupOrganization } from './ProjectSetupOrganization';
-import { ProjectSetupName } from './ProjectSetupName'
-import { strings, stringKeys } from '../../strings';
-import { ProjectSetupRecipients } from './ProjectSetupRecipients';
-
+import { withLayout } from "../../utils/layout";
+import Layout from "../layout/Layout";
+import { Loading } from "../common/loading/Loading";
+import * as projectSetupActions from "./logic/projectSetupActions";
+import * as projectActions from "../projects/logic/projectsActions";
+import { useMount } from "../../utils/lifecycle";
+import { SetupStepper } from "../common/stepper/SetupStepper";
+import Typography from "@material-ui/core/Typography";
+import { ProjectSetupName } from "./ProjectSetupName";
+import { ProjectSetupOrganization } from "./ProjectSetupOrganization";
+import { ProjectSetupRecipients } from "./ProjectSetupRecipients";
+import { ProjectSetupHealthRisk } from "./ProjectSetupHealthRisk";
+import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStructure";
+import { strings, stringKeys } from "../../strings";
 
 const ProjectSetupPageComponent = ({
   nationalSocietyId,
   isFetching,
+  formData,
   openProjectSetup,
+  goToList,
   ...props
 }) => {
   useMount(() => {
@@ -27,7 +30,7 @@ const ProjectSetupPageComponent = ({
   const [error, setError] = useState(false);
   const [isNextStepInvalid, setIsNextStepInvalid] = useState(true);
 
-  if (isFetching) {
+  if (isFetching || !formData) {
     return <Loading />;
   }
 
@@ -56,12 +59,20 @@ const ProjectSetupPageComponent = ({
     },
     {
       name: strings(stringKeys.projectSetup.projectRecipients.name),
-      content: <ProjectSetupRecipients error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
-      stepNumber: 2
+      content: (
+        <ProjectSetupRecipients
+          error={error}
+          setError={setError}
+          setIsNextStepInvalid={setIsNextStepInvalid}
+        />
+      ),
+      stepNumber: 2,
     },
     {
-      name: "Health risks",
-      content: <Typography>Health risk content</Typography>,
+      name: strings(stringKeys.projectSetup.projectHealthRisks.name),
+      content: (
+        <ProjectSetupHealthRisk setIsNextStepInvalid={setIsNextStepInvalid} />
+      ),
       stepNumber: 3,
     },
     {
@@ -85,6 +96,8 @@ const ProjectSetupPageComponent = ({
         setError={setError}
         isNextStepInvalid={isNextStepInvalid}
         setIsNextStepInvalid={setIsNextStepInvalid}
+        goToList={goToList}
+        nationalSocietyId={nationalSocietyId}
       />
     </div>
   );
@@ -95,10 +108,12 @@ ProjectSetupPageComponent.propTypes = {};
 const mapStateToProps = (state, ownProps) => ({
   nationalSocietyId: ownProps.match.params.nationalSocietyId,
   isFetching: state.projectSetup.formFetching,
+  formData: state.projectSetup.formData,
 });
 
 const mapDispatchToProps = {
   openProjectSetup: projectSetupActions.openSetup.invoke,
+  goToList: projectActions.goToList,
 };
 
 export const ProjectSetupPage = withLayout(

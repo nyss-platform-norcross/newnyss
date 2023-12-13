@@ -446,13 +446,22 @@ export const stringKeys = {
       name: "projectSetup.projectRecipients.name",
       title: "projectSetup.projectRecipients.title",
       placeholder: "projectSetup.projectRecipients.placeholder",
-      error: "projectSetup.projectRecipients.error"
+      error: "projectSetup.projectRecipients.error",
+    },
+    cancelDialog: {
+      title: "projectSetup.cancelDialog.title",
+      description: "projectSetup.cancelDialog.description",
     },
     geographicalStructure: {
       name: "projectSetup.geographicalStructure.name",
       title: "projectSetup.geographicalStructure.title",
       description: "projectSetup.geographicalStructure.description",
       error: "projectSetup.geographicalStructure.error",
+    },
+    projectHealthRisks: {
+      name: "projectSetup.healthRisk.name",
+      title: "projectSetup.healthRisk.title",
+      placeholder: "projectSetup.healthRisk.placeholder",
     },
   },
   dashboard: {
@@ -867,6 +876,12 @@ export const stringKeys = {
       introduction: "alerts.assess.introduction",
       reports: "alerts.assess.reports",
       closeReason: "alerts.assess.closeReason",
+      goBack: "alerts.assess.goBack",
+      status: {
+        Open: "alerts.assess.status.open",
+        Closed: "alerts.assess.status.closed",
+        Escalated: "alerts.assess.status.escalated",
+      },
       statusDescription: {
         closed: "alerts.assess.statusDescription.closed",
         escalated: "alerts.assess.statusDescription.escalated",
@@ -926,6 +941,10 @@ export const stringKeys = {
         age: "alerts.assess.report.age",
         id: "alerts.assess.report.id",
         linkedToSupervisor: "alerts.assess.report.linkedToSupervisor",
+        sent: "alerts.assess.report.sent",
+        reportId: "alerts.assess.report.reportId",
+        date: "alerts.assess.report.date",
+        time: "alerts.assess.report.time",
       },
       escalatedTo: {
         title: "alerts.assess.escalatedTo.title",
@@ -942,7 +961,7 @@ export const stringKeys = {
         in: "alerts.assess.alert.in",
         within: "alerts.assess.alert.within",
         kilometers: "alerts.assess.alert.kilometers",
-      }
+      },
     },
     eventLog: {
       title: "alerts.eventLog.title",
@@ -1157,6 +1176,8 @@ export const stringKeys = {
       finish: "common.buttons.finish",
       next: "common.buttons.next",
       tryAgain: "common.buttons.tryAgain",
+      confirmCancelation: "common.buttons.confirmCancelation",
+      denyCancelation: "common.buttons.denyCancelation",
     },
     boolean: {
       true: "common.true",
