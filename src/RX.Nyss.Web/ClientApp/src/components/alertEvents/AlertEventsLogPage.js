@@ -48,7 +48,7 @@ const AlertEventsLogPageComponent = ({
         justifyContent="space-between"
         style={{ marginBottom: 10 }}
       >
-        <Grid style={{ width: "fit-content" }}>
+        <Grid item style={{ width: "100%" }}>
           <Grid container alignItems="center">
             <Typography
               style={{ fontSize: 24, fontWeight: 700, marginRight: 10 }}
@@ -61,21 +61,21 @@ const AlertEventsLogPageComponent = ({
             >{`#${alertId}`}</Typography>
             <AlertStatusChip status={alert.assessmentStatus} />
           </Grid>
-          <Typography variant="body2" style={{ marginTop: 10 }}>
-            {props.subTitle}
-          </Typography>
+          <Grid item container justifyContent="space-between">
+            <Typography variant="body2" style={{ marginTop: 10 }}>
+              {props.subTitle}
+            </Typography>
+            <TableActionsButton
+              onClick={() => setCreateDialogOpened(true)}
+              variant="contained"
+              roles={accessMap.alertEvents.add}
+              add
+              rtl={useRtlDirection}
+            >
+              {strings(stringKeys.common.buttons.add)}
+            </TableActionsButton>
+          </Grid>
         </Grid>
-        <TableActions>
-          <TableActionsButton
-            onClick={() => setCreateDialogOpened(true)}
-            variant="contained"
-            roles={accessMap.alertEvents.add}
-            add
-            rtl={useRtlDirection}
-          >
-            {strings(stringKeys.common.buttons.add)}
-          </TableActionsButton>
-        </TableActions>
       </Grid>
 
       <AlertEventsTable
