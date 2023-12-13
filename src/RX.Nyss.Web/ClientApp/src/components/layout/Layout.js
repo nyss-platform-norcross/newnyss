@@ -37,7 +37,6 @@ const Layout = ({ fillPage, children }) => {
   const projectName = useSelector(
     (state) => state.appData.siteMap.parameters.projectName,
   );
-  const title = useSelector((state) => state.appData.siteMap.title);
 
   return (
     <BaseLayout>

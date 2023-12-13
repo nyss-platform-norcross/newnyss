@@ -4,7 +4,7 @@ import * as actions from "./alertsActions";
 import * as appActions from "../../app/logic/appActions";
 import * as http from "../../../utils/http";
 import { entityTypes } from "../../nationalSocieties/logic/nationalSocietiesConstants";
-import { strings, stringKeys } from "../../../strings";
+import { stringKeys } from "../../../strings";
 import dayjs from "dayjs";
 import { downloadFile } from "../../../utils/downloadFile";
 import { formatDate, getUtcOffset } from "../../../utils/date";
