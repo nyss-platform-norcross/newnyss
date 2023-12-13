@@ -26,4 +26,4 @@ const mapStateToProps = (state) => ({
   title: state.appData.siteMap.title,
 });
 
-export const SubMenuTitle = connect(mapStateToProps)(SubMenuTitleComponent);
+export const SubMenuTitle = connect(mapStateToProps, {})(SubMenuTitleComponent);

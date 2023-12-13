@@ -4,7 +4,7 @@ import * as actions from "./alertsActions";
 import * as appActions from "../../app/logic/appActions";
 import * as http from "../../../utils/http";
 import { entityTypes } from "../../nationalSocieties/logic/nationalSocietiesConstants";
-import { strings, stringKeys } from "../../../strings";
+import { stringKeys } from "../../../strings";
 import dayjs from "dayjs";
 import { downloadFile } from "../../../utils/downloadFile";
 import { formatDate, getUtcOffset } from "../../../utils/date";
@@ -103,11 +103,10 @@ function* openAlertsAssessment({ projectId, alertId }) {
       `/api/alert/${alertId}/get?utcOffset=${getUtcOffset()}`,
     );
 
-    const title = `${strings(stringKeys.alerts.details.title, true)} - ${
-      data.healthRisk
-    } ${dayjs(data.createdAt).format("YYYY-MM-DD HH:mm")}`;
+    const title = `${data.healthRisk}`;
+    const subTitle = `${dayjs(data.createdAt).format("YYYY-MM-DD HH:mm")}`;
 
-    yield openAlertsModule(projectId, title);
+    yield openAlertsModule(projectId, title, subTitle);
     yield put(actions.openAssessment.success(alertId, data));
   } catch (error) {
     yield put(actions.openAssessment.failure(error.message));
@@ -195,17 +194,12 @@ function* resetReport({ alertId, reportId }) {
 }
 
 function* escalateAlert({ alertId, sendNotification }) {
-  const projectId = yield select(
-    (state) => state.appData.route.params.projectId,
-  );
-
   yield put(actions.escalateAlert.request());
   try {
     const response = yield call(http.post, `/api/alert/${alertId}/escalate`, {
       sendNotification,
     });
     yield put(actions.escalateAlert.success());
-    yield put(actions.goToList(projectId));
     yield put(appActions.showMessage(response.value));
   } catch (error) {
     yield put(appActions.showMessage(error.message));
@@ -270,7 +264,7 @@ function* exportAlerts({ projectId, filters }) {
   }
 }
 
-function* openAlertsModule(projectId, title) {
+function* openAlertsModule(projectId, title, subTitle) {
   const project = yield call(http.getCached, {
     path: `/api/project/${projectId}/basicData`,
     dependencies: [entityTypes.project(projectId)],
@@ -284,6 +278,7 @@ function* openAlertsModule(projectId, title) {
       projectId: project.value.id,
       projectName: project.value.name,
       title: title,
+      subTitle: subTitle,
       projectIsClosed: project.value.isClosed,
     }),
   );

@@ -51,21 +51,11 @@
 }
 
 .indicator {
-  margin-right: 10px;
   align-self: center;
 
   &.rtl {
     margin-right: unset;
-    margin-left: 10px;
   }
-}
-
-.accepted {
-  color: #09c509;
-}
-
-.rejected {
-  color: #e42d2d;
 }
 
 .reportStatus {
