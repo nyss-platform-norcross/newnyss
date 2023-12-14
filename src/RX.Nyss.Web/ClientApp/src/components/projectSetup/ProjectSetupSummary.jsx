@@ -236,9 +236,9 @@ const ProjectSetupSummaryComponent = (props) => {
         <CardContent className={classes.cardContent}>
           <SummaryRow name={strings(stringKeys.projectSetup.projectName.name)} value={projectName}/>
           <SummaryRow name={strings(stringKeys.projectSetup.projectOrganization.name)} value={organizationName}/>
-          <SummaryRow name="Unhandled alert notification recipients" value={selectedRecipients?.join(', ')}/>
-          <SummaryHealthRisksRow name="Health risks" healthRisks={healthRisks} />
-          <SummaryGeographicalStructureRow name="Geographical structure" rows={newLocationRows}/>
+          <SummaryRow name={strings(stringKeys.projectSetup.projectRecipients.name)} value={selectedRecipients?.join(', ')}/>
+          <SummaryHealthRisksRow name={strings(stringKeys.projectSetup.projectHealthRisks.name)} healthRisks={healthRisks} />
+          <SummaryGeographicalStructureRow name={strings(stringKeys.projectSetup.geographicalStructure.name)} rows={newLocationRows}/>
         </CardContent>
       </Card>
     </>
