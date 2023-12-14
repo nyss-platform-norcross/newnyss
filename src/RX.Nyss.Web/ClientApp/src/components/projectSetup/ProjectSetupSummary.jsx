@@ -25,8 +25,10 @@ const useStyles = makeStyles((theme) => ({
     margin: "30px 0 30px 0",
   },
   healthRisk: {
-    backgroundColor: "#CDDDE7",
     margin: "4px 4px 4px 0"
+  },
+  healthRiskBackground: {
+    backgroundColor: "#CDDDE7",
   },
   newLocation: {
     fontWeight: 700,
@@ -69,7 +71,7 @@ const SummaryHealthRisksRow = ({ name, healthRisks }) => {
         </Grid>
         <Grid item xs={8}>
           {healthRisks.map(hr => (
-            <Chip label={hr.healthRiskName} className={classes.healthRisk} key={hr.healthRiskId}/>
+            <Chip label={hr.healthRiskName} className={`${classes.healthRisk} ${hr.healthRiskType !== "Activity" && classes.healthRiskBackground} `} key={hr.healthRiskId}/>
           ))}
         </Grid>
       </Grid>
@@ -134,7 +136,7 @@ const SummaryGeographicalStructureRow = ({ name, rows }) => {
 }
 
 const ProjectSetupSummaryComponent = (props) => {
-  let { projectName, organizations, organizationId, recipients, recipientIds, healthRisks, regions, districts, villages, zones } = props;
+  let { projectName, organizations, organizationId, recipients, recipientIds, healthRisks, requiredHealthRisks, regions, districts, villages, zones } = props;
   const classes = useStyles();
   const organizationName = organizations?.find(org => org.id === organizationId).name;
   const selectedRecipients = recipients?.filter(recipient => recipientIds.includes(recipient.id)).map(recipient => recipient.name);
@@ -231,7 +233,7 @@ const ProjectSetupSummaryComponent = (props) => {
           <SummaryRow name={strings(stringKeys.projectSetup.projectName.name)} value={projectName}/>
           <SummaryRow name={strings(stringKeys.projectSetup.projectOrganization.name)} value={organizationName}/>
           <SummaryRow name={strings(stringKeys.projectSetup.projectRecipients.name)} value={selectedRecipients?.join(', ')}/>
-          <SummaryHealthRisksRow name={strings(stringKeys.projectSetup.projectHealthRisks.name)} healthRisks={healthRisks} />
+          <SummaryHealthRisksRow name={strings(stringKeys.projectSetup.projectHealthRisks.name)} healthRisks={healthRisks.concat(requiredHealthRisks)} />
           <SummaryGeographicalStructureRow name={strings(stringKeys.projectSetup.geographicalStructure.name)} rows={newLocationRows}/>
         </CardContent>
       </Card>
@@ -246,6 +248,7 @@ const mapStateToProps = (state) => ({
   organizations: state.projectSetup.formData?.organizations,
   recipientIds: state.projectSetup.alertNotHandledNotificationRecipientIds,
   healthRisks: state.projectSetup.healthRisks,
+  requiredHealthRisks: state.projectSetup.requiredHealthRisks,
   regions: state.projectSetup.regions,
   districts: state.projectSetup.districts,
   villages: state.projectSetup.villages,
