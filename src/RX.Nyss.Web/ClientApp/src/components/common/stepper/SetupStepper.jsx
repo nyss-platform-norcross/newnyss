@@ -131,7 +131,7 @@ export const SetupStepper = ({
   };
 
   const handleFinish = () => {
-    console.log("Finisihed")
+    // Add api request here to create project
   }
   const handleClose = () => {
     setOpen(false);
