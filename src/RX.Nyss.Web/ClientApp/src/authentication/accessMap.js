@@ -44,9 +44,9 @@ export const accessMap = {
   },
   smsGateways: {
     list: [Administrator, Manager, TechnicalAdvisor, Coordinator],
-    add: [Administrator, Manager, TechnicalAdvisor, Coordinator],
-    edit: [Administrator, Manager, TechnicalAdvisor, Coordinator],
-    delete: [Administrator, Manager, TechnicalAdvisor, Coordinator],
+    add: [Administrator],
+    edit: [Administrator],
+    delete: [Administrator],
   },
   eidsrIntegration: {
     get: [
