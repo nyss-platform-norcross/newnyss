@@ -15,60 +15,29 @@ import {
   AccordionSummary,
   AccordionActions,
   Divider,
-  Icon,
+  Typography,
 } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { Manager, TechnicalAdvisor } from "../../../authentication/roles";
+import { makeStyles } from "@material-ui/core/styles";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import { ReportStatusChip } from "../../common/chip/ReportStatusChip";
+
+var relativeTime = require("dayjs/plugin/relativeTime");
+dayjs.extend(relativeTime);
 
 const ReportFormLabel = ({ label, value }) => (
-  <div className={styles.container}>
-    <div className={styles.key}>{label}</div>
-    <div className={styles.value}>{value}</div>
-  </div>
+  <Grid
+    container
+    direction="column"
+    style={{ maxWidth: "fit-content", margin: "10px 50px 0 0" }}
+  >
+    <Typography style={{ fontWeight: 700, fontSize: 12 }}>{label}</Typography>
+    <Typography variant="body2" style={{ marginTop: 5 }}>
+      {value}
+    </Typography>
+  </Grid>
 );
-
-const getReportIcon = (status, rtl) => {
-  switch (status) {
-    case "Pending":
-      return (
-        <Icon className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
-          hourglass_empty
-        </Icon>
-      );
-    case "Accepted":
-      return (
-        <Icon
-          className={`${styles.indicator} ${styles.accepted} ${
-            rtl ? styles.rtl : ""
-          }`}
-        >
-          check
-        </Icon>
-      );
-    case "Rejected":
-      return (
-        <Icon
-          className={`${styles.indicator} ${styles.rejected} ${
-            rtl ? styles.rtl : ""
-          }`}
-        >
-          clear
-        </Icon>
-      );
-    case "Closed":
-      return (
-        <Icon className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
-          block
-        </Icon>
-      );
-    default:
-      return (
-        <Icon className={`${styles.indicator} ${rtl ? styles.rtl : ""}`}>
-          warning
-        </Icon>
-      );
-  }
-};
 
 export const AlertsAssessmentReport = ({
   alertId,
@@ -104,45 +73,85 @@ export const AlertsAssessmentReport = ({
     (r) => r === Manager || r === TechnicalAdvisor,
   );
 
+  const useStyles = makeStyles(() => ({
+    accordion: {
+      border: "1px solid #E3E3E3",
+    },
+    summary: {
+      height: "40px !important",
+      minHeight: "40px !important",
+    },
+    time: {
+      fontSize: 14,
+      color: "#4F4F4F",
+    },
+    report: {
+      fontWeight: 700,
+    },
+    chip: {
+      padding: rtl ? "0 0 0 20px" : "0 20px 0 0",
+    },
+  }));
+  const classes = useStyles();
+
   return (
-    <Accordion disabled={fromOtherOrg}>
-      <AccordionSummary expandIcon={!fromOtherOrg && <ExpandMoreIcon />}>
-        {getReportIcon(report.status, rtl)}
-        <span className={styles.time}>
-          {dayjs(report.receivedAt).format("YYYY-MM-DD HH:mm")}
-        </span>
-        <div className={styles.senderContainer}>
-          <span className={styles.senderLabel}>
-            {strings(stringKeys.alerts.assess.report.sender)}{" "}
-            {report.isAnonymized &&
-              strings(stringKeys.alerts.assess.report.linkedToSupervisor)}
-          </span>
-          <span className={styles.sender}>
-            {report.dataCollector || report.organization}
-          </span>
-        </div>
+    <Accordion disabled={fromOtherOrg} className={classes.accordion}>
+      <AccordionSummary
+        className={classes.summary}
+        expandIcon={!fromOtherOrg && <ExpandMoreIcon />}
+      >
+        <Grid container alignContent="center">
+          <Grid container alignItems="center" item xs={4}>
+            <Typography className={classes.time}>
+              {strings(stringKeys.alerts.assess.report.sent)}{" "}
+              {dayjs(
+                dayjs(report.receivedAt).format("YYYY-MM-DD HH:mm"),
+              ).fromNow()}
+            </Typography>
+          </Grid>
+          <Grid container alignItems="center" item xs={4}>
+            <Typography variant="body2" className={classes.report}>
+              {strings(stringKeys.alerts.assess.report.reportId)} #{report.id}
+            </Typography>
+          </Grid>
+          <Grid
+            className={classes.chip}
+            container
+            alignItems="center"
+            item
+            xs={4}
+            justifyContent="flex-end"
+          >
+            <ReportStatusChip report={report} rtl={rtl} />
+          </Grid>
+        </Grid>
       </AccordionSummary>
-      <AccordionDetails className={styles.form}>
-        <Grid container spacing={2}>
-          <Grid item xs={6} xl={3}>
+      <AccordionDetails>
+        <Grid container>
+          <Divider style={{ width: "100%", marginTop: -8 }} />
+          <Grid container item xs={4} direction="column">
+            <ReportFormLabel
+              label={strings(stringKeys.alerts.assess.report.sender)}
+              value={
+                report.isAnonymized
+                  ? strings(stringKeys.alerts.assess.report.linkedToSupervisor)
+                  : report.dataCollector || report.organization
+              }
+            />
             <ReportFormLabel
               label={strings(stringKeys.alerts.assess.report.phoneNumber)}
               value={report.phoneNumber}
             />
-            <ReportFormLabel
-              label={strings(stringKeys.alerts.assess.report.village)}
-              value={report.village}
-            />
-            <ReportFormLabel
-              label={strings(stringKeys.alerts.assess.report.district)}
-              value={report.district}
-            />
-            <ReportFormLabel
-              label={strings(stringKeys.alerts.assess.report.region)}
-              value={report.region}
-            />
           </Grid>
-          <Grid item xs={6} xl={3}>
+          <Grid container item xs={8}>
+            <ReportFormLabel
+              label={strings(stringKeys.alerts.assess.report.date)}
+              value={dayjs(report.receivedAt).format("YYYY-MM-DD")}
+            />
+            <ReportFormLabel
+              label={strings(stringKeys.alerts.assess.report.time)}
+              value={dayjs(report.receivedAt).format("HH:mm")}
+            />
             {report.sex && (
               <ReportFormLabel
                 label={strings(stringKeys.alerts.assess.report.sex)}
@@ -155,10 +164,6 @@ export const AlertsAssessmentReport = ({
                 value={strings(stringKeys.alerts.constants.age[report.age])}
               />
             )}
-            <ReportFormLabel
-              label={strings(stringKeys.alerts.assess.report.id)}
-              value={report.id}
-            />
             {showSupervisorDetails && (
               <ReportFormLabel
                 label={strings(stringKeys.roles.Supervisor)}
@@ -168,58 +173,62 @@ export const AlertsAssessmentReport = ({
           </Grid>
         </Grid>
       </AccordionDetails>
-      {!projectIsClosed && (
-        <Fragment>
-          <Divider />
-          <AccordionActions>
-            {showActions && (
-              <Fragment>
-                <SubmitButton
-                  onClick={() => dismissReport(alertId, report.id)}
-                  isFetching={report.isDismissing}
-                  regular
-                >
-                  {strings(stringKeys.alerts.assess.report.dismiss)}
-                </SubmitButton>
+      <Grid container style={{ padding: "8px 16px 16px" }}>
+        <Grid container item xs={4}>
+          <Grid container alignItems="center">
+            <LocationOnIcon fontSize="small" />
+            <Typography variant="body2">{`${
+              report.district ? report.region + ", " : report.region
+            } ${report.village ? report.district + ", " : report.district} ${
+              report.zone ? report.village + ", " : report.village
+            } ${report.zone ? report.zone : ""}`}</Typography>
+          </Grid>
+        </Grid>
+        <Grid container item xs={8} justifyContent="flex-end">
+          {!projectIsClosed && (
+            <AccordionActions>
+              {showActions && (
+                <Fragment>
+                  <SubmitButton
+                    onClick={() => dismissReport(alertId, report.id)}
+                    isFetching={report.isDismissing}
+                    regular
+                    underline
+                  >
+                    {strings(stringKeys.alerts.assess.report.dismiss)}
+                  </SubmitButton>
 
-                <SubmitButton
-                  onClick={() => acceptReport(alertId, report.id)}
-                  isFetching={report.isAccepting}
-                >
-                  {strings(stringKeys.alerts.assess.report.accept)}
-                </SubmitButton>
-              </Fragment>
-            )}
-
-            {!showActions && (
-              <div className={styles.reportStatus}>
-                {strings(
-                  stringKeys.alerts.constants.reportStatus[report.status],
-                )}
-              </div>
-            )}
-
-            {showResetOption && (
-              <Fragment>
-                <Button
-                  variant="text"
-                  color="primary"
-                  onClick={() => resetReport(alertId, report.id)}
-                  disabled={report.isResetting}
-                >
-                  {report.isResetting && (
-                    <CircularProgress
-                      size={16}
-                      className={styles.progressIcon}
-                    />
-                  )}
-                  {strings(stringKeys.alerts.assess.report.reset)}
-                </Button>
-              </Fragment>
-            )}
-          </AccordionActions>
-        </Fragment>
-      )}
+                  <SubmitButton
+                    onClick={() => acceptReport(alertId, report.id)}
+                    isFetching={report.isAccepting}
+                  >
+                    {strings(stringKeys.alerts.assess.report.accept)}
+                  </SubmitButton>
+                </Fragment>
+              )}
+              {showResetOption && (
+                <Fragment>
+                  <Button
+                    variant="text"
+                    color="primary"
+                    style={{ textDecoration: "underline" }}
+                    onClick={() => resetReport(alertId, report.id)}
+                    disabled={report.isResetting}
+                  >
+                    {report.isResetting && (
+                      <CircularProgress
+                        size={16}
+                        className={styles.progressIcon}
+                      />
+                    )}
+                    {strings(stringKeys.alerts.assess.report.reset)}
+                  </Button>
+                </Fragment>
+              )}
+            </AccordionActions>
+          )}
+        </Grid>
+      </Grid>
     </Accordion>
   );
 };

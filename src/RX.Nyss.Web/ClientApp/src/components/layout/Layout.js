@@ -25,20 +25,17 @@ const useStyles = makeStyles({
   },
   title: {
     fontSize: 24,
-    fontWeight: 600
-  }
+    fontWeight: 600,
+  },
 });
 
 const Layout = ({ fillPage, children }) => {
   const classes = useStyles();
   const nationalSocietyName = useSelector(
-    (state) => state.appData.siteMap.parameters.nationalSocietyName
+    (state) => state.appData.siteMap.parameters.nationalSocietyName,
   );
   const projectName = useSelector(
-    (state) => state.appData.siteMap.parameters.projectName
-  );
-  const title = useSelector(
-    (state) => state.appData.siteMap.title
+    (state) => state.appData.siteMap.parameters.projectName,
   );
 
   return (
@@ -58,11 +55,15 @@ const Layout = ({ fillPage, children }) => {
             }`}
           >
             <div className={fillPage ? styles.fillPage : null}>
-              {(nationalSocietyName && !projectName) && (
-                <Typography className={classes.header}>{nationalSocietyName}</Typography>
+              {nationalSocietyName && !projectName && (
+                <Typography className={classes.header}>
+                  {nationalSocietyName}
+                </Typography>
               )}
               {projectName && (
-                <Typography className={classes.header}>{nationalSocietyName} - {projectName}</Typography>
+                <Typography className={classes.header}>
+                  {nationalSocietyName} - {projectName}
+                </Typography>
               )}
               <TabMenu />
               {children}

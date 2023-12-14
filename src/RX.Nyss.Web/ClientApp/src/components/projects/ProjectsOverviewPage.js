@@ -17,6 +17,9 @@ const useStyles = makeStyles({
   bodyText: {
     fontSize: 16,
   },
+  formActions: {
+    marginTop: 0,
+  },
 });
 
 const ProjectsOverviewPageComponent = (props) => {
@@ -32,23 +35,25 @@ const ProjectsOverviewPageComponent = (props) => {
 
   return (
     <Fragment>
-      <SubMenuTitle />
       <Grid container spacing={4} fixed="true" style={{ maxWidth: 800 }}>
         <Grid item xs={12}>
-          {!props.isClosed && (
-            <FormActions>
-              <TableActionsButton
-                startIcon={<EditIcon />}
-                onClick={() =>
-                  props.openEdition(props.nationalSocietyId, props.projectId)
-                }
-                roles={accessMap.projects.edit}
-                variant={"contained"}
-              >
-                {strings(stringKeys.common.buttons.edit)}
-              </TableActionsButton>
-            </FormActions>
-          )}
+          <Grid container justifyContent="space-between" alignItems="center">
+            <SubMenuTitle />
+            {!props.isClosed && (
+              <FormActions className={classes.formActions}>
+                <TableActionsButton
+                  startIcon={<EditIcon />}
+                  onClick={() =>
+                    props.openEdition(props.nationalSocietyId, props.projectId)
+                  }
+                  roles={accessMap.projects.edit}
+                  variant={"contained"}
+                >
+                  {strings(stringKeys.common.buttons.edit)}
+                </TableActionsButton>
+              </FormActions>
+            )}
+          </Grid>
           <Typography variant="h5">
             {strings(stringKeys.project.form.name)}
           </Typography>

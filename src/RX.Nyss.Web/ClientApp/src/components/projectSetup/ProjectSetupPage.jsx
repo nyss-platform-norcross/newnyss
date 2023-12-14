@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { withLayout } from '../../utils/layout';
-import Layout from '../layout/Layout';
-import { Loading } from '../common/loading/Loading';
-import * as projectSetupActions from './logic/projectSetupActions';
-import * as projectActions from '../projects/logic/projectsActions';
-import { useMount } from '../../utils/lifecycle';
-import { SetupStepper } from '../common/stepper/SetupStepper'
-import Typography from '@material-ui/core/Typography';
-import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStructure"
-import { ProjectSetupOrganization } from './ProjectSetupOrganization';
-import { ProjectSetupName } from './ProjectSetupName'
-import { strings, stringKeys } from '../../strings';
+import { withLayout } from "../../utils/layout";
+import Layout from "../layout/Layout";
+import { Loading } from "../common/loading/Loading";
+import * as projectSetupActions from "./logic/projectSetupActions";
+import * as projectActions from "../projects/logic/projectsActions";
+import { useMount } from "../../utils/lifecycle";
+import { SetupStepper } from "../common/stepper/SetupStepper";
+import { ProjectSetupName } from "./ProjectSetupName";
+import { ProjectSetupOrganization } from "./ProjectSetupOrganization";
+import { ProjectSetupRecipients } from "./ProjectSetupRecipients";
+import { ProjectSetupHealthRisk } from "./ProjectSetupHealthRisk";
+import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStructure";
 import { ProjectSetupSummary } from './ProjectSetupSummary'
-import { ProjectSetupRecipients } from './ProjectSetupRecipients';
-
+import { strings, stringKeys } from "../../strings";
 
 const ProjectSetupPageComponent = ({
   nationalSocietyId,
   isFetching,
+  formData,
   openProjectSetup,
   goToList,
   ...props
@@ -30,7 +30,7 @@ const ProjectSetupPageComponent = ({
   const [error, setError] = useState(false);
   const [isNextStepInvalid, setIsNextStepInvalid] = useState(true);
 
-  if (isFetching) {
+  if (isFetching || !formData) {
     return <Loading />;
   }
 
@@ -59,24 +59,32 @@ const ProjectSetupPageComponent = ({
     },
     {
       name: strings(stringKeys.projectSetup.projectRecipients.name),
-      content: <ProjectSetupRecipients error={error} setError={setError} setIsNextStepInvalid={setIsNextStepInvalid}/>,
-      stepNumber: 2
+      content: (
+        <ProjectSetupRecipients
+          error={error}
+          setError={setError}
+          setIsNextStepInvalid={setIsNextStepInvalid}
+        />
+      ),
+      stepNumber: 2,
     },
     {
-      name: "Health risks",
-      content: <Typography>Health risk content</Typography>,
-      stepNumber: 5,
+      name: strings(stringKeys.projectSetup.projectHealthRisks.name),
+      content: (
+        <ProjectSetupHealthRisk setIsNextStepInvalid={setIsNextStepInvalid} />
+      ),
+      stepNumber: 3,
     },
     {
       name: strings(stringKeys.projectSetup.geographicalStructure.name),
       content: <ProjectSetupGeographicalStructure />,
-      stepNumber: 3,
+      stepNumber: 4,
       isOptional: true,
     },
     {
       name: strings(stringKeys.projectSetup.summary.name),
       content: <ProjectSetupSummary />,
-      stepNumber: 4
+      stepNumber: 5
     },
   ];
 
@@ -100,6 +108,7 @@ ProjectSetupPageComponent.propTypes = {};
 const mapStateToProps = (state, ownProps) => ({
   nationalSocietyId: ownProps.match.params.nationalSocietyId,
   isFetching: state.projectSetup.formFetching,
+  formData: state.projectSetup.formData,
 });
 
 const mapDispatchToProps = {

@@ -25,6 +25,13 @@ function* openProjectSetup({ nationalSocietyId }) {
       `/api/nationalSocietyStructure/get?nationalSocietyId=${nationalSocietyId}`,
     );
 
+    // Manually add activity report health risks as required by filtering on healthRiskType === "Activity"
+    // Should mabye reconsider this approach, these values should not be set in the frontend
+    const requiredHealthRisks = formData.value.healthRisks.filter(
+      (hr) => hr.healthRiskType === "Activity",
+    );
+    yield put(actions.setRequiredHealthRisks(requiredHealthRisks));
+
     yield put(
       actions.openSetup.success({
         formData: formData.value,

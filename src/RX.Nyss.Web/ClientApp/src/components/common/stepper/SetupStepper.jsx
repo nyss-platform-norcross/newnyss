@@ -1,6 +1,12 @@
 import React, { useState } from "react";
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Grid, Dialog, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import {
+  Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@material-ui/core";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -9,7 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import StepConnector from "@material-ui/core/StepConnector";
 import CheckIcon from "@material-ui/icons/Check";
 import { strings, stringKeys } from "../../../strings";
-import SubmitButton from '../buttons/submitButton/SubmitButton';
+import SubmitButton from "../buttons/submitButton/SubmitButton";
 
 const useStyles = makeStyles((theme) => ({
   stepper: {
@@ -93,7 +99,7 @@ export const SetupStepper = ({
   isNextStepInvalid,
   setIsNextStepInvalid,
   goToList,
-  nationalSocietyId
+  nationalSocietyId,
 }) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
@@ -134,7 +140,6 @@ export const SetupStepper = ({
   const handleCancel = () => {
     goToList(nationalSocietyId);
   };
-
 
   const StepIcon = (props) => {
     const classes = useColorlibStepIconStyles();
@@ -242,19 +247,21 @@ export const SetupStepper = ({
           </Grid>
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle classes={{ root: classes.dialogTitle }}>
-              <Typography style={{fontSize: 24, fontWeight: 600}}>{strings(stringKeys.projectSetup.cancelDialog.title)}</Typography>
+              <Typography style={{ fontSize: 24, fontWeight: 600 }}>
+                {strings(stringKeys.projectSetup.cancelDialog.title)}
+              </Typography>
             </DialogTitle>
             <DialogContent>
-              <Typography style={{marginBottom: 20}} gutterBottom>
+              <Typography style={{ marginBottom: 20 }} gutterBottom>
                 {strings(stringKeys.projectSetup.cancelDialog.description)}
               </Typography>
             </DialogContent>
-            <DialogActions style={{margin: "0 20px 10px 0"}}>
+            <DialogActions style={{ margin: "0 20px 10px 0" }}>
               <Button onClick={handleCancel} color="primary">
                 {strings(stringKeys.common.buttons.confirmCancelation)}
               </Button>
               <SubmitButton onClick={handleClose} color="primary" autoFocus>
-              {strings(stringKeys.common.buttons.denyCancelation)}
+                {strings(stringKeys.common.buttons.denyCancelation)}
               </SubmitButton>
             </DialogActions>
           </Dialog>
