@@ -139,10 +139,6 @@ const ProjectSetupSummaryComponent = (props) => {
   const organizationName = organizations?.find(org => org.id === organizationId).name;
   const selectedRecipients = recipients?.filter(recipient => recipientIds.includes(recipient.id)).map(recipient => recipient.name);
 
-  // Dummy data
-  const selectedHealthRisks = [{ name: "Fever and rash", id: 1 }, { name: "Acute Watery Diaherra", id: 2 }, { name: "Fever and body pain", id: 3 }, { name: "Fever and neck stiffness", id: 4 }]
-  console.log("🚀 ~ file: ProjectSetupSummary.jsx:138 ~ ProjectSetupSummaryComponent ~ healthRisks:", healthRisks)
-
   let allLocationRows = []
   regions.forEach(region => allLocationRows.push({ region: region, districts: [], villages: [], zones: [] }))
 
@@ -217,8 +213,6 @@ const ProjectSetupSummaryComponent = (props) => {
   if(newRegions.length > 0) {
     newRegions.forEach(region => {
       if(newLocationRows.every(location => location.region.id !== region.id)) {
-        console.log(newLocationRows)
-        console.log(region)
         newLocationRows.push({
           region: region,
           district: null,
