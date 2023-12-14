@@ -465,6 +465,7 @@ export const stringKeys = {
     summary: {
       name: "projectSetup.summary.name",
       title: "projectSetup.summary.title",
+      notUpdated: "projectSetup.summary.notUpdated",
     },
     projectHealthRisks: {
       name: "projectSetup.healthRisk.name",

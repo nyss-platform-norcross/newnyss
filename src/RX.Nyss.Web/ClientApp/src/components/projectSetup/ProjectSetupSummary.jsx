@@ -125,7 +125,7 @@ const SummaryGeographicalStructureRow = ({ name, rows }) => {
             })
           )
           :
-          <Typography style={{ fontWeight: 700 }}>Not updated</Typography>
+          <Typography style={{ fontWeight: 700 }}>{strings(stringKeys.projectSetup.summary.notUpdated)}</Typography>
         }
         </Grid>
       </Grid>
