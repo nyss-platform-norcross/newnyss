@@ -31,7 +31,7 @@ const AlertsListPageComponent = ({ openAlertsList, ...props }) => {
   );
 
   const handlePageChange = (page) => {
-    props.getList(props.projectId, page, props.filters);
+    props.getAlerts(props.projectId, page, props.filters);
   };
 
   if (!props.filters) {
@@ -77,7 +77,7 @@ const AlertsListPageComponent = ({ openAlertsList, ...props }) => {
 };
 
 AlertsListPageComponent.propTypes = {
-  getList: PropTypes.func,
+  getAlerts: PropTypes.func,
   isFetching: PropTypes.bool,
   list: PropTypes.array,
 };
