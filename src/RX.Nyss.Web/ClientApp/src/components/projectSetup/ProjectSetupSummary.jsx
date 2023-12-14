@@ -61,7 +61,7 @@ const SummaryHealthRisksRow = ({ name, healthRisks }) => {
   const classes = useStyles()
   return (
     <>
-      <Grid container>
+      <Grid container alignItems="center">
         <Grid item xs={4}>
           <Typography>
             {name}
@@ -69,7 +69,7 @@ const SummaryHealthRisksRow = ({ name, healthRisks }) => {
         </Grid>
         <Grid item xs={8}>
           {healthRisks.map(hr => (
-            <Chip label={hr.name} className={classes.healthRisk} key={hr.id}/>
+            <Chip label={hr.healthRiskName} className={classes.healthRisk} key={hr.healthRiskId}/>
           ))}
         </Grid>
       </Grid>
@@ -141,6 +141,7 @@ const ProjectSetupSummaryComponent = (props) => {
 
   // Dummy data
   const selectedHealthRisks = [{ name: "Fever and rash", id: 1 }, { name: "Acute Watery Diaherra", id: 2 }, { name: "Fever and body pain", id: 3 }, { name: "Fever and neck stiffness", id: 4 }]
+  console.log("🚀 ~ file: ProjectSetupSummary.jsx:138 ~ ProjectSetupSummaryComponent ~ healthRisks:", healthRisks)
 
   let allLocationRows = []
   regions.forEach(region => allLocationRows.push({ region: region, districts: [], villages: [], zones: [] }))
@@ -236,7 +237,7 @@ const ProjectSetupSummaryComponent = (props) => {
           <SummaryRow name={strings(stringKeys.projectSetup.projectName.name)} value={projectName}/>
           <SummaryRow name={strings(stringKeys.projectSetup.projectOrganization.name)} value={organizationName}/>
           <SummaryRow name="Unhandled alert notification recipients" value={selectedRecipients?.join(', ')}/>
-          <SummaryHealthRisksRow name="Health risks" healthRisks={selectedHealthRisks} />
+          <SummaryHealthRisksRow name="Health risks" healthRisks={healthRisks} />
           <SummaryGeographicalStructureRow name="Geographical structure" rows={newLocationRows}/>
         </CardContent>
       </Card>
