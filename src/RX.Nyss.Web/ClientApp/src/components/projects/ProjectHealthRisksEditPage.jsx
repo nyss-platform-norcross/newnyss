@@ -129,6 +129,7 @@ const ProjectHealthRisksEditPageComponent = (props) => {
               options={healthRiskDataSource}
               value={getSelectedHealthRiskValue()}
               onChange={onHealthRiskChange}
+              isClearable={false}
               error={
                 healthRisksFieldTouched && selectedHealthRisks.length < 2
                   ? `${strings(stringKeys.validation.noHealthRiskSelected)}`
