@@ -74,7 +74,7 @@ const AlertsListPageComponent = ({ openAlertsList, ...props }) => {
       />
     </Fragment>
   );
-};
+}
 
 AlertsListPageComponent.propTypes = {
   getAlerts: PropTypes.func,
