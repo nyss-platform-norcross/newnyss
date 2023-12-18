@@ -18,7 +18,7 @@ export const ProjectAlertNotHandledRecipientItem = ({
   isEditing,
   error,
   setError,
-  setDeletedRecipients
+  remove
 }) => {
   const [user, setUser] = useState(unhandledRecipient);
   const users = useSelector(
@@ -45,10 +45,8 @@ export const ProjectAlertNotHandledRecipientItem = ({
     }
   };
 
-  const handleRecipientDelete = (deletedUser) => {
-    let newRecipientList = unhandledRecipients.filter(recipient => recipient.userId !== deletedUser.userId);
-    setUnhandledRecipients(newRecipientList);
-    setDeletedRecipients(prev => [...prev, user])
+  const handleRecipientDelete = () => {
+    remove(projectId, user);
   }
 
   const recipientIds = unhandledRecipients?.map(
@@ -100,8 +98,8 @@ export const ProjectAlertNotHandledRecipientItem = ({
           {user?.organizationName}
         </Typography>
       )}
-      {(isEditing || isCreating) && (
-        <IconButton color="primary" onClick={() => handleRecipientDelete(user)}><DeleteIcon/></IconButton>
+      {(!isEditing && !isCreating) && (
+        <IconButton color="primary" onClick={handleRecipientDelete}><DeleteIcon/></IconButton>
       )}
     </Grid>
   );

@@ -22,6 +22,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
   getFormData,
   edit,
   create,
+  remove
 }) => {
   useMount(() => {
     openRecipients(projectId);
@@ -63,7 +64,6 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
     userId: "",
     name: "",
   });
-  const [deletedRecipients, setDeletedRecipients] = useState([])
   const [error, setError] = useState(false);
 
   const onEdit = () => {
@@ -149,9 +149,10 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
                 getFormData={getFormData}
                 rtl={useRtlDirection}
                 isEditing={isEditing}
+                isCreating={isCreating}
                 error={error}
                 setError={setError}
-                setDeletedRecipients={setDeletedRecipients}
+                remove={remove}
               />
             ))}
             {isCreating && (
@@ -229,6 +230,7 @@ const mapDispatchToProps = {
   openRecipients: projectAlertNotHandledRecipientsActions.openRecipients.invoke,
   create: projectAlertNotHandledRecipientsActions.create.invoke,
   edit: projectAlertNotHandledRecipientsActions.edit.invoke,
+  remove: projectAlertNotHandledRecipientsActions.remove.invoke,
   getFormData: projectAlertNotHandledRecipientsActions.getFormData.invoke,
 };
 
