@@ -458,6 +458,7 @@ public static class ResultKey
         public const string CreateSuccess = "alertNotHandledRecipient.create.success";
         public const string EditSuccess = "alertNotHandledRecipient.edit.success";
         public const string DeleteSuccess = "alertNotHandledRecipient.delete.success";
+        public const string CannotRemoveLastAlertNotificationRecipient = "alertNotHandledRecipient.delete.cannotRemoveLastAlertNotificationRecipient";
         public const string UserMustBeInSameOrg = "alertNotHandledRecipient.userMustBeInSameOrg";
         public const string NotFound = "alertNotHandledRecipient.notFound";
         public const string AlreadyExists = "alertNotHandledRecipient.alreadyExists";

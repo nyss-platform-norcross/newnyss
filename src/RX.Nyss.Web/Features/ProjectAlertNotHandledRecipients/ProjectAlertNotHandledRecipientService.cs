@@ -137,6 +137,11 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
             var allAlertNotHandledRecipients = await _nyssContext.AlertNotHandledNotificationRecipients
                 .Where(a => a.ProjectId == projectId).ToListAsync();
 
+            if (allAlertNotHandledRecipients.Count == 1)
+            {
+                return Error(ResultKey.AlertNotHandledNotificationRecipient.CannotRemoveLastAlertNotificationRecipient);
+            }
+
             var removedRecipient = allAlertNotHandledRecipients.Find(recipient => dto.UserId == recipient.UserId);
             if (removedRecipient == null)
             {
