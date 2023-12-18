@@ -63,6 +63,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
     userId: "",
     name: "",
   });
+  const [deletedRecipients, setDeletedRecipients] = useState([])
   const [error, setError] = useState(false);
 
   const onEdit = () => {
@@ -136,7 +137,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
           <Typography variant="subtitle1">
             {strings(stringKeys.projectAlertNotHandledRecipient.description)}
           </Typography>
-          <Grid container style={{ marginTop: 10 }}>
+          <Grid container direction="column" style={{ marginTop: 10 }}>
             {unhandledRecipients?.map((recipient) => (
               <ProjectAlertNotHandledRecipientItem
                 key={`alertNotHandledRecipient_${recipient.userId}`}
@@ -150,6 +151,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
                 isEditing={isEditing}
                 error={error}
                 setError={setError}
+                setDeletedRecipients={setDeletedRecipients}
               />
             ))}
             {isCreating && (
