@@ -98,7 +98,7 @@ export const ProjectAlertNotHandledRecipientItem = ({
           {user?.organizationName}
         </Typography>
       )}
-      {(!isEditing && !isCreating) && (
+      {(!isEditing && !isCreating && unhandledRecipients.length > 1) && (
         <IconButton color="primary" onClick={handleRecipientDelete}><DeleteIcon/></IconButton>
       )}
     </Grid>
