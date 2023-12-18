@@ -173,21 +173,21 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
           {!isCreating && !isEditing && (
             <Grid style={{ marginTop: 20 }}>
               <Button
+                startIcon={<EditIcon />}
+                color="primary"
+                variant="outlined"
+                style={{ marginRight: 10 }}
+                onClick={onEditClick}
+              >
+                {strings(stringKeys.common.buttons.edit)}
+              </Button>
+              <Button
                 startIcon={<AddIcon />}
                 color="primary"
                 variant="contained"
                 onClick={onAddClick}
               >
                 {strings(stringKeys.projectAlertNotHandledRecipient.add)}
-              </Button>
-              <Button
-                startIcon={<EditIcon />}
-                color="primary"
-                variant="outlined"
-                style={{ marginLeft: 10 }}
-                onClick={onEditClick}
-              >
-                {strings(stringKeys.common.buttons.edit)}
               </Button>
             </Grid>
           )}
