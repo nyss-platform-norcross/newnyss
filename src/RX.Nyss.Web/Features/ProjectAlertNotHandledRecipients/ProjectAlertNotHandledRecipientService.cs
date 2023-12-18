@@ -17,6 +17,7 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
     {
         Task<Result> Create(int projectId, ProjectAlertNotHandledRecipientRequestDto dto);
         Task<Result> Edit(int projectId, ProjectAlertNotHandledRecipientsRequestDto dtoList);
+        Task<Result> Delete(int projectId, ProjectAlertNotHandledRecipientRequestDto dto);
         Task<Result<List<ProjectAlertNotHandledRecipientsResponseDto>>> List(int projectId);
         Task<Result<List<ProjectAlertNotHandledRecipientResponseDto>>> GetFormData(int projectId);
     }
@@ -128,6 +129,41 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
             await _nyssContext.SaveChangesAsync();
 
             return SuccessMessage(ResultKey.AlertNotHandledNotificationRecipient.EditSuccess);
+        }
+
+        public async Task<Result> Delete(int projectId, ProjectAlertNotHandledRecipientRequestDto dto)
+        {
+
+            var allAlertNotHandledRecipients = await _nyssContext.AlertNotHandledNotificationRecipients
+                .Where(a => a.ProjectId == projectId).ToListAsync();
+
+            var removedRecipient = allAlertNotHandledRecipients.Find(recipient => dto.UserId == recipient.UserId);
+            if (removedRecipient == null)
+            {
+                return Error(ResultKey.AlertNotHandledNotificationRecipient.NotFound);
+            }
+            _nyssContext.AlertNotHandledNotificationRecipients.Remove(removedRecipient);
+
+
+            var projectOrganizations = await _nyssContext.ProjectOrganizations.ToListAsync();
+            var removedProjectOrganization = projectOrganizations.Find(po => removedRecipient.OrganizationId == po.OrganizationId && po.ProjectId == projectId);
+            if (removedProjectOrganization == null)
+            {
+                return Error(ResultKey.ProjectOrganization.ProjectOrganizationNotFound);
+            }
+
+            // Remove project organizations
+            // Check if any recipients has the same organization of the removed recipient. If not, remove the project organization
+            var projectRecipientsOrganizationIds = _nyssContext.AlertNotHandledNotificationRecipients.Where(a => a.ProjectId == projectId).Select(recipient => recipient.OrganizationId).Distinct();
+            var isOrganizationStillInProject = projectRecipientsOrganizationIds.Contains(removedRecipient.OrganizationId);
+
+            if (!isOrganizationStillInProject)
+            {
+                _nyssContext.ProjectOrganizations.Remove(removedProjectOrganization);
+            }
+            await _nyssContext.SaveChangesAsync();
+
+            return SuccessMessage(ResultKey.AlertNotHandledNotificationRecipient.DeleteSuccess);
         }
 
         public async Task<Result<List<ProjectAlertNotHandledRecipientsResponseDto>>> List(int projectId)
