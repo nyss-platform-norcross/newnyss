@@ -42,13 +42,13 @@ namespace RX.Nyss.Web.Features.NationalSocietyDashboard
             var nationalSocietyId = filters.NationalSocietyId.Value;
 
             var dashboardReports = _reportService.GetDashboardHealthRiskEventReportsQuery(filters);
-            var rawReportsWithDataCollector = _reportService.GetRawReportsWithDataCollectorQuery(filters);
+            var rawReportsWithDataCollectorAndActivityReports = _reportService.GetRawReportsWithDataCollectorAndActivityReportsQuery(filters);
 
             return await _nyssContext.NationalSocieties
                 .Where(ns => ns.Id == nationalSocietyId)
                 .Select(ns => new
                 {
-                    activeDataCollectorCount = rawReportsWithDataCollector.Select(r => r.DataCollector.Id).Distinct().Count()
+                    activeDataCollectorCount = rawReportsWithDataCollectorAndActivityReports.Select(r => r.DataCollector.Id).Distinct().Count()
                 })
                 .Select(data => new NationalSocietySummaryResponseDto
                 {
@@ -56,8 +56,8 @@ namespace RX.Nyss.Web.Features.NationalSocietyDashboard
                     ActiveDataCollectorCount = data.activeDataCollectorCount,
                     DataCollectionPointSummary = _reportsDashboardSummaryService.DataCollectionPointsSummary(dashboardReports),
                     AlertsSummary = _reportsDashboardSummaryService.AlertsSummary(filters),
-                    NumberOfDistricts = rawReportsWithDataCollector.Select(r => r.Village.District).Distinct().Count(),
-                    NumberOfVillages = rawReportsWithDataCollector.Select(r => r.Village).Distinct().Count()
+                    NumberOfDistricts = rawReportsWithDataCollectorAndActivityReports.Select(r => r.Village.District).Distinct().Count(),
+                    NumberOfVillages = rawReportsWithDataCollectorAndActivityReports.Select(r => r.Village).Distinct().Count()
                 })
                 .FirstOrDefaultAsync();
         }
