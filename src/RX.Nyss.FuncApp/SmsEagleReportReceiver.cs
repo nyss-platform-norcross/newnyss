@@ -65,7 +65,6 @@ public class SmsEagleReportReceiver
         };
 
         await _reportPublisherService.AddReportToQueue(report);
-
         return new OkResult();
     }
 

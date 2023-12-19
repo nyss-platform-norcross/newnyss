@@ -1,16 +1,16 @@
-import React, { Fragment } from 'react';
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
-import * as globalCoordinatorsActions from './logic/globalCoordinatorsActions';
-import * as appActions from '../app/logic/appActions';
-import { withLayout } from '../../utils/layout';
-import Layout from '../layout/Layout';
-import TableActions from '../common/tableActions/TableActions';
-import GlobalCoordinatorsTable from './GlobalCoordinatorsTable';
-import { useMount } from '../../utils/lifecycle';
-import { strings, stringKeys } from '../../strings';
-import { TableActionsButton } from '../common/buttons/tableActionsButton/TableActionsButton';
-import { accessMap } from '../../authentication/accessMap';
+import * as globalCoordinatorsActions from "./logic/globalCoordinatorsActions";
+import * as appActions from "../app/logic/appActions";
+import { withLayout } from "../../utils/layout";
+import Layout from "../layout/Layout";
+import TableActions from "../common/tableActions/TableActions";
+import GlobalCoordinatorsTable from "./GlobalCoordinatorsTable";
+import { useMount } from "../../utils/lifecycle";
+import { strings, stringKeys } from "../../strings";
+import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
+import { accessMap } from "../../authentication/accessMap";
 
 const GlobalCoordinatorsListPageComponent = (props) => {
   useMount(() => {
@@ -18,7 +18,9 @@ const GlobalCoordinatorsListPageComponent = (props) => {
     props.getList();
   });
 
-  const userLanguageCode = useSelector(state => state.appData.user.languageCode);
+  const userLanguageCode = useSelector(
+    (state) => state.appData.user.languageCode,
+  );
 
   return (
     <Fragment>
@@ -27,8 +29,8 @@ const GlobalCoordinatorsListPageComponent = (props) => {
           onClick={props.goToCreation}
           roles={accessMap.globalCoordinators.add}
           add
-          variant='contained'
-          rtl={userLanguageCode === 'ar'}
+          variant="contained"
+          rtl={userLanguageCode === "ar"}
         >
           {strings(stringKeys.common.buttons.add)}
         </TableActionsButton>
@@ -41,11 +43,11 @@ const GlobalCoordinatorsListPageComponent = (props) => {
         isListFetching={props.isListFetching}
         isRemoving={props.isRemoving}
         remove={props.remove}
-        rtl={userLanguageCode === 'ar'}
+        rtl={userLanguageCode === "ar"}
       />
     </Fragment>
   );
-}
+};
 
 GlobalCoordinatorsListPageComponent.propTypes = {
   getGlobalCoordinators: PropTypes.func,
@@ -53,13 +55,13 @@ GlobalCoordinatorsListPageComponent.propTypes = {
   goToEdition: PropTypes.func,
   remove: PropTypes.func,
   isFetching: PropTypes.bool,
-  list: PropTypes.array
+  list: PropTypes.array,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   list: state.globalCoordinators.listData,
   isListFetching: state.globalCoordinators.listFetching,
-  isRemoving: state.globalCoordinators.listRemoving
+  isRemoving: state.globalCoordinators.listRemoving,
 });
 
 const mapDispatchToProps = {
@@ -67,10 +69,13 @@ const mapDispatchToProps = {
   goToCreation: globalCoordinatorsActions.goToCreation,
   goToEdition: globalCoordinatorsActions.goToEdition,
   remove: globalCoordinatorsActions.remove.invoke,
-  openModule: appActions.openModule.invoke
+  openModule: appActions.openModule.invoke,
 };
 
 export const GlobalCoordinatorsListPage = withLayout(
   Layout,
-  connect(mapStateToProps, mapDispatchToProps)(GlobalCoordinatorsListPageComponent)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(GlobalCoordinatorsListPageComponent),
 );

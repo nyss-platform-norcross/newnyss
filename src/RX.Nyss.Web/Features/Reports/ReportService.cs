@@ -18,9 +18,11 @@ using RX.Nyss.Web.Features.Reports.Dto;
 using RX.Nyss.Web.Features.Users;
 using RX.Nyss.Web.Services;
 using RX.Nyss.Web.Services.Authorization;
+using RX.Nyss.Web.Services.EidsrService;
 using RX.Nyss.Web.Utils.DataContract;
 using RX.Nyss.Web.Utils.Extensions;
 using static RX.Nyss.Common.Utils.DataContract.Result;
+using RX.Nyss.Common.Utils.Logging;
 
 namespace RX.Nyss.Web.Features.Reports;
 
@@ -59,6 +61,10 @@ public class ReportService : IReportService
 
     private readonly INationalSocietyStructureService _nationalSocietyStructureService;
 
+    private readonly IEidsrService _dhisService;
+
+    private readonly ILoggerAdapter _loggerAdapter;
+
     public ReportService(
         INyssContext nyssContext,
         IUserService userService,
@@ -67,6 +73,8 @@ public class ReportService : IReportService
         IAuthorizationService authorizationService,
         IDateTimeProvider dateTimeProvider,
         IStringsService stringsService,
+        IEidsrService dhisService,
+        ILoggerAdapter loggerAdapter,
         INationalSocietyStructureService nationalSocietyStructureService)
     {
         _nyssContext = nyssContext;
@@ -77,6 +85,8 @@ public class ReportService : IReportService
         _dateTimeProvider = dateTimeProvider;
         _stringsService = stringsService;
         _nationalSocietyStructureService = nationalSocietyStructureService;
+        _dhisService = dhisService;
+        _loggerAdapter = loggerAdapter;
     }
 
     public async Task<Result<PaginatedList<ReportListResponseDto>>> List(int projectId, int pageNumber, ReportListFilterRequestDto filter)
@@ -106,12 +116,9 @@ public class ReportService : IReportService
         var result = baseQuery.Select(r => new ReportListResponseDto
         {
             Id = r.Id,
-            IsAnonymized = isSupervisor || isHeadSupervisor
-                    ? (currentRole == Role.HeadSupervisor && r.DataCollector.Supervisor.HeadSupervisor.Id != currentUserId)
-                    || (currentRole == Role.Supervisor && r.DataCollector.Supervisor.Id != currentUserId)
-                    : currentRole != Role.Administrator && !r.NationalSociety.NationalSocietyUsers.Any(
-                        nsu => (nsu.UserId == r.DataCollector.Supervisor.Id && nsu.OrganizationId == currentUserOrganization.Id)
-                            || (nsu.UserId == r.DataCollector.HeadSupervisor.Id && nsu.OrganizationId == currentUserOrganization.Id)),
+            IsAnonymized = currentRole != Role.Administrator && !r.NationalSociety.NationalSocietyUsers.Any(
+                    nsu => (nsu.UserId == r.DataCollector.Supervisor.Id && nsu.OrganizationId == currentUserOrganization.Id)
+                        || (nsu.UserId == r.DataCollector.HeadSupervisor.Id && nsu.OrganizationId == currentUserOrganization.Id)),
             OrganizationName = r.NationalSociety.NationalSocietyUsers
                     .Where(nsu => nsu.UserId == r.DataCollector.Supervisor.Id || nsu.UserId == r.DataCollector.HeadSupervisor.Id)
                     .Select(nsu => nsu.Organization.Name)
@@ -267,6 +274,12 @@ public class ReportService : IReportService
         report.Status = ReportStatus.Accepted;
 
         await _nyssContext.SaveChangesAsync();
+
+        var nonEssentialSubProcessesErrors = new List<string>();
+        await SendReportsToDhis(
+            reportId,
+            nonEssentialSubProcessesErrors);
+
         return Success();
     }
 
@@ -303,6 +316,12 @@ public class ReportService : IReportService
         report.Status = ReportStatus.Rejected;
 
         await _nyssContext.SaveChangesAsync();
+
+        var nonEssentialSubProcessesErrors = new List<string>();
+        await SendReportsToDhis(
+            reportId,
+            nonEssentialSubProcessesErrors);
+
         return Success();
     }
 
@@ -361,4 +380,19 @@ public class ReportService : IReportService
                 x.Zone = "";
                 x.Village = "";
             });
+
+    private async Task SendReportsToDhis(
+        int reportId,
+        List<string> nonEssentialSubProcessesErrors)
+    {
+        try
+        {
+            await _dhisService.SendReportToDhis(reportId);
+        }
+        catch (ResultException e)
+        {
+            _loggerAdapter.Error(e, $"Failed to send reports to queue {_config.ServiceBusQueues.DhisReportQueue}.");
+            nonEssentialSubProcessesErrors.Add(ResultKey.DhisIntegration.DhisApi.RegisterReportError);
+        }
+    }
 }

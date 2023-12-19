@@ -23,6 +23,7 @@ namespace RX.Nyss.Web.Features.Projects
         Task<Result<List<ProjectListItemResponseDto>>> List(int nationalSocietyId, int utcOffset);
         Task<Result<int>> Create(int nationalSocietyId, CreateProjectRequestDto dto);
         Task<Result> Edit(int projectId, EditProjectRequestDto dto);
+        Task<Result> EditProjectHealthRisks(int projectId, EditHealthRisksRequestDto dto);
         Task<Result> Close(int projectId);
         Task<Result<ProjectFormDataResponseDto>> GetFormData(int nationalSocietyId);
         Task<IEnumerable<HealthRiskDto>> GetHealthRiskNames(int projectId, IEnumerable<HealthRiskType> healthRiskTypes);
@@ -292,6 +293,38 @@ namespace RX.Nyss.Web.Features.Projects
                 projectToUpdate.Name = dto.Name;
                 projectToUpdate.AllowMultipleOrganizations = dto.AllowMultipleOrganizations;
 
+                await _nyssContext.SaveChangesAsync();
+
+                return Success();
+            }
+            catch (ResultException exception)
+            {
+                _loggerAdapter.Debug(exception);
+                return exception.Result;
+            }
+        }
+
+         public async Task<Result> EditProjectHealthRisks(int projectId, EditHealthRisksRequestDto dto)
+        {
+            try
+            {
+                var projectToUpdate = await _nyssContext.Projects
+                    .Include(p => p.ProjectOrganizations)
+                    .Include(p => p.ProjectHealthRisks)
+                    .ThenInclude(phr => phr.AlertRule)
+                    .FirstOrDefaultAsync(p => p.Id == projectId);
+
+                if (projectToUpdate == null)
+                {
+                    return Error(ResultKey.Project.ProjectDoesNotExist);
+                }
+
+                if (projectToUpdate.AllowMultipleOrganizations
+                    && !await ValidateCoordinatorAccess(projectToUpdate.NationalSocietyId))
+                {
+                    return Error<int>(ResultKey.Project.OnlyCoordinatorCanAdministrateProjects);
+                }
+
                 await UpdateHealthRisks(projectToUpdate, dto.HealthRisks.ToList());
 
                 await _nyssContext.SaveChangesAsync();
@@ -490,7 +523,8 @@ namespace RX.Nyss.Web.Features.Projects
                         .Select(uns => new ProjectFormDataResponseDto.AlertNotHandledRecipientDto
                         {
                             Id = uns.UserId,
-                            Name = uns.User.Name
+                            Name = uns.User.Name,
+                            OrganizationId = uns.OrganizationId
                         })
                         .ToList()
                 })

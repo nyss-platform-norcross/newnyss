@@ -17,7 +17,6 @@ using System.Web;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using RX.Nyss.ReportApi.Features.Common;
 using Report = RX.Nyss.Data.Models.Report;
 
 namespace RX.Nyss.ReportApi.Features.Reports.Handlers
@@ -38,10 +37,6 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
         private const string TextParameterName = "text";
 
         private const string IncomingMessageIdParameterName = "msgid";
-
-        private const string OutgoingMessageIdParameterName = "oid";
-
-        private const string ModemNumberParameterName = "modemno";
 
         private const string ApiKeyParameterName = "apikey";
 
@@ -92,8 +87,6 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
             var timestamp = parsedQueryString[TimestampParameterName];
             var text = parsedQueryString[TextParameterName]?.Trim() ?? string.Empty;
             var incomingMessageId = parsedQueryString[IncomingMessageIdParameterName].ParseToNullableInt();
-            var outgoingMessageId = parsedQueryString[OutgoingMessageIdParameterName].ParseToNullableInt();
-            var modemNumber = parsedQueryString[ModemNumberParameterName].ParseToNullableInt();
             var apiKey = parsedQueryString[ApiKeyParameterName];
 
             ErrorReportData errorReportData = null;
@@ -110,8 +103,6 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                     ReceivedAt = _dateTimeProvider.UtcNow,
                     Text = text.Truncate(160),
                     IncomingMessageId = incomingMessageId,
-                    OutgoingMessageId = outgoingMessageId,
-                    ModemNumber = modemNumber,
                     ApiKey = apiKey
                 };
 
@@ -131,7 +122,11 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                     var reportData = reportValidationResult.ReportData;
 
                     var epiDate = _dateTimeProvider.GetEpiDate(reportValidationResult.ReportData.ReceivedAt, gatewaySetting.NationalSociety.EpiWeekStartDay);
-
+                    var phoneNumber = "";
+                    if (reportData.DataCollector != null)
+                    {
+                        phoneNumber = reportData.DataCollector.PhoneNumber ?? "";
+                    }
                     var report = new Report
                     {
                         IsTraining = reportData.DataCollector?.IsInTrainingMode ?? false,
@@ -142,7 +137,7 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                         DataCollector = reportData.DataCollector,
                         EpiWeek = epiDate.EpiWeek,
                         EpiYear = epiDate.EpiYear,
-                        PhoneNumber = reportData.DataCollector.PhoneNumber,
+                        PhoneNumber = phoneNumber,
                         Location = reportData.DataCollector?.DataCollectorLocations.Count == 1
                             ? reportData.DataCollector.DataCollectorLocations.First().Location
                             : null,
@@ -173,7 +168,7 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                 transactionScope.Complete();
             }
 
-            await SendNotifications(sender, modemNumber, alertData, errorReportData, projectHealthRisk, gatewaySetting);
+            await SendNotifications(sender, 1, alertData, errorReportData, projectHealthRisk, gatewaySetting);
         }
 
         public async Task<DataCollector> ValidateDataCollector(string phoneNumber, int gatewayNationalSocietyId)
@@ -292,18 +287,17 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
         {
             if (errorReportData == null)
             {
-                var recipients = new List<SendSmsRecipient>
+                var recipients = new List<SendGatewaySmsRecipient>
                 {
-                    new SendSmsRecipient
+                    new SendGatewaySmsRecipient
                     {
-                        PhoneNumber = senderPhoneNumber,
-                        Modem = senderModemNumber
+                        PhoneNumber = senderPhoneNumber
                     }
                 };
 
-                await _queuePublisherService.SendSms(recipients, gatewaySetting, projectHealthRisk.FeedbackMessage);
+                await _queuePublisherService.SendGatewayHttpSms(recipients, gatewaySetting, projectHealthRisk.FeedbackMessage);
 
-                if (alertData != null && alertData.Alert != null)
+                if (alertData.Alert != null)
                 {
                     if (alertData.IsExistingAlert)
                     {
@@ -341,16 +335,15 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                 return;
             }
 
-            var senderList = new List<SendSmsRecipient>
+            var senderList = new List<SendGatewaySmsRecipient>
             {
-                new SendSmsRecipient
+                new SendGatewaySmsRecipient
                 {
-                    PhoneNumber = errorReport.DataCollector.PhoneNumber,
-                    Modem = errorReport.ModemNumber
+                    PhoneNumber = errorReport.DataCollector.PhoneNumber
                 }
             };
 
-            await _queuePublisherService.SendSms(senderList, gatewaySetting, feedbackMessage);
+            await _queuePublisherService.SendGatewayHttpSms(senderList, gatewaySetting, feedbackMessage);
         }
 
         private async Task<string> GetFeedbackMessageContent(string key, string languageCode)

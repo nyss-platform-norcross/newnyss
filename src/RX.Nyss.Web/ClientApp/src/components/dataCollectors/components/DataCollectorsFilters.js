@@ -1,7 +1,11 @@
 import styles from "./DataCollectorsFilters.module.scss";
-import { useState, useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from "react";
 import { strings, stringKeys } from "../../../strings";
-import { sexValues, trainingStatus, deployedMode } from '../logic/dataCollectorsConstants';
+import {
+  sexValues,
+  trainingStatus,
+  deployedMode,
+} from "../logic/dataCollectorsConstants";
 import {
   InputLabel,
   RadioGroup,
@@ -13,61 +17,67 @@ import {
   Card,
   CardContent,
 } from "@material-ui/core";
-import * as roles from '../../../authentication/roles';
+import * as roles from "../../../authentication/roles";
 import useDebounce from "../../../utils/debounce";
-import { shallowEqual } from "react-redux";
 import LocationFilter from "../../common/filters/LocationFilter";
-import { renderFilterLabel } from "../../common/filters/logic/locationFilterService";
+import useLocalFilters from "../../common/filters/useLocalFilters";
+import useLocationFilter from "../../common/filters/useLocationFilter";
 
-export const DataCollectorsFilters = ({ supervisors, locations, onChange, callingUserRoles, filters, rtl }) => {
+export const DataCollectorsFilters = ({
+  supervisors,
+  locations,
+  onChange,
+  callingUserRoles,
+  filters,
+  rtl,
+}) => {
+  //Reducer for local filters state
+  const [localFilters, updateLocalFilters] = useLocalFilters(filters);
 
-  const [locationsFilterLabel, setLocationsFilterLabel] = useState(strings(stringKeys.filters.area.all));
+  //Fetches new data based on changes in filters
+  const handleFiltersChange = (filters) => {
+    onChange(updateLocalFilters(filters));
+  };
 
-  const [filter, setFilter] = useReducer((state, action) => {
-    const newState = { ...state.value, ...action };
-    if (!shallowEqual(newState, state.value)) {
-      return { ...state, changed: true, value: newState }
-    } else {
-      return state
-    }
-  }, { value: filters, changed: false });
+  //Syncs locations from redux store with filter state and sets label for location filter to 'All' or "Region (+n)"
+  //Neccecary if locations are added, edited or removed, to make all filters checked
+  const [locationsFilterLabel] = useLocationFilter(
+    locations,
+    localFilters,
+    updateLocalFilters,
+  );
 
-  const [name, setName] = useReducer((state, action) => {
-    if (state.value !== action) {
-      return { changed: true, value: action };
-    } else {
-      return state;
-    }
-  }, { value: '', changed: false });
+  const [name, setName] = useReducer(
+    (state, action) => {
+      if (state.value !== action) {
+        return { changed: true, value: action };
+      } else {
+        return state;
+      }
+    },
+    { value: "", changed: false },
+  );
   const debouncedName = useDebounce(name, 500);
 
-  useEffect(() => {
-    filter.changed && onChange(filter.value);
-  }, [filter, onChange]);
-
-  useEffect(() => {
-    const label = !filter.value || !locations ? strings(stringKeys.filters.area.all) : renderFilterLabel(filter.value.locations, locations.regions, false);
-    setLocationsFilterLabel(label);
-  }, [filter, locations]);
-
   const updateValue = (change) => {
-    setFilter(change);
+    handleFiltersChange(change);
   };
 
   const handleLocationChange = (newValue) => {
     updateValue({ locations: newValue });
-  }
+  };
 
-  const handleSupervisorChange = event =>
-    updateValue({ supervisorId: event.target.value === 0 ? null : event.target.value });
+  const handleSupervisorChange = (event) =>
+    updateValue({
+      supervisorId: event.target.value === 0 ? null : event.target.value,
+    });
 
-  const handleSexChange = event =>
-    updateValue({ sex: event.target.value });
+  const handleSexChange = (event) => updateValue({ sex: event.target.value });
 
-  const handleTrainingStatusChange = event =>
+  const handleTrainingStatusChange = (event) =>
     updateValue({ trainingStatus: event.target.value });
 
-  const handleDeployedModeChange = event =>
+  const handleDeployedModeChange = (event) =>
     updateValue({ deployedMode: event.target.value });
 
   const handleNameChange = (event) => setName(event.target.value);
@@ -76,97 +86,130 @@ export const DataCollectorsFilters = ({ supervisors, locations, onChange, callin
     debouncedName.changed && updateValue({ name: debouncedName.value });
   }, [debouncedName]);
 
-  return !!filter && (
-    <Card className={styles.filters}>
-      <CardContent>
-        <Grid container spacing={2}>
-          <Grid item>
-            <TextField
-              label={strings(stringKeys.dataCollectors.filters.name)}
-              onChange={handleNameChange}
-              className={styles.filterItem}
-              InputLabelProps={{ shrink: true }}
-            >
-            </TextField>
-          </Grid>
-          <Grid item>
-            <LocationFilter
-              filteredLocations={filter.value.locations}
-              allLocations={locations}
-              filterLabel={locationsFilterLabel}
-              onChange={handleLocationChange}
-              rtl={rtl}
-            />
-          </Grid>
+  return (
+    !!localFilters && (
+      <Card className={styles.filters}>
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid item>
+              <TextField
+                label={strings(stringKeys.dataCollectors.filters.name)}
+                onChange={handleNameChange}
+                className={styles.filterItem}
+                InputLabelProps={{ shrink: true }}
+              ></TextField>
+            </Grid>
+            <Grid item>
+              <LocationFilter
+                filteredLocations={localFilters.locations}
+                allLocations={locations}
+                filterLabel={locationsFilterLabel}
+                onChange={handleLocationChange}
+                rtl={rtl}
+              />
+            </Grid>
 
-          {(!callingUserRoles.some(r => r === roles.Supervisor) &&
+            {!callingUserRoles.some((r) => r === roles.Supervisor) && (
+              <Grid item>
+                <TextField
+                  select
+                  label={strings(stringKeys.dataCollectors.filters.supervisors)}
+                  onChange={handleSupervisorChange}
+                  value={localFilters.supervisorId || 0}
+                  className={styles.filterItem}
+                  InputLabelProps={{ shrink: true }}
+                >
+                  <MenuItem value={0}>
+                    {strings(stringKeys.dataCollectors.filters.supervisorsAll)}
+                  </MenuItem>
+
+                  {supervisors.map((supervisor) => (
+                    <MenuItem
+                      key={`filter_supervisor_${supervisor.id}`}
+                      value={supervisor.id}
+                    >
+                      {supervisor.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+            )}
+
             <Grid item>
               <TextField
                 select
-                label={strings(stringKeys.dataCollectors.filters.supervisors)}
-                onChange={handleSupervisorChange}
-                value={filter.value.supervisorId || 0}
+                label={strings(stringKeys.dataCollectors.filters.sex)}
+                onChange={handleSexChange}
+                value={localFilters.sex || "all"}
                 className={styles.filterItem}
                 InputLabelProps={{ shrink: true }}
               >
-                <MenuItem value={0}>{strings(stringKeys.dataCollectors.filters.supervisorsAll)}</MenuItem>
+                <MenuItem value="all">
+                  {strings(stringKeys.dataCollectors.filters.sexAll)}
+                </MenuItem>
 
-                {supervisors.map(supervisor => (
-                  <MenuItem key={`filter_supervisor_${supervisor.id}`} value={supervisor.id}>
-                    {supervisor.name}
+                {sexValues.map((sex) => (
+                  <MenuItem key={`datacollector_filter_${sex}`} value={sex}>
+                    {strings(
+                      stringKeys.dataCollectors.constants.sex[
+                        sex.toLowerCase()
+                      ],
+                    )}
                   </MenuItem>
                 ))}
               </TextField>
             </Grid>
-          )}
 
-          <Grid item>
-            <TextField
-              select
-              label={strings(stringKeys.dataCollectors.filters.sex)}
-              onChange={handleSexChange}
-              value={filter.value.sex || "all"}
-              className={styles.filterItem}
-              InputLabelProps={{ shrink: true }}
-            >
-              <MenuItem value="all">
-                {strings(stringKeys.dataCollectors.filters.sexAll)}
-              </MenuItem>
+            <Grid item>
+              <InputLabel>
+                {strings(stringKeys.dataCollectors.filters.trainingStatus)}
+              </InputLabel>
+              <RadioGroup
+                value={localFilters.trainingStatus || "All"}
+                onChange={handleTrainingStatusChange}
+                className={styles.filterRadioGroup}
+              >
+                {trainingStatus.map((status) => (
+                  <FormControlLabel
+                    key={`trainingStatus_filter_${status}`}
+                    control={<Radio />}
+                    className={styles.radio}
+                    label={strings(
+                      stringKeys.dataCollectors.constants.trainingStatus[
+                        status
+                      ],
+                    )}
+                    value={status}
+                  />
+                ))}
+              </RadioGroup>
+            </Grid>
 
-              {sexValues.map(sex => (
-                <MenuItem key={`datacollector_filter_${sex}`} value={sex}>
-                  {strings(stringKeys.dataCollectors.constants.sex[sex.toLowerCase()])}
-                </MenuItem>
-              ))}
-            </TextField>
+            <Grid item>
+              <InputLabel>
+                {strings(stringKeys.dataCollectors.filters.deployedMode)}
+              </InputLabel>
+              <RadioGroup
+                value={localFilters.deployedMode}
+                onChange={handleDeployedModeChange}
+                className={styles.filterRadioGroup}
+              >
+                {deployedMode.map((status) => (
+                  <FormControlLabel
+                    key={`deployedMode_filter_${status}`}
+                    control={<Radio />}
+                    className={styles.radio}
+                    label={strings(
+                      stringKeys.dataCollectors.constants.deployedMode[status],
+                    )}
+                    value={status}
+                  />
+                ))}
+              </RadioGroup>
+            </Grid>
           </Grid>
-
-          <Grid item>
-            <InputLabel>{strings(stringKeys.dataCollectors.filters.trainingStatus)}</InputLabel>
-            <RadioGroup
-              value={filter.value.trainingStatus || 'All'}
-              onChange={handleTrainingStatusChange}
-              className={styles.filterRadioGroup}>
-              {trainingStatus.map(status => (
-                <FormControlLabel key={`trainingStatus_filter_${status}`} control={<Radio />} label={strings(stringKeys.dataCollectors.constants.trainingStatus[status])} value={status} />
-              ))}
-            </RadioGroup>
-          </Grid>
-
-          <Grid item>
-            <InputLabel>{strings(stringKeys.dataCollectors.filters.deployedMode)}</InputLabel>
-            <RadioGroup
-              value={filter.value.deployedMode}
-              onChange={handleDeployedModeChange}
-              className={styles.filterRadioGroup}>
-              {deployedMode.map(status => (
-                <FormControlLabel key={`deployedMode_filter_${status}`} control={<Radio />} label={strings(stringKeys.dataCollectors.constants.deployedMode[status])} value={status} />
-              ))}
-            </RadioGroup>
-          </Grid>
-
-        </Grid>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    )
   );
-}
+};

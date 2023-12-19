@@ -1,10 +1,11 @@
 import { appReducer } from "../components/app/logic/appReducer";
 import { authReducer } from "../authentication/authReducer";
-import { connectRouter } from 'connected-react-router'
+import { connectRouter } from "connected-react-router";
 import { combineReducers } from "redux";
 import { nationalSocietiesReducer } from "../components/nationalSocieties/logic/nationalSocietiesReducer";
 import { smsGatewaysReducer } from "../components/smsGateways/logic/smsGatewaysReducer";
 import { projectsReducer } from "../components/projects/logic/projectsReducer";
+import { projectSetupReducer } from "../components/projectSetup/logic/projectSetupReducer";
 import { requestReducer } from "../components/app/logic/requestReducer";
 import { globalCoordinatorsReducer } from "../components/globalCoordinators/logic/globalCoordinatorsReducer";
 import { healthRisksReducer } from "../components/healthRisks/logic/healthRisksReducer";
@@ -25,34 +26,36 @@ import { projectAlertRecipientsReducer } from "../components/projectAlertRecipie
 import { projectAlertNotHandledRecipientsReducer } from "../components/projectAlertNotHandledRecipient/logic/projectAlertNotHandledRecipientsReducer";
 import { alertEventsReducer } from "../components/alertEvents/logic/alertEventsReducer";
 import { trackingReducer } from "../utils/tracking";
-import {eidsrIntegrationReducer} from "../components/eidsrIntegration/logic/eidsrIntegrationReducer";
+import { eidsrIntegrationReducer } from "../components/eidsrIntegration/logic/eidsrIntegrationReducer";
 
-export const createRootReducer = (history) => combineReducers({
-  router: connectRouter(history),
-  appData: appReducer,
-  requests: requestReducer,
-  auth: authReducer,
-  nationalSocieties: nationalSocietiesReducer,
-  nationalSocietyStructure: nationalSocietyStructureReducer,
-  smsGateways: smsGatewaysReducer,
-  eidsrIntegration: eidsrIntegrationReducer,
-  organizations: organizationsReducer,
-  projects: projectsReducer,
-  projectDashboard: projectDashboardReducer,
-  projectOrganizations: projectOrganizationsReducer,
-  projectAlertRecipients: projectAlertRecipientsReducer,
-  globalCoordinators: globalCoordinatorsReducer,
-  healthRisks: healthRisksReducer,
-  suspectedDiseases: suspectedDiseaseReducer,
-  nationalSocietyUsers: nationalSocietyUsersReducer,
-  dataCollectors: dataCollectorsReducer,
-  agreements: agreementsReducer,
-  reports: reportsReducer,
-  nationalSocietyReports: nationalSocietyReportsReducer,
-  nationalSocietyDashboard: nationalSocietyDashboardReducer,
-  alerts: alertsReducer,
-  alertEvents: alertEventsReducer,
-  translations: translationsReducer,
-  projectAlertNotHandledRecipients: projectAlertNotHandledRecipientsReducer,
-  tracking: trackingReducer,
-});
+export const createRootReducer = (history) =>
+  combineReducers({
+    router: connectRouter(history),
+    appData: appReducer,
+    requests: requestReducer,
+    auth: authReducer,
+    nationalSocieties: nationalSocietiesReducer,
+    nationalSocietyStructure: nationalSocietyStructureReducer,
+    smsGateways: smsGatewaysReducer,
+    eidsrIntegration: eidsrIntegrationReducer,
+    organizations: organizationsReducer,
+    projects: projectsReducer,
+    projectSetup: projectSetupReducer,
+    projectDashboard: projectDashboardReducer,
+    projectOrganizations: projectOrganizationsReducer,
+    projectAlertRecipients: projectAlertRecipientsReducer,
+    globalCoordinators: globalCoordinatorsReducer,
+    healthRisks: healthRisksReducer,
+    suspectedDiseases: suspectedDiseaseReducer,
+    nationalSocietyUsers: nationalSocietyUsersReducer,
+    dataCollectors: dataCollectorsReducer,
+    agreements: agreementsReducer,
+    reports: reportsReducer,
+    nationalSocietyReports: nationalSocietyReportsReducer,
+    nationalSocietyDashboard: nationalSocietyDashboardReducer,
+    alerts: alertsReducer,
+    alertEvents: alertEventsReducer,
+    translations: translationsReducer,
+    projectAlertNotHandledRecipients: projectAlertNotHandledRecipientsReducer,
+    tracking: trackingReducer,
+  });

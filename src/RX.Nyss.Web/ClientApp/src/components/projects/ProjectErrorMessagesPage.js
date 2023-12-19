@@ -16,6 +16,8 @@ import * as http from "../../utils/http";
 import { openErrorMessages } from "./logic/projectsActions";
 import styles from "./ProjectErrorMessagesPage.module.scss";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
+import TableHeader from "../common/tableHeader/TableHeader";
+import EditIcon from "@material-ui/icons/Edit";
 
 const MESSAGE_MAX_LEN = 320;
 const MESSAGE_WARNING_LEN = 160;
@@ -27,7 +29,9 @@ const ProjectErrorMessagesPageComponent = (props) => {
 
   async function fetchData() {
     props.openErrorMessages(props.projectId);
-    setErrorMessages(await http.get(`/api/project/${props.projectId}/errorMessages`));
+    setErrorMessages(
+      await http.get(`/api/project/${props.projectId}/errorMessages`),
+    );
   }
 
   function edit() {
@@ -36,7 +40,10 @@ const ProjectErrorMessagesPageComponent = (props) => {
 
     errorMessages.forEach((itm) => {
       fields[itm.key] = itm.message;
-      validation[itm.key] = [validators.required, validators.maxLength(MESSAGE_MAX_LEN)];
+      validation[itm.key] = [
+        validators.required,
+        validators.maxLength(MESSAGE_MAX_LEN),
+      ];
     });
 
     setForm(createForm(fields, validation));
@@ -79,57 +86,63 @@ const ProjectErrorMessagesPageComponent = (props) => {
   }
 
   return (
-    <Form onSubmit={onSubmit} fullWidth>
-      <Grid container spacing={4} fixed="true" style={{ maxWidth: 800 }}>
-        {errorMessages.map(itm => (
-          <Grid item xs={12} key={itm.key}>
-            <Card>
-              <CardContent>
-                <Typography variant="h3">{strings(`${itm.key}.title`)}</Typography>
-                {!form && (
-                  <Typography variant="body1" gutterBottom>
-                    {itm.message}
+    <Grid style={{ maxWidth: 800 }}>
+      <TableHeader>
+        <FormActions className={styles.formsActions}>
+          {form && (
+            <>
+              <CancelButton onClick={cancelEdit}>
+                {strings(stringKeys.form.cancel)}
+              </CancelButton>
+              <SubmitButton isFetching={isSaving}>
+                {strings(stringKeys.common.buttons.update)}
+              </SubmitButton>
+            </>
+          )}
+          {!form && (
+            <TableActionsButton
+              startIcon={<EditIcon />}
+              variant={"contained"}
+              onClick={edit}
+              roles={accessMap.projectErrorMessages.edit}
+            >
+              {strings(stringKeys.common.buttons.edit)}
+            </TableActionsButton>
+          )}
+        </FormActions>
+      </TableHeader>
+      <Form onSubmit={onSubmit} fullWidth>
+        <Grid container spacing={4} fixed="true">
+          {errorMessages.map((itm) => (
+            <Grid item xs={12} key={itm.key}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h3">
+                    {strings(`${itm.key}.title`)}
                   </Typography>
-                )}
-                {form && (<>
-                  <TextInputField
-                    className={styles.input}
-                    name={itm.key}
-                    field={form.fields[itm.key]}
-                    multiline
-                  />
-                  <InputWarningMessage formField={form.fields[itm.key]} />
-                  </>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-        <Grid item xs={12}>
-          <FormActions className={styles.formsActions}>
-            {form && (
-              <>
-                <CancelButton onClick={cancelEdit}>
-                  {strings(stringKeys.form.cancel)}
-                </CancelButton>
-                <SubmitButton isFetching={isSaving}>
-                  {strings(stringKeys.common.buttons.update)}
-                </SubmitButton>
-              </>
-            )}
-            {!form && (
-              <TableActionsButton
-                variant={"contained"}
-                onClick={edit}
-                roles={accessMap.projectErrorMessages.edit}
-              >
-                {strings(stringKeys.common.buttons.edit)}
-              </TableActionsButton>
-            )}
-          </FormActions>
+                  {!form && (
+                    <Typography variant="body1" gutterBottom>
+                      {itm.message}
+                    </Typography>
+                  )}
+                  {form && (
+                    <>
+                      <TextInputField
+                        className={styles.input}
+                        name={itm.key}
+                        field={form.fields[itm.key]}
+                        multiline
+                      />
+                      <InputWarningMessage formField={form.fields[itm.key]} />
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
         </Grid>
-      </Grid>
-    </Form>
+      </Form>
+    </Grid>
   );
 };
 
@@ -137,9 +150,10 @@ const InputWarningMessage = ({ formField }) => {
   const [message, setMessage] = useState("");
 
   function validate(value) {
-    const message = value.length > MESSAGE_WARNING_LEN
-      ? strings(stringKeys.project.errorMessages.tooLongWarning)
-      : "";
+    const message =
+      value.length > MESSAGE_WARNING_LEN
+        ? strings(stringKeys.project.errorMessages.tooLongWarning)
+        : "";
 
     setMessage(message);
   }
@@ -152,10 +166,8 @@ const InputWarningMessage = ({ formField }) => {
     validate(formField.value);
   }, []);
 
-  return (
-    <p className={styles.inputWarningMsg}>{message}</p>
-  )
-}
+  return <p className={styles.inputWarningMsg}>{message}</p>;
+};
 
 const mapStateToProps = (_, ownProps) => ({
   projectId: ownProps.match.params.projectId,
@@ -169,6 +181,6 @@ export const ProjectErrorMessagesPage = withLayout(
   Layout,
   connect(
     mapStateToProps,
-    mapDispatchToProps
-  )(ProjectErrorMessagesPageComponent)
+    mapDispatchToProps,
+  )(ProjectErrorMessagesPageComponent),
 );

@@ -13,6 +13,7 @@ using RX.Nyss.Data.Queries;
 using RX.Nyss.Web.Features.Organizations;
 using RX.Nyss.Web.Features.HeadSupervisors.Dto;
 using RX.Nyss.Web.Features.HeadSupervisors.Models;
+using RX.Nyss.Web.Features.Users;
 using RX.Nyss.Web.Services;
 using RX.Nyss.Web.Services.Authorization;
 using static RX.Nyss.Common.Utils.DataContract.Result;
@@ -37,9 +38,11 @@ namespace RX.Nyss.Web.Features.HeadSupervisors
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly IAuthorizationService _authorizationService;
         private readonly IOrganizationService _organizationService;
+        private readonly IUserService _userService;
 
         public HeadSupervisorService(IIdentityUserRegistrationService identityUserRegistrationService, INyssContext nyssContext, IOrganizationService organizationService,
-            ILoggerAdapter loggerAdapter, IVerificationEmailService verificationEmailService, IDeleteUserService deleteUserService, IDateTimeProvider dateTimeProvider, IAuthorizationService authorizationService)
+            ILoggerAdapter loggerAdapter, IVerificationEmailService verificationEmailService, IDeleteUserService deleteUserService, IDateTimeProvider dateTimeProvider,
+            IAuthorizationService authorizationService, IUserService userService)
         {
             _identityUserRegistrationService = identityUserRegistrationService;
             _nyssContext = nyssContext;
@@ -49,6 +52,7 @@ namespace RX.Nyss.Web.Features.HeadSupervisors
             _dateTimeProvider = dateTimeProvider;
             _authorizationService = authorizationService;
             _organizationService = organizationService;
+            _userService = userService;
         }
 
         public async Task<Result> Create(int nationalSocietyId, CreateHeadSupervisorRequestDto createHeadSupervisorRequestDto)
@@ -151,46 +155,42 @@ namespace RX.Nyss.Web.Features.HeadSupervisors
             try
             {
                 var supervisorUserData = await GetHeadSupervisorUser(headSupervisorId);
-                var oldEmail = supervisorUserData.User.EmailAddress;
                 if (supervisorUserData.User == null)
                 {
                     throw new ResultException(ResultKey.User.Registration.UserNotFound);
                 }
-                else
+
+                var headSupervisorUser = supervisorUserData.User;
+                var oldEmail = supervisorUserData.User.EmailAddress;
+
+                await _userService.UpdateUserEmail(headSupervisorUser, editDto.Email);
+                headSupervisorUser.Name = editDto.Name;
+                headSupervisorUser.Sex = editDto.Sex;
+                headSupervisorUser.DecadeOfBirth = editDto.DecadeOfBirth;
+                headSupervisorUser.PhoneNumber = editDto.PhoneNumber;
+                headSupervisorUser.AdditionalPhoneNumber = editDto.AdditionalPhoneNumber;
+                headSupervisorUser.Organization = editDto.Organization;
+
+                await UpdateHeadSupervisorProjectReferences(headSupervisorUser, supervisorUserData.CurrentProjectReference, editDto.ProjectId);
+                await UpdateModem(headSupervisorUser, editDto.ModemId, editDto.NationalSocietyId);
+
+                if (editDto.OrganizationId.HasValue)
                 {
-                    var headSupervisorUser = supervisorUserData.User;
-                    headSupervisorUser.Name = editDto.Name;
-                    headSupervisorUser.EmailAddress = editDto.Email;
-                    headSupervisorUser.Sex = editDto.Sex;
-                    headSupervisorUser.DecadeOfBirth = editDto.DecadeOfBirth;
-                    headSupervisorUser.PhoneNumber = editDto.PhoneNumber;
-                    headSupervisorUser.AdditionalPhoneNumber = editDto.AdditionalPhoneNumber;
-                    headSupervisorUser.IsFirstLogin = oldEmail != editDto.Email ? true : false;
-                    headSupervisorUser.Organization = editDto.Organization;
+                    var userLink = await _nyssContext.UserNationalSocieties
+                        .Where(un => un.UserId == headSupervisorId && un.NationalSocietyId == editDto.NationalSocietyId)
+                        .SingleOrDefaultAsync();
 
-                    await UpdateHeadSupervisorProjectReferences(headSupervisorUser, supervisorUserData.CurrentProjectReference, editDto.ProjectId);
-                    await UpdateModem(headSupervisorUser, editDto.ModemId, editDto.NationalSocietyId);
-
-                    if (editDto.OrganizationId.HasValue)
+                    if (editDto.OrganizationId.Value != userLink.OrganizationId)
                     {
-                        var userLink = await _nyssContext.UserNationalSocieties
-                            .Where(un => un.UserId == headSupervisorId && un.NationalSocietyId == editDto.NationalSocietyId)
-                            .SingleOrDefaultAsync();
+                        var validationResult = await _organizationService.CheckAccessForOrganizationEdition(userLink);
 
-                        if (editDto.OrganizationId.Value != userLink.OrganizationId)
+                        if (!validationResult.IsSuccess)
                         {
-                            var validationResult = await _organizationService.CheckAccessForOrganizationEdition(userLink);
-
-                            if (!validationResult.IsSuccess)
-                            {
-                                return validationResult;
-                            }
-
-                            userLink.Organization = await _nyssContext.Organizations.FindAsync(editDto.OrganizationId.Value);
+                            return validationResult;
                         }
-                    }
 
-                    await _nyssContext.SaveChangesAsync();
+                        userLink.Organization = await _nyssContext.Organizations.FindAsync(editDto.OrganizationId.Value);
+                    }
                 }
 
                 if (oldEmail != editDto.Email)
@@ -200,6 +200,8 @@ namespace RX.Nyss.Web.Features.HeadSupervisors
                     securityStamp = await _identityUserRegistrationService.GenerateEmailVerification(identityUser.Email);
                     await _verificationEmailService.SendVerificationEmail(supervisorUserData.User, securityStamp);
                 }
+
+                await _nyssContext.SaveChangesAsync();
 
                 return Success();
             }

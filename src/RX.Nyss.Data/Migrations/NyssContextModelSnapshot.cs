@@ -2296,10 +2296,28 @@ namespace RX.Nyss.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("GatewayApiKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GatewayApiKeyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GatewayExtraKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GatewayExtraKeyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GatewaySenderId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("GatewayType")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("GatewayUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IotHubDeviceName")
                         .HasMaxLength(250)

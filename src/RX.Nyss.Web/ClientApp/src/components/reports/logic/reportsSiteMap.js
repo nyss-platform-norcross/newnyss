@@ -19,7 +19,7 @@ export const reportsSiteMap = [
     access: accessMap.reports.list,
     placeholder: placeholders.projectSubMenu,
     placeholderIndex: 1,
-    middleStepOnly: true
+    middleStepOnly: true,
   },
   {
     parentPath: "/projects/:projectId/reports",
@@ -28,12 +28,12 @@ export const reportsSiteMap = [
     access: accessMap.reports.list,
     placeholder: placeholders.projectSubMenu,
     placeholderIndex: 2,
-    middleStepOnly: true
+    middleStepOnly: true,
   },
   {
     parentPath: "/projects/:projectId/reports",
     path: "/projects/:projectId/reports/:reportId/edit",
     title: () => strings(stringKeys.reports.form.title),
-    access: accessMap.reports.edit
-  }
+    access: accessMap.reports.edit,
+  },
 ];

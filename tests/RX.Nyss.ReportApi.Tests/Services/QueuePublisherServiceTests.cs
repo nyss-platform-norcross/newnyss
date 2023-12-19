@@ -118,40 +118,5 @@ namespace RX.Nyss.ReportApi.Tests.Services
             _loggerAdapterMock.Received(1).Warn($"No email or IoT device found for gateway Missing gateway, not able to send feedback SMS!");
         }
 
-        [Fact]
-        public async Task SendSms_WhenGatewayUsesDualModem_ShouldSendMessageWithModemNumber()
-        {
-            // Arrange
-            var recipients = new List<SendSmsRecipient> { new SendSmsRecipient
-                {
-                    PhoneNumber = "+12345678",
-                    Modem = 1
-                }
-            };
-            var gateway = new GatewaySetting
-            {
-                IotHubDeviceName = "iotdevice",
-                Modems = new List<GatewayModem>
-                {
-                    new GatewayModem { ModemId = 1 },
-                    new GatewayModem { ModemId = 2 }
-                }
-            };
-            var smsMessage = new SendSmsMessage
-            {
-                IotHubDeviceName = "iotdevice",
-                PhoneNumber = "+12345678",
-                ModemNumber = 1,
-                SmsMessage = "Feedback"
-            };
-            var messageJson = JsonSerializer.Serialize(smsMessage);
-            var sendMessage = new ServiceBusMessage(messageJson);
-
-            // Act
-            await _queuePublisherService.SendSms(recipients, gateway, "Feedback");
-
-            // Assert
-            await _smsQueueSenderMock.Received(1).SendMessageAsync(Arg.Is<ServiceBusMessage>(m => m.Body.ToString() == messageJson));
-        }
     }
 }

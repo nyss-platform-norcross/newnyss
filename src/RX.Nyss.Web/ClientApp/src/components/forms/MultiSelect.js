@@ -1,9 +1,15 @@
-import styles from './MultiSelect.module.scss';
+import styles from "./MultiSelect.module.scss";
 
 import React from "react";
-import Select from 'react-select';
-import { TextField, Typography, Paper, Chip, MenuItem } from '@material-ui/core';
-import CancelIcon from '@material-ui/icons/Cancel';
+import Select from "react-select";
+import {
+  TextField,
+  Typography,
+  Paper,
+  Chip,
+  MenuItem,
+} from "@material-ui/core";
+import CancelIcon from "@material-ui/icons/Cancel";
 
 const components = {
   Control,
@@ -19,15 +25,25 @@ const components = {
 const customMultiselectStyle = {
   clearIndicator: (provided) => ({
     ...provided,
-    cursor: 'pointer',
+    cursor: "pointer",
   }),
   dropdownIndicator: (provided) => ({
     ...provided,
-    cursor: 'pointer',
-  })
-}
+    cursor: "pointer",
+  }),
+};
 
-export const MultiSelect = ({ name, error, label, value, defaultValue, options, onChange, rtl, ...restProps }) => {
+export const MultiSelect = ({
+  name,
+  error,
+  label,
+  value,
+  defaultValue,
+  options,
+  onChange,
+  rtl,
+  ...restProps
+}) => {
   return (
     <Select
       {...restProps}
@@ -48,7 +64,7 @@ export const MultiSelect = ({ name, error, label, value, defaultValue, options, 
         helperText: error,
         InputLabelProps: {
           htmlFor: { name },
-          shrink: true
+          shrink: true,
         },
       }}
     />
@@ -56,15 +72,18 @@ export const MultiSelect = ({ name, error, label, value, defaultValue, options, 
 };
 
 function MultiValue(props) {
-  const isActivityReport = !!props.data.data && props.data.data.healthRiskType === "Activity"
+  const isActivityReport =
+    !!props.data.data && props.data.data.healthRiskType === "Activity";
 
   return (
     <Chip
       tabIndex={-1}
       label={props.children}
       className={`${styles.chip} ${props.isFocused ? styles.chipFocused : ""}`}
-      onDelete={!isActivityReport && props.removeProps.onClick}
-      deleteIcon={!isActivityReport && <CancelIcon {...props.removeProps} />}
+      onDelete={!isActivityReport ? props.removeProps.onClick : null}
+      deleteIcon={
+        !isActivityReport ? <CancelIcon {...props.removeProps} /> : null
+      }
     />
   );
 }
@@ -83,10 +102,7 @@ function NoOptionsMessage(props) {
 
 function Menu(props) {
   return (
-    <Paper
-      square
-      className={styles.paper}
-      {...props.innerProps}>
+    <Paper square className={styles.paper} {...props.innerProps}>
       {props.children}
     </Paper>
   );
@@ -140,9 +156,11 @@ function Option(props) {
 function Placeholder(props) {
   const { innerProps = {}, children } = props;
   return (
-    <Typography color="textSecondary"
+    <Typography
+      color="textSecondary"
       className={styles.placeholder}
-      {...innerProps}>
+      {...innerProps}
+    >
       {children}
     </Typography>
   );
@@ -150,16 +168,12 @@ function Placeholder(props) {
 
 function SingleValue(props) {
   return (
-    <Typography
-      className={styles.singleValue}
-      {...props.innerProps}>
+    <Typography className={styles.singleValue} {...props.innerProps}>
       {props.children}
     </Typography>
   );
 }
 
 function ValueContainer(props) {
-  return <div
-    className={styles.valueContainer}
-  >{props.children}</div>;
+  return <div className={styles.valueContainer}>{props.children}</div>;
 }

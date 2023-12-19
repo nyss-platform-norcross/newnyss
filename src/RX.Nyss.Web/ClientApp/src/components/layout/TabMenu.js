@@ -1,98 +1,74 @@
-import styles from './TabMenu.module.scss';
+import styles from "./TabMenu.module.scss";
 
-import React from 'react';
+import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
-import { Tabs, Tab, Grid, Typography, makeStyles } from '@material-ui/core';
-import { TabDropdown } from './TabDropdown';
+import { Tabs, Tab, Grid } from "@material-ui/core";
+import { TabDropdown } from "./TabDropdown";
 
-const useStyles = makeStyles({
-  nsHeader: {
-    color: "#4F4F4F",
-    fontSize: 16,
-    fontWeight: 400,
-    textAlign: "center"
-  },
-  projectHeader: {
-    color: "#000",
-    fontSize: 32,
-    fontWeight: 700,
-    textAlign: "center",
-    margin: "20px 0 20px 0"
-  }
-});
-
-const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl, title, projectName }) => {
-  const classes = useStyles()
-
+const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl }) => {
   const onItemClick = (item) => {
     push(item.url);
   };
 
   // http addresses are case insensitive so compare to-lower versions
-  const showTabMenu = tabMenu.some(t => t.url.toLowerCase() === currentUrl.toLowerCase());
-
-  // Title for sub menu pages inside a project
-  const showSubMenuTitle = projectTabMenu.some(projectItem => projectItem.subMenu.length > 0 && projectItem.isActive);
-  // Alternative title for sub menu pages inside a project such as 'edit data collector' or 'edit alert recipient'
-  const showSubMenuAlternativeTitle = projectTabMenu && projectTabMenu.length > 0 && projectTabMenu.every(menuItem => menuItem.title !== title);
-
+  const showTabMenu = tabMenu.some(
+    (t) => t.url.toLowerCase() === currentUrl.toLowerCase(),
+  );
   return (
     <div className={styles.tabMenu}>
-      {projectName ?
-        <Typography className={classes.projectHeader}>{projectName}</Typography>
-        :
-        <div className={styles.header}>{title}</div>
-      }
-      <Grid container justifyContent='center'>
+      <Grid container justifyContent="center" style={{ marginBottom: 50 }}>
         {/* Only display project tab menu for all users other than data consumer since the role only has acces to project dashboard */}
-        {projectTabMenu.length > 1 && (
-            projectTabMenu.map(item => (
-            <Grid key={`projectTabMenu_${item.url}`} item style={{ backgroundColor: "#FCFCFC" }}>
-              <TabDropdown page={item} onItemClick={onItemClick}/>
+        {projectTabMenu.length > 1 &&
+          projectTabMenu.map((item) => (
+            <Grid
+              key={`projectTabMenu_${item.url}`}
+              item
+              style={{ backgroundColor: "#FCFCFC" }}
+            >
+              <TabDropdown page={item} onItemClick={onItemClick} />
             </Grid>
-          ))
-        )}
+          ))}
       </Grid>
-      {/* Display header for subpages inside a project for data collectors, project reports and project settings */}
-      {showSubMenuTitle && !showSubMenuAlternativeTitle && (
-        <div className={styles.header}>{projectTabMenu.find(projectItem => projectItem.isActive)?.subMenu.find(item => item.isActive)?.title}</div>
-      )}
-      {showSubMenuAlternativeTitle && (
-        <div className={styles.header}>{title}</div>
-      )}
+
       {showTabMenu && (
         <Tabs
-          value={tabMenu.indexOf(tabMenu.find(t => t.isActive))}
+          value={tabMenu.indexOf(tabMenu.find((t) => t.isActive))}
           className={styles.tabs}
           scrollButtons="auto"
           indicatorColor="primary"
-          variant="scrollable">
-          {tabMenu.map(item => (
-            <Tab key={`tabMenu_${item.url}`} label={item.title} onClick={() => onItemClick(item)} />
+          variant="scrollable"
+        >
+          {tabMenu.map((item) => (
+            <Tab
+              key={`tabMenu_${item.url}`}
+              label={item.title}
+              onClick={item.isActive ? () => null : () => onItemClick(item)}
+            />
           ))}
         </Tabs>
       )}
     </div>
   );
-}
+};
 
 TabMenuComponent.propTypes = {
   appReady: PropTypes.bool,
-  tabMenu: PropTypes.array
+  tabMenu: PropTypes.array,
 };
 
-const mapStateToProps = state => ({
-  projectName: state.appData.siteMap.parameters.projectName,
+const mapStateToProps = (state) => ({
   projectTabMenu: state.appData.siteMap.projectTabMenu,
   tabMenu: state.appData.siteMap.tabMenu,
-  title: state.appData.siteMap.title,
-  currentUrl: state.appData.route.url
+  currentUrl: state.appData.route.url,
 });
 
 const mapDispatchToProps = {
-  push: push
+  push: push,
 };
 
-export const TabMenu = connect(mapStateToProps, mapDispatchToProps)(TabMenuComponent);
+export const TabMenu = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TabMenuComponent);
