@@ -40,17 +40,14 @@ namespace RX.Nyss.Web.Features.ProjectDashboard
             }
 
             var dashboardReports = _reportService.GetDashboardHealthRiskEventReportsQuery(filters);
-            var rawReportsWithDataCollector = _reportService.GetRawReportsWithDataCollectorQuery(filters);
-
-            var dashBoardReportsList = dashboardReports.ToList();
-            var rawReportList = rawReportsWithDataCollector.ToList();
+            var rawReportsWithDataCollectorAndActivityReports = _reportService.GetRawReportsWithDataCollectorAndActivityReportsQuery(filters);
 
             return await _nyssContext.Projects
                 .AsNoTracking()
                 .Where(p => p.Id == filters.ProjectId.Value)
                 .Select(p => new
                 {
-                    ActiveDataCollectorCount = rawReportsWithDataCollector.Select(r => r.DataCollector.Id).Distinct().Count()
+                    ActiveDataCollectorCount = rawReportsWithDataCollectorAndActivityReports.Select(r => r.DataCollector.Id).Distinct().Count()
                 })
                 .Select(data => new ProjectSummaryResponseDto
                 {
@@ -58,8 +55,8 @@ namespace RX.Nyss.Web.Features.ProjectDashboard
                     ActiveDataCollectorCount = data.ActiveDataCollectorCount,
                     DataCollectionPointSummary = _reportsDashboardSummaryService.DataCollectionPointsSummary(dashboardReports),
                     AlertsSummary = _reportsDashboardSummaryService.AlertsSummary(filters),
-                    NumberOfDistricts = rawReportsWithDataCollector.Select(r => r.Village.District).Distinct().Count(),
-                    NumberOfVillages = rawReportsWithDataCollector.Select(r => r.Village).Distinct().Count()
+                    NumberOfDistricts = rawReportsWithDataCollectorAndActivityReports.Select(r => r.Village.District).Distinct().Count(),
+                    NumberOfVillages = rawReportsWithDataCollectorAndActivityReports.Select(r => r.Village).Distinct().Count()
                 })
                 .FirstOrDefaultAsync();
         }

@@ -36,6 +36,8 @@ public interface IReportService
 
     IQueryable<RawReport> GetRawReportsWithDataCollectorQuery(ReportsFilter filters);
 
+    IQueryable<RawReport> GetRawReportsWithDataCollectorAndActivityReportsQuery(ReportsFilter filters);
+
     IQueryable<Report> GetDashboardHealthRiskEventReportsQuery(ReportsFilter filters);
 
     Task<Result> AcceptReport(int reportId);
@@ -217,10 +219,8 @@ public class ReportService : IReportService
         return Success(dto);
     }
 
-    public IQueryable<RawReport> GetRawReportsWithDataCollectorQuery(ReportsFilter filters)
-    {
-       
-        return _nyssContext.RawReports
+    public IQueryable<RawReport> GetRawReportsWithDataCollectorQuery(ReportsFilter filters) =>
+        _nyssContext.RawReports
             .AsNoTracking()
             .FilterByReportStatus(filters.ReportStatus)
             .FromKnownDataCollector()
@@ -230,9 +230,22 @@ public class ReportService : IReportService
             .FilterByProject(filters.ProjectId)
             .FilterReportsByNationalSociety(filters.NationalSocietyId)
             .FilterByDate(filters.StartDate, filters.EndDate)
-            .FilterByHealthRisks(filters.HealthRisks, true)
+            .FilterByHealthRisks(filters.HealthRisks)
             .FilterByTrainingMode(filters.TrainingStatus);
-    }
+
+    public IQueryable<RawReport> GetRawReportsWithDataCollectorAndActivityReportsQuery(ReportsFilter filters) =>
+        _nyssContext.RawReports
+            .AsNoTracking()
+            .FilterByReportStatus(filters.ReportStatus)
+            .FromKnownDataCollector()
+            .FilterByArea(filters.Area)
+            .FilterByDataCollectorType(filters.DataCollectorType)
+            .FilterByOrganization(filters.OrganizationId)
+            .FilterByProject(filters.ProjectId)
+            .FilterReportsByNationalSociety(filters.NationalSocietyId)
+            .FilterByDate(filters.StartDate, filters.EndDate)
+            .FilterByHealthRisksWithActivityReports(filters.HealthRisks)
+            .FilterByTrainingMode(filters.TrainingStatus);
 
 
     public IQueryable<Report> GetDashboardHealthRiskEventReportsQuery(ReportsFilter filters) =>
@@ -355,7 +368,7 @@ public class ReportService : IReportService
             .ThenInclude(r => r.ProjectHealthRisk)
             .ThenInclude(r => r.HealthRisk)
             .FilterByProject(projectId)
-            .FilterByHealthRisks(filter.HealthRisks, false)
+            .FilterByHealthRisks(filter.HealthRisks)
             .FilterByDataCollectorType(filter.DataCollectorType)
             .FilterByArea(filter.Locations)
             .FilterByErrorType(filter.ErrorType)

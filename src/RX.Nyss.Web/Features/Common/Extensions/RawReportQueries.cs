@@ -51,9 +51,14 @@ namespace RX.Nyss.Web.Features.Common.Extensions
         public static IQueryable<RawReport> FilterByHealthRisk(this IQueryable<RawReport> reports, int? healthRiskId) =>
             reports.Where(r => !healthRiskId.HasValue || (r.Report != null && r.Report.ProjectHealthRisk.HealthRiskId == healthRiskId.Value));
 
-        public static IQueryable<RawReport> FilterByHealthRisks(this IQueryable<RawReport> reports, IList<int> healthRiskIds, bool includeActivityReports=false) =>
+        public static IQueryable<RawReport> FilterByHealthRisks(this IQueryable<RawReport> reports, IList<int> healthRiskIds) =>
             healthRiskIds != null && healthRiskIds.Any()
-                ? reports.Where(r => healthRiskIds.Contains(r.Report.ProjectHealthRisk.HealthRiskId) || (includeActivityReports && r.Report.ProjectHealthRisk.HealthRisk.HealthRiskType == HealthRiskType.Activity))
+                ? reports.Where(r => healthRiskIds.Contains(r.Report.ProjectHealthRisk.HealthRiskId))
+                : reports;
+
+        public static IQueryable<RawReport> FilterByHealthRisksWithActivityReports(this IQueryable<RawReport> reports, IList<int> healthRiskIds) =>
+            healthRiskIds != null && healthRiskIds.Any()
+                ? reports.Where(r => healthRiskIds.Contains(r.Report.ProjectHealthRisk.HealthRiskId) || r.Report.ProjectHealthRisk.HealthRisk.HealthRiskType == HealthRiskType.Activity)
                 : reports;
 
         public static IQueryable<RawReport> FilterByProject(this IQueryable<RawReport> reports, int? projectId) =>
