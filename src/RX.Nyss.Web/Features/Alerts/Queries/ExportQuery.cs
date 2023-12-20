@@ -144,6 +144,7 @@ public class ExportQuery : IRequest<byte[]>
                     EscalatedOutcome = a.EscalatedOutcome,
                     Comments = a.investigationComment + " --- " + a.outcomeComment + " --- " + a.publicHealthActionTakenComment,
                     ReportCount = a.ReportCount,
+                    LastReportZone = a.LastReport.ZoneName,
                     LastReportVillage = a.LastReport.IsAnonymized
                         ? ""
                         : a.LastReport.VillageName,
