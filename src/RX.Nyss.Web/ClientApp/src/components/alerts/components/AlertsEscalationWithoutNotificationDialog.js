@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import WarningIcon from "@material-ui/icons/Warning";
 import CancelButton from "../../common/buttons/cancelButton/CancelButton";
+import { trackEvent } from "../../../utils/appInsightsHelper";
 
 export const AlertsEscalationWithoutNotificationDialog = ({
   isOpened,
@@ -23,6 +24,16 @@ export const AlertsEscalationWithoutNotificationDialog = ({
 }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
+
+  const handleEscalateAlert = (alertId, sendNotification) => {
+    // Track escalateAlert event
+    trackEvent("escalateAlert", {
+      alertId: alertId,
+      sendNotification: sendNotification,
+    });
+
+    escalateAlert(alertId, sendNotification);
+  };
 
   return (
     <Dialog onClose={close} open={isOpened} fullScreen={fullScreen}>
@@ -55,7 +66,7 @@ export const AlertsEscalationWithoutNotificationDialog = ({
           </CancelButton>
           <SubmitButton
             isFetching={isEscalating}
-            onClick={() => escalateAlert(alertId, false)}
+            onClick={() => handleEscalateAlert(alertId, false)}
           >
             {strings(stringKeys.alerts.assess.alert.escalate)}
           </SubmitButton>
