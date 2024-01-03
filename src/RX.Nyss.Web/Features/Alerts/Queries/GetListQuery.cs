@@ -88,7 +88,7 @@ public class GetListQuery : IRequest<Result<PaginatedList<AlertListItemResponseD
                     LastReport = a.AlertReports.OrderByDescending(ar => ar.Report.Id)
                         .Select(ar => new
                         {
-                            ZoneName = ar.Report.RawReport.Zone.Name,
+                            ZoneName = ar.Report.RawReport.Zone != null ? ar.Report.RawReport.Zone.Name : "",
                             VillageName = ar.Report.RawReport.Village.Name,
                             DistrictName = ar.Report.RawReport.Village.District.Name,
                             RegionName = ar.Report.RawReport.Village.District.Region.Name,
