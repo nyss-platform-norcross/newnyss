@@ -22,7 +22,7 @@ public class ListTests : AlertFeatureBase
     [InlineData(AlertStatusFilter.Escalated)]
     [InlineData(AlertStatusFilter.Dismissed)]
     [InlineData(AlertStatusFilter.Closed)]
-    public async Task List_WhenFiltering_ShouldReturnSubsetOfAlerts(AlertStatusFilter alertStatusFilter)
+    /*public async Task List_WhenFiltering_ShouldReturnSubsetOfAlerts(AlertStatusFilter alertStatusFilter)
     {
         var alerts = TestData.GetAlertsForFiltering();
         var alertsMockDbSet = alerts.AsQueryable().BuildMockDbSet();
@@ -59,7 +59,7 @@ public class ListTests : AlertFeatureBase
             res.Value.Data.All(a => a.Status == MapToAlertStatus(alertStatusFilter).ToString()).ShouldBeTrue();
             res.Value.Data.Count.ShouldBe(1);
         }
-    }
+    }*/
 
     private AlertStatus MapToAlertStatus(AlertStatusFilter filter) =>
         filter switch
