@@ -5,6 +5,7 @@ import {
   Grid,
   MenuItem,
   Select,
+  FormHelperText,
   Typography,
   makeStyles,
 } from "@material-ui/core";
@@ -13,6 +14,7 @@ import { connect } from "react-redux";
 import * as projectSetupActions from "./logic/projectSetupActions";
 import { HealthRiskCardEditable } from "../common/healthRisk/HealthRiskCardEditable";
 import { useMount } from "../../utils/lifecycle";
+import { useEffect } from "react";
 
 const useStyle = makeStyles((theme) => ({
   container: {
@@ -60,6 +62,11 @@ const useStyle = makeStyles((theme) => ({
   label: {
     top: -15,
   },
+  errorMessage: {
+    color: theme.palette.error.main,
+    textAlign: "center",
+    width: "100%",
+  },
 }));
 
 export const ProjectSetupHealthRiskComponent = ({
@@ -67,11 +74,17 @@ export const ProjectSetupHealthRiskComponent = ({
   projectHealthRisks,
   setProjectHealthRisks,
   requiredHealthRisks,
+  error,
+  setError,
   setIsNextStepInvalid,
 }) => {
   useMount(() => {
     setIsNextStepInvalid(false);
   }, []);
+
+  useEffect(() => {
+    setIsNextStepInvalid(projectHealthRisks.length === 0);
+  }, [projectHealthRisks, error, setIsNextStepInvalid]);
 
   const classes = useStyle();
 
@@ -79,6 +92,10 @@ export const ProjectSetupHealthRiskComponent = ({
     setProjectHealthRisks(
       e.target.value.sort((a, b) => a.healthRiskId - b.healthRiskId),
     );
+
+    if (e.target.value.length > 0) {
+      setError(false);
+    }
   };
 
   const handleDelete = (healthRiskId) => {
@@ -125,9 +142,15 @@ export const ProjectSetupHealthRiskComponent = ({
         </Typography>
       </Grid>
 
+      <Grid item style={{ marginTop: "-30px" }}>
+        <Typography variant="subtitle1" style={{ color: "#7C7C7C" }}>
+          {strings(stringKeys.projectSetup.projectHealthRisks.description)}
+        </Typography>
+      </Grid>
+
       {/* Select field to add new health risks to project */}
       <Grid item>
-        <FormControl>
+        <FormControl error={error}>
           <Select
             multiple
             name="healthRisk"
@@ -138,7 +161,9 @@ export const ProjectSetupHealthRiskComponent = ({
             displayEmpty
             style={{ marginTop: 0 }}
             renderValue={() => (
-              <Typography style={{ color: "#4F4F4F", fontSize: 12 }}>
+              <Typography
+                style={{ color: "#4F4F4F", fontSize: 14, opacity: "80%" }}
+              >
                 {strings(
                   stringKeys.projectSetup.projectHealthRisks.placeholder,
                 )}
@@ -154,6 +179,11 @@ export const ProjectSetupHealthRiskComponent = ({
               </MenuItem>
             ))}
           </Select>
+          {error && (
+            <FormHelperText className={classes.errorMessage}>
+              {strings(stringKeys.projectSetup.projectHealthRisks.error)}
+            </FormHelperText>
+          )}
         </FormControl>
       </Grid>
 

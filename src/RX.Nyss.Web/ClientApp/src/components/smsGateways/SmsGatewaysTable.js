@@ -25,7 +25,6 @@ export const SmsGatewaysTable = ({
   remove,
   list,
   nationalSocietyId,
-  nationalSocietyHasCoordinator,
   callingUserRoles,
   rtl,
 }) => {
@@ -34,9 +33,8 @@ export const SmsGatewaysTable = ({
   }
 
   const canModify =
-    !nationalSocietyHasCoordinator ||
     callingUserRoles.some(
-      (r) => r === roles.Coordinator || r === roles.Administrator,
+      (r) => r === roles.Administrator,
     );
 
   return (

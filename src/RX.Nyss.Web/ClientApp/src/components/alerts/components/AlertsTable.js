@@ -106,6 +106,7 @@ export const AlertsTable = ({
                     row.lastReportRegion,
                     row.lastReportDistrict,
                     row.lastReportVillage,
+                    row.lastReportZone,
                   ]
                     .filter((l) => l)
                     .join(", ")}

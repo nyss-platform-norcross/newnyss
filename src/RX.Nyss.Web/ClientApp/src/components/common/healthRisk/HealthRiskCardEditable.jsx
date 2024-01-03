@@ -15,7 +15,7 @@ import Form from "../../forms/form/Form";
 
 const useStyle = makeStyles((theme) => ({
   card: {
-    maxWidth: "800px",
+    maxWidth: "900px",
     width: "100%",
   },
   alertRuleData: {
@@ -35,6 +35,9 @@ const useStyle = makeStyles((theme) => ({
   },
   content: {
     margin: "20px -8px",
+  },
+  cardInfoTextTitle: {
+    marginBottom: "4px",
   },
   cardInfoText: {
     fontWeight: 400,
@@ -141,7 +144,7 @@ const HealthRiskCardView = ({ healthRisk, setEditing, disabled, rtl }) => {
               <Button
                 startIcon={<EditIcon className={`${rtl && classes.icon}`} />}
                 className={classes.button}
-                variant="contained"
+                variant="outlined"
                 color="primary"
                 onClick={() => setEditing(true)}
               >
@@ -153,9 +156,9 @@ const HealthRiskCardView = ({ healthRisk, setEditing, disabled, rtl }) => {
       </Grid>
       {/* Content */}
       <Grid style={{ marginTop: "20px" }}>
-        <Grid container spacing={2} className={classes.healthRiskTextArea}>
+        <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <Typography variant={"h5"}>
+            <Typography variant={"h5"} className={classes.cardInfoTextTitle}>
               {strings(stringKeys.project.form.caseDefinition)}
             </Typography>
             <Typography
@@ -168,7 +171,7 @@ const HealthRiskCardView = ({ healthRisk, setEditing, disabled, rtl }) => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <Typography variant={"h5"}>
+            <Typography variant={"h5"} className={classes.cardInfoTextTitle}>
               {strings(stringKeys.project.form.feedbackMessage)}
             </Typography>
             <Typography
@@ -181,7 +184,7 @@ const HealthRiskCardView = ({ healthRisk, setEditing, disabled, rtl }) => {
           </Grid>
         </Grid>
 
-        <Typography variant={"h5"}>
+        <Typography variant={"h5"} style={{marginBottom: "4px", marginTop: "30px"}}>
           {strings(stringKeys.project.form.alertsSection)}
         </Typography>
 
@@ -204,77 +207,37 @@ const HealthRiskCardView = ({ healthRisk, setEditing, disabled, rtl }) => {
               </Typography>
             )}
 
+            {/* Alert rules */}
             {healthRisk.alertRuleCountThreshold > 0 && (
-              <Fragment>
-                <Grid container spacing={2}>
-                  <Grid item xs={4}>
+              <Grid container justifyContent="flex-start" style={{gap: "40px"}}>
+                <Typography className={classes.cardBodyText}>
+                  {strings(stringKeys.project.form.alertRuleCountThreshold)}
+                  : <b>{healthRisk.alertRuleCountThreshold}</b>
+                </Typography>
+
+                {healthRisk.alertRuleCountThreshold > 1 && (
+                  <>
                     <Typography className={classes.cardBodyText}>
-                      {strings(stringKeys.project.form.alertRuleCountThreshold)}
-                      :
+                      {strings(
+                        stringKeys.project.form.alertRuleDaysThreshold,
+                      )}
+                      : <b>{healthRisk.alertRuleDaysThreshold} {healthRisk.alertRuleDaysThreshold === 1
+                          ? strings(stringKeys.project.form.alertRuleDay)
+                          : strings(stringKeys.project.form.alertRuleDays)} </b>
                     </Typography>
-                    <Typography className={classes.alertRuleData} gutterBottom>
-                      {healthRisk.alertRuleCountThreshold}
+
+                    <Typography className={classes.cardBodyText}>
+                      {strings(
+                        stringKeys.project.form
+                          .alertRuleKilometersThreshold,
+                      )}
+                      : <b> {healthRisk.alertRuleKilometersThreshold} {strings(
+                          stringKeys.project.form.alertRuleKilometer,
+                        )} </b>
                     </Typography>
-                  </Grid>
-
-                  {healthRisk.alertRuleCountThreshold > 1 && (
-                    <Fragment>
-                      <Grid item xs={4}>
-                        <Typography className={classes.cardBodyText}>
-                          {strings(
-                            stringKeys.project.form.alertRuleDaysThreshold,
-                          )}
-                          :
-                        </Typography>
-                        <Grid container>
-                          <Typography
-                            className={classes.alertRuleData}
-                            gutterBottom
-                          >
-                            {healthRisk.alertRuleDaysThreshold}
-                          </Typography>
-                          <Typography
-                            className={classes.alertRuleData}
-                            style={{ marginLeft: "5px" }}
-                            gutterBottom
-                          >
-                            {healthRisk.alertRuleDaysThreshold === 1
-                              ? strings(stringKeys.project.form.alertRuleDay)
-                              : strings(stringKeys.project.form.alertRuleDays)}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-
-                      <Grid item xs={4}>
-                        <Typography className={classes.cardBodyText}>
-                          {strings(
-                            stringKeys.project.form
-                              .alertRuleKilometersThreshold,
-                          )}
-                          :
-                        </Typography>
-                        <Grid container>
-                          <Typography
-                            className={classes.alertRuleData}
-                            gutterBottom
-                          >
-                            {healthRisk.alertRuleKilometersThreshold}
-                          </Typography>
-                          <Typography
-                            className={classes.alertRuleData}
-                            style={{ marginLeft: "5px" }}
-                            gutterBottom
-                          >
-                            {strings(
-                              stringKeys.project.form.alertRuleKilometer,
-                            )}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Fragment>
-                  )}
-                </Grid>
-              </Fragment>
+                  </>
+                )}
+              </Grid>
             )}
           </Fragment>
         )}
