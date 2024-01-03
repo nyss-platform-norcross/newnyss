@@ -452,15 +452,16 @@ export const stringKeys = {
       title: "projectSetup.cancelDialog.title",
       description: "projectSetup.cancelDialog.description",
     },
-    cancelDialog: {
-      title: "projectSetup.cancelDialog.title",
-      description: "projectSetup.cancelDialog.description",
-    },
     geographicalStructure: {
       name: "projectSetup.geographicalStructure.name",
       title: "projectSetup.geographicalStructure.title",
       description: "projectSetup.geographicalStructure.description",
       error: "projectSetup.geographicalStructure.error",
+    },
+    summary: {
+      name: "projectSetup.summary.name",
+      title: "projectSetup.summary.title",
+      notUpdated: "projectSetup.summary.notUpdated",
     },
     projectHealthRisks: {
       name: "projectSetup.projectHealthRisks.name",

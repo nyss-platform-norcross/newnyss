@@ -130,6 +130,9 @@ export const SetupStepper = ({
     setOpen(true);
   };
 
+  const handleFinish = () => {
+    // Add api request here to create project
+  }
   const handleClose = () => {
     setOpen(false);
   };
@@ -221,6 +224,7 @@ export const SetupStepper = ({
             )}
             <Button
               variant={
+                activeStep === steps.length - 1 ||
                 getStep(steps, activeStep).isOptional ||
                 (!error && !isNextStepInvalid)
                   ? "contained"
@@ -228,7 +232,7 @@ export const SetupStepper = ({
               }
               color="primary"
               onClick={
-                activeStep === steps.length - 1 ? handleReset : handleNext
+                activeStep === steps.length - 1 ? handleFinish : handleNext
               }
             >
               {activeStep === steps.length - 1
