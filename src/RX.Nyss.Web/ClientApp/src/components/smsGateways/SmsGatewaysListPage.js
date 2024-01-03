@@ -51,7 +51,6 @@ const SmsGatewaysListPageComponent = (props) => {
         isRemoving={props.isRemoving}
         remove={props.remove}
         nationalSocietyId={props.nationalSocietyId}
-        nationalSocietyHasCoordinator={props.nationalSocietyHasCoordinator}
         callingUserRoles={props.callingUserRoles}
         rtl={useRtlDirection}
       />
