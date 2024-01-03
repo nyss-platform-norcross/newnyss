@@ -108,7 +108,11 @@ namespace RX.Nyss.ReportApi.Services
                         : null
                 };
 
-                var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(sendSms)));
+                var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(sendSms)))
+                {
+                    Subject = "RX.Nyss.ReportApi",
+                    ApplicationProperties = { { "IotHubDevice", iotHubDeviceName } }
+                };
                 return _sendSmsQueueSender.SendMessageAsync(message);
             }));
 
@@ -179,34 +183,34 @@ namespace RX.Nyss.ReportApi.Services
         }
     }
 };
-    public class SendEmailMessage
-    {
-        public Contact To { get; set; }
+public class SendEmailMessage
+{
+    public Contact To { get; set; }
 
-        public string Subject { get; set; }
+    public string Subject { get; set; }
 
-        public string Body { get; set; }
+    public string Body { get; set; }
 
-        public bool SendAsTextOnly { get; set; }
-    }
+    public bool SendAsTextOnly { get; set; }
+}
 
-    public class Contact
-    {
-        public string Name { get; set; }
+public class Contact
+{
+    public string Name { get; set; }
 
-        public string Email { get; set; }
-    }
+    public string Email { get; set; }
+}
 
-    public class SendSmsMessage
-    {
-        public string IotHubDeviceName { get; set; }
+public class SendSmsMessage
+{
+    public string IotHubDeviceName { get; set; }
 
-        public string PhoneNumber { get; set; }
+    public string PhoneNumber { get; set; }
 
-        public string SmsMessage { get; set; }
+    public string SmsMessage { get; set; }
 
-        public int? ModemNumber { get; set; }
-    }
+    public int? ModemNumber { get; set; }
+}
 
 public class SendGatewaySmsRecipient
 {

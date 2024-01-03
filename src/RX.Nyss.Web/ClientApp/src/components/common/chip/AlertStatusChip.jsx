@@ -9,6 +9,9 @@ const useStyles = makeStyles(() => ({
   Closed: {
     backgroundColor: "#E3E3CF",
   },
+  Dismissed: {
+    backgroundColor: "#E3E3CF",
+  },
   Open: {
     backgroundColor: "#FFE497",
   },
