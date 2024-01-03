@@ -463,9 +463,11 @@ export const stringKeys = {
       error: "projectSetup.geographicalStructure.error",
     },
     projectHealthRisks: {
-      name: "projectSetup.healthRisk.name",
-      title: "projectSetup.healthRisk.title",
-      placeholder: "projectSetup.healthRisk.placeholder",
+      name: "projectSetup.projectHealthRisks.name",
+      title: "projectSetup.projectHealthRisks.title",
+      placeholder: "projectSetup.projectHealthRisks.placeholder",
+      description: "projectSetup.projectHealthRisks.description",
+      error: "projectSetup.projectHealthRisks.error",
     },
   },
   dashboard: {
