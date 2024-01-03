@@ -71,7 +71,11 @@ const ProjectSetupPageComponent = ({
     {
       name: strings(stringKeys.projectSetup.projectHealthRisks.name),
       content: (
-        <ProjectSetupHealthRisk setIsNextStepInvalid={setIsNextStepInvalid} />
+        <ProjectSetupHealthRisk
+          error={error}
+          setError={setError}
+          setIsNextStepInvalid={setIsNextStepInvalid}
+        />
       ),
       stepNumber: 3,
     },

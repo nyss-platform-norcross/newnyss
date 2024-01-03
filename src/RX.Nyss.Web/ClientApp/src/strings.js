@@ -464,9 +464,11 @@ export const stringKeys = {
       notUpdated: "projectSetup.summary.notUpdated",
     },
     projectHealthRisks: {
-      name: "projectSetup.healthRisk.name",
-      title: "projectSetup.healthRisk.title",
-      placeholder: "projectSetup.healthRisk.placeholder",
+      name: "projectSetup.projectHealthRisks.name",
+      title: "projectSetup.projectHealthRisks.title",
+      placeholder: "projectSetup.projectHealthRisks.placeholder",
+      description: "projectSetup.projectHealthRisks.description",
+      error: "projectSetup.projectHealthRisks.error",
     },
   },
   dashboard: {
@@ -886,6 +888,7 @@ export const stringKeys = {
         Open: "alerts.assess.status.open",
         Closed: "alerts.assess.status.closed",
         Escalated: "alerts.assess.status.escalated",
+        Dismissed: "alerts.assess.status.dismissed",
       },
       statusDescription: {
         closed: "alerts.assess.statusDescription.closed",
