@@ -1,5 +1,5 @@
 import { getAppInsights } from "../components/app/ApplicationInsightsProvider";
-import { useTrackEvent } from "@microsoft/applicationinsights-react-js";
+
 
 export const trackPageView = (name) => {
   const appInsights = getAppInsights();

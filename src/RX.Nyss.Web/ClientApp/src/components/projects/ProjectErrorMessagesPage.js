@@ -30,7 +30,7 @@ const ProjectErrorMessagesPageComponent = (props) => {
 
   useMount(() => {
     // Track page view
-    trackPageView("ProjectOrganizationsListPage");
+    trackPageView("ProjectErrorMessagesPage");
   });
 
   const [form, setForm] = useState(null);

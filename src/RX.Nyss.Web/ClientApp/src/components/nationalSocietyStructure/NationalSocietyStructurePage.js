@@ -16,7 +16,7 @@ const NationalSocietyStructurePageComponent = (props) => {
 
   useMount(() => {
     // Track page view
-    trackPageView("NationalSocietyIncorrectReportsListPage");
+    trackPageView("NationalSocietyStructurePage");
   });
 
   useEffect(() => {

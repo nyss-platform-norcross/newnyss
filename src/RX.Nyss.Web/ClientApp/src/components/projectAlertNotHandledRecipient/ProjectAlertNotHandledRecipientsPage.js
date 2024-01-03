@@ -28,7 +28,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
     openRecipients(projectId);
 
     // Track page view
-    trackPageView("ProjectAlertNotHandledRecipients");
+    trackPageView("ProjectAlertNotHandledRecipientsPage");
   });
 
   useEffect(() => {

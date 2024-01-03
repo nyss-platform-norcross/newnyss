@@ -18,7 +18,7 @@ class ResetPasswordCallbackPageComponent extends PureComponent {
     super(props);
 
     // Track page view
-    trackPageView("ReportsEditPage");
+    trackPageView("ResetPasswordCallbackPage");
 
     const fields = {
       password: "",

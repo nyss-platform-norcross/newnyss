@@ -14,7 +14,7 @@ export const NotFoundPage = () => {
 
   useMount(() => {
     // Track page view
-    trackPageView("HealthRisksListPage");
+    trackPageView("NotFoundPage");
   });
 
   const returnHome = () => {
