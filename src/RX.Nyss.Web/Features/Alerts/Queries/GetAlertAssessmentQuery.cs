@@ -87,6 +87,7 @@ namespace RX.Nyss.Web.Features.Alerts.Queries
                                 : ar.Report.DataCollector.HeadSupervisor.PhoneNumber,
                             ReceivedAt = ar.Report.ReceivedAt,
                             PhoneNumber = ar.Report.PhoneNumber,
+                            Zone = ar.Report.RawReport.Zone.Name,
                             Village = ar.Report.RawReport.Village.Name,
                             District = ar.Report.RawReport.Village.District.Name,
                             Region = ar.Report.RawReport.Village.District.Region.Name,
@@ -170,6 +171,7 @@ namespace RX.Nyss.Web.Features.Alerts.Queries
                                 ? "***"
                                 : ar.PhoneNumber,
                             Status = ar.Status.ToString(),
+                            Zone = ar.Zone,
                             Village = ar.Village,
                             District = ar.District,
                             Region = ar.Region,
