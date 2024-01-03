@@ -36,6 +36,8 @@ public interface IReportService
 
     IQueryable<RawReport> GetRawReportsWithDataCollectorQuery(ReportsFilter filters);
 
+    IQueryable<RawReport> GetRawReportsWithDataCollectorAndActivityReportsQuery(ReportsFilter filters);
+
     IQueryable<Report> GetDashboardHealthRiskEventReportsQuery(ReportsFilter filters);
 
     Task<Result> AcceptReport(int reportId);
@@ -229,6 +231,20 @@ public class ReportService : IReportService
             .FilterReportsByNationalSociety(filters.NationalSocietyId)
             .FilterByDate(filters.StartDate, filters.EndDate)
             .FilterByHealthRisks(filters.HealthRisks)
+            .FilterByTrainingMode(filters.TrainingStatus);
+
+    public IQueryable<RawReport> GetRawReportsWithDataCollectorAndActivityReportsQuery(ReportsFilter filters) =>
+        _nyssContext.RawReports
+            .AsNoTracking()
+            .FilterByReportStatus(filters.ReportStatus)
+            .FromKnownDataCollector()
+            .FilterByArea(filters.Area)
+            .FilterByDataCollectorType(filters.DataCollectorType)
+            .FilterByOrganization(filters.OrganizationId)
+            .FilterByProject(filters.ProjectId)
+            .FilterReportsByNationalSociety(filters.NationalSocietyId)
+            .FilterByDate(filters.StartDate, filters.EndDate)
+            .FilterByHealthRisksWithActivityReports(filters.HealthRisks)
             .FilterByTrainingMode(filters.TrainingStatus);
 
 
