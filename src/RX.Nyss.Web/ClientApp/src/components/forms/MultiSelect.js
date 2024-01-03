@@ -42,6 +42,7 @@ export const MultiSelect = ({
   options,
   onChange,
   rtl,
+  isClearable,
   ...restProps
 }) => {
   return (
@@ -49,6 +50,7 @@ export const MultiSelect = ({
       {...restProps}
       defaultValue={defaultValue}
       isMulti
+      isClearable={isClearable}
       name={name}
       options={options}
       inputId={name}

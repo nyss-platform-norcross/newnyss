@@ -452,20 +452,23 @@ export const stringKeys = {
       title: "projectSetup.cancelDialog.title",
       description: "projectSetup.cancelDialog.description",
     },
-    cancelDialog: {
-      title: "projectSetup.cancelDialog.title",
-      description: "projectSetup.cancelDialog.description",
-    },
     geographicalStructure: {
       name: "projectSetup.geographicalStructure.name",
       title: "projectSetup.geographicalStructure.title",
       description: "projectSetup.geographicalStructure.description",
       error: "projectSetup.geographicalStructure.error",
     },
+    summary: {
+      name: "projectSetup.summary.name",
+      title: "projectSetup.summary.title",
+      notUpdated: "projectSetup.summary.notUpdated",
+    },
     projectHealthRisks: {
-      name: "projectSetup.healthRisk.name",
-      title: "projectSetup.healthRisk.title",
-      placeholder: "projectSetup.healthRisk.placeholder",
+      name: "projectSetup.projectHealthRisks.name",
+      title: "projectSetup.projectHealthRisks.title",
+      placeholder: "projectSetup.projectHealthRisks.placeholder",
+      description: "projectSetup.projectHealthRisks.description",
+      error: "projectSetup.projectHealthRisks.error",
     },
   },
   dashboard: {

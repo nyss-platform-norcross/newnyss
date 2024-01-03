@@ -7,12 +7,12 @@ import * as projectSetupActions from "./logic/projectSetupActions";
 import * as projectActions from "../projects/logic/projectsActions";
 import { useMount } from "../../utils/lifecycle";
 import { SetupStepper } from "../common/stepper/SetupStepper";
-import Typography from "@material-ui/core/Typography";
 import { ProjectSetupName } from "./ProjectSetupName";
 import { ProjectSetupOrganization } from "./ProjectSetupOrganization";
 import { ProjectSetupRecipients } from "./ProjectSetupRecipients";
 import { ProjectSetupHealthRisk } from "./ProjectSetupHealthRisk";
 import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStructure";
+import { ProjectSetupSummary } from './ProjectSetupSummary'
 import { strings, stringKeys } from "../../strings";
 
 const ProjectSetupPageComponent = ({
@@ -71,7 +71,11 @@ const ProjectSetupPageComponent = ({
     {
       name: strings(stringKeys.projectSetup.projectHealthRisks.name),
       content: (
-        <ProjectSetupHealthRisk setIsNextStepInvalid={setIsNextStepInvalid} />
+        <ProjectSetupHealthRisk
+          error={error}
+          setError={setError}
+          setIsNextStepInvalid={setIsNextStepInvalid}
+        />
       ),
       stepNumber: 3,
     },
@@ -82,9 +86,9 @@ const ProjectSetupPageComponent = ({
       isOptional: true,
     },
     {
-      name: "Summary",
-      content: <Typography>Summary content</Typography>,
-      stepNumber: 5,
+      name: strings(stringKeys.projectSetup.summary.name),
+      content: <ProjectSetupSummary />,
+      stepNumber: 5
     },
   ];
 

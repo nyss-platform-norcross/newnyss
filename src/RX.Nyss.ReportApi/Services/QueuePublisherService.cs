@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
+using Newtonsoft.Json;
 using RX.Nyss.Common.Utils;
 using RX.Nyss.Common.Utils.Logging;
 using RX.Nyss.Data.Models;
@@ -108,7 +110,11 @@ namespace RX.Nyss.ReportApi.Services
                         : null
                 };
 
-                var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(sendSms)));
+                var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(sendSms)))
+                {
+                    Subject = "RX.Nyss.ReportApi",
+                    ApplicationProperties = { { "IotHubDevice", iotHubDeviceName } }
+                };
                 return _sendSmsQueueSender.SendMessageAsync(message);
             }));
 
@@ -131,12 +137,20 @@ namespace RX.Nyss.ReportApi.Services
         private async Task SendSmsViaDigitalGateway(GatewaySetting gatewaySetting, List<SendGatewaySmsRecipient> recipients, string smsMessage) =>
             await Task.WhenAll(recipients.Select(async recipient =>
             {
+                if (recipient.PhoneNumber.StartsWith('+'))
+                {
+                    recipient.PhoneNumber = recipient.PhoneNumber.Substring(1, recipient.PhoneNumber.Length - 1);
+                }
+
+                var phoneList = new List<string> { recipient.PhoneNumber };
+                var msisdnArray = phoneList.ToArray();
+
                 using StringContent jsonContent = new(
-                    JsonSerializer.Serialize(new
+                    JsonSerializer.Serialize(new SendSmsObject
                     {
-                        senderId = gatewaySetting.GatewaySenderId,
-                        msisdn = recipient,
-                        message = smsMessage
+                        SenderId = gatewaySetting.GatewaySenderId,
+                        Msisdn = msisdnArray,
+                        Message = smsMessage
                     }),
                     Encoding.UTF8,
                     "application/json");
@@ -179,36 +193,47 @@ namespace RX.Nyss.ReportApi.Services
         }
     }
 };
-    public class SendEmailMessage
-    {
-        public Contact To { get; set; }
+public class SendEmailMessage
+{
+    public Contact To { get; set; }
 
-        public string Subject { get; set; }
+    public string Subject { get; set; }
 
-        public string Body { get; set; }
+    public string Body { get; set; }
 
-        public bool SendAsTextOnly { get; set; }
-    }
+    public bool SendAsTextOnly { get; set; }
+}
 
-    public class Contact
-    {
-        public string Name { get; set; }
+public class Contact
+{
+    public string Name { get; set; }
 
-        public string Email { get; set; }
-    }
+    public string Email { get; set; }
+}
 
-    public class SendSmsMessage
-    {
-        public string IotHubDeviceName { get; set; }
+public class SendSmsMessage
+{
+    public string IotHubDeviceName { get; set; }
 
-        public string PhoneNumber { get; set; }
+    public string PhoneNumber { get; set; }
 
-        public string SmsMessage { get; set; }
+    public string SmsMessage { get; set; }
 
-        public int? ModemNumber { get; set; }
-    }
+    public int? ModemNumber { get; set; }
+}
 
 public class SendGatewaySmsRecipient
 {
     public string PhoneNumber { get; set; }
+}
+
+public class SendSmsObject
+{
+    [JsonPropertyName("senderId")]
+    public string SenderId { get; set; }
+    [JsonPropertyName("msisdn")]
+    public string[] Msisdn { get; set; }
+    [JsonPropertyName("message")]
+    public string Message { get; set; }
+    
 }

@@ -42,6 +42,8 @@ namespace RX.Nyss.Web.Features.Alerts.Dto
 
             public string Village { get; set; }
 
+            public string Zone { get; set; }
+
             public string Sex { get; set; }
 
             public DateTime ReceivedAt { get; set; }
