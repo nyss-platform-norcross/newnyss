@@ -1,6 +1,7 @@
 import styles from "./ProjectAlertNotHandledRecipientItem.module.scss";
 import React, { useEffect, useState } from "react";
-import { Select, MenuItem, Grid, Typography } from "@material-ui/core";
+import { Select, MenuItem, Grid, Typography, IconButton } from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
 import { useSelector } from "react-redux";
 import { strings, stringKeys } from "../../../strings";
 
@@ -17,6 +18,7 @@ export const ProjectAlertNotHandledRecipientItem = ({
   isEditing,
   error,
   setError,
+  remove
 }) => {
   const [user, setUser] = useState(unhandledRecipient);
   const users = useSelector(
@@ -43,6 +45,10 @@ export const ProjectAlertNotHandledRecipientItem = ({
     }
   };
 
+  const handleRecipientDelete = () => {
+    remove(projectId, user);
+  }
+
   const recipientIds = unhandledRecipients?.map(
     (recipient) => recipient.userId,
   );
@@ -56,7 +62,7 @@ export const ProjectAlertNotHandledRecipientItem = ({
   const userList = setNewRecipient ? addRecipients : editRecipients;
 
   return (
-    <Grid container item alignItems="center" style={{ marginTop: 20 }}>
+    <Grid container item alignItems="center" style={{ marginTop: 20, width: "fit-content" }}>
       {(isEditing || isCreating) && (
         <Grid>
           <Select
@@ -91,6 +97,9 @@ export const ProjectAlertNotHandledRecipientItem = ({
         <Typography variant="body1" className={styles.organizationField}>
           {user?.organizationName}
         </Typography>
+      )}
+      {(!isEditing && !isCreating && unhandledRecipients.length > 1) && (
+        <IconButton color="primary" onClick={handleRecipientDelete}><DeleteIcon/></IconButton>
       )}
     </Grid>
   );

@@ -22,6 +22,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
   getFormData,
   edit,
   create,
+  remove
 }) => {
   useMount(() => {
     openRecipients(projectId);
@@ -136,7 +137,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
           <Typography variant="subtitle1">
             {strings(stringKeys.projectAlertNotHandledRecipient.description)}
           </Typography>
-          <Grid container style={{ marginTop: 10 }}>
+          <Grid container direction="column" style={{ marginTop: 10 }}>
             {unhandledRecipients?.map((recipient) => (
               <ProjectAlertNotHandledRecipientItem
                 key={`alertNotHandledRecipient_${recipient.userId}`}
@@ -148,8 +149,10 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
                 getFormData={getFormData}
                 rtl={useRtlDirection}
                 isEditing={isEditing}
+                isCreating={isCreating}
                 error={error}
                 setError={setError}
+                remove={remove}
               />
             ))}
             {isCreating && (
@@ -173,21 +176,21 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
           {!isCreating && !isEditing && (
             <Grid style={{ marginTop: 20 }}>
               <Button
+                startIcon={<EditIcon />}
+                color="primary"
+                variant="outlined"
+                style={{ marginRight: 10 }}
+                onClick={onEditClick}
+              >
+                {strings(stringKeys.common.buttons.edit)}
+              </Button>
+              <Button
                 startIcon={<AddIcon />}
                 color="primary"
                 variant="contained"
                 onClick={onAddClick}
               >
                 {strings(stringKeys.projectAlertNotHandledRecipient.add)}
-              </Button>
-              <Button
-                startIcon={<EditIcon />}
-                color="primary"
-                variant="outlined"
-                style={{ marginLeft: 10 }}
-                onClick={onEditClick}
-              >
-                {strings(stringKeys.common.buttons.edit)}
               </Button>
             </Grid>
           )}
@@ -227,6 +230,7 @@ const mapDispatchToProps = {
   openRecipients: projectAlertNotHandledRecipientsActions.openRecipients.invoke,
   create: projectAlertNotHandledRecipientsActions.create.invoke,
   edit: projectAlertNotHandledRecipientsActions.edit.invoke,
+  remove: projectAlertNotHandledRecipientsActions.remove.invoke,
   getFormData: projectAlertNotHandledRecipientsActions.getFormData.invoke,
 };
 

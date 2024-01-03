@@ -339,6 +339,7 @@ public static class ResultKey
         public const string CannotRemoveLastOrganization = "projectOrganization.cannotRemoveLastOrganization";
         public const string CannotRemoveOrganizationThatHasSupervisors = "projectOrganization.cannotRemoveOrganizationThatHasSupervisors";
         public const string ProjectIsClosed = "projectOrganization.projectIsClosed";
+        public const string ProjectOrganizationNotFound = "projectOrganization.notFound";
     }
 
     public static class AlertRecipient
@@ -456,6 +457,8 @@ public static class ResultKey
     {
         public const string CreateSuccess = "alertNotHandledRecipient.create.success";
         public const string EditSuccess = "alertNotHandledRecipient.edit.success";
+        public const string DeleteSuccess = "alertNotHandledRecipient.delete.success";
+        public const string CannotRemoveLastAlertNotificationRecipient = "alertNotHandledRecipient.delete.cannotRemoveLastAlertNotificationRecipient";
         public const string UserMustBeInSameOrg = "alertNotHandledRecipient.userMustBeInSameOrg";
         public const string NotFound = "alertNotHandledRecipient.notFound";
         public const string AlreadyExists = "alertNotHandledRecipient.alreadyExists";

@@ -1,6 +1,7 @@
 import {
   CREATE_ALERT_NOT_HANDLED_RECIPIENT,
   EDIT_ALERT_NOT_HANDLED_RECIPIENT,
+  REMOVE_ALERT_NOT_HANDLED_RECIPIENT,
   GET_ALERT_NOT_HANDLED_FORM_DATA,
   GET_ALERT_NOT_HANDLED_RECIPIENTS,
   OPEN_ALERT_NOT_HANDLED_RECIPIENTS,
@@ -62,6 +63,20 @@ export const edit = {
   success: () => ({ type: EDIT_ALERT_NOT_HANDLED_RECIPIENT.SUCCESS }),
   failure: (message) => ({
     type: EDIT_ALERT_NOT_HANDLED_RECIPIENT.FAILURE,
+    message,
+  }),
+};
+
+export const remove = {
+  invoke: (projectId, data) => ({
+    type: REMOVE_ALERT_NOT_HANDLED_RECIPIENT.INVOKE,
+    projectId,
+    data,
+  }),
+  request: () => ({ type: REMOVE_ALERT_NOT_HANDLED_RECIPIENT.REQUEST }),
+  success: () => ({ type: REMOVE_ALERT_NOT_HANDLED_RECIPIENT.SUCCESS }),
+  failure: (message) => ({
+    type: REMOVE_ALERT_NOT_HANDLED_RECIPIENT.FAILURE,
     message,
   }),
 };

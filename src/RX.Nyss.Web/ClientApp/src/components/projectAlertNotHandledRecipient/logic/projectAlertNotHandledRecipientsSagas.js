@@ -19,6 +19,10 @@ export const projectAlertNotHandledRecipientsSagas = () => [
     editAlertNotHandledRecipient,
   ),
   takeEvery(
+    consts.REMOVE_ALERT_NOT_HANDLED_RECIPIENT.INVOKE,
+    removeAlertNotHandledRecipient,
+  ),
+  takeEvery(
     consts.GET_ALERT_NOT_HANDLED_FORM_DATA.INVOKE,
     getProjectAlertNotHandledRecipientsFormData,
   ),
@@ -64,6 +68,22 @@ function* editAlertNotHandledRecipient({ projectId, data }) {
     yield call(getProjectAlertNotHandledRecipients, projectId);
   } catch (error) {
     yield put(actions.edit.failure(error.message));
+  }
+}
+
+function* removeAlertNotHandledRecipient({ projectId, data }) {
+  yield put(actions.remove.request());
+  try {
+    const response = yield call(
+      http.post,
+      `/api/projectAlertNotHandledRecipient/delete?projectId=${projectId}`,
+      data,
+    );
+    yield put(actions.remove.success(response.value));
+    yield put(appActions.showMessage(response.message.key));
+    yield call(getProjectAlertNotHandledRecipients, projectId);
+  } catch (error) {
+    yield put(actions.remove.failure(error.message));
   }
 }
 

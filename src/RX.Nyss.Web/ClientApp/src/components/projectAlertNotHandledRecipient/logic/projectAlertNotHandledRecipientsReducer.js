@@ -51,6 +51,15 @@ export function projectAlertNotHandledRecipientsReducer(
     case actions.EDIT_ALERT_NOT_HANDLED_RECIPIENT.FAILURE:
       return { ...state, saving: false };
 
+    case actions.REMOVE_ALERT_NOT_HANDLED_RECIPIENT.REQUEST:
+      return { ...state, saving: true };
+
+    case actions.REMOVE_ALERT_NOT_HANDLED_RECIPIENT.SUCCESS:
+      return { ...state, saving: false, listStale: true };
+
+    case actions.REMOVE_ALERT_NOT_HANDLED_RECIPIENT.FAILURE:
+      return { ...state, saving: false };
+
     case actions.GET_ALERT_NOT_HANDLED_FORM_DATA.REQUEST:
       return { ...state, formDataFetching: true };
 
