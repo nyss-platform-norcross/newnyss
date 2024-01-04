@@ -89,6 +89,16 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
             var incomingMessageId = parsedQueryString[IncomingMessageIdParameterName].ParseToNullableInt();
             var apiKey = parsedQueryString[ApiKeyParameterName];
 
+            if (sender != null)
+            {
+                var res = sender.Substring(0, 1);
+                if (res != "+")
+                {
+                    sender = string.Concat("+", sender);
+                    sender = sender.Replace(" ", "");
+                }
+            }
+
             ErrorReportData errorReportData = null;
             AlertData alertData = null;
             ProjectHealthRisk projectHealthRisk = null;
