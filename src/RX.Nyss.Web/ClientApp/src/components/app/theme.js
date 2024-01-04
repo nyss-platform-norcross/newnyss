@@ -18,7 +18,7 @@ export const theme = (direction) =>
       },
       h1: {
         fontSize: "2rem",
-        color: "#C02C2C",
+        color: "#D52B1E",
         fontWeight: "400",
         marginBottom: 20,
       },
@@ -50,9 +50,7 @@ export const theme = (direction) =>
     },
     palette: {
       primary: {
-        light: "#8c9eff",
-        main: "#C02C2C",
-        dark: "#DC3F2E",
+        main: "#D52B1E",
         contrastText: "#ffffff",
       },
       secondary: {
@@ -61,6 +59,12 @@ export const theme = (direction) =>
         dark: "#3d5afe",
         contrastText: "#ffffff",
       },
+      background: {
+        default: "#F1F1F1",
+      },
+      backgroundDark: palette.augmentColor({
+        main: "#F4F4F4"
+      })
     },
     overrides: {
       MuiButton: {
@@ -70,7 +74,7 @@ export const theme = (direction) =>
           fontSize: "1rem",
         },
         outlinedPrimary: {
-          border: "2px solid #C02C2C !important",
+          border: "2px solid #D52B1E !important",
         },
         containedPrimary: {
           boxShadow: "none",
@@ -216,7 +220,7 @@ export const theme = (direction) =>
           borderBottom: "1px solid #e0e0e0",
         },
         indicator: {
-          backgroundColor: "#C02C2C",
+          backgroundColor: "#D52B1E",
           height: 3,
         },
       },
@@ -295,7 +299,7 @@ export const theme = (direction) =>
       MuiRadio: {
         colorSecondary: {
           "&$checked": {
-            color: "#C02C2C",
+            color: "#D52B1E",
           },
         },
         root: {
