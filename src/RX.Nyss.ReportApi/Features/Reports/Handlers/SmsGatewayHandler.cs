@@ -216,7 +216,7 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
             try
             {
                 var apiKey = parsedQueryString[ApiKeyParameterName];
-                var sender = parsedQueryString[SenderParameterName];
+                var sender = rawReport.Sender;
                 var timestamp = parsedQueryString[TimestampParameterName];
                 var text = parsedQueryString[TextParameterName].Trim();
 
