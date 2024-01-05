@@ -17,6 +17,7 @@ import { DashboardReportVillageChart } from "../dashboardCharts/DashboardReportV
 import { DashboardReportChart } from "../dashboardCharts/DashboardReportChart";
 import { DashboardReportSexAgeChart } from "../dashboardCharts/DashboardReportSexAgeChart";
 import { DashboardReportSexAgeTable } from "../dashboardTables/DashboardReportSexAgeTable";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const NationalSocietyDashboardPageComponent = ({
   nationalSocietyId,
@@ -31,6 +32,9 @@ const NationalSocietyDashboardPageComponent = ({
   useMount(() => {
     openDashboard(props.match.params.nationalSocietyId);
   });
+
+  // Track page view
+  trackPageView("NationalSocietyDashboardPage");
 
   const useRtlDirection = useSelector(
     (state) => state.appData.direction === "rtl",

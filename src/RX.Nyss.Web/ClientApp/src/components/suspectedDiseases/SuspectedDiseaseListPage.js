@@ -10,11 +10,15 @@ import SuspectedDiseaseTable from "./SuspectedDiseaseTable";
 import { useMount } from "../../utils/lifecycle";
 import { strings, stringKeys } from "../../strings";
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const SuspectedDiseaseListPageComponent = (props) => {
   useMount(() => {
     props.openModule(props.match.path, props.match.params);
     props.getList();
+
+    // Track page view
+    trackPageView("SuspectedDiseaseListPage");
   });
 
   const userLanguageCode = useSelector(

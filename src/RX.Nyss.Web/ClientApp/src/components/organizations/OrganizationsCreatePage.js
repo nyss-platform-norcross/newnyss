@@ -13,6 +13,7 @@ import { useMount } from "../../utils/lifecycle";
 import { strings, stringKeys } from "../../strings";
 import { ValidationMessage } from "../forms/ValidationMessage";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const OrganizationsCreatePageComponent = (props) => {
   const [form] = useState(() => {
@@ -35,6 +36,9 @@ const OrganizationsCreatePageComponent = (props) => {
 
   useMount(() => {
     props.openCreation(props.nationalSocietyId);
+
+    // Track page view
+    trackPageView("OrganizationsCreatePage");
   });
 
   const handleSubmit = (e) => {

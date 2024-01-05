@@ -12,10 +12,14 @@ import { TableActionsButton } from "../common/buttons/tableActionsButton/TableAc
 import { stringKeys, strings } from "../../strings";
 import { Loading } from "../common/loading/Loading";
 import TableHeader from "../common/tableHeader/TableHeader";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const AlertsListPageComponent = ({ openAlertsList, ...props }) => {
   useMount(() => {
     openAlertsList(props.projectId);
+
+    // Track page view
+    trackPageView("AlertsListPage");
   });
 
   const useRtlDirection = useSelector(
@@ -74,7 +78,7 @@ const AlertsListPageComponent = ({ openAlertsList, ...props }) => {
       />
     </Fragment>
   );
-}
+};
 
 AlertsListPageComponent.propTypes = {
   getAlerts: PropTypes.func,

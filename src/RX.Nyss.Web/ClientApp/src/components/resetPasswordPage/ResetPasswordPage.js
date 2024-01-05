@@ -12,6 +12,7 @@ import { ValidationMessage } from "../forms/ValidationMessage";
 import SubmitButton from "../common/buttons/submitButton/SubmitButton";
 import FormActions from "../forms/formActions/FormActions";
 import { Link, Paper, Typography, Grid } from "@material-ui/core";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 class ResetPasswordPageComponent extends PureComponent {
   constructor(props) {
@@ -26,6 +27,9 @@ class ResetPasswordPageComponent extends PureComponent {
     };
 
     this.form = createForm(fields, validation);
+
+    // Track page view
+    trackPageView("ResetPasswordPage");
   }
 
   handleSubmit = (e) => {

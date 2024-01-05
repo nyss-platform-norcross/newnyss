@@ -12,6 +12,7 @@ import { TableActionsButton } from "../common/buttons/tableActionsButton/TableAc
 import { Grid, Typography, makeStyles } from "@material-ui/core";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
 import EditIcon from "@material-ui/icons/Edit";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const useStyles = makeStyles({
   bodyText: {
@@ -27,6 +28,9 @@ const ProjectsOverviewPageComponent = (props) => {
 
   useMount(() => {
     props.openOverview(props.nationalSocietyId, props.projectId);
+
+    // Track page view
+    trackPageView("ProjectsOverviewPage");
   });
 
   if (props.isFetching || !props.data) {

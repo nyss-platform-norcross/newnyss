@@ -13,6 +13,7 @@ import CheckboxField from "../../forms/CheckboxField";
 import { validators, createForm } from "../../../utils/forms";
 import { Button, CircularProgress, Grid, Snackbar } from "@material-ui/core";
 import { Alert, AlertTitle } from "@material-ui/lab";
+import { trackEvent } from "../../../utils/appInsightsHelper";
 
 export const AlertsAssessmentActions = ({
   projectId,
@@ -63,6 +64,13 @@ export const AlertsAssessmentActions = ({
       props.fetchRecipients(alertId);
       setEscalationDialogOpened(true);
     }
+  };
+
+  const handleDismissAlert = (alertId) => {
+    // Track dismissAlert event
+    trackEvent("dismissAlert", { alertId: alertId });
+
+    props.dismissAlert(alertId);
   };
 
   return (
@@ -192,7 +200,7 @@ export const AlertsAssessmentActions = ({
                   hasAccess && (
                     <SubmitButton
                       isFetching={props.isDismissing}
-                      onClick={() => props.dismissAlert(alertId)}
+                      onClick={() => handleDismissAlert(alertId)}
                     >
                       {strings(stringKeys.alerts.assess.alert.dismiss)}
                     </SubmitButton>

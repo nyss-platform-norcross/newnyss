@@ -24,6 +24,7 @@ import {
   CardMedia,
 } from "@material-ui/core";
 import { Loading } from "../common/loading/Loading";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const AgreementsPageComponent = (props) => {
   const [hasConsented, setHasConsented] = useState(false);
@@ -32,6 +33,9 @@ const AgreementsPageComponent = (props) => {
 
   useMount(() => {
     props.openAgreementPage();
+
+    // Track page view
+    trackPageView("AgreementsPage");
   });
 
   const handleSubmit = (e) => {

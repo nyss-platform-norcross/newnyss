@@ -22,6 +22,7 @@ import { Manager, TechnicalAdvisor } from "../../../authentication/roles";
 import { makeStyles } from "@material-ui/core/styles";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { ReportStatusChip } from "../../common/chip/ReportStatusChip";
+import { trackEvent } from "../../../utils/appInsightsHelper";
 
 var relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
@@ -72,6 +73,24 @@ export const AlertsAssessmentReport = ({
   const showSupervisorDetails = currentUserRoles.some(
     (r) => r === Manager || r === TechnicalAdvisor,
   );
+
+  const handleAcceptReport = (alertId, reportId) => {
+    // track acceptAlertReport event
+    trackEvent("acceptAlertReport", { alertId, reportId });
+    acceptReport(alertId, reportId);
+  };
+
+  const handleDismissReport = (alertId, reportId) => {
+    // track dismissAlertReport event
+    trackEvent("dismissAlertReport", { alertId, reportId });
+    dismissReport(alertId, reportId);
+  };
+
+  const handleResetReport = (alertId, reportId) => {
+    // track resetAlertReport event
+    trackEvent("resetAlertReport", { alertId, reportId });
+    resetReport(alertId, reportId);
+  };
 
   const useStyles = makeStyles(() => ({
     accordion: {
@@ -190,7 +209,7 @@ export const AlertsAssessmentReport = ({
               {showActions && (
                 <Fragment>
                   <SubmitButton
-                    onClick={() => dismissReport(alertId, report.id)}
+                    onClick={() => handleDismissReport(alertId, report.id)}
                     isFetching={report.isDismissing}
                     regular
                     underline
@@ -199,7 +218,7 @@ export const AlertsAssessmentReport = ({
                   </SubmitButton>
 
                   <SubmitButton
-                    onClick={() => acceptReport(alertId, report.id)}
+                    onClick={() => handleAcceptReport(alertId, report.id)}
                     isFetching={report.isAccepting}
                   >
                     {strings(stringKeys.alerts.assess.report.accept)}
@@ -212,7 +231,7 @@ export const AlertsAssessmentReport = ({
                     variant="text"
                     color="primary"
                     style={{ textDecoration: "underline" }}
-                    onClick={() => resetReport(alertId, report.id)}
+                    onClick={() => handleResetReport(alertId, report.id)}
                     disabled={report.isResetting}
                   >
                     {report.isResetting && (

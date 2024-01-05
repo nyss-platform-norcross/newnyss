@@ -32,6 +32,7 @@ import {
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { v4 as uuidv4 } from "uuid";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const SmsGatewaysCreatePageComponent = (props) => {
   const [useIotHub, setUseIotHub] = useState(null);
@@ -129,6 +130,9 @@ const SmsGatewaysCreatePageComponent = (props) => {
 
   useMount(() => {
     props.openCreation(props.nationalSocietyId);
+
+    // Track page view
+    trackPageView("SmsGatewaysCreatePage");
   });
 
   const { listAvailableIotDevices } = props;

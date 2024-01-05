@@ -14,12 +14,16 @@ import { strings, stringKeys } from "../../strings";
 import { Grid } from "@material-ui/core";
 import { ValidationMessage } from "../forms/ValidationMessage";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const OrganizationsEditPageComponent = (props) => {
   const [form, setForm] = useState(null);
 
   useMount(() => {
     props.openEdition(props.nationalSocietyId, props.organizationId);
+
+    // Track page view
+    trackPageView("OrganizationsEditPage");
   });
 
   useEffect(() => {

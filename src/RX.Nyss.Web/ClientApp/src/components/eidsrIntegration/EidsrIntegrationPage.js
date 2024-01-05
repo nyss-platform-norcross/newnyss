@@ -14,10 +14,14 @@ import styles from "./EidsrIntegration.module.scss";
 import { Loading } from "../common/loading/Loading";
 import { EidsrIntegrationNotEnabled } from "./components/EidsrIntegrationNotEnabled";
 import PasswordDisplayField from "../forms/PasswordDisplayField";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const EidsrIntegrationPageComponent = (props) => {
   useMount(() => {
     props.getEidsrIntegration(props.nationalSocietyId);
+
+    // Track page view
+    trackPageView("EidsrIntegrationPage");
   });
 
   if (props.isFetching || !props.data) {

@@ -26,6 +26,7 @@ import { MultiSelect } from "../forms/MultiSelect";
 import SelectField from "../forms/SelectField";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const ProjectAlertRecipientsEditPageComponent = ({
   formData,
@@ -51,6 +52,9 @@ const ProjectAlertRecipientsEditPageComponent = ({
 
   useMount(() => {
     openEdition(projectId, alertRecipientId);
+
+    // Track page view
+    trackPageView("ProjectAlertRecipientsEditPage");
   });
 
   useEffect(() => {

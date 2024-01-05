@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import FormActions from "../../forms/formActions/FormActions";
+import { trackEvent } from "../../../utils/appInsightsHelper";
 
 export const AlertsCloseDialog = ({
   isOpened,
@@ -22,8 +23,12 @@ export const AlertsCloseDialog = ({
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
-  const handleClose = (event) => {
-    event.preventDefault();
+  const handleCloseAlert = (alertId) => {
+    // Track closeAlert event
+    trackEvent("closeAlert", {
+      alertId,
+    });
+
     closeAlert(alertId);
   };
 
@@ -40,7 +45,10 @@ export const AlertsCloseDialog = ({
           <CancelButton onClick={close}>
             {strings(stringKeys.form.cancel)}
           </CancelButton>
-          <SubmitButton isFetching={isClosing} onClick={handleClose}>
+          <SubmitButton
+            isFetching={isClosing}
+            onClick={() => handleCloseAlert(alertId)}
+          >
             {strings(stringKeys.alerts.assess.alert.close)}
           </SubmitButton>
         </FormActions>

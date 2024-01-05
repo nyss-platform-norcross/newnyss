@@ -11,10 +11,14 @@ import { strings, stringKeys } from "../../strings";
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { accessMap } from "../../authentication/accessMap";
 import * as roles from "../../authentication/roles";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const SmsGatewaysListPageComponent = (props) => {
   useMount(() => {
     props.openSmsGatewaysList(props.nationalSocietyId);
+
+    // Track page view
+    trackPageView("SmsGatewaysListPage");
   });
 
   const useRtlDirection = useSelector(

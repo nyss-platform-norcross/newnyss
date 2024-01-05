@@ -17,6 +17,7 @@ import { getSaveFormModel } from "./logic/projectsService";
 import { Loading } from "../common/loading/Loading";
 import { ValidationMessage } from "../forms/ValidationMessage";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const ProjectHealthRisksEditPageComponent = (props) => {
   const [healthRiskDataSource, setHealthRiskDataSource] = useState([]);
@@ -25,6 +26,9 @@ const ProjectHealthRisksEditPageComponent = (props) => {
 
   useMount(() => {
     props.openHealthRisksEdition(props.nationalSocietyId, props.projectId);
+  
+    // Track page view
+    trackPageView("ProjectHealthRisksEditPage");
   });
 
   useEffect(() => {

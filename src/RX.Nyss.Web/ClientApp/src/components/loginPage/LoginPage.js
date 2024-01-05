@@ -15,6 +15,7 @@ import { ValidationMessage } from "../forms/ValidationMessage";
 import FormActions from "../forms/formActions/FormActions";
 import SubmitButton from "../common/buttons/submitButton/SubmitButton";
 import { useMount } from "../../utils/lifecycle";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const LoginPageComponent = (props) => {
   const [form] = useState(() => {
@@ -38,6 +39,9 @@ const LoginPageComponent = (props) => {
       redirectToRoot();
     }
   });
+
+  // Track page view
+  trackPageView("LoginPage");
 
   const handleSubmit = (e) => {
     e.preventDefault();

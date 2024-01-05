@@ -13,10 +13,14 @@ import { strings, stringKeys } from "../../strings";
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { accessMap } from "../../authentication/accessMap";
 import * as roles from "../../authentication/roles";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const NationalSocietiesOverviewPageComponent = (props) => {
   useMount(() => {
     props.openOverview(props.match);
+
+    // Track page view
+    trackPageView("NationalSocietiesOverviewPage");
   });
 
   if (props.isFetching || !props.data) {

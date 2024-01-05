@@ -33,6 +33,7 @@ import {
 } from "./logic/reportsService";
 import { sortByReportStatus } from "../../utils/sortReportByStatus";
 import { ReportStatusChip } from "../common/chip/ReportStatusChip";
+import { trackEvent } from "../../utils/appInsightsHelper";
 
 export const CorrectReportsTable = ({
   isListFetching,
@@ -97,24 +98,42 @@ export const CorrectReportsTable = ({
     (!report.alert || alertAllowsCrossCheckingOfReport(report.alert)) &&
     !!report.village;
 
+  const handleGoToAlert = (projectId, alertId) => {
+    // Track go to alert event
+    trackEvent("GoToAlert", { projectId, alertId });
+    goToAlert(projectId, alertId);
+  };
+
+  const handleAcceptReport = (reportId) => {
+    // Track accept report event
+    trackEvent("AcceptReport", { reportId });
+    acceptReport(reportId);
+  };
+
+  const handleDismissReport = (reportId) => {
+    // Track dismiss report event
+    trackEvent("DismissReport", { reportId });
+    dismissReport(reportId);
+  };
+
   const getRowMenu = (row) => [
     {
       title: strings(stringKeys.reports.list.goToAlert),
       roles: accessMap.reports.goToAlert,
       disabled: !row.alert,
-      action: () => goToAlert(projectId, row.alert.id),
+      action: () => handleGoToAlert(projectId, row.alert.id),
     },
     {
       title: strings(stringKeys.reports.list.acceptReport),
       roles: accessMap.reports.crossCheck,
       disabled: !canCrossCheck(row, reportStatus.accepted),
-      action: () => acceptReport(row.id),
+      action: () => handleAcceptReport(row.id),
     },
     {
       title: strings(stringKeys.reports.list.dismissReport),
       roles: accessMap.reports.crossCheck,
       disabled: !canCrossCheck(row, reportStatus.rejected),
-      action: () => dismissReport(row.id),
+      action: () => handleDismissReport(row.id),
     },
   ];
 
