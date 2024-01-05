@@ -68,24 +68,19 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
 
   const onEdit = () => {
     setIsEditing(false);
-    if (
-      organizations.every((org) =>
-        org.users.some((user) =>
-          unhandledRecipients
-            .map((recipient) => recipient.userId)
-            .includes(user.userId),
-        ),
-      )
-    ) {
-      return;
-    }
-    edit(
-      projectId,
-      unhandledRecipients.map((recipient) => ({
-        organizationId: recipient.organizationId,
-        userId: recipient.userId,
-      })),
-    );
+    let editedRecipientIds = unhandledRecipients.map(recipient => recipient.userId);
+    let oldRecipientIds = organizations.flatMap(org => org.users.map(user => user.userId));
+
+    // Checks that the edited list isn't identical to the original list
+    if(!oldRecipientIds.every((oldRecipientId) => editedRecipientIds.includes(oldRecipientId))){
+      edit(
+        projectId,
+        unhandledRecipients.map((recipient) => ({
+          organizationId: recipient.organizationId,
+          userId: recipient.userId,
+        })),
+      );
+    } 
   };
 
   const cancel = () => {
