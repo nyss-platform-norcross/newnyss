@@ -27,10 +27,6 @@ const DataCollectorsMapOverviewPageComponent = (props) => {
   const handleFiltersChange = (value) =>
     props.getDataCollectorsMapOverview(props.projectId, value);
 
-  useEffect(() => {
-    props.trackPage("DataCollectorsMapOverviewPage");
-  }, []);
-
   if (!props.filters) {
     return null;
   }
