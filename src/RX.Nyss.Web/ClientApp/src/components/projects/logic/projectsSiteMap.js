@@ -6,8 +6,8 @@ import { nationalSocietyLeftMenuOrder } from "../../nationalSocieties/logic/nati
 export const projectTabMenuOrder = {
   dashboard: 0,
   alerts: 10,
-  dataCollectors: 20,
-  reports: 30,
+  reports: 20,
+  dataCollectors: 30,
   settings: 40,
 };
 
