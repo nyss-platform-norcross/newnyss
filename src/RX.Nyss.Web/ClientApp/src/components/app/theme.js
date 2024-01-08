@@ -18,9 +18,8 @@ export const theme = (direction) =>
       },
       h1: {
         fontSize: "2rem",
-        color: "#D52B1E",
         fontWeight: "400",
-        marginBottom: 20,
+        margin: "30px 0 30px",
       },
       h2: {
         fontSize: "1.75rem",
