@@ -9,15 +9,14 @@ import {
   TableBody,
   TableCell,
   TableRow,
+  Typography
 } from "@material-ui/core";
 import { strings, stringKeys } from "../../strings";
 
 export const DashboardReportSexAgeTable = ({ data }) => {
   return (
     <Card data-printable={true}>
-      <CardHeader
-        title={strings(stringKeys.dashboard.reportsPerFeature.title)}
-      />
+      <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.reportsPerFeature.title)}</Typography>}/>
       <CardContent>
         <Table className={styles.table}>
           <TableBody>
