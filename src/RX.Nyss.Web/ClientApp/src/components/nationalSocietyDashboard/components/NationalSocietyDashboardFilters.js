@@ -246,7 +246,7 @@ export const NationalSocietyDashboardFilters = ({
         expanded={isFilterExpanded}
       >
         {!isSmallScreen && (
-          <Grid container spacing={2}>
+          <Grid container>
             <CardHeader
               title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>}
               className={styles.filterTitle}

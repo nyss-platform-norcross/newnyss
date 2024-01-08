@@ -291,9 +291,9 @@ export const ProjectsDashboardFilters = ({
         expanded={isFilterExpanded}
       >
         {!isSmallScreen && (
-          <Grid container spacing={2}>
+          <Grid container>
             <CardHeader
-              title={strings(stringKeys.dashboard.filters.title)}
+              title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>}
               className={styles.filterTitle}
             />
           </Grid>
