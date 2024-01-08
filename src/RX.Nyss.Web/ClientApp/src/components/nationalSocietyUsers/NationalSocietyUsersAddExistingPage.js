@@ -92,7 +92,7 @@ const NationalSocietyUsersAddExistingPageComponent = (props) => {
 
       <Form onSubmit={handleSubmit}>
         <Box mb={3}>
-          <Typography variant="body1">
+          <Typography variant="h5">
             {strings(
               stringKeys.nationalSocietyUser.form.addExistingDescription,
             )}
