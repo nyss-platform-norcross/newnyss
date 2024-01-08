@@ -27,8 +27,8 @@ export const ExpandButton = ({ onClick, isExpanded }) => {
       width: 35,
       transform: useRtlDirection ? "rotate(225deg)" : "rotate(45deg)",
       backgroundImage: useRtlDirection
-        ? "linear-gradient(-315deg, rgba(255,0,0,0) 50%, #F4F4F4 50%)"
-        : "linear-gradient(45deg, rgba(255,0,0,0) 50%, #F4F4F4 50%)",
+        ? `linear-gradient(-315deg, rgba(255,0,0,0) 50%, ${theme.palette.backgroundDark.main} 50%)`
+        : `linear-gradient(45deg, rgba(255,0,0,0) 50%, ${theme.palette.backgroundDark.main} 50%)`,
       borderRadius: "10px",
       display: "flex",
       justifyContent: "center",

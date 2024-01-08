@@ -25,7 +25,7 @@ export const AccountSection = ({ handleItemClick, isExpanded }) => {
   const isSupervisor =
     user.roles.includes("Supervisor") || user.roles.includes("HeadSupervisor");
 
-  const useStyles = makeStyles(() => ({
+  const useStyles = makeStyles((theme) => ({
     AccordionContainer: {
       position: "sticky",
       marginTop: "auto",
@@ -33,7 +33,7 @@ export const AccountSection = ({ handleItemClick, isExpanded }) => {
       zIndex: 1,
     },
     Accordion: {
-      backgroundColor: "#F4F4F4",
+      backgroundColor: theme.palette.backgroundDark.main,
       "&.MuiAccordion-root:before": {
         backgroundColor: "inherit",
       },
@@ -114,7 +114,7 @@ export const AccountSection = ({ handleItemClick, isExpanded }) => {
       fontSize: 12,
       fontWeight: "bold",
       padding: useRtlDirection ? "8px 8px 8px 0" : "8px 0 8px 8px",
-      backgroundColor: "#F1F1F1",
+      backgroundColor: theme.palette.background.default,
     },
     Hide: {
       color: "transparent",
