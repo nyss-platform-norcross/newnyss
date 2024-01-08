@@ -16,7 +16,7 @@ export const ExpandButton = ({ onClick, isExpanded }) => {
     (state) => state.appData.direction === "rtl",
   );
 
-  const useStyles = makeStyles({
+  const useStyles = makeStyles((theme) => ({
     triangleBackground: {
       position: "absolute",
       zIndex: 1201,
@@ -38,7 +38,7 @@ export const ExpandButton = ({ onClick, isExpanded }) => {
       transform: useRtlDirection
         ? "rotate(-225deg) translateX(-5px)"
         : "rotate(135deg) translateX(-5px)",
-      color: "#D52B1E",
+      color: theme.palette.primary.main,
       "&:hover": {
         backgroundColor: "transparent",
       },
@@ -46,7 +46,7 @@ export const ExpandButton = ({ onClick, isExpanded }) => {
     invertedButton: {
       transform: "rotate(-45deg)",
     },
-  });
+  }));
   const classes = useStyles();
 
   // The expanded button should only appear for larger screens

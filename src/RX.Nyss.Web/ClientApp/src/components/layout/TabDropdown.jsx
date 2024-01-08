@@ -18,7 +18,7 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
     (state) => state.appData.direction === "rtl",
   );
 
-  const useStyles = makeStyles({
+  const useStyles = makeStyles((theme) => ({
     container: {
       position: "relative",
       backgroundColor: "inherit",
@@ -27,7 +27,7 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
     },
     tab: {
       borderBottom: page.isActive
-        ? "3px solid #D52B1E"
+        ? `3px solid ${theme.palette.primary.main}`
         : "3px solid transparent",
       padding: "0px 20px 0px 20px",
     },
@@ -61,7 +61,7 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
       borderBottomLeftRadius: 10,
       borderBottomRightRadius: 10,
     },
-  });
+  }));
 
   const styles = useStyles();
 
