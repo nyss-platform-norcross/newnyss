@@ -21,6 +21,7 @@ import {
   FormLabel,
   RadioGroup,
   Radio,
+  Typography,
 } from "@material-ui/core";
 import { ReportStatusFilter } from "../../common/filters/ReportStatusFilter";
 import { Fragment } from "react";
@@ -123,7 +124,7 @@ export const ProjectsDashboardFilters = ({
         <CardContent className={styles.collapsedFilterBar}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
-              <CardHeader title={strings(stringKeys.dashboard.filters.title)} />
+              <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>} />
             </Grid>
             {!isFilterExpanded && (
               <Fragment>
