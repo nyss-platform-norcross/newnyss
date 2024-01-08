@@ -25,12 +25,12 @@ export const theme = (direction) =>
       h2: {
         fontSize: "1.75rem",
         fontWeight: 600,
-        margin: "10px 0 30px",
+        margin: "10px 0 10px",
       },
       h3: {
         fontSize: "1.5rem",
         fontWeight: 600,
-        margin: "10px 0 20px",
+        margin: "10px 0 10px",
       },
       h4: {
         fontSize: "1.25rem",
