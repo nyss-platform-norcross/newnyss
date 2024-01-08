@@ -63,7 +63,6 @@ export const NationalSocietyLocationList = (props) => {
     },
     button: {
       marginTop: 10,
-      fontSize: "14px",
     },
     icon: {
       marginLeft: 8,
