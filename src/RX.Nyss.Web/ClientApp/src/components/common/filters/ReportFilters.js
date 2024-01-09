@@ -38,6 +38,7 @@ export const ReportFilters = ({
 }) => {
   //Reducer for local filters state
   const [localFilters, updateLocalFilters] = useLocalFilters(filters);
+  const showUnknownLocation = true;
 
   //Fetches new data based on changes in filters
   const handleFiltersChange = (filters) => {
@@ -50,6 +51,7 @@ export const ReportFilters = ({
     locations,
     localFilters,
     updateLocalFilters,
+    showUnknownLocation
   );
 
   const handleLocationChange = (newValue) => {

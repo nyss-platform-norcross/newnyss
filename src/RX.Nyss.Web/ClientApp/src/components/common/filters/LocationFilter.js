@@ -12,6 +12,7 @@ import { stringKeys, strings } from "../../../strings";
 import LocationItem from "./LocationItem";
 import { SelectAll } from "../../common/selectAll/SelectAll";
 import { DropdownPopover } from "./DropdownPopover";
+import { useMount } from "../../../utils/lifecycle";
 
 const LocationFilter = ({
   filteredLocations,
@@ -25,16 +26,15 @@ const LocationFilter = ({
   const [includeUnknownLocation, setIncludeUnknownLocation] = useState(false);
   const [selectAll, setSelectAll] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  
+  useMount(() => {
+    showUnknownLocation && setIncludeUnknownLocation(true);
+  });
 
   useEffect(() => {
     if (!allLocations) return;
     setSelectedLocations(
       mapToSelectedLocations(filteredLocations, allLocations.regions),
-    );
-    setIncludeUnknownLocation(
-      !!filteredLocations
-        ? filteredLocations.includeUnknownLocation
-        : showUnknownLocation,
     );
   }, [allLocations, filteredLocations, showUnknownLocation]);
 
@@ -51,7 +51,7 @@ const LocationFilter = ({
         ),
     );
     setSelectAll(
-      !anyUnselected && (!showUnknownLocation || includeUnknownLocation),
+      !anyUnselected && (!showUnknownLocation || includeUnknownLocation)
     );
   }, [selectedLocations, includeUnknownLocation, showUnknownLocation]);
 
