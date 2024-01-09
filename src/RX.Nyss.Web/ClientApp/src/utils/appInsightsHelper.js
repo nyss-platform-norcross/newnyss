@@ -1,5 +1,6 @@
 import { getAppInsights } from "../components/app/ApplicationInsightsProvider";
 import store from "../store";
+import { deviceType } from "react-device-detect";
 
 export const trackPageView = (name, properties) => {
   const user = store.getState().appData.user;
@@ -10,6 +11,7 @@ export const trackPageView = (name, properties) => {
     name,
     properties: {
       userRole,
+      deviceType,
       ...properties,
     },
   });
@@ -24,6 +26,7 @@ export const trackEvent = (name, properties) => {
     name,
     properties: {
       userRole,
+      deviceType,
       ...properties,
     },
   });
