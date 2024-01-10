@@ -28,7 +28,7 @@ const NationalSocietiesOverviewPageComponent = (props) => {
       <Form>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography variant="h6">
+            <Typography variant="h5">
               {strings(stringKeys.nationalSociety.form.name)}
             </Typography>
             <Typography variant="body1" gutterBottom>
@@ -37,7 +37,7 @@ const NationalSocietiesOverviewPageComponent = (props) => {
           </Grid>
 
           <Grid item xs={12}>
-            <Typography variant="h6">
+            <Typography variant="h5">
               {strings(stringKeys.nationalSociety.form.country)}
             </Typography>
             <Typography variant="body1" gutterBottom>
@@ -46,7 +46,7 @@ const NationalSocietiesOverviewPageComponent = (props) => {
           </Grid>
 
           <Grid item xs={12}>
-            <Typography variant="h6">
+            <Typography variant="h5">
               {strings(stringKeys.nationalSociety.form.contentLanguage)}
             </Typography>
             <Typography variant="body1" gutterBottom>
@@ -55,7 +55,7 @@ const NationalSocietiesOverviewPageComponent = (props) => {
           </Grid>
 
           <Grid item xs={12}>
-            <Typography variant="h6">
+            <Typography variant="h5">
               {strings(stringKeys.nationalSociety.form.epiWeekStandard.title)}
             </Typography>
             <Typography variant="body1" gutterBottom>
@@ -65,7 +65,7 @@ const NationalSocietiesOverviewPageComponent = (props) => {
                 ].label,
               )}
               <br />
-              <span style={{ fontSize: "14px" }}>
+              <Typography variant="body2">
                 (
                 {strings(
                   stringKeys.nationalSociety.form.epiWeekStandard[
@@ -73,12 +73,12 @@ const NationalSocietiesOverviewPageComponent = (props) => {
                   ].description,
                 )}
                 )
-              </span>
+              </Typography>
             </Typography>
           </Grid>
 
           <Grid item xs={12}>
-            <Typography variant="h6">
+            <Typography variant="h5">
               {strings(stringKeys.nationalSociety.form.enableEidsrIntegration)}
             </Typography>
             <Typography variant="body1" gutterBottom>
