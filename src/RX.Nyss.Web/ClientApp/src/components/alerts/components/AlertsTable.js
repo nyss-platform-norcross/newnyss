@@ -5,7 +5,6 @@ import { strings, stringKeys } from "../../../strings";
 import dayjs from "dayjs";
 import TablePager from "../../common/tablePagination/TablePager";
 import { TableNoData } from "../../common/table/TableNoData";
-import { TableContainer } from "../../common/table/TableContainer";
 import { statusColumn, timeTriggeredColumn } from "../logic/alertsConstants";
 import {
   TableSortLabel,
@@ -14,6 +13,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TableContainer
 } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { AlertStatusChip } from "../../common/chip/AlertStatusChip";

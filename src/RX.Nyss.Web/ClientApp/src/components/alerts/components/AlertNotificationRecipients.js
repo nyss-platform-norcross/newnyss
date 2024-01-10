@@ -5,12 +5,14 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TableContainer
 } from "@material-ui/core";
 import { stringKeys, strings } from "../../../strings";
 import styles from "./AlertNotificationRecipients.module.scss";
 
 const AlertNotificationRecipients = ({ recipients }) => {
   return (
+    <TableContainer>
     <Table className={styles.table}>
       <TableHead>
         <TableRow>
@@ -37,6 +39,7 @@ const AlertNotificationRecipients = ({ recipients }) => {
         ))}
       </TableBody>
     </Table>
+    </TableContainer>
   );
 };
 
