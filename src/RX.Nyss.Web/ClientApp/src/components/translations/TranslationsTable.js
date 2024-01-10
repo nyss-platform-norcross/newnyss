@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Loading } from "../common/loading/Loading";
 import { strings, stringKeys } from "../../strings";
-import { TableContainer } from "../common/table/TableContainer";
 import { StringsEditor } from "../common/stringsEditor/StringsEditor";
 import {
   TableSortLabel,
@@ -11,6 +10,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TableContainer
 } from "@material-ui/core";
 
 export const TranslationsTable = ({
