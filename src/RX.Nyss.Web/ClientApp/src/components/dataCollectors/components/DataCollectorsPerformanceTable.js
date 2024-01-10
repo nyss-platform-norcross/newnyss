@@ -63,8 +63,8 @@ export const DataCollectorsPerformanceTable = ({
   }
 
   return (
-    <TableContainer sticky isFetching={isListFetching}>
-      <Table>
+    <TableContainer>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell className={styles.nameColumn}>

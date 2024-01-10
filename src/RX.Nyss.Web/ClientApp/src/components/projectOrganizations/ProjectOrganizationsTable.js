@@ -32,8 +32,8 @@ export const ProjectOrganizationsTable = ({
     list.length > 1 && row.isDefaultOrganization === true;
 
   return (
-    <TableContainer sticky>
-      <Table>
+    <TableContainer>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>

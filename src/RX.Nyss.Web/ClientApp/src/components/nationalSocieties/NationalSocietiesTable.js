@@ -79,8 +79,8 @@ export const NationalSocietiesTable = ({
 
   return (
     <Fragment>
-      <TableContainer sticky>
-        <Table>
+      <TableContainer>
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell>{strings(stringKeys.common.name)}</TableCell>

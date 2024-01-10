@@ -49,8 +49,8 @@ export const TranslationsTable = ({
   };
 
   return (
-    <TableContainer sticky isFetching={isListFetching}>
-      <Table>
+    <TableContainer>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>

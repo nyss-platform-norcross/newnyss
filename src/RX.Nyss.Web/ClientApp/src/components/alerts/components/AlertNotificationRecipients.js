@@ -13,7 +13,7 @@ import styles from "./AlertNotificationRecipients.module.scss";
 const AlertNotificationRecipients = ({ recipients }) => {
   return (
     <TableContainer>
-    <Table className={styles.table}>
+    <Table className={styles.table} stickyHeader>
       <TableHead>
         <TableRow>
           <TableCell>

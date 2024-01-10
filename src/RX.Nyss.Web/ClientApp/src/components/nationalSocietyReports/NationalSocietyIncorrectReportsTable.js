@@ -60,9 +60,9 @@ export const NationalSocietyIncorrectReportsTable = ({
   };
 
   return (
-    <TableContainer sticky>
+    <TableContainer>
       {isListFetching && <Loading absolute />}
-      <Table>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell style={{ width: "6%", minWidth: "80px" }}>
