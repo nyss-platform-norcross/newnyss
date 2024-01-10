@@ -58,8 +58,8 @@ export const AlertsTable = ({
 
   return (
     !!filters && (
-      <TableContainer sticky isFetching={isListFetching}>
-        <Table>
+      <TableContainer>
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell style={{ width: "6%", minWidth: "100px" }}>

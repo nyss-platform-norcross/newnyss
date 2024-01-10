@@ -29,8 +29,8 @@ export const SuspectedDiseaseTable = ({
   }
 
   return (
-    <TableContainer sticky>
-      <Table>
+    <TableContainer>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell style={{ width: "10%", minWidth: 100 }}>

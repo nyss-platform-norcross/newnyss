@@ -26,7 +26,7 @@ export const DashboardReportSexAgeTable = ({ data }) => {
       />
       <CardContent>
         <TableContainer>
-          <Table className={styles.table}>
+          <Table className={styles.table} stickyHeader>
             <TableBody>
               <TableRow>
                 <TableCell className={styles.rowHeader}></TableCell>

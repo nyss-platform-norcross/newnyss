@@ -145,8 +145,8 @@ export const DataCollectorsTable = ({
   };
 
   return (
-    <TableContainer sticky isFetching={isListFetching}>
-      <Table>
+    <TableContainer>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell className={styles.checkCell}>
