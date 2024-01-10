@@ -5,7 +5,6 @@ import { Loading } from "../common/loading/Loading";
 import { strings, stringKeys } from "../../strings";
 import dayjs from "dayjs";
 import TablePager from "../common/tablePagination/TablePager";
-import { TableContainer } from "../common/table/TableContainer";
 import { TableRowActions } from "../common/tableRowAction/TableRowActions";
 import { TableRowAction } from "../common/tableRowAction/TableRowAction";
 import EditIcon from "@material-ui/icons/Edit";
@@ -25,6 +24,7 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  TableContainer
 } from "@material-ui/core";
 import { alertStatus } from "../alerts/logic/alertsConstants";
 import {

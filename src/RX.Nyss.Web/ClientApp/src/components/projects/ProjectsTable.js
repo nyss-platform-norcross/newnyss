@@ -7,7 +7,6 @@ import WarningIcon from "@material-ui/icons/Warning";
 import * as roles from "../../authentication/roles";
 import { Loading } from "../common/loading/Loading";
 import { strings, stringKeys } from "../../strings";
-import { TableContainer } from "../common/table/TableContainer";
 import { TableRowActions } from "../common/tableRowAction/TableRowActions";
 import { TableRowMenu } from "../common/tableRowAction/TableRowMenu";
 import { ConfirmationDialog } from "../common/confirmationDialog/ConfirmationDialog";
@@ -19,6 +18,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TableContainer
 } from "@material-ui/core";
 
 export const ProjectsTable = ({
