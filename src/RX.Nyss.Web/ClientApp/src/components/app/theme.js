@@ -200,6 +200,12 @@ export const theme = (direction) =>
           color: "#737373",
         },
       },
+      MuiTableContainer: {
+        root: {
+          overflowX: "scroll",
+          maxHeight: "calc(100vh - 200px)",
+        }
+      },
       MuiTable: {
         root: {
           borderTop: "2px solid #f3f3f3",
