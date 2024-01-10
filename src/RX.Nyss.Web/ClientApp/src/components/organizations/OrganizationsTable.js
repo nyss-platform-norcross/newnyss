@@ -34,8 +34,8 @@ export const OrganizationsTable = ({
     list.length > 1 && row.isDefaultOrganization === true;
 
   return (
-    <TableContainer sticky>
-      <Table>
+    <TableContainer>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>{strings(stringKeys.common.name)}</TableCell>

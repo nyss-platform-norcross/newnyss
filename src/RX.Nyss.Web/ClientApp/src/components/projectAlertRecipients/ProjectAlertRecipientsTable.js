@@ -51,8 +51,8 @@ export const ProjectAlertRecipientsTable = ({
   };
 
   return (
-    <TableContainer sticky>
-      <Table>
+    <TableContainer>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>

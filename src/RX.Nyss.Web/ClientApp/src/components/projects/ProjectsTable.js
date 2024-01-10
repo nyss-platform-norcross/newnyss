@@ -62,8 +62,8 @@ export const ProjectsTable = ({
 
   return (
     <Fragment>
-      <TableContainer sticky>
-        <Table>
+      <TableContainer>
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell style={{ minWidth: 160 }}>
