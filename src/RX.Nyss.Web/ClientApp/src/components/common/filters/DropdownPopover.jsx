@@ -58,7 +58,7 @@ export const DropdownPopover = ({
         PaperProps={{
           className: styles.filterContainer,
         }}
-        style={{ maxHeight: 400 }}
+        style={{ maxHeight: 400, maxWidth:"90%" }}
       >
         {children}
       </Popover>
