@@ -33,6 +33,7 @@ import { DataCollectorLocationItem } from "./components/DataCollectorLocationIte
 import { getBirthDecades, parseBirthDecade } from "../../utils/birthYear";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
 import { trackPageView } from "../../utils/appInsightsHelper";
+import { SubMenuTitle } from "../layout/SubMenuTitle";
 
 const DataCollectorsCreatePageComponent = (props) => {
   const currentUserRoles = useSelector((state) => state.appData.user.roles);
@@ -191,6 +192,7 @@ const DataCollectorsCreatePageComponent = (props) => {
 
   return (
     <Fragment>
+      <SubMenuTitle />
       {props.error && !props.error.data && (
         <ValidationMessage message={props.error.message} />
       )}
