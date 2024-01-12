@@ -3,6 +3,17 @@ import styles from "./LocationFilter.module.scss";
 import { Fragment, useState } from "react";
 import { Popover, TextField } from "@material-ui/core";
 import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  popoverPaper: {
+    '&.MuiPopover-paper': {
+      width: '100%',
+      maxWidth: 400,
+    },
+  },
+});
+
 
 export const DropdownPopover = ({
   children,
@@ -13,6 +24,7 @@ export const DropdownPopover = ({
   dialogOpen,
   setDialogOpen,
 }) => {
+  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleDropdownClick = (event) => {
@@ -58,6 +70,7 @@ export const DropdownPopover = ({
         PaperProps={{
           className: styles.filterContainer,
         }}
+        classes={{ paper: classes.popoverPaper }}
         style={{ maxHeight: 400, maxWidth:"90%" }}
       >
         {children}
