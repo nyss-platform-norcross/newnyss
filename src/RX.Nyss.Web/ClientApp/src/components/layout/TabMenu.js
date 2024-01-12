@@ -27,7 +27,10 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl }) => {
               item
               style={{ backgroundColor: "#FCFCFC" }}
             >
-              <TabDropdown page={item} onItemClick={onItemClick} />
+              <TabDropdown
+                projectTabMenuPage={item}
+                onItemClick={onItemClick}
+              />
             </Grid>
           ))}
       </Grid>
