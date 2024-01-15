@@ -1,4 +1,6 @@
-﻿namespace RX.Nyss.Data.Repositories;
+﻿using System;
+
+namespace RX.Nyss.Data.Repositories;
 
 public class DhisDbReportTemplate
 {
@@ -8,6 +10,8 @@ public class DhisDbReportTemplate
 
     public string ReportLocationDataElementId	{ get; set; }
 
+    public string ReportGeoLocationDataElementId { get; set; }
+
     public string ReportHealthRiskDataElementId { get; set; }
 
     public string ReportSuspectedDiseaseDataElementId	{ get; set; }
@@ -16,7 +20,19 @@ public class DhisDbReportTemplate
 
     public string ReportGenderDataElementId { get; set; }
 
-    public string ReportAgeAtLeastFiveDataElementId { get; set; }
+    public string ReportAgeGroupDataElementId { get; set; }
 
-    public string ReportAgeBelowFiveDataElementId { get; set; }
+    public string ReportCaseCountFemaleAgeAtLeastFiveDataElementId { get; set; }
+
+    public string ReportCaseCountMaleAgeAtLeastFiveDataElementId { get; set; }
+
+    public string ReportCaseCountFemaleAgeBelowFiveDataElementId { get; set; }
+
+    public string ReportCaseCountMaleAgeBelowFiveDataElementId { get; set; }
+
+    public string ReportDateDataElementId { get; set; }
+
+    public string ReportTimeDataElementId { get; set; }
+
+    public string ReportDataCollectorIdDataElementId { get; set; }
 }

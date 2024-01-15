@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RX.Nyss.Data.Models;
 
@@ -37,6 +38,8 @@ public class EidsrConfiguration
     [Column(TypeName = "varchar(256)")]
     public string ReportLocationDataElementId { get; set; }
 
+    public string ReportGeoLocationDataElementId { get; set; }
+
     [Column(TypeName = "varchar(256)")]
     public string ReportHealthRiskDataElementId { get; set; }
 
@@ -46,14 +49,23 @@ public class EidsrConfiguration
     [Column(TypeName = "varchar(256)")]
     public string ReportStatusDataElementId { get; set; }
 
-    [Column(TypeName = "varchar(256)")]
     public string ReportGenderDataElementId { get; set; }
 
-    [Column(TypeName = "varchar(256)")]
-    public string ReportAgeAtLeastFiveDataElementId { get; set; }
+    public string ReportAgeGroupDataElementId { get; set; }
 
-    [Column(TypeName = "varchar(256)")]
-    public string ReportAgeBelowFiveDataElementId { get; set; }
+    public string ReportCaseCountFemaleAgeAtLeastFiveDataElementId { get; set; }
+
+    public string ReportCaseCountMaleAgeAtLeastFiveDataElementId { get; set; }
+
+    public string ReportCaseCountFemaleAgeBelowFiveDataElementId { get; set; }
+
+    public string ReportCaseCountMaleAgeBelowFiveDataElementId { get; set; }
+
+    public string ReportDateDataElementId { get; set; }
+
+    public string ReportTimeDataElementId { get; set; }
+
+    public string ReportDataCollectorIdDataElementId { get; set; }
 
     public int NationalSocietyId { get; set; }
 

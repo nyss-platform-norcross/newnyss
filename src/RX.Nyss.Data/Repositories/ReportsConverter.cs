@@ -185,8 +185,8 @@ public class ReportsConverter : IReportsConverter
                               select new { Value = g.Key};
 
         return string.Join(", ", valuePairs
-            .Where(valuePairs => !string.IsNullOrEmpty(valuePairs.Value))
-            .Select(valuePairs => $"{valuePairs.Value}"));
+            .Where(vp => !string.IsNullOrEmpty(vp.Value))
+            .Select(vp => $"{vp.Value}"));
     }
 
     public DhisDbReportData ConvertDhisReport(RawReport rawReport, DateTime reportDate, int englishContentLanguageId)
@@ -202,12 +202,23 @@ public class ReportsConverter : IReportsConverter
             EventDate = reportDate.ToString("yyyy-MM-dd"),
 
             ReportLocation = $"{rawReport?.Village?.District?.Region?.Name}/{rawReport?.Village?.District?.Name}/{rawReport?.Village?.Name}",
+            ReportGeoLocation = rawReport.Report.Location,
             ReportSuspectedDisease = ExtractSuspectedDiseases(englishContentLanguageId, rawReport?.Report),
             ReportHealthRisk = ExtractHealthRisk(englishContentLanguageId, rawReport),
             ReportStatus = rawReport?.Report?.Status.ToString(),
-            ReportGender = ExtractGender(rawReport),
-            ReportAgeAtLeastFive = (rawReport?.Report?.ReportedCase?.CountFemalesAtLeastFive + rawReport?.Report?.ReportedCase?.CountMalesAtLeastFive).ToString(),
-            ReportAgeBelowFive = (rawReport?.Report?.ReportedCase?.CountFemalesBelowFive + rawReport?.Report?.ReportedCase?.CountMalesBelowFive).ToString()
+            ReportGender = rawReport?.Report?.ReportedCase.CountFemalesAtLeastFive > 0 || rawReport?.Report?.ReportedCase.CountFemalesBelowFive > 0
+                ? "Female"
+                : "Male",
+            ReportAgeGroup = rawReport?.Report?.ReportedCase.CountFemalesAtLeastFive > 0 || rawReport?.Report?.ReportedCase.CountMalesAtLeastFive > 0
+                ? ">5 years"
+                : "0-4 years",
+            ReportCaseCountFemaleAgeAtLeastFive = rawReport?.Report?.ReportedCase?.CountFemalesAtLeastFive ?? 0,
+            ReportCaseCountMaleAgeAtLeastFive = rawReport?.Report?.ReportedCase?.CountMalesAtLeastFive ?? 0,
+            ReportCaseCountFemaleAgeBelowFive = rawReport?.Report?.ReportedCase?.CountFemalesBelowFive ?? 0,
+            ReportCaseCountMaleAgeBelowFive = rawReport?.Report?.ReportedCase?.CountMalesBelowFive ?? 0,
+            ReportDate = rawReport?.Report?.ReceivedAt.Date.ToString("yyyy-MM-dd") ?? DateTime.Now.Date.ToString("yyyy-MM-dd"),
+            ReportTime = rawReport?.Report?.ReceivedAt.ToString("HH:mm:ss") ?? DateTime.Now.ToString("HH:mm:ss"),
+            ReportDataCollectorId = rawReport?.Report?.DataCollector?.Id ?? 0
         };
     }
 }
