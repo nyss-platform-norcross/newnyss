@@ -11,12 +11,19 @@ import MenuList from "@material-ui/core/MenuList";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 
-export const TabDropdownComponent = ({ page, onItemClick }) => {
+export const TabDropdownComponent = ({ projectTabMenuPage, onItemClick }) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const useRtlDirection = useSelector(
     (state) => state.appData.direction === "rtl",
   );
+
+  // If the page has only 1 submenu item, then we want to display the submenu as the page
+  // Used to display healthRisks instead of settings for Supervisors
+  const page =
+    projectTabMenuPage.subMenu?.length === 1
+      ? projectTabMenuPage.subMenu[0]
+      : projectTabMenuPage;
 
   const useStyles = makeStyles((theme) => ({
     container: {
