@@ -1,6 +1,36 @@
 import { createTheme } from "@material-ui/core/styles";
 const { palette } = createTheme();
 
+export const nyssPalette = {
+  primary: {
+    main: "#D52B1E",
+    contrastText: "#ffffff",
+    light: "#FEE7E7",
+  },
+  secondary: {
+    light: "#8c9eff",
+    main: "#333333",
+    dark: "#3d5afe",
+    contrastText: "#ffffff",
+  },
+  additional1: {
+    light: "#CDDDE7",
+    main: "#7FA7B7",
+    dark: "#355770",
+    lightest: "#E5EEF2",
+  },
+  background: {
+    light: "#ffffff",
+    default: "#F1F1F1",
+  },
+  backgroundDark: palette.augmentColor({
+    main: "#F4F4F4",
+  }),
+  text: {
+    secondary: "#4F4F4F",
+  },
+};
+
 export const theme = (direction) =>
   createTheme({
     direction: direction,
@@ -11,7 +41,7 @@ export const theme = (direction) =>
         color: "#333333",
       },
       body2: {
-        fontSize: "0.875rem"
+        fontSize: "0.875rem",
       },
       button: {
         color: "#333333",
@@ -47,28 +77,7 @@ export const theme = (direction) =>
         margin: "10px 0 10px",
       },
     },
-    palette: {
-      primary: {
-        main: "#D52B1E",
-        contrastText: "#ffffff",
-        light: "#FEE7E7",
-      },
-      secondary: {
-        light: "#8c9eff",
-        main: "#333333",
-        dark: "#3d5afe",
-        contrastText: "#ffffff",
-      },
-      background: {
-        default: "#F1F1F1",
-      },
-      backgroundDark: palette.augmentColor({
-        main: "#F4F4F4"
-      }),
-      text: {
-        secondary: "#4F4F4F"
-      }
-    },
+    palette: nyssPalette,
     overrides: {
       MuiButton: {
         root: {
@@ -204,7 +213,7 @@ export const theme = (direction) =>
         root: {
           overflowX: "scroll",
           maxHeight: "calc(100vh - 200px)",
-        }
+        },
       },
       MuiTable: {
         root: {
@@ -212,6 +221,13 @@ export const theme = (direction) =>
           borderLeft: "2px solid #f3f3f3",
           borderRight: "2px solid #f3f3f3",
           background: "#FFFFFF",
+        },
+      },
+      MuiTableHead: {
+        root: {
+          "& .MuiTableCell-root": {
+            backgroundColor: nyssPalette.background.light,
+          },
         },
       },
       MuiTableCell: {
