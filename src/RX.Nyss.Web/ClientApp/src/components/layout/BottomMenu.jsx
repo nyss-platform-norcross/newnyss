@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles, BottomNavigation, BottomNavigationAction, Drawer, List, ListItem, ListItemText, useTheme, Typography } from "@material-ui/core";
+import { makeStyles, BottomNavigation, BottomNavigationAction, Drawer, List, ListItem, ListItemText, Typography } from "@material-ui/core";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { RcIcon } from "../icons/RcIcon";
@@ -27,17 +27,20 @@ const useStyles = makeStyles((theme) => ({
     height: 70,
     backgroundColor: theme.palette.backgroundDark.main,
   },
+  bottomNavActionSelected: {
+    color: theme.palette.primary.main,
+  },
   bottomNavItem: {
     minWidth: 50,
     whiteSpace: "nowrap",
-    color: theme.palette.text.primary
+    color: theme.palette.text.secondary,
   },
   drawer: {
     flexShrink: 0,
     transition: 'height 0.3s ease',
   },
   drawerPaper: {
-    minHeight: 300,
+    height: (props) => props.drawerHeight,
     maxHeight: 450,
   },
 }));
@@ -70,7 +73,8 @@ const BottomMenuNavigationComponent = ({ value, handleChange, toggleDrawer, clas
           return (
             <BottomNavigationAction
               classes={{
-                root: classes.bottomNavItem
+                root: classes.bottomNavItem,
+                selected: classes.bottomNavActionSelected
               }}
               key={page.title}
               value={page.title}
@@ -92,11 +96,10 @@ export const BottomMenuNavigation = connect(
 
 
 export const BottomMenuComponent = ({ projectTabMenu, push }) => {
-  const classes = useStyles();
-  const theme = useTheme();
   const [value, setValue] = React.useState(null);
   const [isOpen, setIsOpen] = React.useState(false);
   const [options, setOptions] = useState([]);
+  const classes = useStyles({ drawerHeight: options.length * 75 + 75 });
 
   useEffect(() => {
     const activeMenuItem = projectTabMenu.find(menuItem => menuItem.isActive)?.title
@@ -144,7 +147,6 @@ export const BottomMenuComponent = ({ projectTabMenu, push }) => {
             {options.map((option) => (
               <ListItem
                 key={option.title}
-                style={{ borderBottom: `1px solid ${theme.palette.text.primary}` }}
                 button
                 onClick={() => onItemClick(option)}>
                 <ListItemText

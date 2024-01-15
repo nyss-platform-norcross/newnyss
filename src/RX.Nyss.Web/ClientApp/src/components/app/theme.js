@@ -64,7 +64,10 @@ export const theme = (direction) =>
       },
       backgroundDark: palette.augmentColor({
         main: "#F4F4F4"
-      })
+      }),
+      text: {
+        secondary: "#4F4F4F"
+      }
     },
     overrides: {
       MuiButton: {
