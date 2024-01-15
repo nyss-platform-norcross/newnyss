@@ -8,7 +8,7 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import { NationalSocietyLocationList } from "./NationalSocietyLocationList";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { IconButton } from "@material-ui/core";
+import { IconButton, useTheme } from "@material-ui/core";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ConfirmationAction from "../common/confirmationAction/ConfirmationAction";
 import { strings, stringKeys } from "../../strings";
@@ -27,6 +27,8 @@ export const NationalSocietyLocationListItem = (props) => {
   const nextLocations = props.manageLocation[props.locationType].nextLocations(
     props.location,
   );
+
+  const theme = useTheme()
 
   const useStyles = makeStyles((theme) => ({
     container: {
@@ -60,7 +62,7 @@ export const NationalSocietyLocationListItem = (props) => {
     },
     icon: {
       fontSize: 36,
-      color: "#D52B1E",
+      color: theme.palette.primary.main,
     },
     editContainer: {
       display: "flex",
@@ -125,7 +127,7 @@ export const NationalSocietyLocationListItem = (props) => {
                 (props.location.canModify ?? props.canModify) && (
                   <ListItemSecondaryAction className={classes.editContainer}>
                     <IconButton size="small" onClick={handleEdit}>
-                      <EditIcon style={{ color: "#D52B1E" }} />
+                      <EditIcon style={{ color: theme.palette.primary.main }} />
                     </IconButton>
                     <ConfirmationAction
                       confirmationText={strings(
@@ -138,7 +140,7 @@ export const NationalSocietyLocationListItem = (props) => {
                         size="small"
                         id={`${props.locationType}_${props.location.id}_delete`}
                       >
-                        <DeleteIcon style={{ color: "#D52B1E" }} />
+                        <DeleteIcon style={{ color: theme.palette.primary.main }} />
                       </IconButton>
                     </ConfirmationAction>
                   </ListItemSecondaryAction>
