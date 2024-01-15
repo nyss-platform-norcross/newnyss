@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles, BottomNavigation, BottomNavigationAction, Drawer, List, ListItem, ListItemText, Typography } from "@material-ui/core";
+import { makeStyles, BottomNavigation, BottomNavigationAction, Drawer, List, ListItem, ListItemText, Typography, useTheme } from "@material-ui/core";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { RcIcon } from "../icons/RcIcon";
@@ -99,7 +99,8 @@ export const BottomMenuComponent = ({ projectTabMenu, push }) => {
   const [value, setValue] = React.useState(null);
   const [isOpen, setIsOpen] = React.useState(false);
   const [options, setOptions] = useState([]);
-  const classes = useStyles({ drawerHeight: options.length * 75 + 75 });
+  const classes = useStyles({ drawerHeight: options.length * 73 + 70 });
+  const theme = useTheme()
 
   useEffect(() => {
     const activeMenuItem = projectTabMenu.find(menuItem => menuItem.isActive)?.title
@@ -143,11 +144,12 @@ export const BottomMenuComponent = ({ projectTabMenu, push }) => {
           onClick={() => toggleDrawer(false, [])}
           onKeyDown={() => toggleDrawer(false, [])}
           >
-          <List>
-            {options.map((option) => (
+          <List disablePadding>
+            {options.map((option, index) => (
               <ListItem
                 key={option.title}
                 button
+                style={{ borderBottom: `${options.length - 1 !== index ? `1px solid ${theme.palette.grey[400]}`: undefined}` }}
                 onClick={() => onItemClick(option)}>
                 <ListItemText
                   primary={
