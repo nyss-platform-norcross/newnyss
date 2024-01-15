@@ -38,12 +38,19 @@ public class DhisRegisterReportRequest
         var dataValues = new List<DhisRegisterReportRequestBody.DataValue>();
 
         AddDataElement(dataValues, template.ReportLocationDataElementId, data.ReportLocation);
+        AddDataElement(dataValues, template.ReportGeoLocationDataElementId, data.ReportGeoLocation.ToString());
         AddDataElement(dataValues, template.ReportSuspectedDiseaseDataElementId, data.ReportSuspectedDisease);
         AddDataElement(dataValues, template.ReportHealthRiskDataElementId, data.ReportHealthRisk);
         AddDataElement(dataValues, template.ReportStatusDataElementId, data.ReportStatus);
         AddDataElement(dataValues, template.ReportGenderDataElementId, data.ReportGender);
-        AddDataElement(dataValues, template.ReportAgeAtLeastFiveDataElementId, data.ReportAgeAtleastFive);
-        AddDataElement(dataValues, template.ReportAgeBelowFiveDataElementId, data.ReportAgeBelowFive);
+        AddDataElement(dataValues, template.ReportAgeGroupDataElementId, data.ReportAgeGroup);
+        AddDataElement(dataValues, template.ReportCaseCountFemaleAgeAtLeastFiveDataElementId, data.ReportCaseCountFemaleAgeAtLeastFive.ToString());
+        AddDataElement(dataValues, template.ReportCaseCountMaleAgeAtLeastFiveDataElementId, data.ReportCaseCountMaleAgeAtLeastFive.ToString());
+        AddDataElement(dataValues, template.ReportCaseCountFemaleAgeBelowFiveDataElementId, data.ReportCaseCountFemaleAgeBelowFive.ToString());
+        AddDataElement(dataValues, template.ReportCaseCountMaleAgeBelowFiveDataElementId, data.ReportCaseCountMaleAgeBelowFive.ToString());
+        AddDataElement(dataValues, template.ReportDateDataElementId, data.ReportDate.ToString());
+        AddDataElement(dataValues, template.ReportTimeDataElementId, data.ReportTime.ToString());
+        AddDataElement(dataValues, template.ReportDataCollectorIdDataElementId, data.ReportDataCollectorId.ToString());
 
         return dataValues;
     }
