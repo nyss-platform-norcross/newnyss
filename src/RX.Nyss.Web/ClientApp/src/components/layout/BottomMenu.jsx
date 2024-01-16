@@ -108,6 +108,10 @@ export const BottomMenuComponent = ({ projectTabMenu, push }) => {
   const [value, setValue] = React.useState(null);
   const [isOpen, setIsOpen] = React.useState(false);
   const [options, setOptions] = useState([]);
+
+  // These numbers are used to set the height of the drawer to get the animation to work when it slides back down.
+  // It needs a set height to get the transition to work.
+  // Therefore the numbers are 73px for each sub-menu items and 70px for the navigation minus 1px since the border bottom of the last submenu item is removed.
   const classes = useStyles({ drawerHeight: options.length * 73 + 69 });
 
   useEffect(() => {
