@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles, BottomNavigation, BottomNavigationAction, Drawer, List, ListItem, ListItemText, Typography, useTheme } from "@material-ui/core";
+import { makeStyles, BottomNavigation, BottomNavigationAction, Drawer, List, ListItem, ListItemText, Typography } from "@material-ui/core";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { RcIcon } from "../icons/RcIcon";
@@ -34,6 +34,15 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 50,
     whiteSpace: "nowrap",
     color: theme.palette.text.secondary,
+  },
+  listItem: {
+    borderBottom: `1px solid ${theme.palette.grey[400]}`,
+  },
+  listItemActive: {
+    backgroundColor: theme.palette.primary.light,
+  },
+  listItemTextActive: {
+    fontWeight: 600,
   },
   drawer: {
     flexShrink: 0,
@@ -99,8 +108,7 @@ export const BottomMenuComponent = ({ projectTabMenu, push }) => {
   const [value, setValue] = React.useState(null);
   const [isOpen, setIsOpen] = React.useState(false);
   const [options, setOptions] = useState([]);
-  const classes = useStyles({ drawerHeight: options.length * 73 + 70 });
-  const theme = useTheme()
+  const classes = useStyles({ drawerHeight: options.length * 73 + 69 });
 
   useEffect(() => {
     const activeMenuItem = projectTabMenu.find(menuItem => menuItem.isActive)?.title
@@ -148,12 +156,12 @@ export const BottomMenuComponent = ({ projectTabMenu, push }) => {
             {options.map((option, index) => (
               <ListItem
                 key={option.title}
+                className={`${options.length - 1 !== index && classes.listItem} ${option.isActive && classes.listItemActive}`}
                 button
-                style={{ borderBottom: `${options.length - 1 !== index ? `1px solid ${theme.palette.grey[400]}`: undefined}` }}
                 onClick={() => onItemClick(option)}>
                 <ListItemText
                   primary={
-                    <Typography>
+                    <Typography className={`${option.isActive && classes.listItemTextActive}`}>
                       {option.title}
                     </Typography>
                   }/>

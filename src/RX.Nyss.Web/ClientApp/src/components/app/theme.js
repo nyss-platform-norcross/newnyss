@@ -52,6 +52,7 @@ export const theme = (direction) =>
       primary: {
         main: "#D52B1E",
         contrastText: "#ffffff",
+        light: "#FEE7E7",
       },
       secondary: {
         light: "#8c9eff",
