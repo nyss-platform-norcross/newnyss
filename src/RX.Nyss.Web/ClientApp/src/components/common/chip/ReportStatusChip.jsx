@@ -1,6 +1,6 @@
 import styles from "../../alerts/components/AlertsAssessmentReport.module.scss";
 
-import { Grid, Chip, Icon } from "@material-ui/core";
+import { Grid, Chip, Icon, Typography, useTheme, useMediaQuery, } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { stringKeys, strings } from "../../../strings";
 
@@ -83,10 +83,12 @@ const useStyles = makeStyles(() => ({
 
 export const ReportStatusChip = ({ report, rtl }) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <Chip
       label={
-        <Grid container justifyContent="center" alignItems="center">
+        <Grid container justifyContent="center" alignItems="center" wrap="nowrap">
           <Grid
             container
             alignItems="center"
@@ -98,7 +100,11 @@ export const ReportStatusChip = ({ report, rtl }) => {
           >
             {getReportIcon(report.status, rtl)}
           </Grid>
-          <Grid item>{strings(stringKeys.reports.status[report.status])}</Grid>
+          <Grid item>
+            <Typography variant="body2" style={isSmallScreen ? {fontSize: "0.75rem", whiteSpace: "normal"} : null}>
+              {strings(stringKeys.reports.status[report.status])}
+            </Typography>
+          </Grid>
         </Grid>
       }
       className={`${classes[report.status]}`}
