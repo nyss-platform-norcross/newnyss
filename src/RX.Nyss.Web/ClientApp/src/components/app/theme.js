@@ -1,56 +1,58 @@
 import { createTheme } from "@material-ui/core/styles";
-const { palette } = createTheme();
 
 export const theme = (direction) =>
   createTheme({
     direction: direction,
     typography: {
-      fontFamily: "MyriadPro, Arial",
+      fontSize: 16,
+      htmlFontSize: 16,
+      fontFamily: "Arial",
       body1: {
-        fontSize: "1rem",
         color: "#333333",
-      },
-      body2: {
-        fontSize: "0.875rem"
       },
       button: {
         color: "#333333",
       },
       h1: {
-        fontSize: "2rem",
-        color: "#D52B1E",
+        fontSize: "48px",
+        color: "#C02C2C",
         fontWeight: "400",
         marginBottom: 20,
       },
       h2: {
-        fontSize: "1.75rem",
+        fontSize: "24px",
         fontWeight: 600,
         margin: "10px 0 30px",
       },
       h3: {
-        fontSize: "1.5rem",
+        fontSize: "18px",
         fontWeight: 600,
         margin: "10px 0 20px",
       },
-      h4: {
-        fontSize: "1.25rem",
-        fontWeight: 600,
-        margin: "10px 0 10px",
-      },
       h5: {
-        fontSize: "1.125rem",
+        fontSize: "16px",
         fontWeight: 600,
         margin: "10px 0 10px",
       },
       h6: {
-        fontSize: "1rem",
+        fontSize: "14px",
         fontWeight: 600,
+        margin: "10px 0 10px",
+      },
+      subtitle1: {
+        fontSize: "14px",
+        margin: "10px 0 10px",
+      },
+      subtitle2: {
+        fontSize: "12px",
         margin: "10px 0 10px",
       },
     },
     palette: {
       primary: {
-        main: "#D52B1E",
+        light: "#8c9eff",
+        main: "#C02C2C",
+        dark: "#DC3F2E",
         contrastText: "#ffffff",
       },
       secondary: {
@@ -59,22 +61,16 @@ export const theme = (direction) =>
         dark: "#3d5afe",
         contrastText: "#ffffff",
       },
-      background: {
-        default: "#F1F1F1",
-      },
-      backgroundDark: palette.augmentColor({
-        main: "#F4F4F4"
-      })
     },
     overrides: {
       MuiButton: {
         root: {
           padding: "7px 15px",
           textTransform: "none",
-          fontSize: "1rem",
+          fontSize: "14px",
         },
         outlinedPrimary: {
-          border: "2px solid #D52B1E !important",
+          border: "2px solid #C02C2C !important",
         },
         containedPrimary: {
           boxShadow: "none",
@@ -105,7 +101,7 @@ export const theme = (direction) =>
       },
       MuiInput: {
         root: {
-          fontSize: "1rem",
+          fontSize: "14px",
           border: "1px solid #E4E1E0",
           backgroundColor: "#fff",
         },
@@ -142,7 +138,7 @@ export const theme = (direction) =>
           color: "#333333 !important",
           transform: "translate(0, 2px);",
           lineHeight: "inherit",
-          fontSize: "1rem",
+          fontSize: "16px",
         },
         focused: {},
       },
@@ -152,7 +148,7 @@ export const theme = (direction) =>
           marginLeft: direction === "ltr" ? "-4px" : "0px",
         },
         label: {
-          fontSize: "1rem",
+          fontSize: "14px",
         },
       },
       MuiInputLabel: {
@@ -193,7 +189,7 @@ export const theme = (direction) =>
           textAlign: direction === "ltr" ? "left" : "right",
         },
         primary: {
-          fontSize: "1rem",
+          fontSize: "16px",
           color: "#737373",
         },
       },
@@ -207,7 +203,7 @@ export const theme = (direction) =>
       },
       MuiTableCell: {
         root: {
-          fontSize: "1rem",
+          fontSize: "14px",
           textAlign: direction === "ltr" ? "left" : "right",
         },
         head: {
@@ -220,7 +216,7 @@ export const theme = (direction) =>
           borderBottom: "1px solid #e0e0e0",
         },
         indicator: {
-          backgroundColor: "#D52B1E",
+          backgroundColor: "#C02C2C",
           height: 3,
         },
       },
@@ -231,12 +227,13 @@ export const theme = (direction) =>
       },
       MuiCardHeader: {
         title: {
-          fontSize: "1rem",
+          fontSize: "16px",
           fontWeight: "bold",
         },
       },
       MuiTab: {
         root: {
+          fontSize: "13px !important",
           "&:hover": {
             backgroundColor: "rgba(0, 0, 0, 0.04)",
             opacity: 1,
@@ -299,7 +296,7 @@ export const theme = (direction) =>
       MuiRadio: {
         colorSecondary: {
           "&$checked": {
-            color: "#D52B1E",
+            color: "#C02C2C",
           },
         },
         root: {
@@ -339,7 +336,7 @@ export const theme = (direction) =>
       },
       MuiTooltip: {
         tooltip: {
-          fontSize: "1rem",
+          fontSize: "16px",
           padding: "8px",
         },
       },
@@ -378,12 +375,11 @@ export const theme = (direction) =>
           marginRight: direction === "ltr" ? "-6px" : "5px",
         },
         label: {
-          fontSize: "1rem",
+          fontSize: "12px",
         },
       },
       MuiFormHelperText: {
         root: {
-          fontSize: "1rem",
           textAlign: direction === "ltr" ? "left" : "right",
         },
       },
