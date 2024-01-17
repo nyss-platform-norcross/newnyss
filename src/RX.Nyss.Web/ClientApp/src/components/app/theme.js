@@ -1,4 +1,5 @@
 import { createTheme } from "@material-ui/core/styles";
+const { palette } = createTheme();
 
 export const theme = (direction) =>
   createTheme({
@@ -61,6 +62,12 @@ export const theme = (direction) =>
         dark: "#3d5afe",
         contrastText: "#ffffff",
       },
+      background: {
+        default: "#F1F1F1",
+      },
+      backgroundDark: palette.augmentColor({
+        main: "#F4F4F4"
+      })
     },
     overrides: {
       MuiButton: {
