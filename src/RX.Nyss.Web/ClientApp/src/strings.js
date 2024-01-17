@@ -1186,6 +1186,7 @@ export const stringKeys = {
       tryAgain: "common.buttons.tryAgain",
       confirmCancelation: "common.buttons.confirmCancelation",
       denyCancelation: "common.buttons.denyCancelation",
+      showResults: "common.buttons.showResults",
     },
     boolean: {
       true: "common.true",
@@ -1194,6 +1195,7 @@ export const stringKeys = {
     name: "common.name",
     location: "common.location",
     email: "common.email",
+    filter: "common.filter"
   },
   translations: {
     title: "translations.title",

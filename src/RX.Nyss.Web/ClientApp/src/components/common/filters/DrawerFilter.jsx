@@ -2,33 +2,49 @@ import React, { useState, useRef } from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import Backdrop from '@material-ui/core/Backdrop';
-import { Typography, makeStyles } from "@material-ui/core"
+import { Typography, makeStyles, Grid } from "@material-ui/core"
+import FilterListIcon from '@material-ui/icons/FilterList';
+import { strings, stringKeys } from "../../../strings";
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    position: 'relative',
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: 5,
-    overflowX: "hidden",
-    maxHeight: 350,
-    overflowY: "auto",
-  },
   pullTabContainer: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    borderBottom: `1px solid ${theme.palette.grey[300]}`,
+    boxShadow: `0px 4px 4px -6px ${theme.palette.grey[500]}`,
+    borderRadius: theme.shape.borderRadius,
   },
   pullTab: {
     height: 5,
     borderRadius: 8,
     width: 50,
     backgroundColor: theme.palette.grey[400],
-    margin: "10px 0px",
+    margin: "8px 0px",
   },
-  root: {
-    overflowY: "scroll"
+  title: {
+    marginBottom: 10,
+    marginRight: 3
+  },
+  contentContainer: {
+    position: 'relative',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: 10,
+    overflowX: "hidden",
+    maxHeight: 350,
+    overflowY: "auto",
+  },
+  resultsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    padding: 15,
+    height: 40,
+    borderRadius: theme.shape.borderRadius,
+    borderTop: `1px solid ${theme.palette.grey[300]}`,
+    boxShadow: `0px 4px 4px 2px ${theme.palette.grey[500]}`,
   },
   backdrop: {
     zIndex: theme.zIndex.drawer - 1,
@@ -39,11 +55,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export const DrawerFilter = ({ children, title }) => {
+export const DrawerFilter = ({ title, children, showResults }) => {
   const [isOpen, setIsOpen] = useState(false);
   const classes = useStyles()
   const [startY, setStartY] = useState(null);
   const drawerRef = useRef(null);
+
+  const onShowResults = () => {
+    setIsOpen(false);
+    showResults()
+  }
 
   const handleTouchStart = (event) => {
     setStartY(event.touches[0].clientY);
@@ -75,7 +96,7 @@ export const DrawerFilter = ({ children, title }) => {
 
       if (deltaY > threshold) {
         // Close the drawer when dragging down
-        setIsOpen(false);
+        onShowResults()
       } else {
         // Reset styles if not closing
         if (drawerRef.current && drawerRef.current.style) {
@@ -91,8 +112,8 @@ export const DrawerFilter = ({ children, title }) => {
   };
 
   return (
-    <div>
-      <Button color='primary' variant="outlined" onClick={() => toggleDrawer(true)}>Filter</Button>
+    <>
+      <Button startIcon={<FilterListIcon/>} color='primary' variant="outlined" onClick={() => toggleDrawer(true)}>{strings(stringKeys.common.filter)}</Button>
       <Drawer
         ref={drawerRef}
         anchor={"bottom"}
@@ -106,21 +127,27 @@ export const DrawerFilter = ({ children, title }) => {
           }
         }}
         ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
+          keepMounted: true,
         }}
-        >
+      >
         <div className={classes.pullTabContainer} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
           <div className={classes.pullTab} />
-          <Typography variant='h6' style={{ marginBottom: 15, alignSelf: "center" }}>{`Filter ${title}`}</Typography>
+          <Grid container justifyContent='center'>
+            <Typography variant='h6' className={classes.title}>{strings(stringKeys.common.filter)}</Typography>
+            <Typography variant='h6' style={{ textTransform: "lowercase" }}>{title}</Typography>
+          </Grid>
         </div>
         <div
           role="presentation"
-          className={classes.container}
+          className={classes.contentContainer}
         >
           {children}
         </div>
+        <div className={classes.resultsContainer}>
+          <Button variant='contained' color="primary" onClick={onShowResults}>{strings(stringKeys.common.buttons.showResults)}</Button>
+        </div>
       </Drawer>
-      <Backdrop className={classes.backdrop} open={isOpen} onClick={() => toggleDrawer(false)} />
-    </div>
+      <Backdrop className={classes.backdrop} open={isOpen} onClick={onShowResults} />
+    </>
   );
 }
