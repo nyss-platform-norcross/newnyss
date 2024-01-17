@@ -8,13 +8,6 @@
   --selected-flag-option-margin-left: 0;
 }
 
-@font-face {
-  font-family: "MyriadPro";
-  src: local('MyriadPro-Regular'), local('MyriadPro-Black'), local('MyriadPro-Bold'), local('MyriadPro-Semibold'), local('MyriadPro-SemiboldIt'), local('MyriadPro-It'), local('MyriadPro-LightIt'),
-    url("../../assets/fonts/MyriadPro-Regular.otf"), url("../../assets/fonts/MyriadPro-Black.otf"), url("../../assets/fonts/MyriadPro-Bold.otf"), url("../../assets/fonts/MyriadPro-Semibold.otf"), url("../../assets/fonts/MyriadPro-SemiboldIt.otf"), url("../../assets/fonts/MyriadPro-It.otf"), url("../../assets/fonts/MyriadPro-LightIt.otf"),
-    format('opentype'), format('opentype'), format('opentype'), format('opentype'), format('opentype'), format('opentype'), format('opentype');
-}
-
 html {
   width: 100%;
   height: 100%;
@@ -27,9 +20,7 @@ html {
     padding: 0;
     color: #333333;
     background-color: #fcfcfc;
-
-    font-family: "MyriadPro";
-
+    font-family: "Arial";
     display: flex;
 
     #root {
@@ -42,7 +33,7 @@ html {
 .leaflet-container {
   height: 400px;
   width: 100%;
-  font-family: Arial;
+  font-family: "Arial";
 }
 
 .leaflet-popup-close-button {
