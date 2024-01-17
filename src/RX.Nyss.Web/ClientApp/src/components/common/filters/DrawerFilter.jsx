@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   backdropClass: {
-    position: "unset"
+    backgroundColor: "transparent"
   }
 }));
 
