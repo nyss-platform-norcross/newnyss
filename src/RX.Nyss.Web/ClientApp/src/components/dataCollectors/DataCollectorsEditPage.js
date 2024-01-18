@@ -1,5 +1,4 @@
 import formStyles from "../forms/form/Form.module.scss";
-import styles from "./DataCollectorsCreateOrEditPage.module.scss";
 import React, { useEffect, useState, Fragment, createRef } from "react";
 import { connect, useSelector } from "react-redux";
 import { withLayout } from "../../utils/layout";
@@ -296,7 +295,7 @@ const DataCollectorsEditPageComponent = (props) => {
           )}
         </Grid>
 
-        <Grid container spacing={2} className={styles.locationsContainer}>
+        <Grid container spacing={2}>
           <Grid
             item
             xs={12}
@@ -308,7 +307,6 @@ const DataCollectorsEditPageComponent = (props) => {
               {strings(stringKeys.dataCollectors.form.locationsHeader)}
             </Typography>
             <Button
-              className={styles.addAnotherLocation}
               color="primary"
               variant="outlined"
               onClick={addDataCollectorLocation}
