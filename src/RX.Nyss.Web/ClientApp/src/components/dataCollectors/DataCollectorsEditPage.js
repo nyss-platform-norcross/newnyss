@@ -121,8 +121,8 @@ const DataCollectorsEditPageComponent = (props) => {
       {
         latitude: "",
         longitude: "",
-        regionId: previousLocation.regionId,
-        districtId: previousLocation.districtId,
+        regionId: "",
+        districtId: "",
         villageId: "",
         zoneId: "",
         initialFormData: {
