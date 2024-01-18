@@ -195,17 +195,20 @@ const DataCollectorsCreatePageComponent = (props) => {
         <ValidationMessage message={props.error.message} />
       )}
       <Form onSubmit={handleSubmit} fullWidth>
-        <Grid container spacing={2} className={formStyles.shrinked}>
-          <Grid item xs={12}>
+        <Grid container spacing={2}>
+          <Grid container>
+            <Grid item xs={6} md={3}>
+              <Typography variant="h5">
+                {strings(stringKeys.dataCollectors.form.dataCollectorType)}
+              </Typography>
             <RadioGroupField
               name="dataCollectorType"
-              label={strings(stringKeys.dataCollectors.form.dataCollectorType)}
-              boldLabel
               field={form.fields.dataCollectorType}
               horizontal
             >
               {Object.keys(dataCollectorType).map((type) => (
                 <FormControlLabel
+                    style={{ marginRight: 15 }}
                   key={type}
                   control={<Radio />}
                   label={strings(
@@ -219,7 +222,7 @@ const DataCollectorsCreatePageComponent = (props) => {
             </RadioGroupField>
           </Grid>
 
-          <Grid item xs={12}>
+            <Grid item xs={6} md={4}>
             <Typography variant="h5">
               {strings(stringKeys.dataCollectors.filters.deployedMode)}
             </Typography>
@@ -230,14 +233,13 @@ const DataCollectorsCreatePageComponent = (props) => {
               color="primary"
             />
           </Grid>
-
-          <Grid item xs={12}>
-            <Typography variant="h5">
-              {strings(stringKeys.dataCollectors.form.personalia)}
-            </Typography>
           </Grid>
-
-          <Grid item xs={12}>
+          <Typography variant="h5" style={{ marginTop: 50 }}>
+            {strings(stringKeys.dataCollectors.form.personalia)}
+          </Typography>
+          <Grid container spacing={4}>
+            <Grid container item xs={12} spacing={4}>
+              <Grid item xs={12} md={3}>
             <TextInputField
               label={strings(stringKeys.common.name)}
               name="name"
@@ -247,7 +249,7 @@ const DataCollectorsCreatePageComponent = (props) => {
           </Grid>
 
           {type === dataCollectorType.human && (
-            <Grid item xs={12}>
+                <Grid item xs={12} md={3}>
               <TextInputField
                 label={strings(stringKeys.dataCollectors.form.displayName)}
                 name="displayName"
@@ -258,7 +260,7 @@ const DataCollectorsCreatePageComponent = (props) => {
           )}
 
           {type === dataCollectorType.human && (
-            <Grid item xs={12}>
+                <Grid item xs={12} md={3}>
               <SelectField
                 label={strings(stringKeys.dataCollectors.form.sex)}
                 name="sex"
@@ -279,8 +281,7 @@ const DataCollectorsCreatePageComponent = (props) => {
           )}
 
           {type === dataCollectorType.human && (
-            <Grid item xs={12}>
-              <div hidden={true}>
+                <Grid item xs={12} md={3}>
                 <SelectField
                   label={strings(stringKeys.dataCollectors.form.birthYearGroup)}
                   field={form.fields.birthGroupDecade}
@@ -293,11 +294,11 @@ const DataCollectorsCreatePageComponent = (props) => {
                     </MenuItem>
                   ))}
                 </SelectField>
-              </div>
+                </Grid>
+              )}
             </Grid>
-          )}
-
-          <Grid item xs={12}>
+            <Grid container item xs={12} spacing={4}>
+              <Grid item xs={12} md={3}>
             <PhoneInputField
               label={strings(stringKeys.dataCollectors.form.phoneNumber)}
               name="phoneNumber"
@@ -307,7 +308,7 @@ const DataCollectorsCreatePageComponent = (props) => {
             />
           </Grid>
           {type === dataCollectorType.human && (
-            <Grid item xs={12}>
+                <Grid item xs={12} md={3}>
               <PhoneInputField
                 label={strings(
                   stringKeys.dataCollectors.form.additionalPhoneNumber,
@@ -319,9 +320,11 @@ const DataCollectorsCreatePageComponent = (props) => {
               />
             </Grid>
           )}
-
+            </Grid>
           {!currentUserRoles.some((r) => r === Supervisor) && (
-            <Grid item xs={12}>
+              <Grid container item xs={12} direction="column" style={{ marginTop: 30 }}>
+                <Typography variant="h5">Which supervisor will be responsible for the data collector/collection point?</Typography>
+                <Grid item md={3}>
               <SelectField
                 label={strings(stringKeys.dataCollectors.form.supervisor)}
                 field={form.fields.supervisorId}
@@ -337,23 +340,15 @@ const DataCollectorsCreatePageComponent = (props) => {
                   </MenuItem>
                 ))}
               </SelectField>
+                </Grid>
             </Grid>
           )}
         </Grid>
-
-        <Grid container spacing={2} className={styles.locationsContainer}>
-          <Grid
-            item
-            xs={12}
-            container
-            justifyContent="space-between"
-            alignItems="center"
-          >
+          <Grid container item xs={12} justifyContent="space-between" spacing={2} style={{ marginTop: 50 }}>
             <Typography variant="h5">
               {strings(stringKeys.dataCollectors.form.locationsHeader)}
             </Typography>
             <Button
-              className={styles.addAnotherLocation}
               color="primary"
               variant="outlined"
               onClick={addDataCollectorLocation}
@@ -361,7 +356,7 @@ const DataCollectorsCreatePageComponent = (props) => {
               {strings(stringKeys.dataCollectors.form.addLocation)}
             </Button>
           </Grid>
-
+          <Grid container spacing={2} style={{ marginTop: 5 }}>
           {locations.map((location, i) => (
             <DataCollectorLocationItem
               key={`location_${location.number}`}
@@ -379,7 +374,6 @@ const DataCollectorsCreatePageComponent = (props) => {
             />
           ))}
         </Grid>
-
         <FormActions>
           <CancelButton
             variant="outlined"
@@ -388,9 +382,10 @@ const DataCollectorsCreatePageComponent = (props) => {
             {strings(stringKeys.form.cancel)}
           </CancelButton>
           <SubmitButton isFetching={props.isSaving}>
-            {strings(stringKeys.common.buttons.add)}
+              {strings(stringKeys.common.buttons.update)}
           </SubmitButton>
         </FormActions>
+        </Grid>
       </Form>
     </Fragment>
   );
