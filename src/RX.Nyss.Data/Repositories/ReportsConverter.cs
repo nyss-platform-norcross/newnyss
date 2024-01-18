@@ -40,7 +40,7 @@ public class ReportsConverter : IReportsConverter
         // generate aggregated reports - group them by the organisation unit associated with RawReport District
         return SquashReports(eidsrDbReportData);
     }
-    
+
     private EidsrDbReportData ConvertSingleReport(RawReport rawReport, DateTime alertDate, int englishContentLanguageId)
     {
         if (rawReport.Village.District.EidsrOrganisationUnits.OrganisationUnitId == null)
@@ -126,9 +126,16 @@ public class ReportsConverter : IReportsConverter
     {
         try
         {
-            var healthRisk = rawReport
-                .Report.ProjectHealthRisk.CaseDefinition;
-            return healthRisk;
+            var healthRiskLanguageContent = rawReport
+                .Report
+                .ProjectHealthRisk
+                .HealthRisk
+                .LanguageContents
+                .SelectMany(s => s.HealthRisk.LanguageContents
+                    .Where(c => c.ContentLanguageId == englishContentLanguageId))
+                .Select(x => x.Name);
+
+            return healthRiskLanguageContent.First();
         }
         catch (Exception e)
         {
@@ -141,10 +148,10 @@ public class ReportsConverter : IReportsConverter
         // for each reports group (grouped by org unit) create one EidsrDbReportData
         // (EventDate should be the same for all alerts, but we aggregate by that for safety)
         return reports.GroupBy(x => new
-            {
-                x.OrgUnit,
-                x.EventDate
-            })
+        {
+            x.OrgUnit,
+            x.EventDate
+        })
             .Select(orgUnitGroup =>
             {
                 return new EidsrDbReportData
@@ -161,14 +168,14 @@ public class ReportsConverter : IReportsConverter
             })
             .ToList();
     }
-    
+
     private string CreateValuesAndCountsString(List<string> list)
     {
         var valueCountPairs = from x in list
-            group x by x into g
-            let count = g.Count()
-            orderby count descending
-            select new { Value = g.Key, Count = count };
+                              group x by x into g
+                              let count = g.Count()
+                              orderby count descending
+                              select new { Value = g.Key, Count = count };
 
         return string.Join(", ", valueCountPairs
             .Where(valueCountPair => !string.IsNullOrEmpty(valueCountPair.Value))
@@ -181,8 +188,8 @@ public class ReportsConverter : IReportsConverter
     private string CreateValuesAndString(List<string> list)
     {
         var valuePairs = from x in list
-                              group x by x into g
-                              select new { Value = g.Key};
+                         group x by x into g
+                         select new { Value = g.Key };
 
         return string.Join(", ", valuePairs
             .Where(vp => !string.IsNullOrEmpty(vp.Value))
