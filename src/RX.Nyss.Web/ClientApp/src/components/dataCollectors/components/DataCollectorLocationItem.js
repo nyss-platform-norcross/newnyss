@@ -306,7 +306,7 @@ export const DataCollectorLocationItem = ({
           >
             <Grid container spacing={2}>
               <Grid container item xs={12} spacing={3}>
-                <Grid item xs={3}>
+                <Grid item xs={12} md={3}>
                   <SelectField
                     className={styles.geoStructureSelectShrinked}
                     label={strings(stringKeys.dataCollectors.form.region)}
@@ -328,7 +328,7 @@ export const DataCollectorLocationItem = ({
 
                 {form.fields[`locations_${locationNumber}_regionId`] &&
                   form.fields[`locations_${locationNumber}_regionId`].value && (
-                    <Grid item xs={3}>
+                    <Grid item xs={12} md={3}>
                       {districts && districts.length > 0 ? (
                         <SelectField
                           className={styles.geoStructureSelectShrinked}
@@ -366,7 +366,7 @@ export const DataCollectorLocationItem = ({
 
                 {form.fields[`locations_${locationNumber}_districtId`] &&
                   form.fields[`locations_${locationNumber}_districtId`].value && (
-                    <Grid item xs={3}>
+                    <Grid item xs={12} md={3}>
                       {villages && villages.length > 0 ? (
                         <SelectField
                           className={styles.geoStructureSelectShrinked}
@@ -402,7 +402,7 @@ export const DataCollectorLocationItem = ({
                   )}
 
                   {zones && zones.length > 0 && (
-                    <Grid item xs={3}>
+                    <Grid item xs={12} md={3}>
                       <SelectField
                         className={styles.geoStructureSelectShrinked}
                         label={strings(stringKeys.dataCollectors.form.zone)}
