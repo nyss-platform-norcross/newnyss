@@ -1,4 +1,3 @@
-import formStyles from "../forms/form/Form.module.scss";
 import React, { useEffect, useState, Fragment, createRef } from "react";
 import { connect, useSelector } from "react-redux";
 import { withLayout } from "../../utils/layout";
@@ -208,7 +207,7 @@ const DataCollectorsEditPageComponent = (props) => {
           </Typography>
         </Grid>
 
-        <Grid container spacing={2} className={formStyles.shrinked}>
+        <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextInputField
               label={strings(stringKeys.common.name)}
