@@ -132,19 +132,14 @@ const DataCollectorsCreatePageComponent = (props) => {
 
   const addDataCollectorLocation = () => {
     const previousLocation = locations[locations.length - 1];
-    const previousRegionId =
-      form.fields[`locations_${previousLocation.number}_regionId`].value || "";
-    const previousDistrictId =
-      form.fields[`locations_${previousLocation.number}_districtId`].value ||
-      "";
 
     setLocations([
       ...locations,
       {
         latitude: "",
         longitude: "",
-        regionId: previousRegionId,
-        districtId: previousDistrictId,
+        regionId: "",
+        districtId: "",
         villageId: "",
         zoneId: "",
         number: previousLocation.number + 1,
