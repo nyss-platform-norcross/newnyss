@@ -1195,7 +1195,8 @@ export const stringKeys = {
     name: "common.name",
     location: "common.location",
     email: "common.email",
-    filter: "common.filter"
+    filter: "common.filter",
+    filters: "common.filters",
   },
   translations: {
     title: "translations.title",

@@ -113,7 +113,7 @@ export const DrawerFilter = ({ title, children, showResults }) => {
 
   return (
     <>
-      <Button startIcon={<FilterListIcon/>} color='primary' variant="outlined" onClick={() => toggleDrawer(true)}>{strings(stringKeys.common.filter)}</Button>
+      <Button startIcon={<FilterListIcon/>} color='primary' variant="outlined" onClick={() => toggleDrawer(true)}>{strings(stringKeys.common.filters)}</Button>
       <Drawer
         ref={drawerRef}
         anchor={"bottom"}
