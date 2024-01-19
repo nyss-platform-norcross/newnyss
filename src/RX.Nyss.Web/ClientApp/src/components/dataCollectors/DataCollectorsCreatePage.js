@@ -271,22 +271,6 @@ const DataCollectorsCreatePageComponent = (props) => {
                 </SelectField>
               </Grid>
             )}
-            {/* {type === dataCollectorType.human && (
-              <Grid item xs={12} md={3}>
-                <SelectField
-                  label={strings(stringKeys.dataCollectors.form.birthYearGroup)}
-                  field={form.fields.birthGroupDecade}
-                  name="birthGroupDecade"
-                  fieldRef={form.fields.birthGroupDecade.ref}
-                >
-                  {birthDecades.map((decade) => (
-                    <MenuItem key={`birthDecade_${decade}`} value={decade}>
-                      {parseBirthDecade(decade)}
-                    </MenuItem>
-                  ))}
-                </SelectField>
-              </Grid>
-            )} */}
           </Grid>
           <Grid container item xs={12} spacing={4}>
             <Grid item xs={12} md={3}>
