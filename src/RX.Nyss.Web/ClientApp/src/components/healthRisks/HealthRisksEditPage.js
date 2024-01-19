@@ -18,6 +18,7 @@ import { getSaveFormModel } from "./logic/healthRisksService";
 import { strings, stringKeys, stringsFormat } from "../../strings";
 import { ValidationMessage } from "../forms/ValidationMessage";
 import { MultiSelect } from "../forms/MultiSelect";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const HealthRisksEditPageComponent = (props) => {
   const [suspectedDiseasesDataSource, setSuspectedDiseasesDataSource] =
@@ -35,6 +36,9 @@ const HealthRisksEditPageComponent = (props) => {
 
   useMount(() => {
     props.openEdition(props.match);
+
+    // Track page view
+    trackPageView("HealthRisksEditPage");
   });
 
   useEffect(() => {

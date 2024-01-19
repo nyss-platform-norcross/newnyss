@@ -27,6 +27,7 @@ import {
 } from "./logic/reportsConstants";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const ReportsEditPageComponent = (props) => {
   const [form, setForm] = useState(null);
@@ -52,6 +53,9 @@ const ReportsEditPageComponent = (props) => {
 
   useMount(() => {
     props.openEdition(props.projectId, props.reportId);
+
+    // Track page view
+    trackPageView("ReportsEditPage");
   });
 
   useEffect(() => {

@@ -10,10 +10,14 @@ import { strings, stringKeys } from "../../strings";
 import ProjectsTable from "./ProjectsTable";
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { accessMap } from "../../authentication/accessMap";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const ProjectsListPageComponent = (props) => {
   useMount(() => {
     props.openProjectsList(props.nationalSocietyId);
+
+    // Track page view
+    trackPageView("ProjectsListPage");
   });
 
   const userLanguageCode = useSelector(

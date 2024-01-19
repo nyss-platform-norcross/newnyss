@@ -17,11 +17,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
 import { sortByReportStatus } from "../../utils/sortReportByStatus";
 import { AlertStatusChip } from "../common/chip/AlertStatusChip";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   infoBox: {
     padding: 10,
-    backgroundColor: "#F4F4F4",
+    backgroundColor: theme.palette.backgroundDark.main,
     border: "1px solid #E3E3E3",
     borderRadius: 5,
     margin: "20px 0 20px 0",
@@ -40,6 +41,9 @@ const AlertsAssessmentPageComponent = ({
 }) => {
   useMount(() => {
     props.openAssessment(projectId, alertId);
+
+    // Track page view
+    trackPageView("AlertsAssessmentPage");
   });
 
   const classes = useStyles();

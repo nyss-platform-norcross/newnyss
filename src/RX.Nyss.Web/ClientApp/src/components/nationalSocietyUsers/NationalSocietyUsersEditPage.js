@@ -19,6 +19,7 @@ import { MenuItem, Grid } from "@material-ui/core";
 import { sexValues } from "./logic/nationalSocietyUsersConstants";
 import { ValidationMessage } from "../forms/ValidationMessage";
 import { getBirthDecades, parseBirthDecade } from "../../utils/birthYear";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const NationalSocietyUsersEditPageComponent = ({
   nationalSocietyId,
@@ -41,6 +42,9 @@ const NationalSocietyUsersEditPageComponent = ({
 
   useMount(() => {
     openEdition(nationalSocietyUserId);
+
+    // Track page view
+    trackPageView("NationalSocietyUsersEditPage");
   });
 
   const hasAnyRole = useCallback(

@@ -12,6 +12,7 @@ import {
   useMediaQuery,
   Typography,
 } from "@material-ui/core";
+import { trackEvent } from "../../../utils/appInsightsHelper";
 
 export const AlertsEscalationDialog = ({
   isOpened,
@@ -25,6 +26,16 @@ export const AlertsEscalationDialog = ({
 }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
+
+  const handleEscalateAlert = (alertId, sendNotification) => {
+    // track escalateAlert event
+    trackEvent("escalateAlert", {
+      alertId: alertId,
+      sendNotification: sendNotification,
+    });
+
+    escalateAlert(alertId, sendNotification);
+  };
 
   return (
     <Dialog onClose={close} open={isOpened} fullScreen={fullScreen}>
@@ -69,7 +80,7 @@ export const AlertsEscalationDialog = ({
           </CancelButton>
           <SubmitButton
             isFetching={isEscalating}
-            onClick={() => escalateAlert(alertId, true)}
+            onClick={() => handleEscalateAlert(alertId, true)}
           >
             {strings(stringKeys.alerts.assess.alert.escalate)}
           </SubmitButton>

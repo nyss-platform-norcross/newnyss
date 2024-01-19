@@ -6,7 +6,6 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
-using Newtonsoft.Json;
 using RX.Nyss.Common.Utils;
 using RX.Nyss.Common.Utils.Logging;
 using RX.Nyss.Data.Models;
@@ -34,8 +33,14 @@ namespace RX.Nyss.ReportApi.Services
         private readonly INyssReportApiConfig _config;
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly ILoggerAdapter _loggerAdapter;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public QueuePublisherService(INyssReportApiConfig config, IDateTimeProvider dateTimeProvider, ILoggerAdapter loggerAdapter, ServiceBusClient serviceBusClient)
+        public QueuePublisherService(
+            INyssReportApiConfig config,
+            IDateTimeProvider dateTimeProvider,
+            ILoggerAdapter loggerAdapter,
+            ServiceBusClient serviceBusClient,
+            IHttpClientFactory httpClientFactory)
         {
             _config = config;
             _dateTimeProvider = dateTimeProvider;
@@ -43,6 +48,7 @@ namespace RX.Nyss.ReportApi.Services
             _sendEmailQueueSender = serviceBusClient.CreateSender(config.ServiceBusQueues.SendEmailQueue);
             _checkAlertQueueSender = serviceBusClient.CreateSender(config.ServiceBusQueues.CheckAlertQueue);
             _sendSmsQueueSender = serviceBusClient.CreateSender(config.ServiceBusQueues.SendSmsQueue);
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task SendSms(List<SendSmsRecipient> recipients, GatewaySetting gatewaySetting, string message)
@@ -143,45 +149,43 @@ namespace RX.Nyss.ReportApi.Services
                 }
 
                 var phoneList = new List<string> { recipient.PhoneNumber };
-                var msisdnArray = phoneList.ToArray();
+                var receiverArray = phoneList.ToArray();
 
                 using StringContent jsonContent = new(
                     JsonSerializer.Serialize(new SendSmsObject
                     {
                         SenderId = gatewaySetting.GatewaySenderId,
-                        Msisdn = msisdnArray,
+                        Msisdn = receiverArray,
                         Message = smsMessage
                     }),
                     Encoding.UTF8,
                     "application/json");
 
-                var httpClient = new HttpClient();
-                var request = new HttpRequestMessage();
-                request.RequestUri = new Uri(gatewaySetting.GatewayUrl);
-                request.Method = HttpMethod.Post;
-                httpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
-                request.Headers.Add(gatewaySetting.GatewayApiKeyName, gatewaySetting.GatewayApiKey);
-                if (gatewaySetting.GatewayExtraKey != null && gatewaySetting.GatewayExtraKeyName != null)
-                {
-                    request.Headers.Add(gatewaySetting.GatewayExtraKeyName, gatewaySetting.GatewayExtraKey);
-                }
-
-                request.Content = jsonContent;
-
-                var response = await httpClient.SendAsync(request);
-
-                var responseString = await response.Content.ReadAsStringAsync();
-
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    _loggerAdapter.Warn($"No send email request is sent to digital gateway with sender id:{gatewaySetting.GatewaySenderId}");
-                }
-                else
-                {
-                    _loggerAdapter.Info(responseString);
-                }
-
+                await SendSmsViaDigitalGatewayRequest(gatewaySetting, jsonContent);
             }));
+
+        private async Task<bool> SendSmsViaDigitalGatewayRequest(GatewaySetting gatewaySetting, StringContent strContent)
+        {
+            using var httpClient = _httpClientFactory.CreateClient();
+            var requestUri = new Uri(gatewaySetting.GatewayUrl, uriKind: UriKind.Absolute);
+
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri);
+            httpRequestMessage.Headers.Add(gatewaySetting.GatewayApiKeyName, gatewaySetting.GatewayApiKey);
+            if (gatewaySetting.GatewayExtraKey != null && gatewaySetting.GatewayExtraKeyName != null)
+            {
+                httpRequestMessage.Headers.Add(gatewaySetting.GatewayExtraKeyName, gatewaySetting.GatewayExtraKey);
+            }
+
+            httpRequestMessage.Content = strContent;
+
+            var res = await httpClient.SendAsync(httpRequestMessage);
+            if (res.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            _loggerAdapter.Error(res.ReasonPhrase);
+            return false;
+        }
 
         public async Task SendTelerivetSms(long number, string message, string apiKey, string projectId)
         {
@@ -235,5 +239,5 @@ public class SendSmsObject
     public string[] Msisdn { get; set; }
     [JsonPropertyName("message")]
     public string Message { get; set; }
-    
+
 }

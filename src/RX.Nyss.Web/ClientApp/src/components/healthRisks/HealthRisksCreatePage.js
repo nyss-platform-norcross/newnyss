@@ -19,6 +19,7 @@ import { getSaveFormModel } from "./logic/healthRisksService";
 import { strings, stringKeys, stringsFormat } from "../../strings";
 import { ValidationMessage } from "../forms/ValidationMessage";
 import { MultiSelect } from "../forms/MultiSelect";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const HealthRisksCreatePageComponent = (props) => {
   const [suspectedDiseasesDataSource, setSuspectedDiseasesDataSource] =
@@ -121,6 +122,9 @@ const HealthRisksCreatePageComponent = (props) => {
     props.openModule(props.match.path, props.match.params);
     ///Added to handle suspected disease list
     props.openCreation();
+
+    // Track page view
+    trackPageView("HealthRisksCreatePage");
   });
 
   useCustomErrors(form, props.formError);

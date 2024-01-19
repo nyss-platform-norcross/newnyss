@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { renderFilterLabel } from "../../common/filters/logic/locationFilterService";
 import { strings, stringKeys } from "../../../strings";
 
-const useLocationFilter = (locations, localFilters, updateLocalFilters) => {
+const useLocationFilter = (locations, localFilters, updateLocalFilters, showUnknownLocation) => {
   const [locationsFilterLabel, setLocationsFilterLabel] = useState(
     strings(stringKeys.filters.area.all),
   );
@@ -33,7 +33,7 @@ const useLocationFilter = (locations, localFilters, updateLocalFilters) => {
           ),
         )
         .flat(3),
-      includeUnknownLocation: false,
+      includeUnknownLocation: showUnknownLocation ? true : false,
     };
 
     updateLocalFilters({ locations: locationFilters });
@@ -45,9 +45,9 @@ const useLocationFilter = (locations, localFilters, updateLocalFilters) => {
       !localFilters ||
       !locations ||
       !localFilters.locations ||
-      localFilters.locations.regionIds.length === 0
+      localFilters.locations.regionIds.length === 0 && !showUnknownLocation
         ? strings(stringKeys.filters.area.all)
-        : renderFilterLabel(localFilters.locations, locations.regions, false);
+        : renderFilterLabel(localFilters.locations, locations.regions, showUnknownLocation);
     setLocationsFilterLabel(label);
   }, [localFilters.locations]);
 

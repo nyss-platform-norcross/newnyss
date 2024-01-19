@@ -191,12 +191,11 @@ namespace RX.Nyss.Web.Tests.Features.ProjectDashboard
                 }
             };
 
-            _reportService.GetRawReportsWithDataCollectorQuery(filters).Returns(rawReports.AsQueryable());
+            _reportService.GetRawReportsWithDataCollectorAndActivityReportsQuery(filters).Returns(rawReports.AsQueryable());
 
             var summaryData = await _projectDashboardDataService.GetData(filters);
 
-            //summaryData.ActiveDataCollectorCount.ShouldBe(3); This should be the correct one but I changed it for now
-            summaryData.ActiveDataCollectorCount.ShouldBe(0);
+            summaryData.ActiveDataCollectorCount.ShouldBe(3);
         }
 
         [Fact]
@@ -221,13 +220,11 @@ namespace RX.Nyss.Web.Tests.Features.ProjectDashboard
                 }
             };
 
-            _reportService.GetRawReportsWithDataCollectorQuery(filters).Returns(rawReports.AsQueryable());
+            _reportService.GetRawReportsWithDataCollectorAndActivityReportsQuery(filters).Returns(rawReports.AsQueryable());
             var summaryData = await _projectDashboardDataService.GetData(filters);
 
-            //summaryData.NumberOfVillages.ShouldBe(1);
-            summaryData.NumberOfVillages.ShouldBe(0);
-            //summaryData.NumberOfDistricts.ShouldBe(1);
-            summaryData.NumberOfDistricts.ShouldBe(0);
+            summaryData.NumberOfVillages.ShouldBe(1);
+            summaryData.NumberOfDistricts.ShouldBe(1);
         }
     }
 }

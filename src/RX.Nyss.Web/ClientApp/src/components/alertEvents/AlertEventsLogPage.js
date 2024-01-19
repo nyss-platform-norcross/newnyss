@@ -14,6 +14,7 @@ import TableActions from "../common/tableActions/TableActions";
 import { Grid, Typography } from "@material-ui/core";
 import { AlertStatusChip } from "../common/chip/AlertStatusChip";
 import * as alertsActions from "../alerts/logic/alertsActions";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const AlertEventsLogPageComponent = ({
   alertId,
@@ -30,6 +31,9 @@ const AlertEventsLogPageComponent = ({
   useMount(() => {
     props.openEventLog(projectId, alertId);
     props.openAssessment(projectId, alertId);
+
+    // Track page view
+    trackPageView("AlertEventsLogPage");
   });
 
   useEffect(() => {

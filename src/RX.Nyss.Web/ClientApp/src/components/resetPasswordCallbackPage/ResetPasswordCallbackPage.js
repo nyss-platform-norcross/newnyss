@@ -11,10 +11,14 @@ import PasswordInputField from "../forms/PasswordInputField";
 import * as authActions from "../../authentication/authActions";
 import queryString from "query-string";
 import { ValidationMessage } from "../forms/ValidationMessage";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 class ResetPasswordCallbackPageComponent extends PureComponent {
   constructor(props) {
     super(props);
+
+    // Track page view
+    trackPageView("ResetPasswordCallbackPage");
 
     const fields = {
       password: "",

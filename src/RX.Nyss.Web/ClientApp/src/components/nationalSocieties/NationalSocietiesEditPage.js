@@ -18,12 +18,16 @@ import { strings, stringKeys } from "../../strings";
 import { ValidationMessage } from "../forms/ValidationMessage";
 import { EpiWeekStandards } from "./logic/nationalSocietiesConstants";
 import CheckboxField from "../forms/CheckboxField";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const NationalSocietiesEditPageComponent = (props) => {
   const [form, setForm] = useState(null);
 
   useMount(() => {
     props.openEdition(props.match);
+
+    // Track page view
+    trackPageView("NationalSocietiesEditPage");
   });
 
   useEffect(() => {

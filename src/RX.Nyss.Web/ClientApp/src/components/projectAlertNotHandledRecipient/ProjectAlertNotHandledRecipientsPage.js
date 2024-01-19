@@ -14,6 +14,7 @@ import SubmitButton from "../common/buttons/submitButton/SubmitButton";
 import AddIcon from "@material-ui/icons/Add";
 import TableHeader from "../common/tableHeader/TableHeader";
 import EditIcon from "@material-ui/icons/Edit";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 export const ProjectAlertNotHandledRecipientsComponent = ({
   openRecipients,
@@ -26,6 +27,9 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
 }) => {
   useMount(() => {
     openRecipients(projectId);
+
+    // Track page view
+    trackPageView("ProjectAlertNotHandledRecipientsPage");
   });
 
   useEffect(() => {
@@ -68,24 +72,19 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
 
   const onEdit = () => {
     setIsEditing(false);
-    if (
-      organizations.every((org) =>
-        org.users.some((user) =>
-          unhandledRecipients
-            .map((recipient) => recipient.userId)
-            .includes(user.userId),
-        ),
-      )
-    ) {
-      return;
-    }
-    edit(
-      projectId,
-      unhandledRecipients.map((recipient) => ({
-        organizationId: recipient.organizationId,
-        userId: recipient.userId,
-      })),
-    );
+    let editedRecipientIds = unhandledRecipients.map(recipient => recipient.userId);
+    let oldRecipientIds = organizations.flatMap(org => org.users.map(user => user.userId));
+
+    // Checks that the edited list isn't identical to the original list
+    if(!oldRecipientIds.every((oldRecipientId) => editedRecipientIds.includes(oldRecipientId))){
+      edit(
+        projectId,
+        unhandledRecipients.map((recipient) => ({
+          organizationId: recipient.organizationId,
+          userId: recipient.userId,
+        })),
+      );
+    } 
   };
 
   const cancel = () => {

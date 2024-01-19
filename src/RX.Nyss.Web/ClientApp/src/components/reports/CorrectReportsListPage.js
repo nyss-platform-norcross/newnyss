@@ -17,6 +17,7 @@ import * as roles from "../../authentication/roles";
 import { SendReportDialog } from "./SendReportDialog";
 import * as appActions from "../app/logic/appActions";
 import TableHeader from "../common/tableHeader/TableHeader";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const Page = "correct";
 
@@ -40,6 +41,9 @@ const CorrectReportsListPageComponent = (props) => {
 
   useMount(() => {
     props.openReportsList(props.projectId);
+
+    // Track page view
+    trackPageView("CorrectReportsListPage");
   });
 
   const handleRefresh = () => props.getList(props.projectId, 1);

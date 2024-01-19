@@ -26,6 +26,7 @@ import {
 } from "@material-ui/core";
 import { MultiSelect } from "../forms/MultiSelect";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const ProjectAlertRecipientsCreatePageComponent = ({
   formData,
@@ -78,6 +79,9 @@ const ProjectAlertRecipientsCreatePageComponent = ({
 
   useMount(() => {
     openCreation(projectId);
+
+    // Track page view
+    trackPageView("ProjectAlertRecipientsCreatePage");
   });
 
   useEffect(() => {

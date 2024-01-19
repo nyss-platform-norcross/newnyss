@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace RX.Nyss.ReportApi.Tests.Services
         private readonly ServiceBusSender _smsQueueSenderMock;
         private readonly ServiceBusSender _checkAlertQueueSenderMock;
         private readonly ILoggerAdapter _loggerAdapterMock;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public QueuePublisherServiceTests()
         {
@@ -38,7 +40,7 @@ namespace RX.Nyss.ReportApi.Tests.Services
             _emailQueueSenderMock = Substitute.For<ServiceBusSender>();
             _smsQueueSenderMock = Substitute.For<ServiceBusSender>();
             _checkAlertQueueSenderMock = Substitute.For<ServiceBusSender>();
-
+            _httpClientFactory = Substitute.For<IHttpClientFactory>();
             _serviceBusClientMock = Substitute.For<ServiceBusClient>();
             _serviceBusClientMock.CreateSender("SendEmail").Returns(_emailQueueSenderMock);
             _serviceBusClientMock.CreateSender("CheckAlert").Returns(_checkAlertQueueSenderMock);
@@ -49,7 +51,8 @@ namespace RX.Nyss.ReportApi.Tests.Services
                 nyssReportApiConfig,
                 Substitute.For<IDateTimeProvider>(),
                 _loggerAdapterMock,
-                _serviceBusClientMock);
+                _serviceBusClientMock,
+                _httpClientFactory);
         }
 
         [Fact]
@@ -109,7 +112,7 @@ namespace RX.Nyss.ReportApi.Tests.Services
             };
 
             // Act
-            await _queuePublisherService.SendSms(recipients, new GatewaySetting{Name = "Missing gateway"}, "This is a test");
+            await _queuePublisherService.SendSms(recipients, new GatewaySetting { Name = "Missing gateway" }, "This is a test");
 
 
             // Assert

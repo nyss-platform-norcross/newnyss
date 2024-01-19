@@ -11,6 +11,7 @@ import PasswordInputField from "../forms/PasswordInputField";
 import * as authActions from "../../authentication/authActions";
 import queryString from "query-string";
 import { ValidationMessage } from "../forms/ValidationMessage";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 class VerifyEmailPageComponent extends PureComponent {
   constructor(props) {
@@ -25,6 +26,9 @@ class VerifyEmailPageComponent extends PureComponent {
     };
 
     this.form = createForm(fields, validation);
+
+    // Track page view
+    trackPageView("VerifyEmailPage");
   }
 
   handleSubmit = (e) => {

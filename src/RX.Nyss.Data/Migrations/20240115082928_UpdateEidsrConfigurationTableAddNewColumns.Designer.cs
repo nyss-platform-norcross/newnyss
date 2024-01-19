@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using RX.Nyss.Data;
@@ -12,9 +13,10 @@ using RX.Nyss.Data;
 namespace RX.Nyss.Data.Migrations
 {
     [DbContext(typeof(NyssContext))]
-    partial class NyssContextModelSnapshot : ModelSnapshot
+    [Migration("20240115082928_UpdateEidsrConfigurationTableAddNewColumns")]
+    partial class UpdateEidsrConfigurationTableAddNewColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2199,9 +2201,6 @@ namespace RX.Nyss.Data.Migrations
                     b.Property<string>("PhoneNumberDataElementId")
                         .HasColumnType("varchar(256)");
 
-                    b.Property<string>("ReportAgeGroupDataElementId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ReportCaseCountFemaleAgeAtLeastFiveDataElementId")
                         .HasColumnType("nvarchar(max)");
 
@@ -2218,9 +2217,6 @@ namespace RX.Nyss.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReportDateDataElementId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReportGenderDataElementId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReportGeoLocationDataElementId")

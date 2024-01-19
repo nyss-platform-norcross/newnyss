@@ -14,10 +14,14 @@ import styles from "./EidsrIntegration.module.scss";
 import { Loading } from "../common/loading/Loading";
 import { EidsrIntegrationNotEnabled } from "./components/EidsrIntegrationNotEnabled";
 import PasswordDisplayField from "../forms/PasswordDisplayField";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const EidsrIntegrationPageComponent = (props) => {
   useMount(() => {
     props.getEidsrIntegration(props.nationalSocietyId);
+
+    // Track page view
+    trackPageView("EidsrIntegrationPage");
   });
 
   if (props.isFetching || !props.data) {
@@ -174,6 +178,13 @@ const EidsrIntegrationPageComponent = (props) => {
             </Typography>
           </Grid>
           <Grid item xs={12}>
+            <Typography variant="h6">{strings("Report Geo Location")}</Typography>
+            <Typography variant="body1" gutterBottom>
+              {props.data.reportGeoLocationDataElementId ??
+                strings(stringKeys.eidsrIntegration.form.dataNotSet)}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
             <Typography variant="h6">
               {strings("Report Health Risk")}
             </Typography>
@@ -206,20 +217,72 @@ const EidsrIntegrationPageComponent = (props) => {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="h6">
-              {strings("Report Age At Least 5")}
-            </Typography>
+            <Typography variant="h6">{strings("Report AgeGroup")}</Typography>
             <Typography variant="body1" gutterBottom>
-              {props.data.reportAgeAtLeastFiveDataElementId ??
+              {props.data.reportAgeGroupDataElementId ??
                 strings(stringKeys.eidsrIntegration.form.dataNotSet)}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h6">
-              {strings("Report Age Below 5")}
+              {strings("Report Case Count Female Age At Least 5")}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {props.data.reportAgeBelowFiveDataElementId ??
+              {props.data.reportCaseCountFemaleAgeAtLeastFiveDataElementId ??
+                strings(stringKeys.eidsrIntegration.form.dataNotSet)}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6">
+              {strings("Report Case Count Male Age At Least 5")}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {props.data.reportCaseCountMaleAgeAtLeastFiveDataElementId ??
+                strings(stringKeys.eidsrIntegration.form.dataNotSet)}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6">
+              {strings("Report Case Count Female Age Below 5")}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {props.data.reportCaseCountFemaleAgeBelowFiveDataElementId ??
+                strings(stringKeys.eidsrIntegration.form.dataNotSet)}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6">
+              {strings("Report Case Count Male Age Below 5")}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {props.data.reportCaseCountMaleAgeBelowFiveDataElementId ??
+                strings(stringKeys.eidsrIntegration.form.dataNotSet)}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6">
+              {strings("Report Date")}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {props.data.reportDateDataElementId ??
+                strings(stringKeys.eidsrIntegration.form.dataNotSet)}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6">
+              {strings("Report Time")}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {props.data.reportTimeDataElementId ??
+                strings(stringKeys.eidsrIntegration.form.dataNotSet)}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6">
+              {strings("Report Data Collector ID")}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {props.data.reportDataCollectorIdDataElementId ??
                 strings(stringKeys.eidsrIntegration.form.dataNotSet)}
             </Typography>
           </Grid>

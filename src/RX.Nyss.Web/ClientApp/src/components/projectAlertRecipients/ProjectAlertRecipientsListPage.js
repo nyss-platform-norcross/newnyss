@@ -11,10 +11,14 @@ import { withLayout } from "../../utils/layout";
 import Layout from "../layout/Layout";
 import { Typography } from "@material-ui/core";
 import TableHeader from "../common/tableHeader/TableHeader";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const ProjectAlertRecipientsListPageComponent = (props) => {
   useMount(() => {
     props.openProjectAlertRecipientsList(props.projectId);
+
+    // Track page view
+    trackPageView("ProjectAlertRecipientsListPage");
   });
 
   const useRtlDirection = useSelector(

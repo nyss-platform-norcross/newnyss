@@ -67,12 +67,19 @@ public class GetEidsrIntegrationQuery : IRequest<Result<EidsrIntegrationResponse
                 DistrictsWithOrganizationUnits = await GetDistrictsWithOrganizationUnits(request.Id),
 
                 ReportLocationDataElementId = eidsrConfiguration?.ReportLocationDataElementId,
+                ReportGeoLocationDataElementId = eidsrConfiguration?.ReportGeoLocationDataElementId,
                 ReportHealthRiskDataElementId = eidsrConfiguration?.ReportHealthRiskDataElementId,
                 ReportSuspectedDiseaseDataElementId = eidsrConfiguration?.ReportSuspectedDiseaseDataElementId,
                 ReportStatusDataElementId = eidsrConfiguration?.ReportStatusDataElementId,
                 ReportGenderDataElementId = eidsrConfiguration?.ReportGenderDataElementId,
-                ReportAgeAtLeastFiveDataElementId = eidsrConfiguration?.ReportAgeAtLeastFiveDataElementId,
-                ReportAgeBelowFiveDataElementId = eidsrConfiguration?.ReportAgeBelowFiveDataElementId,
+                ReportAgeGroupDataElementId = eidsrConfiguration?.ReportAgeGroupDataElementId,
+                ReportCaseCountFemaleAgeAtLeastFiveDataElementId = eidsrConfiguration?.ReportCaseCountFemaleAgeAtLeastFiveDataElementId,
+                ReportCaseCountMaleAgeAtLeastFiveDataElementId = eidsrConfiguration?.ReportCaseCountMaleAgeAtLeastFiveDataElementId,
+                ReportCaseCountFemaleAgeBelowFiveDataElementId = eidsrConfiguration?.ReportCaseCountFemaleAgeBelowFiveDataElementId,
+                ReportCaseCountMaleAgeBelowFiveDataElementId = eidsrConfiguration?.ReportCaseCountMaleAgeBelowFiveDataElementId,
+                ReportDateDataElementId = eidsrConfiguration?.ReportDateDataElementId,
+                ReportTimeDataElementId = eidsrConfiguration?.ReportTimeDataElementId,
+                ReportDataCollectorIdDataElementId = eidsrConfiguration?.ReportDataCollectorIdDataElementId
             };
 
             return Result.Success(eidsrConfigurationDto);

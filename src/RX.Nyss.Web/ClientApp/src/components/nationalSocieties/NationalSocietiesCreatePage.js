@@ -18,6 +18,7 @@ import { strings, stringKeys } from "../../strings";
 import { ValidationMessage } from "../forms/ValidationMessage";
 import { EpiWeekStandards } from "./logic/nationalSocietiesConstants";
 import CheckboxField from "../forms/CheckboxField";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const NationalSocietiesCreatePageComponent = (props) => {
   const [form] = useState(() => {
@@ -42,6 +43,9 @@ const NationalSocietiesCreatePageComponent = (props) => {
 
   useMount(() => {
     props.openModule(props.match.path, props.match.params);
+
+    // Track page view
+    trackPageView("NationalSocietiesCreatePage");
   });
 
   const handleSubmit = (e) => {

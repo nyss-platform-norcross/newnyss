@@ -14,6 +14,7 @@ import { ProjectSetupHealthRisk } from "./ProjectSetupHealthRisk";
 import { ProjectSetupGeographicalStructure } from "./ProjectSetupGeographicalStructure";
 import { ProjectSetupSummary } from './ProjectSetupSummary'
 import { strings, stringKeys } from "../../strings";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const ProjectSetupPageComponent = ({
   nationalSocietyId,
@@ -25,6 +26,9 @@ const ProjectSetupPageComponent = ({
 }) => {
   useMount(() => {
     openProjectSetup(nationalSocietyId);
+
+    // Track page view
+    trackPageView("ProjectSetupPage");
   });
 
   const [error, setError] = useState(false);

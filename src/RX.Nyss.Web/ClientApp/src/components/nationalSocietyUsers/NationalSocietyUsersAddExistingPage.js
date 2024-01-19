@@ -15,6 +15,7 @@ import { ValidationMessage } from "../forms/ValidationMessage";
 import SelectField from "../forms/SelectField";
 import { MenuItem, Typography, Box, Grid } from "@material-ui/core";
 import { Administrator } from "../../authentication/roles";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const NationalSocietyUsersAddExistingPageComponent = (props) => {
   const [form] = useState(() => {
@@ -44,6 +45,9 @@ const NationalSocietyUsersAddExistingPageComponent = (props) => {
 
   useMount(() => {
     props.openAddExisting(props.nationalSocietyId);
+
+    // Track page view
+    trackPageView("NationalSocietyUsersAddExistingPage");
   });
 
   const availableOrganizations = useMemo(() => {

@@ -29,6 +29,7 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import WarningIcon from "@material-ui/icons/Warning";
 import LiveHelpIcon from "@material-ui/icons/LiveHelp";
 import { districtValidator } from "./components/districtValidator";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const EidsrIntegrationEditPageComponent = (props) => {
   const [form, setForm] = useState(null);
@@ -37,6 +38,9 @@ const EidsrIntegrationEditPageComponent = (props) => {
 
   useMount(() => {
     props.getEidsrIntegration(props.nationalSocietyId);
+
+    // Track page view
+    trackPageView("EidsrIntegrationEditPage");
   });
 
   useEffect(() => {
@@ -60,16 +64,19 @@ const EidsrIntegrationEditPageComponent = (props) => {
         props.data.districtsWithOrganizationUnits ?? [],
 
       reportLocationDataElementId: props.data.reportLocationDataElementId ?? "",
-      reportHealthRiskDataElementId:
-        props.data.reportHealthRiskDataElementId ?? "",
-      reportSuspectedDiseaseDataElementId:
-        props.data.reportSuspectedDiseaseDataElementId ?? "",
+      reportGeoLocationDataElementId: props.data.reportGeoLocationDataElementId ?? "",
+      reportHealthRiskDataElementId: props.data.reportHealthRiskDataElementId ?? "",
+      reportSuspectedDiseaseDataElementId: props.data.reportSuspectedDiseaseDataElementId ?? "",
       reportStatusDataElementId: props.data.reportStatusDataElementId ?? "",
       reportGenderDataElementId: props.data.reportGenderDataElementId ?? "",
-      reportAgeAtLeastFiveDataElementId:
-        props.data.reportAgeAtLeastFiveDataElementId ?? "",
-      reportAgeBelowFiveDataElementId:
-        props.data.reportAgeBelowFiveDataElementId ?? "",
+      reportAgeGroupDataElementId: props.data.reportAgeGroupDataElementId ?? "",
+      reportCaseCountFemaleAgeAtLeastFiveDataElementId: props.data.reportCaseCountFemaleAgeAtLeastFiveDataElementId ?? "",
+      reportCaseCountMaleAgeAtLeastFiveDataElementId: props.data.reportCaseCountMaleAgeAtLeastFiveDataElementId ?? "",
+      reportCaseCountFemaleAgeBelowFiveDataElementId: props.data.reportCaseCountFemaleAgeBelowFiveDataElementId ?? "",
+      reportCaseCountMaleAgeBelowFiveDataElementId: props.data.reportCaseCountMaleAgeBelowFiveDataElementId ?? "",
+      reportDateDataElementId: props.data.reportDateDataElementId ?? "",
+      reportTimeDataElementId: props.data.reportTimeDataElementId ?? "",
+      reportDataCollectorIdDataElementId: props.data.reportDataCollectorIdDataElementId ?? ""
     };
 
     const validation = {
@@ -149,14 +156,20 @@ const EidsrIntegrationEditPageComponent = (props) => {
       districtsWithOrganizationUnits: values.districtsWithOrganizationUnits,
 
       reportLocationDataElementId: values.reportLocationDataElementId,
+      reportGeoLocationDataElementId: values.reportGeoLocationDataElementId,
       reportHealthRiskDataElementId: values.reportHealthRiskDataElementId,
       reportSuspectedDiseaseDataElementId:
         values.reportSuspectedDiseaseDataElementId,
       reportStatusDataElementId: values.reportStatusDataElementId,
       reportGenderDataElementId: values.reportGenderDataElementId,
-      reportAgeAtLeastFiveDataElementId:
-        values.reportAgeAtLeastFiveDataElementId,
-      reportAgeBelowFiveDataElementId: values.reportAgeBelowFiveDataElementId,
+      reportAgeGroupDataElementId: values.reportAgeGroupDataElementId,
+      reportCaseCountFemaleAgeAtLeastFiveDataElementId: values.reportCaseCountFemaleAgeAtLeastFiveDataElementId,
+      reportCaseCountMaleAgeAtLeastFiveDataElementId: values.reportCaseCountMaleAgeAtLeastFiveDataElementId,
+      reportCaseCountFemaleAgeBelowFiveDataElementId: values.reportCaseCountFemaleAgeBelowFiveDataElementId,
+      reportCaseCountMaleAgeBelowFiveDataElementId: values.reportCaseCountMaleAgeBelowFiveDataElementId,
+      reportDateDataElementId: values.reportDateDataElementId,
+      reportTimeDataElementId: values.reportTimeDataElementId,
+      reportDataCollectorIdDataElementId: values.reportDataCollectorIdDataElementId
     });
   };
 
@@ -355,6 +368,14 @@ const EidsrIntegrationEditPageComponent = (props) => {
               field={form.fields.reportLocationDataElementId}
             />
           </Grid>
+          <Grid item xs={4}>
+            <TextInputField
+              disabled={integrationEditingDisabled}
+              label={strings("Report Geo Location")}
+              name="reportGeoLocationDataElementId"
+              field={form.fields.reportGeoLocationDataElementId}
+            />
+          </Grid>
 
           <Grid item xs={4}>
             <TextInputField
@@ -387,7 +408,7 @@ const EidsrIntegrationEditPageComponent = (props) => {
             <TextInputField
               disabled={integrationEditingDisabled}
               label={strings("Report Gender")}
-              name="reportStatusDataElementId"
+              name="reportGenderDataElementId"
               field={form.fields.reportGenderDataElementId}
             />
           </Grid>
@@ -395,18 +416,71 @@ const EidsrIntegrationEditPageComponent = (props) => {
           <Grid item xs={4}>
             <TextInputField
               disabled={integrationEditingDisabled}
-              label={strings("Report Age At Least 5")}
-              name="reportAgeAtLeastFiveDataElementId"
-              field={form.fields.reportAgeAtLeastFiveDataElementId}
+              label={strings("Report Age Group")}
+              name="reportAgeGroupDataElementId"
+              field={form.fields.reportAgeGroupDataElementId}
             />
           </Grid>
 
           <Grid item xs={4}>
             <TextInputField
               disabled={integrationEditingDisabled}
-              label={strings("Report Age Below 5")}
-              name="reportAgeBelowFiveDataElementId"
-              field={form.fields.reportAgeBelowFiveDataElementId}
+              label={strings("Report Case Count Female Age At Least 5")}
+              name="reportCaseCountFemaleAgeAtLeastFiveDataElementId"
+              field={form.fields.reportCaseCountFemaleAgeAtLeastFiveDataElementId}
+            />
+          </Grid>
+
+          <Grid item xs={4}>
+            <TextInputField
+              disabled={integrationEditingDisabled}
+              label={strings("Report Case Count Male Age At Least 5")}
+              name="reportCaseCountMaleAgeAtLeastFiveDataElementId"
+              field={form.fields.reportCaseCountMaleAgeAtLeastFiveDataElementId}
+            />
+          </Grid>
+
+          <Grid item xs={4}>
+            <TextInputField
+              disabled={integrationEditingDisabled}
+              label={strings("Report Case Count Female Age Below 5")}
+              name="reportCaseCountFemaleAgeBelowFiveDataElementId"
+              field={form.fields.reportCaseCountFemaleAgeBelowFiveDataElementId}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextInputField
+              disabled={integrationEditingDisabled}
+              label={strings("Report Case Count Male Age Below 5")}
+              name="reportCaseCountMaleAgeBelowFiveDataElementId"
+              field={form.fields.reportCaseCountMaleAgeBelowFiveDataElementId}
+            />
+          </Grid>
+
+          <Grid item xs={4}>
+            <TextInputField
+              disabled={integrationEditingDisabled}
+              label={strings("Report Date")}
+              name="reportDateDataElementId"
+              field={form.fields.reportDateDataElementId}
+            />
+          </Grid>
+
+          <Grid item xs={4}>
+            <TextInputField
+              disabled={integrationEditingDisabled}
+              label={strings("Report Time")}
+              name="reportTimeDataElementId"
+              field={form.fields.reportTimeDataElementId}
+            />
+          </Grid>
+
+          <Grid item xs={4}>
+            <TextInputField
+              disabled={integrationEditingDisabled}
+              label={strings("Report Data Collector ID")}
+              name="reportDataCollectorIdDataElementId"
+              field={form.fields.reportDataCollectorIdDataElementId}
             />
           </Grid>
 

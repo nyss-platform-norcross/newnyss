@@ -13,6 +13,7 @@ import { TableActionsButton } from "../common/buttons/tableActionsButton/TableAc
 import { stringKeys, strings } from "../../strings";
 import { accessMap } from "../../authentication/accessMap";
 import TableHeader from "../common/tableHeader/TableHeader";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const DataCollectorsPerformancePageComponent = ({
   projectId,
@@ -21,6 +22,9 @@ const DataCollectorsPerformancePageComponent = ({
 }) => {
   useMount(() => {
     props.openDataCollectorsPerformanceList(projectId, props.filters);
+
+    // Track page view
+    trackPageView("DataCollectorsPerformancePage");
   });
 
   const useRtlDirection = useSelector(

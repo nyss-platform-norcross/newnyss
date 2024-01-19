@@ -9,10 +9,14 @@ import Layout from "../layout/Layout";
 import { ReportFilters } from "../common/filters/ReportFilters";
 import { useMount } from "../../utils/lifecycle";
 import NationalSocietyIncorrectReportsTable from "./NationalSocietyIncorrectReportsTable";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const NationalSocietyIncorrectReportsListPageComponent = (props) => {
   useMount(() => {
     props.openNationalSocietyReportsList(props.nationalSocietyId);
+
+    // Track page view
+    trackPageView("NationalSocietyIncorrectReportsListPage");
   });
 
   const useRtlDirection = useSelector(

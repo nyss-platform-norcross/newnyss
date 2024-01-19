@@ -13,6 +13,7 @@ import { ValidationMessage } from "../forms/ValidationMessage";
 import SelectField from "../forms/SelectField";
 import { MenuItem, Grid } from "@material-ui/core";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const ProjectOrganizationsCreatePageComponent = (props) => {
   const [form] = useState(() => {
@@ -29,6 +30,9 @@ const ProjectOrganizationsCreatePageComponent = (props) => {
 
   useMount(() => {
     props.openCreation(props.projectId);
+
+    // Track page view
+    trackPageView("ProjectOrganizationsCreatePage");
   });
 
   const handleSubmit = (e) => {

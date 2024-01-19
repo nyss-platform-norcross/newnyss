@@ -16,6 +16,7 @@ import { useMount } from "../../utils/lifecycle";
 import { getSaveFormModel } from "./logic/suspectedDiseaseService";
 import { strings, stringKeys, stringsFormat } from "../../strings";
 import { ValidationMessage } from "../forms/ValidationMessage";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const SuspectedDiseaseCreatePageComponent = (props) => {
   const [form] = useState(() => {
@@ -50,6 +51,9 @@ const SuspectedDiseaseCreatePageComponent = (props) => {
 
   useMount(() => {
     props.openModule(props.match.path, props.match.params);
+
+    // Track page view
+    trackPageView("SuspectedDiseaseCreatePage");
   });
 
   useCustomErrors(form, props.formError);

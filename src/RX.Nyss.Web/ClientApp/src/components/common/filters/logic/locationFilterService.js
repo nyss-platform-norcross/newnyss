@@ -261,6 +261,18 @@ export const renderFilterLabel = (
   regions,
   showUnknownLocation,
 ) => {
+  const compactNameDisplay = (locationNames, withUnknownLocation) => {
+    if (withUnknownLocation){
+      return locationNames.length >= 1
+        ? `${locationNames[0]} (+${locationNames.length})`
+        : locationNames[0]; 
+    }
+    
+    return locationNames.length > 1
+    ? `${locationNames[0]} (+${locationNames.length - 1})`
+    : locationNames[0];
+  } 
+
   if (
     !filterValue ||
     (showUnknownLocation &&
@@ -271,14 +283,17 @@ export const renderFilterLabel = (
     return strings(stringKeys.filters.area.all);
   }
 
+  // Checks if all location filter options are deselected or null and if unknownlocation is unchecked if shown.
+  if (!filterValue.regionIds.length && !filterValue.districtIds.length && !filterValue.villageIds.length && !filterValue.zoneIds.length && (showUnknownLocation ? !filterValue.includeUnknownLocation : true)) {
+    return strings(stringKeys.filters.area.all)
+  }
+
   if (filterValue.regionIds.length > 0) {
     const regionNames = filterValue.regionIds.map(
       (id) => regions.find((r) => r.id === id).name,
     );
 
-    return regionNames.length > 1
-      ? `${regionNames[0]} (+${regionNames.length - 1})`
-      : regionNames[0];
+    return compactNameDisplay(regionNames, filterValue.includeUnknownLocation)
   }
 
   if (filterValue.districtIds.length > 0) {
@@ -290,9 +305,7 @@ export const renderFilterLabel = (
       )
       .flat(2);
 
-    return districtNames.length > 1
-      ? `${districtNames[0]} (+${districtNames.length - 1})`
-      : districtNames[0];
+      return compactNameDisplay(districtNames, filterValue.includeUnknownLocation)
   }
 
   if (filterValue.villageIds.length > 0) {
@@ -306,9 +319,7 @@ export const renderFilterLabel = (
       )
       .flat(3);
 
-    return villageNames.length > 1
-      ? `${villageNames[0]} (+${villageNames.length - 1})`
-      : villageNames[0];
+    return compactNameDisplay(villageNames, filterValue.includeUnknownLocation)
   }
 
   if (filterValue.zoneIds.length > 0) {
@@ -324,9 +335,7 @@ export const renderFilterLabel = (
       )
       .flat(4);
 
-    return zoneNames.length > 1
-      ? `${zoneNames[0]} (+ ${zoneNames.length - 1})`
-      : zoneNames[0];
+    return compactNameDisplay(zoneNames, filterValue.includeUnknownLocation)
   }
 
   if (filterValue.includeUnknownLocation) {

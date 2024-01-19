@@ -32,6 +32,7 @@ import SelectField from "../forms/SelectField";
 import { ValidationMessage } from "../forms/ValidationMessage";
 import { ConfirmationDialog } from "../common/confirmationDialog/ConfirmationDialog";
 import { getBirthDecades, parseBirthDecade } from "../../utils/birthYear";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const NationalSocietyUsersCreatePageComponent = ({
   nationalSocietyId,
@@ -54,6 +55,9 @@ const NationalSocietyUsersCreatePageComponent = ({
 
   useMount(() => {
     openCreation(nationalSocietyId);
+
+    // Track page view
+    trackPageView("NationalSocietyUsersCreatePage");
   });
 
   const hasAnyRole = useCallback(

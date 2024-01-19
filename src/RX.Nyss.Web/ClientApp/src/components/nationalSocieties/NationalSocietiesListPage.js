@@ -11,6 +11,7 @@ import { useMount } from "../../utils/lifecycle";
 import { strings, stringKeys } from "../../strings";
 import * as nationalSocietyDashboardActions from "../nationalSocietyDashboard/logic/nationalSocietyDashboardActions";
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const NationalSocietiesListPageComponent = ({
   showStringsKeys,
@@ -22,6 +23,9 @@ const NationalSocietiesListPageComponent = ({
   useMount(() => {
     openModule(match.path, match.params);
     getList();
+
+    // Track page view
+    trackPageView("NationalSocietiesListPage");
   });
 
   const userLanguageCode = useSelector(

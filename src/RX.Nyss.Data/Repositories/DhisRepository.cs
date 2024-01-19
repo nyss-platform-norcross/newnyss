@@ -26,7 +26,6 @@ public class DhisRepository : IDhisRepository
     public DhisDbReport GetReportsForDhis(int rawReportId)
     {
         var rawReport = GetRawReport(rawReportId);
-        
         var englishContentLanguageId = GetEnglishContentLanguageId() ?? 1;
 
         // create template based on report's National Society config
@@ -73,11 +72,18 @@ public class DhisRepository : IDhisRepository
             },
             Program = config.TrackerProgramId,
             ReportLocationDataElementId = config.ReportLocationDataElementId,
+            ReportGeoLocationDataElementId = config.ReportGeoLocationDataElementId,
             ReportHealthRiskDataElementId = config.ReportHealthRiskDataElementId,
-            ReportAgeAtLeastFiveDataElementId = config.ReportAgeAtLeastFiveDataElementId,
             ReportSuspectedDiseaseDataElementId = config.ReportSuspectedDiseaseDataElementId,
-            ReportAgeBelowFiveDataElementId = config.ReportAgeBelowFiveDataElementId,
             ReportGenderDataElementId = config.ReportGenderDataElementId,
+            ReportAgeGroupDataElementId = config.ReportAgeGroupDataElementId,
+            ReportCaseCountFemaleAgeAtLeastFiveDataElementId = config.ReportCaseCountFemaleAgeAtLeastFiveDataElementId,
+            ReportCaseCountMaleAgeAtLeastFiveDataElementId = config.ReportCaseCountMaleAgeAtLeastFiveDataElementId,
+            ReportCaseCountFemaleAgeBelowFiveDataElementId = config.ReportCaseCountFemaleAgeBelowFiveDataElementId,
+            ReportCaseCountMaleAgeBelowFiveDataElementId = config.ReportCaseCountMaleAgeBelowFiveDataElementId,
+            ReportDateDataElementId = config.ReportDateDataElementId,
+            ReportTimeDataElementId = config.ReportTimeDataElementId,
+            ReportDataCollectorIdDataElementId = config.ReportDataCollectorIdDataElementId,
             ReportStatusDataElementId = config.ReportStatusDataElementId
         };
 
@@ -105,12 +111,20 @@ public class DhisRepository : IDhisRepository
             .ThenInclude(x => x.SuspectedDisease)
             .ThenInclude(x => x.LanguageContents)
 
+            .Include(r => r.Report)
+            .ThenInclude(x => x.ProjectHealthRisk)
+            .ThenInclude(x => x.HealthRisk)
+            .ThenInclude(x => x.LanguageContents)
+
             .Include(r => r.NationalSociety)
             .ThenInclude(n => n.EidsrConfiguration)
 
             .Include(r => r.Report)
             .ThenInclude(c => c.ReportedCase)
-            
+
+            .Include(r => r.Report)
+            .ThenInclude(d => d.DataCollector)
+
             .FirstOrDefault(x => x.Id == rawReportId);
 
         return query;

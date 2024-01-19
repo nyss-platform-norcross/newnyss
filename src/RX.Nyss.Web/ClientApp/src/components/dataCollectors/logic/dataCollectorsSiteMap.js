@@ -33,7 +33,7 @@ export const dataCollectorsSiteMap = [
     title: () => strings(stringKeys.dataCollectors.form.editionTitle),
     access: accessMap.dataCollectors.edit,
   },
-  {
+  /*{
     parentPath: "/projects/:projectId/datacollectors",
     path: "/projects/:projectId/datacollectors/mapoverview",
     title: () => strings(stringKeys.dataCollectors.mapOverview.title),
@@ -41,7 +41,7 @@ export const dataCollectorsSiteMap = [
     access: accessMap.dataCollectors.list,
     placeholderIndex: 2,
     middleStepOnly: true,
-  },
+  },*/
   {
     parentPath: "/projects/:projectId/datacollectors",
     path: "/projects/:projectId/datacollectors/performance",

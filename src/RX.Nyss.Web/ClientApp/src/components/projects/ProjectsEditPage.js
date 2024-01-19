@@ -17,10 +17,14 @@ import { Loading } from "../common/loading/Loading";
 import { ValidationMessage } from "../forms/ValidationMessage";
 import CheckboxField from "../forms/CheckboxField";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const ProjectsEditPageComponent = (props) => {
   useMount(() => {
     props.openEdition(props.nationalSocietyId, props.projectId);
+
+    // Track page view
+    trackPageView("ProjectsEditPage");
   });
 
   const [form, setForm] = useState(null);

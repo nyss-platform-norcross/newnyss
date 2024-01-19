@@ -9,10 +9,14 @@ import NationalSocietyUsersTable from "./NationalSocietyUsersTable";
 import { useMount } from "../../utils/lifecycle";
 import { stringKeys, strings } from "../../strings";
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
+import { trackPageView } from "../../utils/appInsightsHelper";
 
 const NationalSocietyUsersListPageComponent = (props) => {
   useMount(() => {
     props.openNationalSocietyUsersList(props.nationalSocietyId);
+
+    // Track page view
+    trackPageView("NationalSocietyUsersListPage");
   });
 
   const useRtlDirection = useSelector(
