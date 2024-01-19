@@ -31,10 +31,10 @@ const NationalSocietyDashboardPageComponent = ({
 }) => {
   useMount(() => {
     openDashboard(props.match.params.nationalSocietyId);
-  });
 
-  // Track page view
-  trackPageView("NationalSocietyDashboardPage");
+    // Track page view
+    trackPageView("NationalSocietyDashboardPage");
+  });
 
   const useRtlDirection = useSelector(
     (state) => state.appData.direction === "rtl",
@@ -87,8 +87,8 @@ const NationalSocietyDashboardPageComponent = ({
               summary={props.summary}
               reportsType={props.filters.reportsType}
             />
-            </Grid>
-            
+          </Grid>
+
           <Grid item xs={12}>
             <DashboardReportsMap
               data={props.reportsGroupedByLocation}
