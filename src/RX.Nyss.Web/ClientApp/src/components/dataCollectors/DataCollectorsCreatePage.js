@@ -314,7 +314,7 @@ const DataCollectorsCreatePageComponent = (props) => {
           </Grid>
           {!currentUserRoles.some((r) => r === Supervisor) && (
             <Grid container item xs={12} direction="column" style={{ marginTop: 30 }}>
-              <Typography variant="h5">Which supervisor will be responsible for the data collector/collection point?</Typography>
+              <Typography variant="h5">{strings(stringKeys.dataCollectors.form.responsibleSupervisor)}</Typography>
               <Grid item md={3}>
                 <SelectField
                   label={strings(stringKeys.dataCollectors.form.supervisor)}
