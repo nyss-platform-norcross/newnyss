@@ -13,7 +13,7 @@ import { TableActionsButton } from "../common/buttons/tableActionsButton/TableAc
 import { accessMap } from "../../authentication/accessMap";
 import { DataCollectorsFilters } from "./components/DataCollectorsFilters";
 import { ReplaceSupervisorDialog } from "./components/ReplaceSupervisorDialog";
-import { trackPageView } from "../../utils/appInsightsHelper";
+import { trackEvent, trackPageView } from "../../utils/appInsightsHelper";
 
 const DataCollectorsListPageComponent = ({
   getDataCollectorList,
@@ -43,6 +43,18 @@ const DataCollectorsListPageComponent = ({
     setReplaceSupervisorDialogOpened(true);
   };
 
+  const handleExportToCsv = () => {
+    trackEvent("exportDataCollectorsCsv");
+
+    props.exportToCsv(projectId, props.filters);
+  };
+
+  const handleExportToExcel = () => {
+    trackEvent("exportDataCollectorsExcel");
+
+    props.exportToExcel(projectId, props.filters);
+  };
+
   const onChangePage = (e, page) => {
     getDataCollectorList(projectId, { ...props.filters, pageNumber: page });
   };
@@ -53,7 +65,7 @@ const DataCollectorsListPageComponent = ({
         {!props.isClosed && (
           <TableActions>
             <TableActionsButton
-              onClick={() => props.exportToCsv(projectId, props.filters)}
+              onClick={handleExportToCsv}
               variant="outlined"
               roles={accessMap.dataCollectors.export}
               isFetching={props.isExportingToCsv}
@@ -61,7 +73,7 @@ const DataCollectorsListPageComponent = ({
               {strings(stringKeys.dataCollectors.exportCsv)}
             </TableActionsButton>
             <TableActionsButton
-              onClick={() => props.exportToExcel(projectId, props.filters)}
+              onClick={handleExportToExcel}
               variant="outlined"
               roles={accessMap.dataCollectors.export}
               isFetching={props.isExportingToExcel}

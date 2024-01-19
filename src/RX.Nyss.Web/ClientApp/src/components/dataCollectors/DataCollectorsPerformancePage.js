@@ -13,7 +13,7 @@ import { TableActionsButton } from "../common/buttons/tableActionsButton/TableAc
 import { stringKeys, strings } from "../../strings";
 import { accessMap } from "../../authentication/accessMap";
 import TableHeader from "../common/tableHeader/TableHeader";
-import { trackPageView } from "../../utils/appInsightsHelper";
+import { trackEvent, trackPageView } from "../../utils/appInsightsHelper";
 
 const DataCollectorsPerformancePageComponent = ({
   projectId,
@@ -34,12 +34,18 @@ const DataCollectorsPerformancePageComponent = ({
   const handleFilterChange = (filters) =>
     getDataCollectorPerformanceList(projectId, filters);
 
+  const handleExportToExcel = () => {
+    trackEvent("exportDataCollectorsPerformanceExcel");
+
+    props.exportPerformance(projectId, props.filters);
+  };
+
   return (
     <Fragment>
       <TableHeader>
         <TableActions>
           <TableActionsButton
-            onClick={() => props.exportPerformance(projectId, props.filters)}
+            onClick={handleExportToExcel}
             roles={accessMap.dataCollectors.export}
             isFetching={props.isExporting}
             variant={"outlined"}
