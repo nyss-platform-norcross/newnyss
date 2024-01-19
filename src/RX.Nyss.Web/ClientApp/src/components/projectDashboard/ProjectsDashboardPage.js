@@ -18,7 +18,7 @@ import { DashboardDataCollectionPointChart } from "../dashboardCharts/DashboardD
 import { strings, stringKeys } from "../../strings";
 import { DashboardReportVillageChart } from "../dashboardCharts/DashboardReportVillageChart";
 import SubmitButton from "../common/buttons/submitButton/SubmitButton";
-import { trackPageView } from "../../utils/appInsightsHelper";
+import { trackEvent, trackPageView } from "../../utils/appInsightsHelper";
 
 const ProjectDashboardPageComponent = ({
   openDashboard,
@@ -51,6 +51,8 @@ const ProjectDashboardPageComponent = ({
   }
 
   const handleGeneratePdf = () => {
+    trackEvent("exportProjectDashboardPdf");
+
     const initialState = isFilterExpanded;
     setIsFilterExpanded(true);
     const timer = setTimeout(() => {
@@ -87,7 +89,7 @@ const ProjectDashboardPageComponent = ({
               projectSummary={props.projectSummary}
               reportsType={props.filters.reportsType}
             />
-            </Grid>
+          </Grid>
           <Grid item xs={12}>
             <DashboardReportsMap
               data={props.reportsGroupedByLocation}

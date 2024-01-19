@@ -17,7 +17,7 @@ import { DashboardReportVillageChart } from "../dashboardCharts/DashboardReportV
 import { DashboardReportChart } from "../dashboardCharts/DashboardReportChart";
 import { DashboardReportSexAgeChart } from "../dashboardCharts/DashboardReportSexAgeChart";
 import { DashboardReportSexAgeTable } from "../dashboardTables/DashboardReportSexAgeTable";
-import { trackPageView } from "../../utils/appInsightsHelper";
+import { trackEvent, trackPageView } from "../../utils/appInsightsHelper";
 
 const NationalSocietyDashboardPageComponent = ({
   nationalSocietyId,
@@ -51,6 +51,8 @@ const NationalSocietyDashboardPageComponent = ({
   }
 
   const handleGeneratePdf = () => {
+    trackEvent("exportNationalSocietyDashboardPdf");
+
     const initialState = isFilterExpanded;
     setIsFilterExpanded(true);
     const timer = setTimeout(() => {
