@@ -82,7 +82,7 @@ export const NationalSocietyCorrectReportsTable = ({
                 {strings(stringKeys.reports.list.date)}
               </TableSortLabel>
             </TableCell>
-            <TableCell align="center" style={{ width: "6%", minWidth: 155 }}>
+            <TableCell align="center" style={{ width: "6%", minWidth: 185 }}>
               {strings(stringKeys.reports.list.status)}
             </TableCell>
             <TableCell style={{ width: "11%" }}>

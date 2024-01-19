@@ -90,7 +90,6 @@ export const AccountSection = ({ handleItemClick, isExpanded }) => {
       paddingRight: 0,
     },
     ListItemTextUser: {
-      fontSize: 12,
       color: "#7C7C7C",
     },
     ListItemText: {
@@ -111,7 +110,6 @@ export const AccountSection = ({ handleItemClick, isExpanded }) => {
       fontSize: 16,
     },
     Account: {
-      fontSize: 12,
       fontWeight: "bold",
       padding: useRtlDirection ? "8px 8px 8px 0" : "8px 0 8px 8px",
       backgroundColor: theme.palette.background.default,
@@ -130,6 +128,7 @@ export const AccountSection = ({ handleItemClick, isExpanded }) => {
   return (
     <div className={classes.AccordionContainer}>
       <Typography
+        variant="body2"
         className={`${classes.Account} ${!isExpanded && classes.Hide}`}
       >
         {strings(stringKeys.sideMenu.account)}
@@ -176,7 +175,7 @@ export const AccountSection = ({ handleItemClick, isExpanded }) => {
               <ListItem className={classes.ListItemUser}>
                 <ListItemText className={classes.ListItemTextUserContainer}>
                   <Tooltip title={user.roles[0]}>
-                    <Typography noWrap className={classes.ListItemTextUser}>
+                    <Typography variant="body2" noWrap className={classes.ListItemTextUser}>
                       {user.roles[0]}
                     </Typography>
                   </Tooltip>

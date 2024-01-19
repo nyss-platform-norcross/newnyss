@@ -199,9 +199,11 @@ const DataCollectorsCreatePageComponent = (props) => {
       <Form onSubmit={handleSubmit} fullWidth>
         <Grid container spacing={2} className={formStyles.shrinked}>
           <Grid item xs={12}>
+            <Typography variant="h5">
+              {strings(stringKeys.dataCollectors.form.dataCollectorType)}
+            </Typography>
             <RadioGroupField
               name="dataCollectorType"
-              label={strings(stringKeys.dataCollectors.form.dataCollectorType)}
               boldLabel
               field={form.fields.dataCollectorType}
               horizontal

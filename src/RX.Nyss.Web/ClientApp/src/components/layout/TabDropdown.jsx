@@ -37,7 +37,7 @@ export const TabDropdownComponent = ({ projectTabMenuPage, onItemClick }) => {
       borderBottom: page.isActive
         ? `3px solid ${theme.palette.primary.main}`
         : "3px solid transparent",
-      padding: "0px 20px 0px 20px",
+      padding: "8px 28px 8px 28px",
     },
     buttonRoot: {
       borderRadius: "10px 10px 0px 0px",
@@ -53,14 +53,15 @@ export const TabDropdownComponent = ({ projectTabMenuPage, onItemClick }) => {
       borderBottomRightRadius: 10,
     },
     menuList: {
-      width: "100%",
       padding: 0,
+      width: "100%",
       backgroundColor: "inherit",
       borderRadius: "0px 0px 10px 10px",
     },
     menuItem: {
       display: "flex",
       whiteSpace: "normal",
+      padding: 10,
     },
     menuItemActive: {
       backgroundColor: "#E3E3E3",
@@ -117,7 +118,7 @@ export const TabDropdownComponent = ({ projectTabMenuPage, onItemClick }) => {
           root: styles.buttonRoot,
         }}
       >
-        <Typography variant="subtitle2" style={{ textTransform: "uppercase" }}>
+        <Typography variant="body1">
           {page.title}
         </Typography>
         {page.subMenu?.length > 1 ? (
@@ -166,7 +167,7 @@ export const TabDropdownComponent = ({ projectTabMenuPage, onItemClick }) => {
                   onClick={() => handleMenuItemClick(menuItem)}
                 >
                   <Typography
-                    variant="subtitle2"
+                    variant="body1"
                     style={{ textAlign: useRtlDirection ? "right" : "left" }}
                   >
                     {menuItem.title}

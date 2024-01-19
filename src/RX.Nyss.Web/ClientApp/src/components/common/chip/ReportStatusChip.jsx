@@ -1,6 +1,6 @@
 import styles from "../../alerts/components/AlertsAssessmentReport.module.scss";
 
-import { Grid, Chip, Icon } from "@material-ui/core";
+import { Grid, Chip, Icon, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { stringKeys, strings } from "../../../strings";
 
@@ -98,7 +98,9 @@ export const ReportStatusChip = ({ report, rtl }) => {
           >
             {getReportIcon(report.status, rtl)}
           </Grid>
-          <Grid item>{strings(stringKeys.reports.status[report.status])}</Grid>
+          <Grid item>
+            <Typography variant="body2">{strings(stringKeys.reports.status[report.status])}</Typography>
+          </Grid>
         </Grid>
       }
       className={`${classes[report.status]}`}
