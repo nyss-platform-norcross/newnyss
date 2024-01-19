@@ -68,7 +68,7 @@ export const AlertsFilters = ({
 
   const Filter = () => {
     return (
-      <Grid container spacing={2} direction={isSmallScreen ? "column" : "row"} alignItems={isSmallScreen && "center"} >
+      <Grid container spacing={2} direction={isSmallScreen ? "column" : "row"} alignItems={isSmallScreen ? "center" : "flex-start"} >
         <Grid item>
           <DatePicker
             select
