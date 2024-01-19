@@ -127,7 +127,7 @@ export const AlertsAssessmentReport = ({
         expandIcon={!fromOtherOrg && <ExpandMoreIcon />}
       >
         <Grid container alignContent="center" direction={isSmallScreen && "column"}>
-          <Grid container alignItems="center" item xs={isSmallScreen ? 6 : 4}>
+          <Grid container alignItems="center" item xs={6} md={4}>
             <Typography className={classes.time}>
               {strings(stringKeys.alerts.assess.report.sent)}{" "}
               {dayjs(
@@ -135,7 +135,7 @@ export const AlertsAssessmentReport = ({
               ).fromNow()}
             </Typography>
           </Grid>
-          <Grid container alignItems="center" item xs={isSmallScreen ? 6 : 4}>
+          <Grid container alignItems="center" item xs={6} md={4}>
             <Typography variant="body2" className={classes.report}>
               {strings(stringKeys.alerts.assess.report.reportId)} #{report.id}
             </Typography>
@@ -145,7 +145,7 @@ export const AlertsAssessmentReport = ({
             container
             alignItems="center"
             item
-            xs={isSmallScreen ? 6 : 4}
+            xs={6} md={4}
             justifyContent="flex-end"
             style={isSmallScreen ? {margin: "auto"} : null}
           >
