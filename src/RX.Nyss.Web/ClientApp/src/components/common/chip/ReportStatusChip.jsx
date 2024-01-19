@@ -79,6 +79,10 @@ const useStyles = makeStyles(() => ({
   Closed: {
     backgroundColor: "#E3E3E3",
   },
+  smallStatus: {
+    fontSize: "0.75rem",
+    whiteSpace: "normal"
+  }
 }));
 
 export const ReportStatusChip = ({ report, rtl }) => {
@@ -101,7 +105,7 @@ export const ReportStatusChip = ({ report, rtl }) => {
             {getReportIcon(report.status, rtl)}
           </Grid>
           <Grid item>
-            <Typography variant="body2" style={isSmallScreen ? {fontSize: "0.75rem", whiteSpace: "normal"} : null}>
+            <Typography variant="body2" className={isSmallScreen && classes.smallStatus}>
               {strings(stringKeys.reports.status[report.status])}
             </Typography>
           </Grid>
