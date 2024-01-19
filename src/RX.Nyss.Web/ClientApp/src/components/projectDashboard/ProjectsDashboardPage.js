@@ -51,7 +51,7 @@ const ProjectDashboardPageComponent = ({
   }
 
   const handleGeneratePdf = () => {
-    trackEvent("exportProjectDashboardPdf");
+    trackEvent("exportProjectDashboardPdf", { exportFileType: "Pdf" });
 
     const initialState = isFilterExpanded;
     setIsFilterExpanded(true);

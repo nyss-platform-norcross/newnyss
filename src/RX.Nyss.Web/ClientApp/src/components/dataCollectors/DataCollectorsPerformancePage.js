@@ -35,7 +35,9 @@ const DataCollectorsPerformancePageComponent = ({
     getDataCollectorPerformanceList(projectId, filters);
 
   const handleExportToExcel = () => {
-    trackEvent("exportDataCollectorsPerformanceExcel");
+    trackEvent("exportDataCollectorsPerformanceExcel", {
+      exportFileType: "Excel",
+    });
 
     props.exportPerformance(projectId, props.filters);
   };

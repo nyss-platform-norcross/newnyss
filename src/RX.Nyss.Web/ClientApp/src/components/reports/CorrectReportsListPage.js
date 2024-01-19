@@ -67,14 +67,14 @@ const CorrectReportsListPageComponent = (props) => {
   };
 
   function handleExportToCsv() {
-    trackEvent("exportCorrectReportsCsv");
+    trackEvent("exportCorrectReportsCsv", { exportFileType: "Csv" });
     props.trackReportExport(Page, "Csv", props.projectId); //Uses old AppInsights tracking method (could be redundant, mabye remove)
 
     props.exportToCsv(props.projectId, props.filters, props.sorting);
   }
 
   function handleExportToExcel() {
-    trackEvent("exportCorrectReportsExcel");
+    trackEvent("exportCorrectReportsExcel", { exportFileType: "Excel" });
     props.trackReportExport(Page, "Excel", props.projectId); //Uses old AppInsights tracking method (could be redundant, mabye remove)
 
     props.exportToExcel(props.projectId, props.filters, props.sorting);

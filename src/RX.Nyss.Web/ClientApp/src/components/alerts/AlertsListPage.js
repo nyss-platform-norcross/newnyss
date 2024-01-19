@@ -35,7 +35,7 @@ const AlertsListPageComponent = ({ openAlertsList, ...props }) => {
   );
 
   const handleExportToExcel = () => {
-    trackEvent("exportAlertsExcel");
+    trackEvent("exportAlertsExcel", { exportFileType: "Excel" });
 
     props.export(props.projectId, props.filters);
   };

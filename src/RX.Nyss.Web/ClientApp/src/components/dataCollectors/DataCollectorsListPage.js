@@ -44,13 +44,13 @@ const DataCollectorsListPageComponent = ({
   };
 
   const handleExportToCsv = () => {
-    trackEvent("exportDataCollectorsCsv");
+    trackEvent("exportDataCollectorsCsv", { exportFileType: "Csv" });
 
     props.exportToCsv(projectId, props.filters);
   };
 
   const handleExportToExcel = () => {
-    trackEvent("exportDataCollectorsExcel");
+    trackEvent("exportDataCollectorsExcel", { exportFileType: "Excel" });
 
     props.exportToExcel(projectId, props.filters);
   };
