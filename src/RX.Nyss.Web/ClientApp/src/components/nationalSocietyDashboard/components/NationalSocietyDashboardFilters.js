@@ -31,6 +31,7 @@ import LocationFilter from "../../common/filters/LocationFilter";
 import { HealthRiskFilter } from "../../common/filters/HealthRiskFilter";
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";
+import { trackEvent } from "../../../utils/appInsightsHelper";
 
 //Filters components should probably fetch data from redux store themselves
 export const NationalSocietyDashboardFilters = ({
@@ -50,6 +51,7 @@ export const NationalSocietyDashboardFilters = ({
 
   //Fetches new data based on changes in filters
   const handleFiltersChange = (filters) => {
+    trackEvent("NsDashboardFilterChange", {filters});
     onChange(updateLocalFilters(filters));
   };
 
