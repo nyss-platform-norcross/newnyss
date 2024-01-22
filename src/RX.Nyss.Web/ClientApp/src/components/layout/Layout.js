@@ -7,6 +7,7 @@ import { MessagePopup } from "./MessagePopup";
 import { Typography, makeStyles } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { ProjectMenu } from "./ProjectMenu";
+import { TabMenu } from "./TabMenu";
 
 const pageContentId = "pageContent";
 
@@ -38,6 +39,13 @@ const Layout = ({ fillPage, children }) => {
     (state) => state.appData.siteMap.parameters.projectName,
   );
 
+  const title = useSelector(
+    (state) => state.appData.siteMap.parameters.title,
+  );
+  const subTitle = useSelector(
+    (state) => state.appData.siteMap.parameters.subTitle,
+  );
+
   return (
     <BaseLayout>
       <SideMenu />
@@ -66,6 +74,8 @@ const Layout = ({ fillPage, children }) => {
                 </Typography>
               )}
               <ProjectMenu/>
+              {/* Display tabmenu for all pages except alert assesment page */}
+              {(!title && !subTitle) && <TabMenu/>}
               {children}
             </div>
           </div>
