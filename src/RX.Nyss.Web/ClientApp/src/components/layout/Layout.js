@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     margin: 10
   },
-  subHeader: {
+  secondaryHeader: {
     textAlign: "center",
     color: theme.palette.text.secondary
   }
@@ -59,7 +59,7 @@ const Layout = ({ fillPage, children }) => {
               )}
               {projectName && (
                 <Grid container direction="column">
-                  <Typography variant="body1" className={classes.subHeader}>
+                  <Typography variant="body1" className={classes.secondaryHeader}>
                     {nationalSocietyName}
                   </Typography>
                   <Typography variant="h1" className={classes.mainHeader}>
