@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 const Layout = ({ fillPage, children }) => {
   const classes = useStyles();
   const theme = useTheme()
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const nationalSocietyName = useSelector(
     (state) => state.appData.siteMap.parameters.nationalSocietyName,
@@ -69,9 +69,7 @@ const Layout = ({ fillPage, children }) => {
                   {nationalSocietyName} - {projectName}
                 </Typography>
               )}
-              {!isSmallScreen && (
               <TabMenu />
-              )}
               {children}
             </div>
           </div>
