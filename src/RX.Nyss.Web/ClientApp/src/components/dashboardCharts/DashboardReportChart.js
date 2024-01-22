@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, Typography } from "@material-ui/core";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { strings, stringKeys } from "../../strings";
+import { trackEvent } from "../../utils/appInsightsHelper";
 
 const getOptions = (valuesLabel, series, categories) => ({
   chart: {
@@ -57,6 +58,8 @@ const getOptions = (valuesLabel, series, categories) => ({
 });
 
 export const DashboardReportChart = ({ data }) => {
+  const [hasHoveredChart, setHasHoveredChart] = useState(false);
+
   const resizeChart = (element) => {
     element && element.chart.reflow();
   };
@@ -86,8 +89,13 @@ export const DashboardReportChart = ({ data }) => {
     categories,
   );
 
+  const hoverFunc = () => {
+    if (!hasHoveredChart){
+      trackEvent("hoveredReportChart");
+      setHasHoveredChart(true)};
+    };
   return (
-    <Card data-printable={true}>
+    <Card data-printable={true} onMouseEnter={hoverFunc}>
       <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.reportsPerHealthRisk.title)}</Typography>}/>
       <CardContent>
         <HighchartsReact
