@@ -4,9 +4,9 @@ import { SideMenu } from "./SideMenu";
 import { BaseLayout } from "./BaseLayout";
 import styles from "./Layout.module.scss";
 import { MessagePopup } from "./MessagePopup";
-import { TabMenu } from "./TabMenu";
 import { Typography, makeStyles } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import { ProjectMenu } from "./ProjectMenu";
 
 const pageContentId = "pageContent";
 
@@ -65,7 +65,7 @@ const Layout = ({ fillPage, children }) => {
                   {nationalSocietyName} - {projectName}
                 </Typography>
               )}
-              <TabMenu />
+              <ProjectMenu/>
               {children}
             </div>
           </div>

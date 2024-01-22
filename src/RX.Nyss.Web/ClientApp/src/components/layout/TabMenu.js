@@ -5,9 +5,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { Tabs, Tab, Grid } from "@material-ui/core";
-import { TabDropdown } from "./TabDropdown";
 
-const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl }) => {
+const TabMenuComponent = ({ tabMenu, push, currentUrl }) => {
   const onItemClick = (item) => {
     push(item.url);
   };
@@ -17,24 +16,7 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl }) => {
     (t) => t.url.toLowerCase() === currentUrl.toLowerCase(),
   );
   return (
-    <div className={styles.tabMenu}>
-      <Grid container justifyContent="center" style={{ marginBottom: 50 }}>
-        {/* Only display project tab menu for all users other than data consumer since the role only has acces to project dashboard */}
-        {projectTabMenu.length > 1 &&
-          projectTabMenu.map((item) => (
-            <Grid
-              key={`projectTabMenu_${item.url}`}
-              item
-              style={{ backgroundColor: "#FCFCFC" }}
-            >
-              <TabDropdown
-                projectTabMenuPage={item}
-                onItemClick={onItemClick}
-              />
-            </Grid>
-          ))}
-      </Grid>
-
+    <Grid style={{ margin: "20px 0px" }}>
       {showTabMenu && (
         <Tabs
           value={tabMenu.indexOf(tabMenu.find((t) => t.isActive))}
@@ -52,7 +34,7 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl }) => {
           ))}
         </Tabs>
       )}
-    </div>
+    </Grid>
   );
 };
 
@@ -62,7 +44,6 @@ TabMenuComponent.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  projectTabMenu: state.appData.siteMap.projectTabMenu,
   tabMenu: state.appData.siteMap.tabMenu,
   currentUrl: state.appData.route.url,
 });
