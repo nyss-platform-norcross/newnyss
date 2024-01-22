@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
-import { Tabs, Tab, Grid } from "@material-ui/core";
+import { Tabs, Tab, Grid, Typography } from "@material-ui/core";
 
 const TabMenuComponent = ({ tabMenu, push, currentUrl }) => {
   const onItemClick = (item) => {
@@ -28,9 +28,10 @@ const TabMenuComponent = ({ tabMenu, push, currentUrl }) => {
           {tabMenu.map((item) => (
             <Tab
               key={`tabMenu_${item.url}`}
-              label={item.title}
+              label={<Typography style={{ fontWeight: item.isActive ? "bold" : "normal" }}>{item.title}</Typography>}
               onClick={item.isActive ? () => null : () => onItemClick(item)}
-              style={{ fontWeight: item.isActive ? "bold" : "normal" }}
+              style={{ textTransform: "none" }}
+
             />
           ))}
         </Tabs>
