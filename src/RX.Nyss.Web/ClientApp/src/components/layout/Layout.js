@@ -38,6 +38,14 @@ const Layout = ({ fillPage, children }) => {
   const projectName = useSelector(
     (state) => state.appData.siteMap.parameters.projectName,
   );
+
+  const title = useSelector(
+    (state) => state.appData.siteMap.parameters.title,
+  );
+  const subTitle = useSelector(
+    (state) => state.appData.siteMap.parameters.subTitle,
+  );
+
   return (
     <BaseLayout>
       <SideMenu />
@@ -66,7 +74,8 @@ const Layout = ({ fillPage, children }) => {
                 </Typography>
               )}
               <ProjectMenu/>
-              <TabMenu/>
+              {/* Display tabmenu for all pages except alert assesment page */}
+              {(!title && !subTitle) && <TabMenu/>}
               {children}
             </div>
           </div>
