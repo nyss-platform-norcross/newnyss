@@ -17,13 +17,24 @@ import { sexValues, dataCollectorType } from "./logic/dataCollectorsConstants";
 import SelectField from "../forms/SelectField";
 import { getSaveFormModel } from "./logic/dataCollectorsService";
 import { ValidationMessage } from "../forms/ValidationMessage";
-import { MenuItem, Button, Grid, Typography } from "@material-ui/core";
+import { MenuItem, makeStyles, Grid, Typography, useTheme, IconButton } from "@material-ui/core";
 import { HeadSupervisor, Supervisor } from "../../authentication/roles";
 import CheckboxField from "../forms/CheckboxField";
 import { DataCollectorLocationItem } from "./components/DataCollectorLocationItem";
 import { getBirthDecades } from "../../utils/birthYear";
 import { SubMenuTitle } from "../layout/SubMenuTitle";
 import { trackPageView } from "../../utils/appInsightsHelper";
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+
+const useStyles = makeStyles((theme) => ({
+  addLocationContainer: {
+    marginTop: 20,
+    width: "fit-content",
+    "&:hover": {
+      cursor: "pointer",
+    }
+  }
+}));
 
 const DataCollectorsEditPageComponent = (props) => {
   const currentUserRoles = useSelector((state) => state.appData.user.roles);
@@ -35,6 +46,8 @@ const DataCollectorsEditPageComponent = (props) => {
   const [locations, setLocations] = useState(null);
   const [centerLocation, setCenterLocation] = useState(null);
   const [allLocationsCollapsed, setAllLocationsCollapsed] = useState(true);
+  const classes = useStyles();
+  const theme = useTheme();
 
   useMount(() => {
     props.openEdition(props.dataCollectorId);
@@ -294,39 +307,39 @@ const DataCollectorsEditPageComponent = (props) => {
               </Grid>
             </Grid>
           )}
-          <Grid container item xs={12} justifyContent="space-between" style={{ marginTop: 50 }}>
-          <Typography variant="h5">
+          <Typography variant="h5" style={{ marginTop: 50 }}>
             {strings(stringKeys.dataCollectors.form.locationsHeader)}
           </Typography>
-          <Button
-            color="primary"
-            variant="outlined"
-            onClick={addDataCollectorLocation}
-            >
-            {strings(stringKeys.dataCollectors.form.addLocation)}
-          </Button>
+          <Grid container spacing={2} style={{ marginTop: 5 }}>
+            {locations.map((location, i) => (
+              <DataCollectorLocationItem
+                key={`location_${location.number}`}
+                form={form}
+                location={location}
+                locationNumber={location.number}
+                isLastLocation={i === locations.length - 1}
+                isOnlyLocation={locations.length === 1}
+                defaultLocation={centerLocation}
+                regions={props.data.formData.regions}
+                initialDistricts={location.initialFormData.districts}
+                initialVillages={location.initialFormData.villages}
+                initialZones={location.initialFormData.zones}
+                isDefaultCollapsed={allLocationsCollapsed}
+                removeLocation={removeDataCollectorLocation}
+                allLocations={locations}
+                rtl={useRtlDirection}
+              />
+            ))}
           </Grid>
-            <Grid container spacing={2} style={{ marginTop: 5 }}>
-              {locations.map((location, i) => (
-                <DataCollectorLocationItem
-                  key={`location_${location.number}`}
-                  form={form}
-                  location={location}
-                  locationNumber={location.number}
-                  isLastLocation={i === locations.length - 1}
-                  isOnlyLocation={locations.length === 1}
-                  defaultLocation={centerLocation}
-                  regions={props.data.formData.regions}
-                  initialDistricts={location.initialFormData.districts}
-                  initialVillages={location.initialFormData.villages}
-                  initialZones={location.initialFormData.zones}
-                  isDefaultCollapsed={allLocationsCollapsed}
-                  removeLocation={removeDataCollectorLocation}
-                  allLocations={locations}
-                  rtl={useRtlDirection}
-                />
-              ))}
-            </Grid>
+          <Grid className={classes.addLocationContainer} onClick={addDataCollectorLocation} container alignItems="center">
+          <IconButton
+              color="primary"
+              variant="outlined"
+              >
+              <AddCircleOutlineIcon/>
+          </IconButton>
+          <Typography style={{ color: theme.palette.primary.main }}>{strings(stringKeys.dataCollectors.form.addLocation)}</Typography>
+        </Grid>
           <FormActions>
             <CancelButton
               variant="outlined"

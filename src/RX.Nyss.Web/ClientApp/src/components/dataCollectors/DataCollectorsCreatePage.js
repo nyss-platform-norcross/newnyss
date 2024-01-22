@@ -4,9 +4,11 @@ import {
   Radio,
   FormControlLabel,
   MenuItem,
-  Button,
+  makeStyles,
   Grid,
   Typography,
+  IconButton,
+  useTheme,
 } from "@material-ui/core";
 import { withLayout } from "../../utils/layout";
 import { validators, createForm, useCustomErrors } from "../../utils/forms";
@@ -31,6 +33,17 @@ import { DataCollectorLocationItem } from "./components/DataCollectorLocationIte
 import { getBirthDecades, parseBirthDecade } from "../../utils/birthYear";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
 import { trackPageView } from "../../utils/appInsightsHelper";
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+
+const useStyles = makeStyles((theme) => ({
+  addLocationContainer: {
+    marginTop: 20,
+    width: "fit-content",
+    "&:hover": {
+      cursor: "pointer",
+    }
+  }
+}));
 
 const DataCollectorsCreatePageComponent = (props) => {
   const currentUserRoles = useSelector((state) => state.appData.user.roles);
@@ -51,6 +64,9 @@ const DataCollectorsCreatePageComponent = (props) => {
       number: 0,
     },
   ]);
+
+  const theme = useTheme()
+  const classes = useStyles()
 
   useMount(() => {
     props.openCreation(props.projectId);
@@ -319,18 +335,9 @@ const DataCollectorsCreatePageComponent = (props) => {
             </Grid>
             )}
         </Grid>
-        <Grid container item xs={12} justifyContent="space-between" style={{ marginTop: 50 }}>
-          <Typography variant="h5">
-            {strings(stringKeys.dataCollectors.form.locationsHeader)}
-          </Typography>
-          <Button
-            color="primary"
-            variant="outlined"
-            onClick={addDataCollectorLocation}
-            >
-            {strings(stringKeys.dataCollectors.form.addLocation)}
-          </Button>
-        </Grid>
+        <Typography variant="h5" style={{ marginTop: 50 }}>
+          {strings(stringKeys.dataCollectors.form.locationsHeader)}
+        </Typography>
         <Grid container spacing={2} style={{ marginTop: 5 }}>
           {locations.map((location, i) => (
             <DataCollectorLocationItem
@@ -349,6 +356,15 @@ const DataCollectorsCreatePageComponent = (props) => {
             />
           ))}
         </Grid>
+        <Grid className={classes.addLocationContainer} onClick={addDataCollectorLocation} container alignItems="center">
+          <IconButton
+              color="primary"
+              variant="outlined"
+              >
+              <AddCircleOutlineIcon/>
+          </IconButton>
+          <Typography style={{ color: theme.palette.primary.main }}>{strings(stringKeys.dataCollectors.form.addLocation)}</Typography>
+        </Grid>
         <FormActions>
           <CancelButton
             variant="outlined"
@@ -357,7 +373,12 @@ const DataCollectorsCreatePageComponent = (props) => {
             {strings(stringKeys.form.cancel)}
           </CancelButton>
           <SubmitButton isFetching={props.isSaving}>
-            {strings(stringKeys.common.buttons.update)}
+            <Typography color="inherit" style={{ marginRight: 4 }}>
+              {strings(stringKeys.common.buttons.update)}
+            </Typography>
+            <Typography color="inherit" style={{ textTransform: "lowercase" }}>
+              {strings(stringKeys.dataCollectors.constants.dataCollectorType[type])}
+            </Typography>
           </SubmitButton>
         </FormActions>
       </Form>
