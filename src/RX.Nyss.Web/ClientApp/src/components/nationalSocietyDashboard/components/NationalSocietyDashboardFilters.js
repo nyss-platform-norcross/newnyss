@@ -18,6 +18,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Typography,
 } from "@material-ui/core";
 import DateRange from "@material-ui/icons/DateRange";
 import ExpandMore from "@material-ui/icons/ExpandMore";
@@ -116,7 +117,7 @@ export const NationalSocietyDashboardFilters = ({
         <CardContent className={styles.collapsedFilterBar}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
-              <CardHeader title={strings(stringKeys.dashboard.filters.title)} />
+              <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>} />
             </Grid>
             {!isFilterExpanded && (
               <Fragment>
@@ -245,9 +246,9 @@ export const NationalSocietyDashboardFilters = ({
         expanded={isFilterExpanded}
       >
         {!isSmallScreen && (
-          <Grid container spacing={2}>
+          <Grid container>
             <CardHeader
-              title={strings(stringKeys.dashboard.filters.title)}
+              title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>}
               className={styles.filterTitle}
             />
           </Grid>

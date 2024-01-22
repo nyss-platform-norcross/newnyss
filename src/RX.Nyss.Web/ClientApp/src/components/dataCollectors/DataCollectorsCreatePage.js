@@ -34,6 +34,7 @@ import { getBirthDecades, parseBirthDecade } from "../../utils/birthYear";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
 import { trackPageView } from "../../utils/appInsightsHelper";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { SubMenuTitle } from "../layout/SubMenuTitle";
 
 const useStyles = makeStyles((theme) => ({
   addLocationContainer: {
@@ -200,6 +201,7 @@ const DataCollectorsCreatePageComponent = (props) => {
 
   return (
     <Fragment>
+      <SubMenuTitle />
       {props.error && !props.error.data && (
         <ValidationMessage message={props.error.message} />
       )}

@@ -74,16 +74,16 @@ const AlertsAssessmentPageComponent = ({
   return (
     <Fragment>
       <Grid container alignItems="center">
-        <Typography style={{ fontSize: 24, fontWeight: 700, marginRight: 10 }}>
+        <Typography variant="h3" style={{ marginRight: 10 }}>
           {props.title}
         </Typography>
         <Typography
-          variant="body2"
+          variant="body1"
           style={{ alignSelf: "center", marginRight: 15 }}
         >{`#${alertId}`}</Typography>
         <AlertStatusChip status={data.assessmentStatus} />
       </Grid>
-      <Typography variant="body2" style={{ marginTop: 10 }}>
+      <Typography variant="body1">
         {props.subTitle}
       </Typography>
       <div className={styles.form}>
@@ -95,15 +95,15 @@ const AlertsAssessmentPageComponent = ({
         )}
 
         <Grid container className={classes.infoBox}>
-          <Typography variant="body2">{data.caseDefinition}</Typography>
+          <Typography variant="body1">{data.caseDefinition}</Typography>
         </Grid>
         <Grid container className={classes.infoBox}>
           <Typography
             style={{ display: "flex", flexDirection: "row" }}
-            variant="body2"
+            variant="body1"
           >
             <>
-              <Typography variant="body2" style={{ marginRight: 5 }}>
+              <Typography variant="body1" style={{ marginRight: 5 }}>
                 {strings(stringKeys.alerts.assess.thresholdInfo.threshold)}:
               </Typography>
               <strong style={{ marginRight: 5 }}>
@@ -115,7 +115,7 @@ const AlertsAssessmentPageComponent = ({
             </>
             {data.healthRiskDaysThreshold && (
               <>
-                <Typography variant="body2" style={{ marginRight: 5 }}>
+                <Typography variant="body1" style={{ marginRight: 5 }}>
                   {strings(stringKeys.alerts.assess.thresholdInfo.in)}
                 </Typography>
                 <strong style={{ marginRight: 5 }}>
@@ -128,7 +128,7 @@ const AlertsAssessmentPageComponent = ({
             )}
             {data.healthRiskKilometersThreshold && (
               <>
-                <Typography variant="body2" style={{ marginRight: 5 }}>
+                <Typography variant="body1" style={{ marginRight: 5 }}>
                   {strings(stringKeys.alerts.assess.thresholdInfo.within)}
                 </Typography>
                 <strong style={{ marginRight: 5 }}>
@@ -150,9 +150,9 @@ const AlertsAssessmentPageComponent = ({
           </>
         )}
 
-        <div className={styles.reportsTitle}>
+        <Typography variant="h4" style={{ marginTop: 20 }}>
           {strings(stringKeys.alerts.assess.reports)}
-        </div>
+        </Typography>
 
         <Grid container spacing={2}>
           {data.reports.sort(sortByReportStatus).map((report) => (

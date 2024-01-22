@@ -23,7 +23,7 @@ export const ProjectsOverviewHealthRiskItem = ({ projectHealthRisk, rtl }) => {
   return (
     <Card>
       <CardContent className={styles.healthRisk}>
-        <Typography className={`${styles.header} ${styles.healthRiskCode}`}>
+        <Typography variant="h5" className={`${styles.header}`}>
           {projectHealthRisk.healthRiskCode}
         </Typography>
         <Typography

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, CardHeader } from "@material-ui/core";
+import { Card, CardContent, CardHeader, Typography } from "@material-ui/core";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { strings, stringKeys } from "../../strings";
@@ -87,9 +87,7 @@ export const DashboardReportVillageChart = ({ data }) => {
 
   return (
     <Card data-printable={true}>
-      <CardHeader
-        title={strings(stringKeys.dashboard.reportsPerVillageAndDate.title)}
-      />
+      <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.reportsPerVillageAndDate.title)}</Typography>}/>
       <CardContent>
         <HighchartsReact
           highcharts={Highcharts}
