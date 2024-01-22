@@ -6,8 +6,8 @@ import { nationalSocietyLeftMenuOrder } from "../../nationalSocieties/logic/nati
 export const projectTabMenuOrder = {
   dashboard: 0,
   alerts: 10,
-  dataCollectors: 20,
-  reports: 30,
+  reports: 20,
+  dataCollectors: 30,
   settings: 40,
 };
 
@@ -46,7 +46,7 @@ export const projectsSiteMap = [
     path: "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
     title: () => strings(stringKeys.project.settingsRootTitle),
     placeholder: placeholders.projectTabMenu,
-    access: accessMap.projects.showOverview,
+    access: accessMap.projects.settings,
     placeholderIndex: projectTabMenuOrder.settings,
     icon: "Settings",
   },
@@ -55,7 +55,7 @@ export const projectsSiteMap = [
       "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
     path: "/nationalsocieties/:nationalSocietyId/projects/:projectId/overview",
     title: () => strings(stringKeys.project.settings),
-    access: accessMap.projects.showOverview,
+    access: accessMap.projects.overview,
     placeholder: placeholders.projectSubMenu,
     placeholderIndex: 1,
     middleStepOnly: true,
@@ -73,7 +73,7 @@ export const projectsSiteMap = [
     path: "/nationalsocieties/:nationalSocietyId/projects/:projectId/healthrisks",
     title: () => strings(stringKeys.healthRisk.title),
     placeholder: placeholders.projectSubMenu,
-    access: accessMap.projects.showOverview,
+    access: accessMap.projects.projectHealthRisks,
     placeholderIndex: projectSubMenuOrder.healthRisks,
     middleStepOnly: true,
   },

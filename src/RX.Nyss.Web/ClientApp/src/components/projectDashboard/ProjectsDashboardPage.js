@@ -10,7 +10,7 @@ import { Loading } from "../common/loading/Loading";
 import { useMount } from "../../utils/lifecycle";
 import { ProjectsDashboardFilters } from "./components/ProjectsDashboardFilters";
 import { ProjectsDashboardNumbers } from "./components/ProjectsDashboardNumbers";
-import { DashboardReportsMap } from "../dashboardCharts/DashboardReportsMap";
+//import { DashboardReportsMap } from "../dashboardCharts/DashboardReportsMap";
 import { DashboardReportChart } from "../dashboardCharts/DashboardReportChart";
 import { DashboardReportSexAgeChart } from "../dashboardCharts/DashboardReportSexAgeChart";
 import { DashboardReportSexAgeTable } from "../dashboardTables/DashboardReportSexAgeTable";
@@ -87,7 +87,8 @@ const ProjectDashboardPageComponent = ({
               projectSummary={props.projectSummary}
               reportsType={props.filters.reportsType}
             />
-          </Grid>
+            </Grid>
+            {/* }
           <Grid item xs={12}>
             <DashboardReportsMap
               data={props.reportsGroupedByLocation}
@@ -97,7 +98,7 @@ const ProjectDashboardPageComponent = ({
                 props.getReportHealthRisks(projectId, lat, long)
               }
             />
-          </Grid>
+          </Grid>*/}
           <Grid item xs={12}>
             <DashboardReportChart
               data={props.reportsGroupedByHealthRiskAndDate}

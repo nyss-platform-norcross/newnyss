@@ -36,7 +36,6 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl }) => {
             ))}
         </Grid>
       )}
-
       {showTabMenu && (
         <Tabs
           value={tabMenu.indexOf(tabMenu.find((t) => t.isActive))}
