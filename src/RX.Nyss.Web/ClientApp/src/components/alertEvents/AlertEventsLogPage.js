@@ -55,17 +55,18 @@ const AlertEventsLogPageComponent = ({
         <Grid item style={{ width: "100%" }}>
           <Grid container alignItems="center">
             <Typography
-              style={{ fontSize: 24, fontWeight: 700, marginRight: 10 }}
+              variant="h3"
+              style={{ marginRight: 10 }}
             >
               {props.title}
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               style={{ alignSelf: "center", marginRight: 15 }}
             >{`#${alertId}`}</Typography>
             <AlertStatusChip status={alert.assessmentStatus} />
           </Grid>
-          <Typography variant="body2" style={{ marginTop: 10 }}>
+          <Typography variant="body1">
             {props.subTitle}
           </Typography>
           <TabMenu/>

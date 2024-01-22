@@ -37,10 +37,6 @@ export const ProjectsHealthRiskItem = ({
     cardBodyText: {
       fontSize: 16,
     },
-    healthRiskCode: {
-      fontSize: 16,
-      fontWeight: 700,
-    },
     label: {
       top: -15,
     },
@@ -141,10 +137,10 @@ export const ProjectsHealthRiskItem = ({
   const renderHeader = () =>
     !rtl ? (
       <Fragment>
-        <Typography className={`${styles.header} ${classes.healthRiskCode}`}>
+        <Typography variant="h5" className={`${styles.header}`}>
           {healthRisk.healthRiskCode}
         </Typography>
-        <Typography className={`${styles.header} ${styles.healthRiskName}`}>
+        <Typography variant="h5" className={`${styles.header}`} style={{ margin: rtl ? "10px 0px 0px 0px" : "0px 0px 0px 10px" }}>
           {healthRisk.healthRiskName}
         </Typography>
       </Fragment>

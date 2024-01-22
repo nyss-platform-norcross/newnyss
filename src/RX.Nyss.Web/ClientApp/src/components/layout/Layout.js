@@ -18,11 +18,7 @@ export const resetPageContentScroll = () => {
 
 const useStyles = makeStyles({
   header: {
-    color: "#000",
-    fontSize: 30,
-    fontWeight: 700,
     textAlign: "center",
-    margin: "20px 0 20px 0",
   },
   title: {
     fontSize: 24,
@@ -64,12 +60,12 @@ const Layout = ({ fillPage, children }) => {
           >
             <div className={fillPage ? styles.fillPage : null}>
               {nationalSocietyName && !projectName && (
-                <Typography className={classes.header}>
+                <Typography variant="h1" className={classes.header}>
                   {nationalSocietyName}
                 </Typography>
               )}
               {projectName && (
-                <Typography className={classes.header}>
+                <Typography variant="h1" className={classes.header}>
                   {nationalSocietyName} - {projectName}
                 </Typography>
               )}
