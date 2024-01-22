@@ -18,6 +18,7 @@ import { SubMenuTitle } from "../layout/SubMenuTitle";
 import { sortByReportStatus } from "../../utils/sortReportByStatus";
 import { AlertStatusChip } from "../common/chip/AlertStatusChip";
 import { trackPageView } from "../../utils/appInsightsHelper";
+import { TabMenu } from "../layout/TabMenu";
 
 const useStyles = makeStyles((theme) => ({
   infoBox: {
@@ -86,6 +87,7 @@ const AlertsAssessmentPageComponent = ({
       <Typography variant="body2" style={{ marginTop: 10 }}>
         {props.subTitle}
       </Typography>
+      <TabMenu/>
       <div className={styles.form}>
         {data.assessmentStatus === assessmentStatus.closed && data.comments && (
           <DisplayField

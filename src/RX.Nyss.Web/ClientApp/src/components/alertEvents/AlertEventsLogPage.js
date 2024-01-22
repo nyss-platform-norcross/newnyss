@@ -10,11 +10,11 @@ import { TableActionsButton } from "../common/buttons/tableActionsButton/TableAc
 import { accessMap } from "../../authentication/accessMap";
 import { stringKeys, strings } from "../../strings";
 import { CreateAlertEventDialog } from "./components/CreateAlertEventDialog";
-import TableActions from "../common/tableActions/TableActions";
 import { Grid, Typography } from "@material-ui/core";
 import { AlertStatusChip } from "../common/chip/AlertStatusChip";
 import * as alertsActions from "../alerts/logic/alertsActions";
 import { trackPageView } from "../../utils/appInsightsHelper";
+import { TabMenu } from "../layout/TabMenu";
 
 const AlertEventsLogPageComponent = ({
   alertId,
@@ -65,23 +65,23 @@ const AlertEventsLogPageComponent = ({
             >{`#${alertId}`}</Typography>
             <AlertStatusChip status={alert.assessmentStatus} />
           </Grid>
-          <Grid item container justifyContent="space-between">
-            <Typography variant="body2" style={{ marginTop: 10 }}>
-              {props.subTitle}
-            </Typography>
-            <TableActionsButton
-              onClick={() => setCreateDialogOpened(true)}
-              variant="contained"
-              roles={accessMap.alertEvents.add}
-              add
-              rtl={useRtlDirection}
-            >
-              {strings(stringKeys.common.buttons.add)}
-            </TableActionsButton>
-          </Grid>
+          <Typography variant="body2" style={{ marginTop: 10 }}>
+            {props.subTitle}
+          </Typography>
+          <TabMenu/>
         </Grid>
       </Grid>
-
+      <Grid container justifyContent="flex-end" style={{ marginBottom: 10 }}>
+        <TableActionsButton
+          onClick={() => setCreateDialogOpened(true)}
+          variant="contained"
+          roles={accessMap.alertEvents.add}
+          add
+          rtl={useRtlDirection}
+          >
+          {strings(stringKeys.common.buttons.add)}
+        </TableActionsButton>
+      </Grid>
       <AlertEventsTable
         alertId={alertId}
         list={data}
