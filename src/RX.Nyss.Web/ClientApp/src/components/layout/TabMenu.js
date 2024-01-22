@@ -30,6 +30,7 @@ const TabMenuComponent = ({ tabMenu, push, currentUrl }) => {
               key={`tabMenu_${item.url}`}
               label={item.title}
               onClick={item.isActive ? () => null : () => onItemClick(item)}
+              style={{ fontWeight: item.isActive ? "bold" : "normal" }}
             />
           ))}
         </Tabs>
