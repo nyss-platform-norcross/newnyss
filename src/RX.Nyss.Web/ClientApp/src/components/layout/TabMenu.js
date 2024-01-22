@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { Tabs, Tab, Grid } from "@material-ui/core";
 
-const TabMenuComponent = ({ tabMenu, push, currentUrl }) => {
+const TabMenuComponent = ({ tabMenu, push, currentUrl, title, subTitle }) => {
   const onItemClick = (item) => {
     push(item.url);
   };
@@ -15,6 +15,10 @@ const TabMenuComponent = ({ tabMenu, push, currentUrl }) => {
   const showTabMenu = tabMenu.some(
     (t) => t.url.toLowerCase() === currentUrl.toLowerCase(),
   );
+
+  // Display tabmenu for all pages except alert assesment page
+  if(title && subTitle) return null;
+
   return (
     <Grid style={{ margin: "20px 0px" }}>
       {showTabMenu && (
@@ -47,6 +51,8 @@ TabMenuComponent.propTypes = {
 const mapStateToProps = (state) => ({
   tabMenu: state.appData.siteMap.tabMenu,
   currentUrl: state.appData.route.url,
+  title: state.appData.siteMap.parameters.title,
+  subTitle: state.appData.siteMap.parameters.subTitle,
 });
 
 const mapDispatchToProps = {
