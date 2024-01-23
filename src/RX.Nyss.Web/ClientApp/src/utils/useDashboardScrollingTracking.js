@@ -10,7 +10,7 @@ const useDashboardScrollingTracking = () => {
     (state) => state.appData.siteMap.title,
   );
   const [scrollTop, setScrollTop] = useState(0);
-  const hasScrolledThreshold = 50;
+  const hasScrolledThreshold = 150;
 
   useEffect(() => {
     if (pageTitle === "Dashboard") {
