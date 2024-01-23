@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header } from "./Header";
 import { SideMenu } from "./SideMenu";
 import { BaseLayout } from "./BaseLayout";
@@ -7,6 +7,7 @@ import { MessagePopup } from "./MessagePopup";
 import { TabMenu } from "./TabMenu";
 import { Typography, makeStyles } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import { trackEvent } from "../../utils/appInsightsHelper";
 
 const pageContentId = "pageContent";
 
@@ -33,7 +34,30 @@ const Layout = ({ fillPage, children }) => {
   const projectName = useSelector(
     (state) => state.appData.siteMap.parameters.projectName,
   );
+  const pageTitle = useSelector(
+    (state) => state.appData.siteMap.title,
+  );
 
+  // This code is used to track if a user is scrolling in either the project or NS dashboard.
+  const [inDashboardPage, setInDashboardPage] = useState(false);
+
+  if(pageTitle && pageTitle == "Dashboard"){
+    !inDashboardPage && setInDashboardPage(true);
+  } else if (pageTitle) {
+    inDashboardPage && setInDashboardPage(false);
+    hasScrolledInDashboard && setHasScrolledInDashboard(false);
+  };
+
+  const [scrollTop, setScrollTop] = useState(0);
+  const handleScroll = (event) => inDashboardPage && setScrollTop(event.target.scrollTop);
+  const [hasScrolledInDashboard, setHasScrolledInDashboard] = useState(false);
+  const hasScrolledThreshold = 50;
+
+  // If the user has scrolled past a given threshold in a dashboard, send the data to application insights
+  if (inDashboardPage && scrollTop > hasScrolledThreshold && !hasScrolledInDashboard){
+    trackEvent("hasScrolledInDashboard");
+    setHasScrolledInDashboard(true);
+  }
   return (
     <BaseLayout>
       <SideMenu />
@@ -44,6 +68,7 @@ const Layout = ({ fillPage, children }) => {
             fillPage ? styles.fillPage : null
           }`}
           id={pageContentId}
+          onScroll={handleScroll}
         >
           <div
             className={`${styles.pageContent} ${
