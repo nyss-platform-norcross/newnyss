@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, Typography } from "@material-ui/core";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { strings, stringKeys } from "../../strings";
-import { trackEvent } from "../../utils/appInsightsHelper";
+import useHoverChartTracking from "../../utils/useHoverChartTracking";
 
 const getOptions = (valuesLabel, series, categories) => ({
   chart: {
@@ -58,7 +58,7 @@ const getOptions = (valuesLabel, series, categories) => ({
 });
 
 export const DashboardReportVillageChart = ({ data }) => {
-  const [hasHoveredChart, setHasHoveredChart] = useState(false);
+  const trackHoveredChart = useHoverChartTracking();
   const categories = data.allPeriods;
   const villages = data.villages.length
     ? data.villages
@@ -86,14 +86,8 @@ export const DashboardReportVillageChart = ({ data }) => {
     series,
     categories,
   );
-
-  const hoverFunc = () => {
-    if (!hasHoveredChart){
-      trackEvent("hoveredReportVillageChart");
-      setHasHoveredChart(true)};
-    };
   return (
-    <Card data-printable={true} onMouseEnter={hoverFunc}>
+    <Card data-printable={true} onMouseEnter={() => trackHoveredChart("hoveredReportVillageChart")}>
       <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.reportsPerVillageAndDate.title)}</Typography>}/>
       <CardContent>
         <HighchartsReact

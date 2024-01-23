@@ -12,18 +12,13 @@ import {
   Typography
 } from "@material-ui/core";
 import { strings, stringKeys } from "../../strings";
-import { trackEvent } from "../../utils/appInsightsHelper";
+import useHoverChartTracking from "../../utils/useHoverChartTracking";
 
 export const DashboardReportSexAgeTable = ({ data }) => {
-  const [hasHoveredChart, setHasHoveredChart] = useState(false);
-
-  const hoverFunc = () => {
-    if (!hasHoveredChart){
-      trackEvent("hoveredReportSexAgeTable");
-      setHasHoveredChart(true)};
-    };
+  const trackHoveredChart = useHoverChartTracking();
+  
   return (
-    <Card data-printable={true} onMouseEnter={hoverFunc}>
+    <Card data-printable={true} onMouseEnter={() => trackHoveredChart("hoveredReportSexAgeTable")}>
       <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.reportsPerFeature.title)}</Typography>}/>
       <CardContent>
         <Table className={styles.table}>
