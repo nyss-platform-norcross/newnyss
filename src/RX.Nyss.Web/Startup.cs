@@ -47,6 +47,14 @@ public class Startup
             app.UseHsts();
         }
 
+        app.Use(async (context, next) =>
+        {
+            context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+            context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+
+            await next();
+        });
+
         app.UseCustomExceptionHandler();
 
         var supportedCultures = config.Languages.Split(",").Select(lang => new CultureInfo(lang)).ToList();

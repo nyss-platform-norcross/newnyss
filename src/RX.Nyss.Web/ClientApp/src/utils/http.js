@@ -54,6 +54,11 @@ const callApi = (
   authenticate = false,
   abortSignal = null,
 ) => {
+  const securityHeaders = {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "SAMEORIGIN",
+  };
+
   return new Promise((resolve, reject) => {
     let init = {
       method,
@@ -67,6 +72,7 @@ const callApi = (
         ...(window.userLanguage
           ? { "Accept-Language": `${window.userLanguage}, en;q=0.5` }
           : {}),
+        ...securityHeaders,
       }),
       signal: abortSignal,
     };
