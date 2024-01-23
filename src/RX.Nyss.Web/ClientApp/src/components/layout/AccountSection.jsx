@@ -175,7 +175,11 @@ export const AccountSection = ({ handleItemClick, isExpanded }) => {
               <ListItem className={classes.ListItemUser}>
                 <ListItemText className={classes.ListItemTextUserContainer}>
                   <Tooltip title={user.roles[0]}>
-                    <Typography variant="body2" noWrap className={classes.ListItemTextUser}>
+                    <Typography
+                      variant="body2"
+                      noWrap
+                      className={classes.ListItemTextUser}
+                    >
                       {user.roles[0]}
                     </Typography>
                   </Tooltip>

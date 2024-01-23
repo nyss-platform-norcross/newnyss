@@ -134,7 +134,7 @@ export const SetupStepper = ({
 
   const handleFinish = () => {
     // Add api request here to create project
-  }
+  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -193,7 +193,10 @@ export const SetupStepper = ({
             <StepLabel StepIconComponent={StepIcon}>
               <Typography
                 style={{
-                  color: step.stepNumber >= activeStep ? "#7C7C7C" : theme.palette.primary.main,
+                  color:
+                    step.stepNumber >= activeStep
+                      ? "#7C7C7C"
+                      : theme.palette.primary.main,
                 }}
               >
                 {step.name}
