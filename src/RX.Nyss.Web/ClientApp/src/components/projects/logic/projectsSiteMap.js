@@ -72,7 +72,6 @@ export const projectsSiteMap = [
       "/nationalsocieties/:nationalSocietyId/projects/:projectId/settings",
     path: "/nationalsocieties/:nationalSocietyId/projects/:projectId/healthrisks",
     title: () => strings(stringKeys.healthRisk.title),
-    altTitle: () => strings(stringKeys.healthRisk.altTitle),
     placeholder: placeholders.projectSubMenu,
     access: accessMap.projects.projectHealthRisks,
     placeholderIndex: projectSubMenuOrder.healthRisks,
