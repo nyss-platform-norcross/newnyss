@@ -32,7 +32,6 @@ const useDashboardScrollingTracking = () => {
   // Uses inDashboardPage and hasScrolledInDashboard state to not unneccesarrily store scrolling data.
   const handleScroll = (event) => {
     if(inDashboardPage && !hasScrolledInDashboard){
-      console.log(event.target.scrollTop);
       setScrollTop(event.target.scrollTop);
     }
   }
