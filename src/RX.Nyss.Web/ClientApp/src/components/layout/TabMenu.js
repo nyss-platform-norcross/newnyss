@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
-import { Tabs, Tab, Grid } from "@material-ui/core";
+import { Tabs, Tab, Grid, useTheme, useMediaQuery } from "@material-ui/core";
 import { TabDropdown } from "./TabDropdown";
 
 const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl }) => {
@@ -12,29 +12,30 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl }) => {
     push(item.url);
   };
 
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   // http addresses are case insensitive so compare to-lower versions
   const showTabMenu = tabMenu.some(
     (t) => t.url.toLowerCase() === currentUrl.toLowerCase(),
   );
   return (
     <div className={styles.tabMenu}>
-      <Grid container justifyContent="center" style={{ marginBottom: 50 }}>
-        {/* Only display project tab menu for all users other than data consumer since the role only has acces to project dashboard */}
-        {projectTabMenu.length > 1 &&
-          projectTabMenu.map((item) => (
-            <Grid
-              key={`projectTabMenu_${item.url}`}
-              item
-              style={{ backgroundColor: "#FCFCFC" }}
-            >
-              <TabDropdown
-                projectTabMenuPage={item}
-                onItemClick={onItemClick}
-              />
-            </Grid>
-          ))}
-      </Grid>
-
+      {!isSmallScreen && (
+        <Grid container justifyContent="center" style={{ marginBottom: 50 }}>
+          {/* Only display project tab menu for all users other than data consumer since the role only has acces to project dashboard */}
+          {projectTabMenu.length > 1 &&
+            projectTabMenu.map((item) => (
+              <Grid
+                key={`projectTabMenu_${item.url}`}
+                item
+                style={{ backgroundColor: "#FCFCFC" }}
+              >
+                <TabDropdown projectTabMenuPage={item} onItemClick={onItemClick} />
+              </Grid>
+            ))}
+        </Grid>
+      )}
       {showTabMenu && (
         <Tabs
           value={tabMenu.indexOf(tabMenu.find((t) => t.isActive))}

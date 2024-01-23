@@ -10,6 +10,7 @@ import { ReactComponent as FeedbackSvg } from "../../assets/icons/Feedback.svg";
 import { ReactComponent as CovidSvg } from "../../assets/icons/COVID-19.svg";
 import { ReactComponent as UrbanSvg } from "../../assets/icons/Urban.svg";
 import { ReactComponent as RemoteSupportSvg } from "../../assets/icons/Remote-support.svg";
+import { ReactComponent as AlertsSvg } from "../../assets/icons/Alerts.svg";
 
 export const RcIcon = ({ icon, ...props }) => {
   switch (icon) {
@@ -44,7 +45,9 @@ export const RcIcon = ({ icon, ...props }) => {
     case "GlobalCoordinators":
       return (
         <SvgIcon {...props} component={RemoteSupportSvg} viewBox="0 0 22 20" />
-      );
+        );
+    case "Alerts":
+      return <SvgIcon {...props} component={AlertsSvg} viewBox="0 0 38 48" />;
     default:
       return null;
   }

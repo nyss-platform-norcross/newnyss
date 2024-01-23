@@ -18,7 +18,6 @@ export const TabDropdownComponent = ({ projectTabMenuPage, onItemClick }) => {
     (state) => state.appData.direction === "rtl",
   );
 
-
   // If the page has only 1 submenu item, then we want to display the submenu as the page
   // Used to display healthRisks instead of settings for Supervisors
   const page =
@@ -118,9 +117,7 @@ export const TabDropdownComponent = ({ projectTabMenuPage, onItemClick }) => {
           root: styles.buttonRoot,
         }}
       >
-        <Typography variant="body1">
-          {page.title}
-        </Typography>
+        <Typography variant="body1">{page.title}</Typography>
         {page.subMenu?.length > 1 ? (
           open ? (
             <ExpandLessIcon fontSize="small" />
