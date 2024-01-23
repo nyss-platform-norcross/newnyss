@@ -18,7 +18,7 @@ export const DashboardReportSexAgeTable = ({ data }) => {
   const trackHoveredChart = useHoverChartTracking();
   
   return (
-    <Card data-printable={true} onMouseEnter={() => trackHoveredChart("hoveredReportSexAgeTable")}>
+    <Card data-printable={true} onMouseEnter={() => trackHoveredChart("hoveredReportSexAgeTable")} onTouchStart={() => trackHoveredChart("hoveredReportSexAgeTable")}>
       <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.reportsPerFeature.title)}</Typography>}/>
       <CardContent>
         <Table className={styles.table}>

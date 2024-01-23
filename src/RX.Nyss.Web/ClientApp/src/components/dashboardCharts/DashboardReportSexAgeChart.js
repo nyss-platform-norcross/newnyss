@@ -100,7 +100,7 @@ export const DashboardReportSexAgeChart = ({ data }) => {
     categories,
   );
   return (
-    <Card data-printable={true} onMouseEnter={() => trackHoveredChart("hoveredReportSexAgeChart")}>
+    <Card data-printable={true} onMouseEnter={() => trackHoveredChart("hoveredReportSexAgeChart")} onTouchStart={() => trackHoveredChart("hoveredReportSexAgeChart")}>
       <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.reportsPerFeatureAndDate.title)}</Typography>}/>
       <CardContent>
         <HighchartsReact

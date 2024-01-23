@@ -12,7 +12,7 @@ export const DashboardReportsMap = ({
 }) => {
   const trackHoveredChart = useHoverChartTracking();
   return (
-    <Card data-printable={true} onMouseEnter={() => trackHoveredChart("hoveredReportsMap")}>
+    <Card data-printable={true} onMouseEnter={() => trackHoveredChart("hoveredReportsMap")} onTouchStart={() => trackHoveredChart("hoveredReportsMap")}>
       <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.map.title)}</Typography>}/>
       <CardContent>
         <ReportsMap

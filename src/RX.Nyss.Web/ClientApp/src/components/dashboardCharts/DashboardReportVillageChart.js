@@ -87,7 +87,7 @@ export const DashboardReportVillageChart = ({ data }) => {
     categories,
   );
   return (
-    <Card data-printable={true} onMouseEnter={() => trackHoveredChart("hoveredReportVillageChart")}>
+    <Card data-printable={true} onMouseEnter={() => trackHoveredChart("hoveredReportVillageChart")} onTouchStart={() => trackHoveredChart("hoveredReportVillageChart")}>
       <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.reportsPerVillageAndDate.title)}</Typography>}/>
       <CardContent>
         <HighchartsReact
