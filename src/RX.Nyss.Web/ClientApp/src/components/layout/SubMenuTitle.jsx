@@ -1,7 +1,6 @@
 import { connect } from "react-redux";
 import { Typography } from "@material-ui/core";
 
-
 const SubMenuTitleComponent = ({ title, ...props }) => {
   return (
     <Typography variant="h2" {...props}>

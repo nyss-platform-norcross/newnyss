@@ -5,8 +5,9 @@ import { BaseLayout } from "./BaseLayout";
 import styles from "./Layout.module.scss";
 import { MessagePopup } from "./MessagePopup";
 import { TabMenu } from "./TabMenu";
-import { Grid, Typography, makeStyles } from "@material-ui/core";
+import { Typography, makeStyles, useMediaQuery, useTheme, Grid } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import { BottomMenu } from "./BottomMenu";
 
 const pageContentId = "pageContent";
 
@@ -28,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Layout = ({ fillPage, children }) => {
   const classes = useStyles();
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const nationalSocietyName = useSelector(
     (state) => state.appData.siteMap.parameters.nationalSocietyName,
   );
@@ -73,6 +77,7 @@ const Layout = ({ fillPage, children }) => {
           </div>
         </div>
       </div>
+      {isSmallScreen && <BottomMenu/>}
       <MessagePopup />
     </BaseLayout>
   );

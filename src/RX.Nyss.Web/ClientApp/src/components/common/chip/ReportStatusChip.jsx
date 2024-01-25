@@ -99,7 +99,9 @@ export const ReportStatusChip = ({ report, rtl }) => {
             {getReportIcon(report.status, rtl)}
           </Grid>
           <Grid item>
-            <Typography variant="body2">{strings(stringKeys.reports.status[report.status])}</Typography>
+            <Typography variant="body2">
+              {strings(stringKeys.reports.status[report.status])}
+            </Typography>
           </Grid>
         </Grid>
       }
