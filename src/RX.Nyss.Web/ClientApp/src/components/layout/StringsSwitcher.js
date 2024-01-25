@@ -18,7 +18,7 @@ const StringsSwitcherComponent = ({
 
   return (
     <div className={styles.stringSwitcher}>
-      {/*<Button
+      <Button
         key="undo"
         variant="text"
         color="primary"
@@ -33,7 +33,7 @@ const StringsSwitcherComponent = ({
         onClick={() => goToTranslations()}
       >
         Translations
-      </Button>*/}
+      </Button>
     </div>
   );
 };
