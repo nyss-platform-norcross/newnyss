@@ -16,10 +16,11 @@ import {
   AccordionActions,
   Divider,
   Typography,
+  useMediaQuery,
 } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { Manager, TechnicalAdvisor } from "../../../authentication/roles";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { ReportStatusChip } from "../../common/chip/ReportStatusChip";
 import { trackEvent } from "../../../utils/appInsightsHelper";
@@ -31,9 +32,9 @@ const ReportFormLabel = ({ label, value }) => (
   <Grid
     container
     direction="column"
-    style={{ maxWidth: "fit-content", margin: "10px 50px 0 0" }}
+    style={{ maxWidth: "fit-content", margin: "10px 40px 0 0" }}
   >
-    <Typography variant="body2" style={{ fontWeight: "bold" }}>{label}</Typography>
+    <Typography variant="h6">{label}</Typography>
     <Typography variant="body1" style={{ marginTop: 5 }}>
       {value}
     </Typography>
@@ -74,6 +75,9 @@ export const AlertsAssessmentReport = ({
     (r) => r === Manager || r === TechnicalAdvisor,
   );
 
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const handleAcceptReport = (alertId, reportId) => {
     // track acceptAlertReport event
     trackEvent("acceptAlertReport", { alertId, reportId });
@@ -100,9 +104,6 @@ export const AlertsAssessmentReport = ({
       height: "40px !important",
       minHeight: "40px !important",
     },
-    time: {
-      color: "#4F4F4F",
-    },
     report: {
       fontWeight: 700,
     },
@@ -120,7 +121,7 @@ export const AlertsAssessmentReport = ({
       >
         <Grid container alignContent="center">
           <Grid container alignItems="center" item xs={4}>
-            <Typography className={classes.time}>
+            <Typography variant="body2">
               {strings(stringKeys.alerts.assess.report.sent)}{" "}
               {dayjs(
                 dayjs(report.receivedAt).format("YYYY-MM-DD HH:mm"),
@@ -147,7 +148,7 @@ export const AlertsAssessmentReport = ({
       <AccordionDetails>
         <Grid container>
           <Divider style={{ width: "100%", marginTop: -8 }} />
-          <Grid container item xs={4} direction="column">
+          <Grid container item xs={12} md={4} direction={isSmallScreen ? "row" : "column"}>
             <ReportFormLabel
               label={strings(stringKeys.alerts.assess.report.sender)}
               value={
@@ -161,7 +162,7 @@ export const AlertsAssessmentReport = ({
               value={report.phoneNumber}
             />
           </Grid>
-          <Grid container item xs={8}>
+          <Grid container item xs={12} md={8} style={{ marginTop: isSmallScreen && 25 }}>
             <ReportFormLabel
               label={strings(stringKeys.alerts.assess.report.date)}
               value={dayjs(report.receivedAt).format("YYYY-MM-DD")}
@@ -191,8 +192,8 @@ export const AlertsAssessmentReport = ({
           </Grid>
         </Grid>
       </AccordionDetails>
-      <Grid container style={{ padding: "8px 16px 16px" }}>
-        <Grid container item xs={4}>
+      <Grid container style={{ padding: "8px 16px 16px", marginTop: isSmallScreen && 15 }}>
+        <Grid container item xs={12} md={4}>
           <Grid container alignItems="center">
             <LocationOnIcon fontSize="small" />
             <Typography variant="body1">{`${
@@ -202,9 +203,9 @@ export const AlertsAssessmentReport = ({
             } ${report.zone ? report.zone : ""}`}</Typography>
           </Grid>
         </Grid>
-        <Grid container item xs={8} justifyContent="flex-end">
+        <Grid container item xs={12} md={8} justifyContent="flex-end">
           {!projectIsClosed && (
-            <AccordionActions>
+            <AccordionActions style={{ marginTop: isSmallScreen && 25 }}>
               {showActions && (
                 <Fragment>
                   <SubmitButton
