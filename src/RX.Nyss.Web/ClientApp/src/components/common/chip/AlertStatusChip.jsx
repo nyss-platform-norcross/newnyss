@@ -22,7 +22,7 @@ export const AlertStatusChip = ({ status }) => {
   return (
     <Chip
       label={
-        <Typography style={{ fontSize: 12 }}>
+        <Typography variant="body2">
           {strings(stringKeys.alerts.assess.status[status])}
         </Typography>
       }

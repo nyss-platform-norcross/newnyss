@@ -111,6 +111,11 @@ public class DhisRepository : IDhisRepository
             .ThenInclude(x => x.SuspectedDisease)
             .ThenInclude(x => x.LanguageContents)
 
+            .Include(r => r.Report)
+            .ThenInclude(x => x.ProjectHealthRisk)
+            .ThenInclude(x => x.HealthRisk)
+            .ThenInclude(x => x.LanguageContents)
+
             .Include(r => r.NationalSociety)
             .ThenInclude(n => n.EidsrConfiguration)
 

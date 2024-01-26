@@ -18,19 +18,18 @@ export const theme = (direction) =>
       },
       h1: {
         fontSize: "2rem",
-        color: "#D52B1E",
         fontWeight: "400",
-        marginBottom: 20,
+        margin: "30px 0 30px",
       },
       h2: {
         fontSize: "1.75rem",
         fontWeight: 600,
-        margin: "10px 0 30px",
+        margin: "10px 0 10px",
       },
       h3: {
         fontSize: "1.5rem",
         fontWeight: 600,
-        margin: "10px 0 20px",
+        margin: "10px 0 10px",
       },
       h4: {
         fontSize: "1.25rem",
@@ -52,6 +51,7 @@ export const theme = (direction) =>
       primary: {
         main: "#D52B1E",
         contrastText: "#ffffff",
+        light: "#FEE7E7",
       },
       secondary: {
         light: "#8c9eff",
@@ -64,7 +64,10 @@ export const theme = (direction) =>
       },
       backgroundDark: palette.augmentColor({
         main: "#F4F4F4"
-      })
+      }),
+      text: {
+        secondary: "#4F4F4F"
+      }
     },
     overrides: {
       MuiButton: {

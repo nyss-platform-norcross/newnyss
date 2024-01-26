@@ -1,7 +1,7 @@
 import styles from "./ProjectsDashboardNumbers.module.scss";
 
 import React from "react";
-import { Grid, Card, CardContent, CardHeader } from "@material-ui/core";
+import { Grid, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
 import { Loading } from "../../common/loading/Loading";
 import { stringKeys, strings } from "../../../strings";
 
@@ -30,7 +30,7 @@ export const ProjectsDashboardNumbers = ({
       <Grid item sm={6} md={3} xs={12} className={styles.numberBox}>
         <Card className={styles.card}>
           <CardHeader
-            title={strings(stringKeys.dashboard.numbers.reportCountTitle)}
+            title={<Typography variant="h5">{strings(stringKeys.dashboard.numbers.reportCountTitle)}</Typography>}
           />
           <CardContent>
             {renderNumber(
@@ -43,7 +43,7 @@ export const ProjectsDashboardNumbers = ({
 
       <Grid item sm={6} md={3} xs={12} className={styles.numberBox}>
         <Card className={styles.card}>
-          <CardHeader title={strings(stringKeys.dashboard.dataCollectors)} />
+          <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.dataCollectors)}</Typography>} />
           <CardContent>
             {renderNumber(
               strings(stringKeys.dashboard.activeDataCollectorCount),
@@ -57,7 +57,7 @@ export const ProjectsDashboardNumbers = ({
         <Grid item sm={6} md={3} xs={12} className={styles.numberBox}>
           <Card className={styles.card}>
             <CardHeader
-              title={strings(stringKeys.dashboard.dataCollectionPoints)}
+              title={<Typography variant="h5">{strings(stringKeys.dashboard.dataCollectionPoints)}</Typography>}
             />
             <CardContent>
               {renderNumber(
@@ -82,7 +82,7 @@ export const ProjectsDashboardNumbers = ({
       {reportsType !== "dataCollectionPoint" && (
         <Grid item sm={6} md={3} xs={12} className={styles.numberBox}>
           <Card className={styles.card}>
-            <CardHeader title={strings(stringKeys.dashboard.alertsSummary)} />
+            <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.alertsSummary)}</Typography>} />
             <CardContent>
               {renderNumber(
                 strings(stringKeys.dashboard.numbers.openAlerts),
@@ -108,7 +108,7 @@ export const ProjectsDashboardNumbers = ({
       <Grid item sm={6} md={3} xs={12} className={styles.numberBox}>
         <Card className={styles.card}>
           <CardHeader
-            title={strings(stringKeys.dashboard.geographicalCoverageSummary)}
+            title={<Typography variant="h5">{strings(stringKeys.dashboard.geographicalCoverageSummary)}</Typography>}
           />
           <CardContent>
             {renderNumber(

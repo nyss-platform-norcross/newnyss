@@ -129,7 +129,7 @@ export const AlertsAssessmentReport = ({
             </Typography>
           </Grid>
           <Grid container alignItems="center" item xs={4}>
-            <Typography variant="body2" className={classes.report}>
+            <Typography variant="body1" className={classes.report}>
               {strings(stringKeys.alerts.assess.report.reportId)} #{report.id}
             </Typography>
           </Grid>

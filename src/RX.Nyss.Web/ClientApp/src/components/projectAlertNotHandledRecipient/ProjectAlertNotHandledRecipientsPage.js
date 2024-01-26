@@ -133,7 +133,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
       <TableHeader />
       {!!unhandledRecipients && (
         <>
-          <Typography variant="subtitle1">
+          <Typography variant="body1">
             {strings(stringKeys.projectAlertNotHandledRecipient.description)}
           </Typography>
           <Grid container direction="column" style={{ marginTop: 10 }}>

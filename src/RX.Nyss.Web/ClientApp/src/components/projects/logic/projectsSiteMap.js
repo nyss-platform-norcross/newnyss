@@ -6,8 +6,8 @@ import { nationalSocietyLeftMenuOrder } from "../../nationalSocieties/logic/nati
 export const projectTabMenuOrder = {
   dashboard: 0,
   alerts: 10,
-  dataCollectors: 20,
-  reports: 30,
+  reports: 20,
+  dataCollectors: 30,
   settings: 40,
 };
 
@@ -48,6 +48,7 @@ export const projectsSiteMap = [
     placeholder: placeholders.projectTabMenu,
     access: accessMap.projects.settings,
     placeholderIndex: projectTabMenuOrder.settings,
+    icon: "Settings",
   },
   {
     parentPath:
