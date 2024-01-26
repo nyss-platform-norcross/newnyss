@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  useTheme,
 } from "@material-ui/core";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const useColorlibStepIconStyles = makeStyles({
+const useColorlibStepIconStyles = makeStyles((theme) => ({
   root: {
     border: "1px solid #E3E3E3",
     zIndex: 1,
@@ -44,11 +45,11 @@ const useColorlibStepIconStyles = makeStyles({
     alignItems: "center",
   },
   active: {
-    border: "1px solid #D52B1E",
-    color: "#D52B1E",
+    border: `1px solid ${theme.palette.primary.main}`,
+    color: theme.palette.primary.main,
   },
   activeText: {
-    color: "#D52B1E",
+    color: theme.palette.primary.main,
     fontWeight: 700,
   },
   notCompletedText: {
@@ -56,24 +57,24 @@ const useColorlibStepIconStyles = makeStyles({
     fontWeight: 700,
   },
   completed: {
-    backgroundColor: "#D52B1E",
-    border: "1px solid #D52B1E",
-    color: "#D52B1E",
+    backgroundColor: theme.palette.primary.main,
+    border: `1px solid ${theme.palette.primary.main}`,
+    color: theme.palette.primary.main,
   },
-});
+}));
 
-const Connector = withStyles({
+const Connector = withStyles((theme) => ({
   alternativeLabel: {
     top: 22,
   },
   active: {
     "& $line": {
-      backgroundColor: "#D52B1E",
+      backgroundColor: theme.palette.primary.main,
     },
   },
   completed: {
     "& $line": {
-      backgroundColor: "#D52B1E",
+      backgroundColor: theme.palette.primary.main,
     },
   },
   line: {
@@ -83,7 +84,7 @@ const Connector = withStyles({
     backgroundColor: "#eaeaf0",
     borderRadius: 1,
   },
-})(StepConnector);
+}))(StepConnector);
 
 const getStepContent = (steps, stepIndex) => {
   return steps.find((step) => step.stepNumber === stepIndex).content;
@@ -101,6 +102,7 @@ export const SetupStepper = ({
   goToList,
   nationalSocietyId,
 }) => {
+  const theme = useTheme();
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const sortedSteps = steps.sort(
@@ -132,7 +134,7 @@ export const SetupStepper = ({
 
   const handleFinish = () => {
     // Add api request here to create project
-  }
+  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -191,7 +193,10 @@ export const SetupStepper = ({
             <StepLabel StepIconComponent={StepIcon}>
               <Typography
                 style={{
-                  color: step.stepNumber >= activeStep ? "#7C7C7C" : "#D52B1E",
+                  color:
+                    step.stepNumber >= activeStep
+                      ? "#7C7C7C"
+                      : theme.palette.primary.main,
                 }}
               >
                 {step.name}

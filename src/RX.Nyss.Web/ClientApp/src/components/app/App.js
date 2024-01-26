@@ -263,13 +263,13 @@ export const App = ({ history }) => {
                 exact
                 from="/nationalsocieties/:nationalSocietyId/projects/:projectId/settings"
                 to="/nationalsocieties/:nationalSocietyId/projects/:projectId/overview"
-                roles={accessMap.projects.showOverview}
+                roles={accessMap.projects.overview}
               />
               <AuthRoute
                 exact
                 path="/nationalsocieties/:nationalSocietyId/projects/:projectId/overview"
                 component={ProjectsOverviewPage}
-                roles={accessMap.projects.showOverview}
+                roles={accessMap.projects.overview}
               />
               <Redirect
                 exact
@@ -280,7 +280,7 @@ export const App = ({ history }) => {
                 exact
                 path="/nationalsocieties/:nationalSocietyId/projects/:projectId/healthrisks"
                 component={ProjectHealthRisksPage}
-                roles={accessMap.projects.showOverview}
+                roles={accessMap.projects.projectHealthRisks}
               />
               <AuthRoute
                 exact

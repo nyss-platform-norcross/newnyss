@@ -9,9 +9,6 @@ variables:
   npm_config_cache: $(Pipeline.Workspace)/.npm
 
 steps:
-- task: NuGetToolInstaller@1
-  inputs:
-    versionSpec: '5.8.0'
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk'
   inputs:

@@ -35,8 +35,8 @@ const ReportFormLabel = ({ label, value }) => (
     direction="column"
     style={{ maxWidth: "fit-content", margin: "10px 50px 0 0" }}
   >
-    <Typography style={{ fontWeight: 700, fontSize: 12 }}>{label}</Typography>
-    <Typography variant="body2" style={{ marginTop: 5 }}>
+    <Typography variant="body2" style={{ fontWeight: "bold" }}>{label}</Typography>
+    <Typography variant="body1" style={{ marginTop: 5 }}>
       {value}
     </Typography>
   </Grid>
@@ -107,7 +107,6 @@ export const AlertsAssessmentReport = ({
       minHeight: "80px !important",
     },
     time: {
-      fontSize: 14,
       color: "#4F4F4F",
     },
     report: {
@@ -204,7 +203,7 @@ export const AlertsAssessmentReport = ({
         <Grid container item xs={4}>
           <Grid container alignItems="center">
             <LocationOnIcon fontSize="small" />
-            <Typography variant="body2">{`${
+            <Typography variant="body1">{`${
               report.district ? report.region + ", " : report.region
             } ${report.village ? report.district + ", " : report.district} ${
               report.zone ? report.village + ", " : report.village

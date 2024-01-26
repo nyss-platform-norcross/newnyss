@@ -24,19 +24,19 @@ const drawerWidth = 230;
 const useStyles = makeStyles((theme) => ({
   MenuContainer: {
     paddingTop: "12px",
-    backgroundColor: "#f1f1f1",
+    backgroundColor: theme.palette.background.default,
   },
   SideMenu: {
     display: "flex",
     flexDirection: "column",
     height: "100%",
-    backgroundColor: "#F1F1F1",
+    backgroundColor: theme.palette.background.default,
     position: "relative",
   },
   SideMenuContent: {
     overflowX: "hidden",
     overflowY: "auto",
-    scrollbarColor: "#B4B4B4 #F1F1F1",
+    scrollbarColor: `#B4B4B4 ${theme.palette.background.default}`,
   },
   drawer: {
     zIndex: 100,

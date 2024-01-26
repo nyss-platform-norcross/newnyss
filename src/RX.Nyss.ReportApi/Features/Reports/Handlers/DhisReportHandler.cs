@@ -61,25 +61,39 @@ public class DhisReportHandler : IDhisReportHandler
                 },
                 Program = report.DhisDbReportTemplate.Program,
                 ReportLocationDataElementId = report.DhisDbReportTemplate.ReportLocationDataElementId,
+                ReportGeoLocationDataElementId = report.DhisDbReportTemplate.ReportGeoLocationDataElementId,
                 ReportHealthRiskDataElementId = report.DhisDbReportTemplate.ReportHealthRiskDataElementId,
                 ReportSuspectedDiseaseDataElementId = report.DhisDbReportTemplate.ReportSuspectedDiseaseDataElementId,
                 ReportStatusDataElementId = report.DhisDbReportTemplate.ReportStatusDataElementId,
                 ReportGenderDataElementId = report.DhisDbReportTemplate.ReportGenderDataElementId,
-                ReportAgeAtLeastFiveDataElementId = report.DhisDbReportTemplate.ReportAgeAtLeastFiveDataElementId,
-                ReportAgeBelowFiveDataElementId = report.DhisDbReportTemplate.ReportAgeBelowFiveDataElementId
-                };
+                ReportAgeGroupDataElementId = report.DhisDbReportTemplate.ReportAgeGroupDataElementId,
+                ReportCaseCountFemaleAgeAtLeastFiveDataElementId = report.DhisDbReportTemplate.ReportCaseCountFemaleAgeAtLeastFiveDataElementId,
+                ReportCaseCountMaleAgeAtLeastFiveDataElementId = report.DhisDbReportTemplate.ReportCaseCountMaleAgeAtLeastFiveDataElementId,
+                ReportCaseCountFemaleAgeBelowFiveDataElementId = report.DhisDbReportTemplate.ReportCaseCountFemaleAgeBelowFiveDataElementId,
+                ReportCaseCountMaleAgeBelowFiveDataElementId = report.DhisDbReportTemplate.ReportCaseCountMaleAgeBelowFiveDataElementId,
+                ReportDateDataElementId = report.DhisDbReportTemplate.ReportDateDataElementId,
+                ReportTimeDataElementId = report.DhisDbReportTemplate.ReportTimeDataElementId,
+                ReportDataCollectorIdDataElementId = report.DhisDbReportTemplate.ReportDataCollectorIdDataElementId
+            };
 
             var data = new DhisRegisterReportRequestData
             {
                 OrgUnit = report.DhisDbReportData.OrgUnit,
                 EventDate = report.DhisDbReportData.EventDate,
                 ReportLocation = report.DhisDbReportData.ReportLocation,
+                ReportGeoLocation = report.DhisDbReportData.ReportGeoLocation,
                 ReportHealthRisk = report.DhisDbReportData.ReportHealthRisk,
                 ReportSuspectedDisease = report.DhisDbReportData.ReportSuspectedDisease,
                 ReportStatus = report.DhisDbReportData.ReportStatus,
                 ReportGender = report.DhisDbReportData.ReportGender,
-                ReportAgeAtleastFive = report.DhisDbReportData.ReportAgeAtLeastFive,
-                ReportAgeBelowFive = report.DhisDbReportData.ReportAgeBelowFive
+                ReportAgeGroup = report.DhisDbReportData.ReportAgeGroup,
+                ReportCaseCountFemaleAgeAtLeastFive = report.DhisDbReportData.ReportCaseCountFemaleAgeAtLeastFive,
+                ReportCaseCountMaleAgeAtLeastFive = report.DhisDbReportData.ReportCaseCountMaleAgeAtLeastFive,
+                ReportCaseCountFemaleAgeBelowFive = report.DhisDbReportData.ReportCaseCountFemaleAgeBelowFive,
+                ReportCaseCountMaleAgeBelowFive = report.DhisDbReportData.ReportCaseCountMaleAgeBelowFive,
+                ReportDate = report.DhisDbReportData.ReportDate,
+                ReportTime = report.DhisDbReportData.ReportTime,
+                ReportDataCollectorId = report.DhisDbReportData.ReportDataCollectorId
             };
 
             var request = DhisRegisterReportRequest.CreateDhisRegisterReportRequest(template, data);

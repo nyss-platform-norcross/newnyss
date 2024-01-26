@@ -49,8 +49,6 @@ export const MenuSection = ({
     SubHeader: {
       color: "#1E1E1E",
       lineHeight: "28px",
-      fontSize: 12,
-      fontWeight: "bold",
       margin: useRtlDirection ? "0 8px 0 0" : "0 0 0 8px",
       position: "relative",
     },
@@ -77,7 +75,9 @@ export const MenuSection = ({
             className={`${classes.SubHeader} ${!isExpanded && classes.Hide}`}
             disableGutters
           >
-            {menuTitle}
+            <Typography variant="body2" style={{ fontWeight: "bold" }}>
+              {menuTitle}
+            </Typography>
           </ListSubheader>
           <Divider className={classes.Divider} />
         </>

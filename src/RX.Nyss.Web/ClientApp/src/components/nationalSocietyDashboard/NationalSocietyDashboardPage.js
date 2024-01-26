@@ -87,7 +87,8 @@ const NationalSocietyDashboardPageComponent = ({
               summary={props.summary}
               reportsType={props.filters.reportsType}
             />
-          </Grid>
+            </Grid>
+            
           <Grid item xs={12}>
             <DashboardReportsMap
               data={props.reportsGroupedByLocation}

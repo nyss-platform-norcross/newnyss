@@ -11,14 +11,21 @@ import MenuList from "@material-ui/core/MenuList";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 
-export const TabDropdownComponent = ({ page, onItemClick }) => {
+export const TabDropdownComponent = ({ projectTabMenuPage, onItemClick }) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const useRtlDirection = useSelector(
     (state) => state.appData.direction === "rtl",
   );
 
-  const useStyles = makeStyles({
+  // If the page has only 1 submenu item, then we want to display the submenu as the page
+  // Used to display healthRisks instead of settings for Supervisors
+  const page =
+    projectTabMenuPage.subMenu?.length === 1
+      ? projectTabMenuPage.subMenu[0]
+      : projectTabMenuPage;
+
+  const useStyles = makeStyles((theme) => ({
     container: {
       position: "relative",
       backgroundColor: "inherit",
@@ -27,9 +34,9 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
     },
     tab: {
       borderBottom: page.isActive
-        ? "3px solid #D52B1E"
+        ? `3px solid ${theme.palette.primary.main}`
         : "3px solid transparent",
-      padding: "0px 20px 0px 20px",
+      padding: "8px 28px 8px 28px",
     },
     buttonRoot: {
       borderRadius: "10px 10px 0px 0px",
@@ -45,14 +52,15 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
       borderBottomRightRadius: 10,
     },
     menuList: {
-      width: "100%",
       padding: 0,
+      width: "100%",
       backgroundColor: "inherit",
       borderRadius: "0px 0px 10px 10px",
     },
     menuItem: {
       display: "flex",
       whiteSpace: "normal",
+      padding: 10,
     },
     menuItemActive: {
       backgroundColor: "#E3E3E3",
@@ -61,7 +69,7 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
       borderBottomLeftRadius: 10,
       borderBottomRightRadius: 10,
     },
-  });
+  }));
 
   const styles = useStyles();
 
@@ -109,9 +117,7 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
           root: styles.buttonRoot,
         }}
       >
-        <Typography variant="subtitle2" style={{ textTransform: "uppercase" }}>
-          {page.title}
-        </Typography>
+        <Typography variant="body1">{page.title}</Typography>
         {page.subMenu?.length > 1 ? (
           open ? (
             <ExpandLessIcon fontSize="small" />
@@ -158,7 +164,7 @@ export const TabDropdownComponent = ({ page, onItemClick }) => {
                   onClick={() => handleMenuItemClick(menuItem)}
                 >
                   <Typography
-                    variant="subtitle2"
+                    variant="body1"
                     style={{ textAlign: useRtlDirection ? "right" : "left" }}
                   >
                     {menuItem.title}

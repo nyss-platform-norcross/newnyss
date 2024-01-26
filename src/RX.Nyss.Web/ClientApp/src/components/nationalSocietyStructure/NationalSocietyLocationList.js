@@ -44,7 +44,7 @@ export const NationalSocietyLocationList = (props) => {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "#F1F1F1",
+      backgroundColor: theme.palette.background.default,
       width: "100%",
       borderRadius: 2,
     },
@@ -63,7 +63,6 @@ export const NationalSocietyLocationList = (props) => {
     },
     button: {
       marginTop: 10,
-      fontSize: "14px",
     },
     icon: {
       marginLeft: 8,
