@@ -1,50 +1,75 @@
-import styles from "./Header.module.scss";
 import { Link } from "react-router-dom";
 import React from "react";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { UserStatus } from "./UserStatus";
-import { Icon, useTheme, useMediaQuery } from "@material-ui/core";
+import {
+  Grid,
+  Icon,
+  useTheme,
+  useMediaQuery,
+  makeStyles,
+} from "@material-ui/core";
 import { toggleSideMenu } from "../app/logic/appActions";
+
+const useStyles = makeStyles((theme) => ({
+  hamburgerMenu: {
+    cursor: "pointer",
+    [theme.breakpoints.up("lg")]: {
+      display: "none",
+    },
+  },
+  smallLogo: {
+    height: "36px",
+    [theme.breakpoints.up("lg")]: {
+      display: "none",
+    },
+  },
+  logo: {
+    marginTop: "20px",
+    height: "36px",
+  },
+  header: {
+    paddingLeft: "20px",
+    paddingRight: "20px",
+    [theme.breakpoints.up("lg")]: {
+      paddingLeft: "15px",
+      paddingRight: "15px",
+    },
+  },
+}));
 
 const HeaderComponent = ({
   sideMenuOpen,
   toggleSideMenu,
-  directionRtl,
+  rtl,
   isSupervisor,
 }) => {
-  const userLanguageCode = useSelector(
-    (state) => state.appData.user.languageCode,
-  );
   const theme = useTheme();
+  const classes = useStyles();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <div className={styles.header}>
+    <Grid container className={classes.header}>
       {!isSupervisor && (
-        <div className={styles.placeholder}>
-          <Icon
-            className={styles.toggleMenu}
-            onClick={() => toggleSideMenu(!sideMenuOpen)}
-          >
+        <div onClick={() => toggleSideMenu(!sideMenuOpen)}>
+          <Icon className={classes.hamburgerMenu} fontSize="large">
             menu
           </Icon>
           <img
-            className={`${styles.smallLogo} ${directionRtl ? styles.rtl : ""}`}
+            className={`${classes.smallLogo}`}
+            style={{
+              marginLeft: rtl ? "0" : "8px",
+              marginRight: rtl ? "8px" : "0",
+              paddingTop: "6px",
+            }}
             src="/images/logo-small.svg"
             alt="Nyss logo"
           />
         </div>
       )}
       {isSupervisor && (
-        <div className={styles.supervisorHeader}>
-          <Link
-            to="/"
-            className={
-              userLanguageCode !== "ar"
-                ? styles.logo
-                : styles.logoDirectionRightToLeft
-            }
-          >
+        <Grid container justifyContent="space-between">
+          <Link to="/">
             <img
               src={
                 isSmallScreen
@@ -52,18 +77,19 @@ const HeaderComponent = ({
                   : "/images/logo.svg?cache=" + new Date().getTime()
               }
               alt="Nyss logo"
+              className={classes.logo}
             />
           </Link>
           <UserStatus />
-        </div>
+        </Grid>
       )}
-    </div>
+    </Grid>
   );
 };
 
 const mapStateToProps = (state) => ({
   sideMenuOpen: state.appData.mobile.sideMenuOpen,
-  directionRtl: state.appData.user.languageCode === "ar",
+  rtl: state.appData.direction === "rtl",
   isSupervisor:
     state.appData.user.roles.includes("Supervisor") ||
     state.appData.user.roles.includes("HeadSupervisor"),
