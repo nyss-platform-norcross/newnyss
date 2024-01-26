@@ -63,13 +63,13 @@
   },
   "scripts": {
     "start": "rimraf ./build && react-scripts --openssl-legacy-provider start",
-    "build": "GENERATE_SOURCEMAP=false react-scripts --openssl-legacy-provider build",
+    "build": "react-scripts --openssl-legacy-provider build",
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint ./src/"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,scss}": "prettier --write"
+    "*.{js, jsx, scss}": "prettier --write"
   },
   "browserslist": {
     "production": [
