@@ -5,8 +5,9 @@ import { BaseLayout } from "./BaseLayout";
 import styles from "./Layout.module.scss";
 import { MessagePopup } from "./MessagePopup";
 import { TabMenu } from "./TabMenu";
-import { Typography, makeStyles } from "@material-ui/core";
+import { Typography, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import { BottomMenu } from "./BottomMenu";
 
 const pageContentId = "pageContent";
 
@@ -17,11 +18,7 @@ export const resetPageContentScroll = () => {
 
 const useStyles = makeStyles({
   header: {
-    color: "#000",
-    fontSize: 30,
-    fontWeight: 700,
     textAlign: "center",
-    margin: "20px 0 20px 0",
   },
   title: {
     fontSize: 24,
@@ -31,6 +28,9 @@ const useStyles = makeStyles({
 
 const Layout = ({ fillPage, children }) => {
   const classes = useStyles();
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const nationalSocietyName = useSelector(
     (state) => state.appData.siteMap.parameters.nationalSocietyName,
   );
@@ -56,12 +56,12 @@ const Layout = ({ fillPage, children }) => {
           >
             <div className={fillPage ? styles.fillPage : null}>
               {nationalSocietyName && !projectName && (
-                <Typography className={classes.header}>
+                <Typography variant="h1" className={classes.header}>
                   {nationalSocietyName}
                 </Typography>
               )}
               {projectName && (
-                <Typography className={classes.header}>
+                <Typography variant="h1" className={classes.header}>
                   {nationalSocietyName} - {projectName}
                 </Typography>
               )}
@@ -71,6 +71,7 @@ const Layout = ({ fillPage, children }) => {
           </div>
         </div>
       </div>
+      {isSmallScreen && <BottomMenu/>}
       <MessagePopup />
     </BaseLayout>
   );

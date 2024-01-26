@@ -33,6 +33,7 @@ import { DataCollectorLocationItem } from "./components/DataCollectorLocationIte
 import { getBirthDecades, parseBirthDecade } from "../../utils/birthYear";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
 import { trackPageView } from "../../utils/appInsightsHelper";
+import { SubMenuTitle } from "../layout/SubMenuTitle";
 
 const DataCollectorsCreatePageComponent = (props) => {
   const currentUserRoles = useSelector((state) => state.appData.user.roles);
@@ -191,15 +192,18 @@ const DataCollectorsCreatePageComponent = (props) => {
 
   return (
     <Fragment>
+      <SubMenuTitle />
       {props.error && !props.error.data && (
         <ValidationMessage message={props.error.message} />
       )}
       <Form onSubmit={handleSubmit} fullWidth>
         <Grid container spacing={2} className={formStyles.shrinked}>
           <Grid item xs={12}>
+            <Typography variant="h5">
+              {strings(stringKeys.dataCollectors.form.dataCollectorType)}
+            </Typography>
             <RadioGroupField
               name="dataCollectorType"
-              label={strings(stringKeys.dataCollectors.form.dataCollectorType)}
               boldLabel
               field={form.fields.dataCollectorType}
               horizontal

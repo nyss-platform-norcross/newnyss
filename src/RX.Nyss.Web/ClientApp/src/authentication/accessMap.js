@@ -75,7 +75,16 @@ export const accessMap = {
       HeadSupervisor,
       Coordinator,
     ],
-    showOverview: [
+    settings: [
+      Administrator,
+      Manager,
+      TechnicalAdvisor,
+      Supervisor,
+      HeadSupervisor,
+      Coordinator,
+    ],
+    overview: [Administrator, Manager, TechnicalAdvisor, Coordinator],
+    projectHealthRisks: [
       Administrator,
       Manager,
       TechnicalAdvisor,
