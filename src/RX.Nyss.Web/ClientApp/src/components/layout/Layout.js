@@ -5,7 +5,7 @@ import { BaseLayout } from "./BaseLayout";
 import styles from "./Layout.module.scss";
 import { MessagePopup } from "./MessagePopup";
 import { TabMenu } from "./TabMenu";
-import { Typography, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
+import { Typography, makeStyles, useMediaQuery, useTheme, Grid } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { BottomMenu } from "./BottomMenu";
 
@@ -16,15 +16,16 @@ export const resetPageContentScroll = () => {
   element && element.scrollTo(0, 0);
 };
 
-const useStyles = makeStyles({
-  header: {
+const useStyles = makeStyles((theme) => ({
+  mainHeader: {
     textAlign: "center",
+    margin: 10
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 600,
-  },
-});
+  secondaryHeader: {
+    textAlign: "center",
+    color: theme.palette.text.secondary
+  }
+}));
 
 const Layout = ({ fillPage, children }) => {
   const classes = useStyles();
@@ -56,14 +57,19 @@ const Layout = ({ fillPage, children }) => {
           >
             <div className={fillPage ? styles.fillPage : null}>
               {nationalSocietyName && !projectName && (
-                <Typography variant="h1" className={classes.header}>
+                <Typography variant="h1" className={classes.mainHeader}>
                   {nationalSocietyName}
                 </Typography>
               )}
               {projectName && (
-                <Typography variant="h1" className={classes.header}>
-                  {nationalSocietyName} - {projectName}
-                </Typography>
+                <Grid container direction="column">
+                  <Typography variant="body1" className={classes.secondaryHeader}>
+                    {nationalSocietyName}
+                  </Typography>
+                  <Typography variant="h1" className={classes.mainHeader}>
+                    {projectName}
+                  </Typography>
+                </Grid>
               )}
               <TabMenu />
               {children}
