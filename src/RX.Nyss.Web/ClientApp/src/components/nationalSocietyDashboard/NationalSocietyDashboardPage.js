@@ -12,7 +12,7 @@ import { NationalSocietyDashboardFilters } from "./components/NationalSocietyDas
 import { NationalSocietyDashboardNumbers } from "./components/NationalSocietyDashboardNumbers";
 import { strings, stringKeys } from "../../strings";
 import SubmitButton from "../common/buttons/submitButton/SubmitButton";
-//import { DashboardReportsMap } from "../dashboardCharts/DashboardReportsMap";
+import { DashboardReportsMap } from "../dashboardCharts/DashboardReportsMap";
 import { DashboardReportVillageChart } from "../dashboardCharts/DashboardReportVillageChart";
 import { DashboardReportChart } from "../dashboardCharts/DashboardReportChart";
 import { DashboardReportSexAgeChart } from "../dashboardCharts/DashboardReportSexAgeChart";
@@ -88,7 +88,7 @@ const NationalSocietyDashboardPageComponent = ({
               reportsType={props.filters.reportsType}
             />
             </Grid>
-            {/*
+            
           <Grid item xs={12}>
             <DashboardReportsMap
               data={props.reportsGroupedByLocation}
@@ -98,7 +98,7 @@ const NationalSocietyDashboardPageComponent = ({
                 props.getReportHealthRisks(nationalSocietyId, lat, long)
               }
             />
-          </Grid>*/}
+          </Grid>
 
           <Grid item xs={12}>
             <DashboardReportChart
