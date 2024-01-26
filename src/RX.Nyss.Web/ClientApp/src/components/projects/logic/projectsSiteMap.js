@@ -48,6 +48,7 @@ export const projectsSiteMap = [
     placeholder: placeholders.projectTabMenu,
     access: accessMap.projects.settings,
     placeholderIndex: projectTabMenuOrder.settings,
+    icon: "Settings",
   },
   {
     parentPath:
