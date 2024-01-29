@@ -17,7 +17,7 @@ import * as roles from "../../authentication/roles";
 import { SendReportDialog } from "./SendReportDialog";
 import * as appActions from "../app/logic/appActions";
 import TableHeader from "../common/tableHeader/TableHeader";
-import { trackPageView } from "../../utils/appInsightsHelper";
+import { trackEvent, trackPageView } from "../../utils/appInsightsHelper";
 
 const Page = "incorrect";
 
@@ -66,13 +66,17 @@ const IncorrectReportsListPageComponent = (props) => {
     setOpen(true);
   };
 
-  function exportToCsv() {
-    props.trackReportExport(Page, "Csv", props.projectId);
+  function handleExportToCsv() {
+    trackEvent("exportIncorrectReportsCsv", { exportFileType: "Csv" });
+    props.trackReportExport(Page, "Csv", props.projectId); //Uses old AppInsights tracking method (could be redundant, mabye remove)
+
     props.exportToCsv(props.projectId, props.filters, props.sorting);
   }
 
-  function exportToExcel() {
-    props.trackReportExport(Page, "Excel", props.projectId);
+  function handleExportToExcel() {
+    trackEvent("exportIncorrectReportsExcel", { exportFileType: "Excel" });
+    props.trackReportExport(Page, "Excel", props.projectId); //Uses old AppInsights tracking method (could be redundant, mabye remove)
+
     props.exportToExcel(props.projectId, props.filters, props.sorting);
   }
 
@@ -102,11 +106,14 @@ const IncorrectReportsListPageComponent = (props) => {
             </TableActionsButton>
           </Hidden>
 
-          <TableActionsButton onClick={exportToCsv} variant={"outlined"}>
+          <TableActionsButton onClick={handleExportToCsv} variant={"outlined"}>
             {strings(stringKeys.reports.list.exportToCsv)}
           </TableActionsButton>
 
-          <TableActionsButton onClick={exportToExcel} variant={"outlined"}>
+          <TableActionsButton
+            onClick={handleExportToExcel}
+            variant={"outlined"}
+          >
             {strings(stringKeys.reports.list.exportToExcel)}
           </TableActionsButton>
 
