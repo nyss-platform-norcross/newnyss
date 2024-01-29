@@ -105,7 +105,7 @@ export const ReportStatusChip = ({ report, rtl }) => {
             {getReportIcon(report.status, rtl)}
           </Grid>
           <Grid item>
-            <Typography variant="body2" className={isSmallScreen && classes.smallStatus}>
+            <Typography variant="body2" className={isSmallScreen ? classes.smallStatus : ""}>
               {strings(stringKeys.reports.status[report.status])}
             </Typography>
           </Grid>
