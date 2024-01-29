@@ -18,10 +18,7 @@ const ProjectMenuComponent = ({ projectTabMenu, push }) => {
             item
             style={{ backgroundColor: "#FCFCFC" }}
           >
-            <TabDropdown
-              projectTabMenuPage={item}
-              onItemClick={onItemClick}
-            />
+            <TabDropdown projectTabMenuPage={item} onItemClick={onItemClick} />
           </Grid>
         ))}
       </Grid>
