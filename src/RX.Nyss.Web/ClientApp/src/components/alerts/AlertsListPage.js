@@ -12,7 +12,7 @@ import { TableActionsButton } from "../common/buttons/tableActionsButton/TableAc
 import { stringKeys, strings } from "../../strings";
 import { Loading } from "../common/loading/Loading";
 import TableHeader from "../common/tableHeader/TableHeader";
-import { trackPageView } from "../../utils/appInsightsHelper";
+import { trackEvent, trackPageView } from "../../utils/appInsightsHelper";
 
 const AlertsListPageComponent = ({ openAlertsList, ...props }) => {
   useMount(() => {
@@ -34,6 +34,12 @@ const AlertsListPageComponent = ({ openAlertsList, ...props }) => {
     [props.getAlerts, props.projectId],
   );
 
+  const handleExportToExcel = () => {
+    trackEvent("exportAlertsExcel", { exportFileType: "Excel" });
+
+    props.export(props.projectId, props.filters);
+  };
+
   const handlePageChange = (page) => {
     props.getAlerts(props.projectId, page, props.filters);
   };
@@ -47,7 +53,7 @@ const AlertsListPageComponent = ({ openAlertsList, ...props }) => {
       <TableHeader>
         <TableActions>
           <TableActionsButton
-            onClick={() => props.export(props.projectId, props.filters)}
+            onClick={handleExportToExcel}
             variant={"outlined"}
           >
             {strings(stringKeys.alerts.list.export)}

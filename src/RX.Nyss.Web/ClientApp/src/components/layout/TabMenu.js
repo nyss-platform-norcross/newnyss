@@ -4,38 +4,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
-import { Tabs, Tab, Grid, useTheme, useMediaQuery } from "@material-ui/core";
-import { TabDropdown } from "./TabDropdown";
+import { Tabs, Tab, Grid, Typography } from "@material-ui/core";
 
-const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl }) => {
+const TabMenuComponent = ({ tabMenu, push, currentUrl }) => {
   const onItemClick = (item) => {
     push(item.url);
   };
-
-  const theme = useTheme()
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   // http addresses are case insensitive so compare to-lower versions
   const showTabMenu = tabMenu.some(
     (t) => t.url.toLowerCase() === currentUrl.toLowerCase(),
   );
   return (
-    <div className={styles.tabMenu}>
-      {!isSmallScreen && (
-        <Grid container justifyContent="center" style={{ marginBottom: 50 }}>
-          {/* Only display project tab menu for all users other than data consumer since the role only has acces to project dashboard */}
-          {projectTabMenu.length > 1 &&
-            projectTabMenu.map((item) => (
-              <Grid
-                key={`projectTabMenu_${item.url}`}
-                item
-                style={{ backgroundColor: "#FCFCFC" }}
-              >
-                <TabDropdown projectTabMenuPage={item} onItemClick={onItemClick} />
-              </Grid>
-            ))}
-        </Grid>
-      )}
+    <Grid style={{ margin: "20px 0px" }}>
       {showTabMenu && (
         <Tabs
           value={tabMenu.indexOf(tabMenu.find((t) => t.isActive))}
@@ -47,13 +28,15 @@ const TabMenuComponent = ({ projectTabMenu, tabMenu, push, currentUrl }) => {
           {tabMenu.map((item) => (
             <Tab
               key={`tabMenu_${item.url}`}
-              label={item.title}
+              label={<Typography style={{ fontWeight: item.isActive ? "bold" : "normal" }}>{item.title}</Typography>}
               onClick={item.isActive ? () => null : () => onItemClick(item)}
+              style={{ textTransform: "none" }}
+
             />
           ))}
         </Tabs>
       )}
-    </div>
+    </Grid>
   );
 };
 
@@ -63,7 +46,6 @@ TabMenuComponent.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  projectTabMenu: state.appData.siteMap.projectTabMenu,
   tabMenu: state.appData.siteMap.tabMenu,
   currentUrl: state.appData.route.url,
 });
