@@ -4,9 +4,10 @@ import { SideMenu } from "./SideMenu";
 import { BaseLayout } from "./BaseLayout";
 import styles from "./Layout.module.scss";
 import { MessagePopup } from "./MessagePopup";
-import { TabMenu } from "./TabMenu";
-import { Typography, makeStyles, useMediaQuery, useTheme, Grid } from "@material-ui/core";
+import { Typography, makeStyles, useMediaQuery, useTheme,Grid } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import { ProjectMenu } from "./ProjectMenu";
+import { TabMenu } from "./TabMenu";
 import { BottomMenu } from "./BottomMenu";
 
 const pageContentId = "pageContent";
@@ -37,6 +38,13 @@ const Layout = ({ fillPage, children }) => {
   );
   const projectName = useSelector(
     (state) => state.appData.siteMap.parameters.projectName,
+  );
+
+  const title = useSelector(
+    (state) => state.appData.siteMap.parameters.title,
+  );
+  const subTitle = useSelector(
+    (state) => state.appData.siteMap.parameters.subTitle,
   );
 
   return (
@@ -71,7 +79,9 @@ const Layout = ({ fillPage, children }) => {
                   </Typography>
                 </Grid>
               )}
-              <TabMenu />
+              {!isSmallScreen && <ProjectMenu/>}
+              {/* Display tabmenu for all pages except alert assesment page */}
+              {(!title && !subTitle) && <TabMenu/>}
               {children}
             </div>
           </div>
