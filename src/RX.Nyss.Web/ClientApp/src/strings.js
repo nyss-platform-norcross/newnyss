@@ -663,6 +663,7 @@ export const stringKeys = {
       locationsHeader: "dataCollectors.form.locationsHeader",
       showYourLocation: "dataCollectors.form.showYourLocation",
       retrievingLocation: "dataCollectors.form.retrievingLocation",
+      responsibleSupervisor: "dataCollectors.form.responsibleSupervisor",
       alerts: {
         noDistrictsAlert: "dataCollectors.form.alert.noDistrictsAlert",
         noVillagesAlert: "dataCollectors.form.alert.noVillagesAlert",
