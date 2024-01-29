@@ -3,6 +3,15 @@ const { palette } = createTheme();
 
 export const theme = (direction) =>
   createTheme({
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 900,
+        lg: 1200,
+        xl: 1536,
+      },
+    },
     direction: direction,
     typography: {
       fontFamily: "MyriadPro, Arial",
@@ -11,7 +20,7 @@ export const theme = (direction) =>
         color: "#333333",
       },
       body2: {
-        fontSize: "0.875rem"
+        fontSize: "0.875rem",
       },
       button: {
         color: "#333333",
@@ -63,11 +72,11 @@ export const theme = (direction) =>
         default: "#F1F1F1",
       },
       backgroundDark: palette.augmentColor({
-        main: "#F4F4F4"
+        main: "#F4F4F4",
       }),
       text: {
-        secondary: "#4F4F4F"
-      }
+        secondary: "#4F4F4F",
+      },
     },
     overrides: {
       MuiButton: {

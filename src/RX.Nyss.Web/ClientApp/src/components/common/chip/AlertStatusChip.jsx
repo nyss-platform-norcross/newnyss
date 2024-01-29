@@ -15,6 +15,12 @@ const useStyles = makeStyles(() => ({
   Open: {
     backgroundColor: "#FFE497",
   },
+  ToEscalate: {
+    backgroundColor: "#FFE497",
+  },
+  ToDismiss: {
+    backgroundColor: "#FFE497",
+  },
 }));
 
 export const AlertStatusChip = ({ status }) => {
