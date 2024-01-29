@@ -75,9 +75,6 @@ export const AlertsAssessmentReport = ({
     (r) => r === Manager || r === TechnicalAdvisor,
   );
 
-  const theme = useTheme()
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
   const handleAcceptReport = (alertId, reportId) => {
     // track acceptAlertReport event
     trackEvent("acceptAlertReport", { alertId, reportId });
@@ -101,8 +98,12 @@ export const AlertsAssessmentReport = ({
       border: "1px solid #E3E3E3",
     },
     summary: {
-      height: "40px !important",
-      minHeight: "40px !important",
+      height: "60px !important",
+      minHeight: "60px !important",
+    },
+    summarySmallScreen: {
+      height: "80px !important",
+      minHeight: "80px !important",
     },
     report: {
       fontWeight: 700,
@@ -110,36 +111,41 @@ export const AlertsAssessmentReport = ({
     chip: {
       padding: rtl ? "0 0 0 20px" : "0 20px 0 0",
     },
+    time: {
+      color: "#4F4F4F",
+    },
   }));
+  const theme = useTheme();
   const classes = useStyles();
-
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <Accordion disabled={fromOtherOrg} className={classes.accordion}>
       <AccordionSummary
-        className={classes.summary}
+        className={isSmallScreen ? classes.summarySmallScreen : classes.summary}
         expandIcon={!fromOtherOrg && <ExpandMoreIcon />}
       >
-        <Grid container alignContent="center">
-          <Grid container alignItems="center" item xs={4}>
-            <Typography variant="body2">
+        <Grid container alignContent="center" direction={isSmallScreen ? "column" : "row"}>
+          <Grid container alignItems="center" item xs={6} md={4}>
+            <Typography className={classes.time}>
               {strings(stringKeys.alerts.assess.report.sent)}{" "}
               {dayjs(
                 dayjs(report.receivedAt).format("YYYY-MM-DD HH:mm"),
               ).fromNow()}
             </Typography>
           </Grid>
-          <Grid container alignItems="center" item xs={4}>
-            <Typography variant="body1" className={classes.report}>
+          <Grid container alignItems="center" item xs={6} md={4}>
+            <Typography variant="body2" className={classes.report}>
               {strings(stringKeys.alerts.assess.report.reportId)} #{report.id}
             </Typography>
           </Grid>
           <Grid
-            className={classes.chip}
+            className={!isSmallScreen && classes.chip}
             container
             alignItems="center"
             item
-            xs={4}
+            xs={6} md={4}
             justifyContent="flex-end"
+            style={isSmallScreen ? {margin: "auto"} : null}
           >
             <ReportStatusChip report={report} rtl={rtl} />
           </Grid>
