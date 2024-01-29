@@ -55,6 +55,8 @@ const callApi = (
   abortSignal = null,
 ) => {
   const securityHeaders = {
+    "Content-Security-Policy":
+      "base-uri 'self'; script-src 'self' 'unsafe-inline';",
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "SAMEORIGIN",
   };
