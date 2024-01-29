@@ -7,6 +7,7 @@ import {
   CardContent,
   useMediaQuery,
   useTheme,
+  Typography,
 } from "@material-ui/core";
 import LocationFilter from "../../common/filters/LocationFilter";
 import { strings, stringKeys } from "../../../strings";
@@ -107,6 +108,15 @@ export const AlertsFilters = ({
             value={localFilters.healthRiskId || 0}
             className={styles.filterItem}
             InputLabelProps={{ shrink: true }}
+            SelectProps={{
+              MenuProps: {
+                PaperProps: {
+                  style: {
+                    maxWidth: '90%',
+                  },
+                },
+              },
+            }}
           >
             <MenuItem value={0}>
               {strings(stringKeys.alerts.filters.healthRisksAll)}
@@ -114,7 +124,9 @@ export const AlertsFilters = ({
 
             {healthRisks.map((hr) => (
               <MenuItem key={`filter_healthRisk_${hr.id}`} value={hr.id}>
-                {hr.name}
+                <Typography style={{ maxWidth: "100%", whiteSpace: "normal" }}>
+                  {hr.name}
+                </Typography>
               </MenuItem>
             ))}
           </TextField>

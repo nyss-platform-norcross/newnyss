@@ -117,7 +117,12 @@ export const TabDropdownComponent = ({ projectTabMenuPage, onItemClick }) => {
           root: styles.buttonRoot,
         }}
       >
-        <Typography variant="body1">{page.title}</Typography>
+        <Typography
+          variant="body1"
+          style={{ fontWeight: page.isActive ? "bold" : "normal" }}
+        >
+          {page.title}
+        </Typography>
         {page.subMenu?.length > 1 ? (
           open ? (
             <ExpandLessIcon fontSize="small" />

@@ -305,167 +305,168 @@ export const DataCollectorLocationItem = ({
             className={styles.collapsibleContainer}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <SelectField
-                  className={styles.geoStructureSelectShrinked}
-                  label={strings(stringKeys.dataCollectors.form.region)}
-                  field={form.fields[`locations_${locationNumber}_regionId`]}
-                  name="regionId"
-                  onChange={onRegionChange}
-                  fieldRef={getLocationCardRef}
-                >
-                  {regions.map((region) => (
-                    <MenuItem
-                      key={`region_${region.id}`}
-                      value={region.id.toString()}
-                    >
-                      {region.name}
-                    </MenuItem>
-                  ))}
-                </SelectField>
-              </Grid>
-
-              {form.fields[`locations_${locationNumber}_regionId`] &&
-                form.fields[`locations_${locationNumber}_regionId`].value && (
-                  <Grid item xs={12}>
-                    {districts && districts.length > 0 ? (
-                      <SelectField
-                        className={styles.geoStructureSelectShrinked}
-                        label={strings(stringKeys.dataCollectors.form.district)}
-                        field={
-                          form.fields[`locations_${locationNumber}_districtId`]
-                        }
-                        name="districtId"
-                        onChange={onDistrictChange}
-                        fieldRef={getLocationCardRef}
-                      >
-                        {districts.map((district) => (
-                          <MenuItem
-                            key={`district_${district.id}`}
-                            value={district.id.toString()}
-                          >
-                            {district.name}
-                          </MenuItem>
-                        ))}
-                      </SelectField>
-                    ) : (
-                      <Alert
-                        variant="filled"
-                        severity="warning"
-                        className={classes.alert}
-                      >
-                        {strings(
-                          stringKeys.dataCollectors.form.alerts
-                            .noDistrictsAlert,
-                        )}
-                      </Alert>
-                    )}
-                  </Grid>
-                )}
-
-              {form.fields[`locations_${locationNumber}_districtId`] &&
-                form.fields[`locations_${locationNumber}_districtId`].value && (
-                  <Grid item xs={12}>
-                    {villages && villages.length > 0 ? (
-                      <SelectField
-                        className={styles.geoStructureSelectShrinked}
-                        label={strings(stringKeys.dataCollectors.form.village)}
-                        field={
-                          form.fields[`locations_${locationNumber}_villageId`]
-                        }
-                        name="villageId"
-                        onChange={onVillageChange}
-                        fieldRef={getLocationCardRef}
-                      >
-                        {villages.map((village) => (
-                          <MenuItem
-                            key={`village_${village.id}`}
-                            value={village.id.toString()}
-                          >
-                            {village.name}
-                          </MenuItem>
-                        ))}
-                      </SelectField>
-                    ) : (
-                      <Alert
-                        variant="filled"
-                        severity="warning"
-                        className={classes.alert}
-                      >
-                        {strings(
-                          stringKeys.dataCollectors.form.alerts.noVillagesAlert,
-                        )}
-                      </Alert>
-                    )}
-                  </Grid>
-                )}
-
-              {zones && zones.length > 0 && (
-                <Grid item xs={12}>
+              <Grid container item xs={12} spacing={3}>
+                <Grid item xs={12} md={3}>
                   <SelectField
                     className={styles.geoStructureSelectShrinked}
-                    label={strings(stringKeys.dataCollectors.form.zone)}
-                    field={form.fields[`locations_${locationNumber}_zoneId`]}
-                    name="zoneId"
+                    label={strings(stringKeys.dataCollectors.form.region)}
+                    field={form.fields[`locations_${locationNumber}_regionId`]}
+                    name="regionId"
+                    onChange={onRegionChange}
                     fieldRef={getLocationCardRef}
                   >
-                    <MenuItem value="">&nbsp;</MenuItem>
-
-                    {zones.map((zone) => (
+                    {regions.map((region) => (
                       <MenuItem
-                        key={`zone_${zone.id}`}
-                        value={zone.id.toString()}
+                        key={`region_${region.id}`}
+                        value={region.id.toString()}
                       >
-                        {zone.name}
+                        {region.name}
                       </MenuItem>
                     ))}
                   </SelectField>
                 </Grid>
-              )}
 
-              <Grid item xs={12}>
-                <InputLabel className={styles.mapLabel}>
-                  {strings(stringKeys.dataCollectors.form.selectLocation)}
-                </InputLabel>
-                <DataCollectorMap
-                  onChange={onLocationChange}
-                  location={mapLocation}
-                  initialCenterLocation={mapCenterLocation}
-                  zoom={6}
-                />
-              </Grid>
-
-              <Grid item xs={12} className={styles.coordinateFieldsContainer}>
-                <Grid item xs={12} md={3} className={styles.latLngInput}>
-                  <TextInputField
-                    label={strings(stringKeys.dataCollectors.form.latitude)}
-                    name="latitude"
-                    field={form.fields[`locations_${locationNumber}_latitude`]}
-                    type="number"
-                    inputMode={"decimal"}
-                    fieldRef={getLocationCardRef}
-                  />
-                </Grid>
-                <Grid item xs={12} md={3} className={styles.latLngInput}>
-                  <TextInputField
-                    label={strings(stringKeys.dataCollectors.form.longitude)}
-                    name="longitude"
-                    field={form.fields[`locations_${locationNumber}_longitude`]}
-                    type="number"
-                    inputMode={"decimal"}
-                    fieldRef={getLocationCardRef}
-                  />
-                </Grid>
-
-                {!isOnlyLocation && (
-                  <Button
-                    color="primary"
-                    className={styles.removeLocationButton}
-                    onClick={onRemoveLocation}
-                  >
-                    {strings(stringKeys.dataCollectors.form.removeLocation)}
-                  </Button>
+                {form.fields[`locations_${locationNumber}_regionId`] &&
+                  form.fields[`locations_${locationNumber}_regionId`].value && (
+                    <Grid item xs={12} md={3}>
+                      {districts && districts.length > 0 ? (
+                        <SelectField
+                          className={styles.geoStructureSelectShrinked}
+                          label={strings(stringKeys.dataCollectors.form.district)}
+                          field={
+                            form.fields[`locations_${locationNumber}_districtId`]
+                          }
+                          name="districtId"
+                          onChange={onDistrictChange}
+                          fieldRef={getLocationCardRef}
+                        >
+                          {districts.map((district) => (
+                            <MenuItem
+                              key={`district_${district.id}`}
+                              value={district.id.toString()}
+                            >
+                              {district.name}
+                            </MenuItem>
+                          ))}
+                        </SelectField>
+                      ) : (
+                        <Alert
+                          variant="filled"
+                          severity="warning"
+                          className={classes.alert}
+                        >
+                          {strings(
+                            stringKeys.dataCollectors.form.alerts
+                              .noDistrictsAlert,
+                          )}
+                        </Alert>
+                      )}
+                    </Grid>
                 )}
+
+                {form.fields[`locations_${locationNumber}_districtId`] &&
+                  form.fields[`locations_${locationNumber}_districtId`].value && (
+                    <Grid item xs={12} md={3}>
+                      {villages && villages.length > 0 ? (
+                        <SelectField
+                          className={styles.geoStructureSelectShrinked}
+                          label={strings(stringKeys.dataCollectors.form.village)}
+                          field={
+                            form.fields[`locations_${locationNumber}_villageId`]
+                          }
+                          name="villageId"
+                          onChange={onVillageChange}
+                          fieldRef={getLocationCardRef}
+                        >
+                          {villages.map((village) => (
+                            <MenuItem
+                              key={`village_${village.id}`}
+                              value={village.id.toString()}
+                            >
+                              {village.name}
+                            </MenuItem>
+                          ))}
+                        </SelectField>
+                      ) : (
+                        <Alert
+                          variant="filled"
+                          severity="warning"
+                          className={classes.alert}
+                        >
+                          {strings(
+                            stringKeys.dataCollectors.form.alerts.noVillagesAlert,
+                          )}
+                        </Alert>
+                      )}
+                    </Grid>
+                  )}
+
+                  {zones && zones.length > 0 && (
+                    <Grid item xs={12} md={3}>
+                      <SelectField
+                        className={styles.geoStructureSelectShrinked}
+                        label={strings(stringKeys.dataCollectors.form.zone)}
+                        field={form.fields[`locations_${locationNumber}_zoneId`]}
+                        name="zoneId"
+                        fieldRef={getLocationCardRef}
+                      >
+                        <MenuItem value="">&nbsp;</MenuItem>
+
+                        {zones.map((zone) => (
+                          <MenuItem
+                            key={`zone_${zone.id}`}
+                            value={zone.id.toString()}
+                          >
+                            {zone.name}
+                          </MenuItem>
+                        ))}
+                      </SelectField>
+                    </Grid>
+                  )}
+              </Grid>
+              <Grid container item xs={12}>
+                <Grid item xs={12}>
+                  <InputLabel className={styles.mapLabel}>
+                    {strings(stringKeys.dataCollectors.form.selectLocation)}
+                  </InputLabel>
+                  <DataCollectorMap
+                    onChange={onLocationChange}
+                    location={mapLocation}
+                    initialCenterLocation={mapCenterLocation}
+                    zoom={6}
+                  />
+                </Grid>
+                <Grid item xs={12} className={styles.coordinateFieldsContainer}>
+                  <Grid item xs={12} md={3} className={styles.latLngInput}>
+                    <TextInputField
+                      label={strings(stringKeys.dataCollectors.form.latitude)}
+                      name="latitude"
+                      field={form.fields[`locations_${locationNumber}_latitude`]}
+                      type="number"
+                      inputMode={"decimal"}
+                      fieldRef={getLocationCardRef}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={3} className={styles.latLngInput}>
+                    <TextInputField
+                      label={strings(stringKeys.dataCollectors.form.longitude)}
+                      name="longitude"
+                      field={form.fields[`locations_${locationNumber}_longitude`]}
+                      type="number"
+                      inputMode={"decimal"}
+                      fieldRef={getLocationCardRef}
+                    />
+                  </Grid>
+                  {!isOnlyLocation && (
+                    <Button
+                      color="primary"
+                      className={styles.removeLocationButton}
+                      onClick={onRemoveLocation}
+                    >
+                      {strings(stringKeys.dataCollectors.form.removeLocation)}
+                    </Button>
+                  )}
+                </Grid>
               </Grid>
             </Grid>
           </ConditionalCollapse>

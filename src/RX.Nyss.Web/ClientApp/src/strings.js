@@ -663,6 +663,7 @@ export const stringKeys = {
       locationsHeader: "dataCollectors.form.locationsHeader",
       showYourLocation: "dataCollectors.form.showYourLocation",
       retrievingLocation: "dataCollectors.form.retrievingLocation",
+      responsibleSupervisor: "dataCollectors.form.responsibleSupervisor",
       alerts: {
         noDistrictsAlert: "dataCollectors.form.alert.noDistrictsAlert",
         noVillagesAlert: "dataCollectors.form.alert.noVillagesAlert",
@@ -889,6 +890,8 @@ export const stringKeys = {
         Closed: "alerts.assess.status.closed",
         Escalated: "alerts.assess.status.escalated",
         Dismissed: "alerts.assess.status.dismissed",
+        ToDismiss: "alerts.assess.status.toDismiss",
+        ToEscalate: "alerts.assess.status.toEscalate",
       },
       statusDescription: {
         closed: "alerts.assess.statusDescription.closed",
