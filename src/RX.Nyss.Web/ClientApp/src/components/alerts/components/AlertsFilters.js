@@ -103,6 +103,15 @@ export const AlertsFilters = ({
               value={localFilters.healthRiskId || 0}
               className={styles.filterItem}
               InputLabelProps={{ shrink: true }}
+              SelectProps={{
+                MenuProps: {
+                  PaperProps: {
+                    style: {
+                      maxWidth: '90%',
+                    },
+                  },
+                },
+              }}
             >
               <MenuItem value={0}>
                 {strings(stringKeys.alerts.filters.healthRisksAll)}
