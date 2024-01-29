@@ -62,8 +62,7 @@ namespace RX.Nyss.Web.Features.DataCollectors
             {
                 // Get the error message string key from the fluent validation exception or default error message
                 var errorMessage = e.Errors.FirstOrDefault()?.ErrorMessage.Split(":").Last()
-                    ?? "A validation error occurred.";
-                
+                    ?? ResultKey.Validation.ValidationError;
                 return Error(errorMessage);
             }
         }
