@@ -25,6 +25,7 @@ import utc from "dayjs/plugin/utc";
 import FormActions from "../../forms/formActions/FormActions";
 import { getUtcOffset } from "../../../utils/date";
 import CancelButton from "../../common/buttons/cancelButton/CancelButton";
+import { trackEvent } from "../../../utils/appInsightsHelper";
 
 export const CreateAlertEventDialog = ({
   close,
@@ -103,6 +104,12 @@ export const CreateAlertEventDialog = ({
       timestamp: dayjs(`${date} ${values.time}`).utc(),
       text: values.text,
       utcOffset: getUtcOffset(),
+    });
+
+    trackEvent("createAlertEvent", {
+      alertId: alertId,
+      eventTypeId: values.eventTypeId,
+      eventSubtypeId: values.eventSubtypeId,
     });
 
     close();

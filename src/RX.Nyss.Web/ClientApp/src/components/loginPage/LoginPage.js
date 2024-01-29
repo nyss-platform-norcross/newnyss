@@ -38,10 +38,10 @@ const LoginPageComponent = (props) => {
     if (props.user) {
       redirectToRoot();
     }
-  });
 
-  // Track page view
-  trackPageView("LoginPage");
+    // Track page view
+    trackPageView("LoginPage");
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
