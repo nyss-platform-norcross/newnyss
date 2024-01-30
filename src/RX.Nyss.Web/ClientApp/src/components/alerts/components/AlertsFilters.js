@@ -17,6 +17,7 @@ import { convertToLocalDate, convertToUtc } from "../../../utils/date";
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";
 import { DrawerFilter } from "../../common/filters/DrawerFilter";
+import { useEffect } from "react";
 
 export const AlertsFilters = ({
   filters,
@@ -34,6 +35,10 @@ export const AlertsFilters = ({
   const handleFiltersChange = (filters) => {
     onChange(updateLocalFilters(filters));
   };
+
+  useEffect(() => {  
+    updateLocalFilters(filters);
+  }, [filters]);
 
   //Syncs locations from redux store with filter state and sets label for location filter to 'All' or "Region (+n)"
   //Neccecary if locations are added, edited or removed, to make all filters checked

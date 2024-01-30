@@ -30,6 +30,7 @@ import LocationFilter from "../../common/filters/LocationFilter";
 import { HealthRiskFilter } from "../../common/filters/HealthRiskFilter";
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";
+import { useEffect } from "react";
 
 export const ProjectsDashboardFilters = ({
   filters,
@@ -46,6 +47,10 @@ export const ProjectsDashboardFilters = ({
 }) => {
   //Reducer for local filters state
   const [localFilters, updateLocalFilters] = useLocalFilters(filters);
+
+  useEffect(() => {  
+    updateLocalFilters(filters);
+  }, [filters]);
 
   //Fetches new data based on changes in filters
   const handleFiltersChange = (filters) => {
