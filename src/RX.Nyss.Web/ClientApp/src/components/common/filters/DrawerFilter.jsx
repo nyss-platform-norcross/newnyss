@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react';
-import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
-import Backdrop from '@material-ui/core/Backdrop';
-import { Typography, makeStyles, Grid } from "@material-ui/core"
-import FilterListIcon from '@material-ui/icons/FilterList';
+import React, { useState, useRef } from "react";
+import Drawer from "@material-ui/core/Drawer";
+import Button from "@material-ui/core/Button";
+import Backdrop from "@material-ui/core/Backdrop";
+import { Typography, makeStyles, Grid } from "@material-ui/core";
+import FilterListIcon from "@material-ui/icons/FilterList";
 import { strings, stringKeys } from "../../../strings";
 
 const useStyles = makeStyles((theme) => ({
@@ -24,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginBottom: 10,
-    marginRight: 3
+    marginRight: 3,
   },
   contentContainer: {
-    position: 'relative',
+    position: "relative",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -48,23 +48,23 @@ const useStyles = makeStyles((theme) => ({
   },
   backdrop: {
     zIndex: theme.zIndex.drawer - 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   backdropClass: {
-    backgroundColor: "transparent"
-  }
+    backgroundColor: "transparent",
+  },
 }));
 
 export const DrawerFilter = ({ title, children, showResults }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const classes = useStyles()
+  const classes = useStyles();
   const [startY, setStartY] = useState(null);
   const drawerRef = useRef(null);
 
   const onShowResults = () => {
     setIsOpen(false);
-    showResults()
-  }
+    showResults();
+  };
 
   const handleTouchStart = (event) => {
     setStartY(event.touches[0].clientY);
@@ -82,8 +82,8 @@ export const DrawerFilter = ({ title, children, showResults }) => {
   };
   const handleDrawerTransitionEnd = () => {
     if (!isOpen && drawerRef.current && drawerRef.current.style) {
-      drawerRef.current.style.transition = ''; // Reset transition property
-      drawerRef.current.style.transform = ''; // Reset transform property
+      drawerRef.current.style.transition = ""; // Reset transition property
+      drawerRef.current.style.transform = ""; // Reset transform property
     }
   };
 
@@ -96,11 +96,11 @@ export const DrawerFilter = ({ title, children, showResults }) => {
 
       if (deltaY > threshold) {
         // Close the drawer when dragging down
-        onShowResults()
+        onShowResults();
       } else {
         // Reset styles if not closing
         if (drawerRef.current && drawerRef.current.style) {
-          drawerRef.current.style.transform = '';
+          drawerRef.current.style.transform = "";
         }
       }
       setStartY(null);
@@ -113,7 +113,14 @@ export const DrawerFilter = ({ title, children, showResults }) => {
 
   return (
     <>
-      <Button startIcon={<FilterListIcon/>} color='primary' variant="outlined" onClick={() => toggleDrawer(true)}>{strings(stringKeys.common.filters)}</Button>
+      <Button
+        startIcon={<FilterListIcon />}
+        color="primary"
+        variant="outlined"
+        onClick={() => toggleDrawer(true)}
+      >
+        {strings(stringKeys.common.filters)}
+      </Button>
       <Drawer
         ref={drawerRef}
         anchor={"bottom"}
@@ -123,30 +130,42 @@ export const DrawerFilter = ({ title, children, showResults }) => {
         BackdropProps={{
           classes: {
             root: classes.backdropClass,
-          }
+          },
         }}
         ModalProps={{
           keepMounted: true,
         }}
       >
-        <div className={classes.pullTabContainer} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+        <div
+          className={classes.pullTabContainer}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <div className={classes.pullTab} />
-          <Grid container justifyContent='center'>
-            <Typography variant='h6' className={classes.title}>{strings(stringKeys.common.filter)}</Typography>
-            <Typography variant='h6' style={{ textTransform: "lowercase" }}>{title}</Typography>
+          <Grid container justifyContent="center">
+            <Typography variant="h6" className={classes.title}>
+              {strings(stringKeys.common.filter)}
+            </Typography>
+            <Typography variant="h6" style={{ textTransform: "lowercase" }}>
+              {title}
+            </Typography>
           </Grid>
         </div>
-        <div
-          role="presentation"
-          className={classes.contentContainer}
-        >
+        <div role="presentation" className={classes.contentContainer}>
           {children}
         </div>
         <div className={classes.resultsContainer}>
-          <Button variant='contained' color="primary" onClick={onShowResults}>{strings(stringKeys.common.buttons.showResults)}</Button>
+          <Button variant="contained" color="primary" onClick={onShowResults}>
+            {strings(stringKeys.common.buttons.showResults)}
+          </Button>
         </div>
       </Drawer>
-      <Backdrop className={classes.backdrop} open={isOpen} onClick={onShowResults} />
+      <Backdrop
+        className={classes.backdrop}
+        open={isOpen}
+        onClick={onShowResults}
+      />
     </>
   );
-}
+};
