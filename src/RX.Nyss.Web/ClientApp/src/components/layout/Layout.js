@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
   secondaryHeader: {
     textAlign: "center",
     color: theme.palette.text.secondary
+  },
+  projectView: {
+    paddingBottom: 75
   }
 }));
 
@@ -40,6 +43,12 @@ const Layout = ({ fillPage, children }) => {
     (state) => state.appData.siteMap.parameters.projectName,
   );
 
+  const projectMenu = useSelector(
+    (state) => state.appData.siteMap.projectTabMenu
+  );
+
+  const isInProjectView = projectMenu.length > 0;
+
   const title = useSelector(
     (state) => state.appData.siteMap.parameters.title,
   );
@@ -53,9 +62,11 @@ const Layout = ({ fillPage, children }) => {
       <div className={styles.mainContent}>
         <Header />
         <div
-          className={`${styles.pageContentContainer} ${
-            fillPage ? styles.fillPage : null
-          }`}
+          className={`
+            ${styles.pageContentContainer}
+            ${fillPage ? styles.fillPage : null}
+            ${isSmallScreen && isInProjectView ? classes.projectView : null}
+          `}
           id={pageContentId}
         >
           <div
