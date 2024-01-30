@@ -286,7 +286,7 @@ export const initialState = {
       sex: null,
       trainingStatus: "All",
       deployedMode: "Deployed",
-      name: null,
+      name: "",
       pageNumber: 1,
     },
   },
