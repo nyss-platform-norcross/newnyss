@@ -4,9 +4,11 @@ import { SideMenu } from "./SideMenu";
 import { BaseLayout } from "./BaseLayout";
 import styles from "./Layout.module.scss";
 import { MessagePopup } from "./MessagePopup";
-import { TabMenu } from "./TabMenu";
-import { Typography, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
+import { Typography, makeStyles, useMediaQuery, useTheme,Grid } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import useDashboardScrollingTracking from "../../utils/useDashboardScrollingTracking";
+import { ProjectMenu } from "./ProjectMenu";
+import { TabMenu } from "./TabMenu";
 import { BottomMenu } from "./BottomMenu";
 
 const pageContentId = "pageContent";
@@ -16,18 +18,23 @@ export const resetPageContentScroll = () => {
   element && element.scrollTo(0, 0);
 };
 
-const useStyles = makeStyles({
-  header: {
+const useStyles = makeStyles((theme) => ({
+  mainHeader: {
     textAlign: "center",
+    margin: 10
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 600,
+  secondaryHeader: {
+    textAlign: "center",
+    color: theme.palette.text.secondary
   },
-});
+  projectView: {
+    paddingBottom: 75
+  }
+}));
 
 const Layout = ({ fillPage, children }) => {
   const classes = useStyles();
+  const handleScroll = useDashboardScrollingTracking();
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -38,16 +45,32 @@ const Layout = ({ fillPage, children }) => {
     (state) => state.appData.siteMap.parameters.projectName,
   );
 
+  const projectMenu = useSelector(
+    (state) => state.appData.siteMap.projectTabMenu
+  );
+
+  const isInProjectView = projectMenu.length > 0;
+
+  const title = useSelector(
+    (state) => state.appData.siteMap.parameters.title,
+  );
+  const subTitle = useSelector(
+    (state) => state.appData.siteMap.parameters.subTitle,
+  );
+
   return (
     <BaseLayout>
       <SideMenu />
       <div className={styles.mainContent}>
         <Header />
         <div
-          className={`${styles.pageContentContainer} ${
-            fillPage ? styles.fillPage : null
-          }`}
+          className={`
+            ${styles.pageContentContainer}
+            ${fillPage ? styles.fillPage : null}
+            ${isSmallScreen && isInProjectView ? classes.projectView : null}
+          `}
           id={pageContentId}
+          onScroll={handleScroll}
         >
           <div
             className={`${styles.pageContent} ${
@@ -56,16 +79,23 @@ const Layout = ({ fillPage, children }) => {
           >
             <div className={fillPage ? styles.fillPage : null}>
               {nationalSocietyName && !projectName && (
-                <Typography variant="h1" className={classes.header}>
+                <Typography variant="h1" className={classes.mainHeader}>
                   {nationalSocietyName}
                 </Typography>
               )}
               {projectName && (
-                <Typography variant="h1" className={classes.header}>
-                  {nationalSocietyName} - {projectName}
-                </Typography>
+                <Grid container direction="column">
+                  <Typography variant="body1" className={classes.secondaryHeader}>
+                    {nationalSocietyName}
+                  </Typography>
+                  <Typography variant="h1" className={classes.mainHeader}>
+                    {projectName}
+                  </Typography>
+                </Grid>
               )}
-              <TabMenu />
+              {!isSmallScreen && <ProjectMenu/>}
+              {/* Display tabmenu for all pages except alert assesment page */}
+              {(!title && !subTitle) && <TabMenu/>}
               {children}
             </div>
           </div>

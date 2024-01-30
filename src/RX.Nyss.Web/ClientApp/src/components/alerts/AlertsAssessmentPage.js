@@ -14,10 +14,10 @@ import { assessmentStatus } from "./logic/alertsConstants";
 import { AlertsAssessmentActions } from "./components/AlertsAssessmentActions";
 import AlertNotificationRecipients from "./components/AlertNotificationRecipients";
 import { makeStyles } from "@material-ui/core/styles";
-import { SubMenuTitle } from "../layout/SubMenuTitle";
 import { sortByReportStatus } from "../../utils/sortReportByStatus";
 import { AlertStatusChip } from "../common/chip/AlertStatusChip";
 import { trackPageView } from "../../utils/appInsightsHelper";
+import { TabMenu } from "../layout/TabMenu";
 
 const useStyles = makeStyles((theme) => ({
   infoBox: {
@@ -86,6 +86,7 @@ const AlertsAssessmentPageComponent = ({
       <Typography variant="body1">
         {props.subTitle}
       </Typography>
+      <TabMenu/>
       <div className={styles.form}>
         {data.assessmentStatus === assessmentStatus.closed && data.comments && (
           <DisplayField

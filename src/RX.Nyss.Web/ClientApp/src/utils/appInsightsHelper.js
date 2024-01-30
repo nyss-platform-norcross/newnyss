@@ -3,8 +3,10 @@ import store from "../store";
 import { deviceType } from "react-device-detect";
 
 export const trackPageView = (name, properties) => {
-  const user = store.getState().appData.user;
-  const userRole = user ? user.roles[0] : undefined;
+  const appData = store.getState().appData;
+  const userRole = appData?.user?.roles[0];
+  const nationalSocietyName = appData?.siteMap?.parameters?.nationalSocietyName;
+  const projectName = appData?.siteMap?.parameters?.projectName;
 
   const appInsights = getAppInsights();
   appInsights.trackPageView({
@@ -12,14 +14,18 @@ export const trackPageView = (name, properties) => {
     properties: {
       userRole,
       deviceType,
+      nationalSocietyName,
+      projectName,
       ...properties,
     },
   });
 };
 
 export const trackEvent = (name, properties) => {
-  const user = store.getState().appData.user;
-  const userRole = user ? user.roles[0] : undefined;
+  const appData = store.getState().appData;
+  const userRole = appData?.user?.roles[0];
+  const nationalSocietyName = appData?.siteMap?.parameters?.nationalSocietyName;
+  const projectName = appData?.siteMap?.parameters?.projectName;
 
   const appInsights = getAppInsights();
   appInsights.trackEvent({
@@ -27,6 +33,8 @@ export const trackEvent = (name, properties) => {
     properties: {
       userRole,
       deviceType,
+      nationalSocietyName,
+      projectName,
       ...properties,
     },
   });
