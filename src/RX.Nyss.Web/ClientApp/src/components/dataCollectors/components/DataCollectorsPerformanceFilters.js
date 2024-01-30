@@ -45,30 +45,12 @@ export const DataCollectorsPerformanceFilters = ({
     updateLocalFilters,
   );
 
-  const [name, setName] = useReducer(
-    (state, action) => {
-      if (state.value !== action) {
-        return { changed: true, value: action };
-      } else {
-        return state;
-      }
-    },
-    { value: "", changed: false },
-  );
-
-  const debouncedName = useDebounce(name, 500);
-
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  useEffect(() => {
-    debouncedName.changed && handleFiltersChange({ name: debouncedName.value });
-  }, [debouncedName]);
 
   const handleAreaChange = (newValue) =>
     handleFiltersChange({ locations: newValue, pageNumber: 1 });
 
-  const handleNameChange = (event) => setName(event.target.value);
 
   const handleSupervisorChange = (event) =>
     handleFiltersChange({
@@ -83,6 +65,26 @@ export const DataCollectorsPerformanceFilters = ({
   }
 
   const Filter = () => {
+    const [name, setName] = useReducer(
+      (state, action) => {
+        if (state.value !== action) {
+          return { changed: true, value: action };
+        } else {
+          return state;
+        }
+      },
+      { value: localFilters.name, changed: false },
+    );
+
+    const debouncedName = useDebounce(name, 500);
+
+    const handleNameChange = (event) => setName(event.target.value);
+
+    useEffect(() => {
+      debouncedName.changed && handleFiltersChange({ name: debouncedName.value });
+    }, [debouncedName.value]);
+
+
     return (
       <Grid container spacing={2} direction={isSmallScreen ? "column" : "row"} alignItems={isSmallScreen ? "center" : "flex-start"} >
         <Grid item>
