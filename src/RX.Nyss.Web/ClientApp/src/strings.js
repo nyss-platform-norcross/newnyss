@@ -663,6 +663,7 @@ export const stringKeys = {
       locationsHeader: "dataCollectors.form.locationsHeader",
       showYourLocation: "dataCollectors.form.showYourLocation",
       retrievingLocation: "dataCollectors.form.retrievingLocation",
+      responsibleSupervisor: "dataCollectors.form.responsibleSupervisor",
       alerts: {
         noDistrictsAlert: "dataCollectors.form.alert.noDistrictsAlert",
         noVillagesAlert: "dataCollectors.form.alert.noVillagesAlert",
@@ -889,6 +890,8 @@ export const stringKeys = {
         Closed: "alerts.assess.status.closed",
         Escalated: "alerts.assess.status.escalated",
         Dismissed: "alerts.assess.status.dismissed",
+        ToDismiss: "alerts.assess.status.toDismiss",
+        ToEscalate: "alerts.assess.status.toEscalate",
       },
       statusDescription: {
         closed: "alerts.assess.statusDescription.closed",
@@ -1186,6 +1189,7 @@ export const stringKeys = {
       tryAgain: "common.buttons.tryAgain",
       confirmCancelation: "common.buttons.confirmCancelation",
       denyCancelation: "common.buttons.denyCancelation",
+      showResults: "common.buttons.showResults",
     },
     boolean: {
       true: "common.true",
@@ -1194,6 +1198,8 @@ export const stringKeys = {
     name: "common.name",
     location: "common.location",
     email: "common.email",
+    filter: "common.filter",
+    filters: "common.filters",
   },
   translations: {
     title: "translations.title",
