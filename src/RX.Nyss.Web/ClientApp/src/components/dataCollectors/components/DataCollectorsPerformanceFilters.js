@@ -168,7 +168,7 @@ export const DataCollectorsPerformanceFilters = ({
   if (isSmallScreen) {
     return (
       <Grid container justifyContent="center" style={{ marginBottom: 20 }}>
-        <DrawerFilter title={strings(stringKeys.alerts.title)} children={<Filter/>} showResults={handleFiltersChange}/>
+        <DrawerFilter title={strings(stringKeys.dataCollectors.title)} children={<Filter/>} showResults={handleFiltersChange}/>
       </Grid>
     )
   }
