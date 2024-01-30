@@ -1,6 +1,6 @@
 import styles from "./DashboardReportSexAgeTable.module.scss";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   Card,
   CardContent,
