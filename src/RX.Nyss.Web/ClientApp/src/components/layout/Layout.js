@@ -6,6 +6,7 @@ import styles from "./Layout.module.scss";
 import { MessagePopup } from "./MessagePopup";
 import { Typography, makeStyles, useMediaQuery, useTheme,Grid } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import useDashboardScrollingTracking from "../../utils/useDashboardScrollingTracking";
 import { ProjectMenu } from "./ProjectMenu";
 import { TabMenu } from "./TabMenu";
 import { BottomMenu } from "./BottomMenu";
@@ -33,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Layout = ({ fillPage, children }) => {
   const classes = useStyles();
+  const handleScroll = useDashboardScrollingTracking();
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -68,6 +70,7 @@ const Layout = ({ fillPage, children }) => {
             ${isSmallScreen && isInProjectView ? classes.projectView : null}
           `}
           id={pageContentId}
+          onScroll={handleScroll}
         >
           <div
             className={`${styles.pageContent} ${

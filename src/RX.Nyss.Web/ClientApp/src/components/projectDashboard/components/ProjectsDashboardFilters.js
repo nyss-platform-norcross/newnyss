@@ -31,6 +31,7 @@ import { HealthRiskFilter } from "../../common/filters/HealthRiskFilter";
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";
 import { useEffect } from "react";
+import { trackEvent } from "../../../utils/appInsightsHelper";
 
 export const ProjectsDashboardFilters = ({
   filters,
@@ -54,6 +55,7 @@ export const ProjectsDashboardFilters = ({
 
   //Fetches new data based on changes in filters
   const handleFiltersChange = (filters) => {
+    trackEvent("ProjectDashboardFilterChange", {filters});
     onChange(updateLocalFilters(filters));
   };
 
