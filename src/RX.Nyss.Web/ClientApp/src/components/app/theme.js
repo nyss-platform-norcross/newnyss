@@ -233,11 +233,7 @@ export const theme = (direction) =>
         },
       },
       MuiTableHead: {
-        root: {
-          "& .MuiTableCell-root": {
-            backgroundColor: nyssPalette.background.light,
-          },
-        },
+        root: {},
       },
       MuiTableCell: {
         root: {
@@ -247,6 +243,9 @@ export const theme = (direction) =>
         head: {
           fontWeight: 600,
           borderBottomColor: "#8C8C8C",
+        },
+        stickyHeader: {
+          backgroundColor: "#F1F1F1",
         },
       },
       MuiTabs: {
