@@ -7,6 +7,8 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  useTheme,
+  useMediaQuery,
 } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import EditIcon from "@material-ui/icons/Edit";
@@ -27,7 +29,9 @@ export const HealthRisksTable = ({
   if (isListFetching) {
     return <Loading />;
   }
-
+  
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <TableContainer sticky>
       <Table>
@@ -49,7 +53,7 @@ export const HealthRisksTable = ({
               key={row.id}
               hover
               onClick={() => goToEdition(row.id)}
-              className={styles.clickableRow}
+              className={`${styles.clickableRow} ${isSmallScreen && styles.smallDeviceTableRow}`}
             >
               <TableCell>{row.healthRiskCode}</TableCell>
               <TableCell>{row.name}</TableCell>
