@@ -33,6 +33,15 @@ export const nyssPalette = {
 
 export const theme = (direction) =>
   createTheme({
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 900,
+        lg: 1200,
+        xl: 1536,
+      },
+    },
     direction: direction,
     typography: {
       fontFamily: "MyriadPro, Arial",
