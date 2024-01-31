@@ -220,8 +220,8 @@ export const theme = (direction) =>
       },
       MuiTableContainer: {
         root: {
-          overflowX: "scroll",
-          maxHeight: "calc(100vh - 200px)",
+          overflow: "auto",
+          maxHeight: "90vh",
         },
       },
       MuiTable: {
