@@ -7,7 +7,8 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableContainer
+  TableContainer,
+  makeStyles,
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import dayjs from "dayjs";
@@ -19,6 +20,17 @@ import { TableRowActions } from "../common/tableRowAction/TableRowActions";
 import { TableRowMenu } from "../common/tableRowAction/TableRowMenu";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { ConfirmationDialog } from "../common/confirmationDialog/ConfirmationDialog";
+
+const useStyles = makeStyles((theme) => ({
+  clickableRow: {
+    cursor: "pointer",
+  },
+  inactiveRow: {
+    "& .MuiTableCell-body": {
+      color: theme.palette.text.disabled,
+    },
+  },
+}));
 
 export const NationalSocietiesTable = ({
   isListFetching,
@@ -39,6 +51,8 @@ export const NationalSocietiesTable = ({
     isOpen: false,
     nationalSocietyId: null,
   });
+
+  const classes = useStyles();
 
   const archiveConfirmed = () => {
     archive(archiveConfirmationDialog.nationalSocietyId);
@@ -108,9 +122,9 @@ export const NationalSocietiesTable = ({
                 key={row.id}
                 hover
                 onClick={() => goToDashboard(row.id)}
-                className={
-                  row.isArchived ? styles.inactiveRow : styles.clickableRow
-                }
+                className={`${classes.clickableRow} ${
+                  row.isArchived ? classes.inactiveRow : ""
+                }`}
               >
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.country}</TableCell>

@@ -1,4 +1,3 @@
-import styles from "../common/table/Table.module.scss";
 import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
@@ -18,8 +17,20 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableContainer
+  TableContainer,
+  makeStyles,
 } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  clickableRow: {
+    cursor: "pointer",
+  },
+  inactiveRow: {
+    "& .MuiTableCell-body": {
+      color: theme.palette.text.disabled,
+    },
+  },
+}));
 
 export const ProjectsTable = ({
   isListFetching,
@@ -36,6 +47,8 @@ export const ProjectsTable = ({
     isOpen: false,
     projectId: null,
   });
+
+  const classes = useStyles();
 
   const closeConfirmed = () => {
     close(nationalSocietyId, closeConfirmationDialog.projectId);
@@ -96,9 +109,9 @@ export const ProjectsTable = ({
                 key={project.id}
                 hover
                 onClick={() => goToDashboard(nationalSocietyId, project.id)}
-                className={
-                  project.isClosed ? styles.inactiveRow : styles.clickableRow
-                }
+                className={`${classes.clickableRow} ${
+                  project.isClosed ? classes.inactiveRow : ""
+                }`}
               >
                 <TableCell>{project.name}</TableCell>
                 <TableCell>

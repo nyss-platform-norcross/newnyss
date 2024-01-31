@@ -21,9 +21,10 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableContainer
+  TableContainer,
 } from "@material-ui/core";
 import TablePager from "../../common/tablePagination/TablePager";
+import { Loading } from "../../common/loading/Loading";
 
 export const DataCollectorsTable = ({
   isListFetching,
@@ -143,6 +144,10 @@ export const DataCollectorsTable = ({
 
     return `${firstLocation.region}, ${firstLocation.district}, ${firstLocation.village}`;
   };
+
+  if (isListFetching) {
+    return <Loading />;
+  }
 
   return (
     <TableContainer>
