@@ -1,4 +1,5 @@
 import styles from "./ProjectsDashboardFilters.module.scss";
+import { useEffect } from "react";
 import { DatePicker } from "../../forms/DatePicker";
 import { strings, stringKeys } from "../../../strings";
 import { ConditionalCollapse } from "../../common/conditionalCollapse/ConditionalCollapse";
@@ -261,6 +262,10 @@ export const ProjectsDashboardFilters = ({
 }) => {
   //Reducer for local filters state
   const [localFilters, updateLocalFilters] = useLocalFilters(filters);
+
+  useEffect(() => {
+    updateLocalFilters(filters);
+  }, [filters]);
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));

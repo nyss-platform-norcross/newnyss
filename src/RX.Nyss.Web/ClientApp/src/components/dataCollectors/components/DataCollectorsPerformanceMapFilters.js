@@ -4,10 +4,16 @@ import { strings, stringKeys } from "../../../strings";
 import { DatePicker } from "../../forms/DatePicker";
 import { convertToLocalDate, convertToUtc } from "../../../utils/date";
 import useLocalFilters from "../../common/filters/useLocalFilters";
+import { useEffect } from "react";
 
 export const DataCollectorsPerformanceMapFilters = ({ filters, onChange }) => {
   //Reducer for local filters state
   const [localFilters, updateLocalFilters] = useLocalFilters(filters);
+
+  useEffect(() => {  
+    updateLocalFilters(filters);
+  }, [filters]);
+
 
   //Fetches new data based on changes in filters
   const handleFiltersChange = (filters) =>

@@ -76,6 +76,7 @@ export const projectsSiteMap = [
     access: accessMap.projects.projectHealthRisks,
     placeholderIndex: projectSubMenuOrder.healthRisks,
     middleStepOnly: true,
+    icon: "HealthRisks"
   },
   {
     parentPath:

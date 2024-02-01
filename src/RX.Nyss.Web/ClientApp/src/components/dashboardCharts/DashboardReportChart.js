@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, Typography } from "@material-ui/core";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { strings, stringKeys } from "../../strings";
+import useHoverChartTracking from "../../utils/useHoverChartTracking";
 
 const getOptions = (valuesLabel, series, categories) => ({
   chart: {
@@ -57,6 +58,7 @@ const getOptions = (valuesLabel, series, categories) => ({
 });
 
 export const DashboardReportChart = ({ data }) => {
+  const trackHoveredChart = useHoverChartTracking();
   const resizeChart = (element) => {
     element && element.chart.reflow();
   };
@@ -87,7 +89,7 @@ export const DashboardReportChart = ({ data }) => {
   );
 
   return (
-    <Card data-printable={true}>
+    <Card data-printable={true} onMouseEnter={() => trackHoveredChart("hoveredReportChart")} onTouchStart={trackHoveredChart("hoveredReportChart")}>
       <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.reportsPerHealthRisk.title)}</Typography>}/>
       <CardContent>
         <HighchartsReact
