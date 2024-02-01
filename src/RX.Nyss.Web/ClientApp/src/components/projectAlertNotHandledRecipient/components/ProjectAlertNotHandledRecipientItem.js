@@ -70,9 +70,16 @@ export const ProjectAlertNotHandledRecipientItem = ({
             value={user?.userId}
             onChange={handleRecipientChange}
             error={error}
+            MenuProps={{
+              PaperProps: {
+                style: {
+                  width: "90%",
+                },
+              },
+            }}
           >
             {userList.map((u) => (
-              <MenuItem key={`recipient_user_${u.userId}`} value={u.userId}>
+              <MenuItem style={{ whiteSpace: "normal" }} key={`recipient_user_${u.userId}`} value={u.userId}>
                 {u.name}
               </MenuItem>
             ))}
