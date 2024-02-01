@@ -86,6 +86,7 @@ function MultiValue(props) {
       deleteIcon={
         !isActivityReport ? <CancelIcon {...props.removeProps} /> : null
       }
+      classes={{label: styles.chipLabel}}
     />
   );
 }
