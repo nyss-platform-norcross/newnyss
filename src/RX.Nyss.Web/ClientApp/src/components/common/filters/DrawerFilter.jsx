@@ -126,7 +126,7 @@ export const DrawerFilter = ({ title, children, showResults }) => {
         anchor={"bottom"}
         open={isOpen}
         onTransitionEnd={handleDrawerTransitionEnd}
-        onClose={() => toggleDrawer(false)}
+        onClose={onShowResults}
         BackdropProps={{
           classes: {
             root: classes.backdropClass,
