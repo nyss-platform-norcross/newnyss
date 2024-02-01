@@ -312,7 +312,7 @@ export const ProjectsDashboardFilters = ({
       <Grid container justifyContent="center" style={{ marginBottom: 20 }}>
         {isFetching && <LinearProgress color="primary" />}
         <DrawerFilter
-          title={strings(stringKeys.dashboard.title)}
+          title={null}
           children={
             <Filter
               localFilters={localFilters}

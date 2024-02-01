@@ -5,7 +5,7 @@ import { connect, useSelector } from "react-redux";
 import * as projectDashboardActions from "./logic/projectDashboardActions";
 import { withLayout } from "../../utils/layout";
 import Layout from "../layout/Layout";
-import { Grid } from "@material-ui/core";
+import { Grid, useMediaQuery } from "@material-ui/core";
 import { Loading } from "../common/loading/Loading";
 import { useMount } from "../../utils/lifecycle";
 import { ProjectsDashboardFilters } from "./components/ProjectsDashboardFilters";
@@ -43,6 +43,7 @@ const ProjectDashboardPageComponent = ({
 
   const dashboardElement = useRef(null);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"))
 
   const handleFiltersChange = (filters) => getDashboardData(projectId, filters);
 
@@ -64,7 +65,7 @@ const ProjectDashboardPageComponent = ({
 
   return (
     <Grid container spacing={2} ref={dashboardElement}>
-      <Grid item xs={12} className={styles.filtersGrid}>
+      <Grid item xs={12} className={!isSmallScreen ? styles.filtersGrid : undefined}>
         <ProjectsDashboardFilters
           healthRisks={props.healthRisks}
           organizations={props.organizations}
