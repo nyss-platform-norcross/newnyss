@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MenuItem, Checkbox } from "@material-ui/core";
+import { MenuItem, Checkbox, useMediaQuery } from "@material-ui/core";
 import { strings, stringKeys } from "../../../strings";
 import styles from "./HealthRiskFilter.module.scss";
 import { SelectAll } from "../../common/selectAll/SelectAll";
@@ -47,6 +47,8 @@ export const HealthRiskFilter = ({
         )[0] +
         `${selectedIds.length > 1 ? ` (+${selectedIds.length - 1})` : ""}`;
 
+  const isSmallScreen = useMediaQuery(theme => theme.breakpoints.down("sm"));
+
   // Uses the onChange function to fetch from backend
   const showResults = () => {
     onChange(filteredHealthRisks);
@@ -67,7 +69,7 @@ export const HealthRiskFilter = ({
           filteredHealthRisks.length === allHealthRisks.length
         }
         toggleSelectAll={toggleSelectAll}
-        showResults={showResults}
+        showResults={isSmallScreen ? () => setDialogOpen(false) : showResults}
       />
       {allHealthRisks.map((hr) => (
         <MenuItem
