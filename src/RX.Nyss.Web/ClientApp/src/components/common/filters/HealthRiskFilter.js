@@ -19,12 +19,13 @@ export const HealthRiskFilter = ({
   }, [allHealthRisks]);
 
   // Handles when the checkbox is checked off or not checked on. Will only update filteredHealthRisks to not fetch from backend every time.
-  const handleHealthRiskChange = (event) => {
-    const healthRiskId = parseInt(event.target.value);
+  const handleHealthRiskChange = (healthRiskId) => {
+    const newHealthRisks = filteredHealthRisks.includes(healthRiskId)
+    ? filteredHealthRisks.filter((hrId) => hrId !== healthRiskId)
+    : [...filteredHealthRisks, healthRiskId]
+
     updateValue({
-      healthRisks: filteredHealthRisks.includes(healthRiskId)
-        ? filteredHealthRisks.filter((hrId) => hrId !== healthRiskId)
-        : [...filteredHealthRisks, healthRiskId],
+      healthRisks: newHealthRisks,
     });
   };
 
@@ -76,12 +77,12 @@ export const HealthRiskFilter = ({
           key={`filter_healthRisk_${hr.id}`}
           value={hr.id}
           className={styles.healtRiskMenuItem}
+          onClick={() => handleHealthRiskChange(hr.id)}
         >
           <Checkbox
             value={hr.id}
             color="primary"
             checked={filteredHealthRisks.indexOf(hr.id) > -1}
-            onClick={handleHealthRiskChange}
           />
           <span
             style={{
