@@ -15,7 +15,9 @@ export const HealthRiskFilter = ({
   const [dialogOpen, setDialogOpen] = useState(false);
   // Checks off all boxes on mount
   useEffect(() => {
-    updateValue({ healthRisks: allHealthRisks.map((hr) => hr.id) });
+    if(filteredHealthRisks.length === 0) {
+      updateValue({ healthRisks: allHealthRisks.map((hr) => hr.id) });
+    }
   }, [allHealthRisks]);
 
   // Handles when the checkbox is checked off or not checked on. Will only update filteredHealthRisks to not fetch from backend every time.
