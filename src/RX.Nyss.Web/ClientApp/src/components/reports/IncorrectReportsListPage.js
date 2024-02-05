@@ -144,6 +144,7 @@ const IncorrectReportsListPageComponent = (props) => {
           filters={props.filters}
           showCorrectReportFilters={false}
           rtl={useRtlDirection}
+          isListFetching={props.isListFetching}
         />
       </div>
 

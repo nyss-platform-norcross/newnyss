@@ -13,6 +13,7 @@ import {
   FormControlLabel,
   Radio,
   useMediaQuery,
+  LinearProgress,
 } from "@material-ui/core";
 import { strings, stringKeys } from "../../../strings";
 import {
@@ -238,6 +239,7 @@ export const ReportFilters = ({
   hideTrainingStatusFilter,
   hideCorrectedFilter,
   rtl,
+  isListFetching,
 }) => {
   //Reducer for local filters state
   const [localFilters, updateLocalFilters] = useLocalFilters(filters);
@@ -264,6 +266,9 @@ export const ReportFilters = ({
   }
 
   if(isSmallScreen) {
+    if(isListFetching){
+      return <LinearProgress color="primary"/>
+    }
     return (
       <Grid container justifyContent="center" style={{ marginBottom: 20 }}>
         <DrawerFilter
