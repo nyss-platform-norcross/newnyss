@@ -45,7 +45,7 @@ const Filter = ({
   organizations,
   userRoles,
   rtl,
-  collectionsTypes
+  collectionsTypes,
 }) => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
@@ -312,10 +312,13 @@ export const ProjectsDashboardFilters = ({
     return null;
   }
 
+
   if(isSmallScreen) {
+    if(isFetching){
+      return <LinearProgress color="primary"/>
+    }
     return (
       <Grid container justifyContent="center" style={{ marginBottom: 20 }}>
-        {isFetching && <LinearProgress color="primary" />}
         <DrawerFilter
           title={null}
           children={

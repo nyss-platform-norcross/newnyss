@@ -56,7 +56,7 @@ export const DropdownPopover = ({
         open={dialogOpen}
         onClose={() => {
           setDialogOpen(false);
-          !isSmallScreen && showResults();
+          showResults();
         }}
         anchorEl={anchorEl}
         anchorOrigin={{
