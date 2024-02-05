@@ -274,9 +274,11 @@ export const NationalSocietyDashboardFilters = ({
   }
 
   if(isSmallScreen) {
+    if(isFetching) {
+      return <LinearProgress color="primary" />
+    }
     return (
       <Grid container justifyContent="center" style={{ marginBottom: 20 }}>
-        {isFetching && <LinearProgress color="primary" />}
         <DrawerFilter
           title={null}
           children={
