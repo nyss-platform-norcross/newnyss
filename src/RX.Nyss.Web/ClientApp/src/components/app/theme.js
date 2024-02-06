@@ -220,8 +220,8 @@ export const theme = (direction) =>
       },
       MuiTableContainer: {
         root: {
-          overflowX: "scroll",
-          maxHeight: "calc(100vh - 200px)",
+          overflow: "auto",
+          maxHeight: "90vh",
         },
       },
       MuiTable: {
@@ -231,6 +231,9 @@ export const theme = (direction) =>
           borderRight: "2px solid #f3f3f3",
           background: "#FFFFFF",
         },
+      },
+      MuiTableHead: {
+        root: {},
       },
       MuiTableHead: {
         root: {
@@ -247,6 +250,9 @@ export const theme = (direction) =>
         head: {
           fontWeight: 600,
           borderBottomColor: "#8C8C8C",
+        },
+        stickyHeader: {
+          backgroundColor: "#F1F1F1",
         },
       },
       MuiTabs: {

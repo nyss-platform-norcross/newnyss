@@ -11,7 +11,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableContainer
+  TableContainer,
 } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/InfoOutlined";
 import { Loading } from "../../common/loading/Loading";
@@ -58,7 +58,7 @@ export const DataCollectorsPerformanceTable = ({
     return roundToFixed(percentage, 1);
   };
 
-  if (!filters || !epiDateRange) {
+  if (isListFetching || !filters || !epiDateRange) {
     return <Loading />;
   }
 

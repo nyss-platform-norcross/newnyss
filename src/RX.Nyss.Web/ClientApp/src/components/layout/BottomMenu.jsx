@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
   bottomNavActionSelected: {
     color: theme.palette.primary.main,
+    whiteSpace: "normal",
   },
   bottomNavItem: {
     minWidth: 50,
@@ -73,9 +74,13 @@ const BottomMenuNavigationComponent = ({
 }) => {
   const classes = useStyles();
 
+  const getPage = (page) => {
+    return page.subMenu?.length === 1 ? page.subMenu[0] : page;
+  };
+
   const onMenuClick = (page) => {
     // Opens drawer if there are sub menu options
-    if (page.subMenu.length > 1) {
+    if (page.subMenu?.length > 1) {
       toggleDrawer(true, page.subMenu);
     }
     // Closes the drawer if the pressed menu option is already active
@@ -94,7 +99,8 @@ const BottomMenuNavigationComponent = ({
       className={className}
     >
       {projectTabMenu.length > 1 &&
-        projectTabMenu.map((page) => {
+        projectTabMenu.map((item) => {
+          const page = getPage(item);
           return (
             <BottomNavigationAction
               classes={{
@@ -126,12 +132,20 @@ export const BottomMenuComponent = ({ projectTabMenu, push }) => {
   // It needs a set height to get the transition to work.
   // Therefore the numbers are 73px for each sub-menu items and 70px for the navigation minus 1px since the border bottom of the last submenu item is removed.
   const classes = useStyles({ drawerHeight: options.length * 73 + 69 });
+  const setTitle = () => {
+    const activeMenuItem = projectTabMenu.find((menuItem) => menuItem.isActive);
+    const activeSubMenuItem = activeMenuItem?.subMenu?.find(
+      (subMenuItem) => subMenuItem.isActive,
+    );
+    setValue(
+      activeSubMenuItem && activeMenuItem?.subMenu?.length === 1
+        ? activeSubMenuItem?.title
+        : activeMenuItem?.title,
+    );
+  };
 
   useEffect(() => {
-    const activeMenuItem = projectTabMenu.find(
-      (menuItem) => menuItem.isActive,
-    )?.title;
-    setValue(activeMenuItem);
+    setTitle();
   }, [projectTabMenu]);
 
   const onItemClick = (item) => {
@@ -142,10 +156,7 @@ export const BottomMenuComponent = ({ projectTabMenu, push }) => {
     setIsOpen(open);
     setOptions(drawerOptions);
     if (!open) {
-      const activeMenuItem = projectTabMenu.find(
-        (menuItem) => menuItem.isActive,
-      )?.title;
-      setValue(activeMenuItem);
+      setTitle();
     }
   };
 
@@ -153,7 +164,8 @@ export const BottomMenuComponent = ({ projectTabMenu, push }) => {
     setValue(newValue);
   };
 
-  if (!value) return null;
+  // Don't display if it only has one item
+  if (!value || projectTabMenu.length === 1) return null;
 
   return (
     <>

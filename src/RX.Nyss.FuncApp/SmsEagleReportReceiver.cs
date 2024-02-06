@@ -34,11 +34,10 @@ public class SmsEagleReportReceiver
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "enqueueSmsEagleReport")] HttpRequestMessage httpRequest,
         [Blob("%AuthorizedApiKeysBlobPath%", FileAccess.Read)] string authorizedApiKeys)
     {
-        var maxContentLength = _config.MaxContentLength;
         var contentLength = httpRequest.Content.Headers.ContentLength;
-        if (contentLength == null || contentLength > maxContentLength)
+        if (contentLength == null)
         {
-            _logger.Log(LogLevel.Warning, $"Received an SMS Eagle request with length more than {maxContentLength} bytes. (length: {contentLength.ToString() ?? "N/A"})");
+            _logger.Log(LogLevel.Warning, "Received an SMS Eagle request with content length null.");
             return new BadRequestResult();
         }
 

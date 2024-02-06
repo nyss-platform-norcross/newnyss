@@ -13,11 +13,12 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableContainer
+  TableContainer,
 } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { AlertStatusChip } from "../../common/chip/AlertStatusChip";
 import { trackEvent } from "../../../utils/appInsightsHelper";
+import { Loading } from "../../common/loading/Loading";
 
 export const AlertsTable = ({
   isListFetching,
@@ -51,6 +52,10 @@ export const AlertsTable = ({
     trackEvent("goToAlertAssessment", { projectId, AlertId });
     goToAssessment(projectId, AlertId);
   };
+
+  if (isListFetching) {
+    return <Loading />;
+  }
 
   if (!list.length) {
     return <TableNoData />;

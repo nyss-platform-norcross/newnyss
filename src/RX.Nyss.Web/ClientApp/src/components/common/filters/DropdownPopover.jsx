@@ -7,13 +7,12 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   popoverPaper: {
-    '&.MuiPopover-paper': {
-      width: '100%',
+    "&.MuiPopover-paper": {
+      width: "100%",
       maxWidth: 400,
     },
   },
 });
-
 
 export const DropdownPopover = ({
   children,
@@ -71,7 +70,7 @@ export const DropdownPopover = ({
           className: styles.filterContainer,
         }}
         classes={{ paper: classes.popoverPaper }}
-        style={{ maxHeight: 400, maxWidth:"90%" }}
+        style={{ maxHeight: 400, maxWidth: "90%" }}
       >
         {children}
       </Popover>
