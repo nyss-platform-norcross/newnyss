@@ -1,7 +1,6 @@
 import styles from "./DataCollectorsPerformanceTable.module.scss";
 import PropTypes from "prop-types";
 import { strings, stringKeys } from "../../../strings";
-import { TableContainer } from "../../common/table/TableContainer";
 import { getIconFromStatus } from "../logic/dataCollectorsService";
 import { DataCollectorStatusIcon } from "../../common/icon/DataCollectorStatusIcon";
 import TablePager from "../../common/tablePagination/TablePager";
@@ -12,6 +11,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TableContainer,
 } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/InfoOutlined";
 import { Loading } from "../../common/loading/Loading";
@@ -58,13 +58,13 @@ export const DataCollectorsPerformanceTable = ({
     return roundToFixed(percentage, 1);
   };
 
-  if (!filters || !epiDateRange) {
+  if (isListFetching || !filters || !epiDateRange) {
     return <Loading />;
   }
 
   return (
-    <TableContainer sticky isFetching={isListFetching}>
-      <Table>
+    <TableContainer>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell className={styles.nameColumn}>
