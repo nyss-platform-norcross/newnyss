@@ -1,6 +1,36 @@
 import { createTheme } from "@material-ui/core/styles";
 const { palette } = createTheme();
 
+export const nyssPalette = {
+  primary: {
+    main: "#D52B1E",
+    contrastText: "#ffffff",
+    light: "#FEE7E7",
+  },
+  secondary: {
+    light: "#8c9eff",
+    main: "#333333",
+    dark: "#3d5afe",
+    contrastText: "#ffffff",
+  },
+  additional1: {
+    light: "#CDDDE7",
+    main: "#7FA7B7",
+    dark: "#355770",
+    lightest: "#E5EEF2",
+  },
+  background: {
+    light: "#ffffff",
+    default: "#F1F1F1",
+  },
+  backgroundDark: palette.augmentColor({
+    main: "#F4F4F4",
+  }),
+  text: {
+    secondary: "#4F4F4F",
+  },
+};
+
 export const theme = (direction) =>
   createTheme({
     breakpoints: {
@@ -56,28 +86,7 @@ export const theme = (direction) =>
         margin: "10px 0 10px",
       },
     },
-    palette: {
-      primary: {
-        main: "#D52B1E",
-        contrastText: "#ffffff",
-        light: "#FEE7E7",
-      },
-      secondary: {
-        light: "#8c9eff",
-        main: "#333333",
-        dark: "#3d5afe",
-        contrastText: "#ffffff",
-      },
-      background: {
-        default: "#F1F1F1",
-      },
-      backgroundDark: palette.augmentColor({
-        main: "#F4F4F4",
-      }),
-      text: {
-        secondary: "#4F4F4F",
-      },
-    },
+    palette: nyssPalette,
     overrides: {
       MuiButton: {
         root: {
@@ -209,12 +218,28 @@ export const theme = (direction) =>
           color: "#737373",
         },
       },
+      MuiTableContainer: {
+        root: {
+          overflow: "auto",
+          maxHeight: "90vh",
+        },
+      },
       MuiTable: {
         root: {
           borderTop: "2px solid #f3f3f3",
           borderLeft: "2px solid #f3f3f3",
           borderRight: "2px solid #f3f3f3",
           background: "#FFFFFF",
+        },
+      },
+      MuiTableHead: {
+        root: {},
+      },
+      MuiTableHead: {
+        root: {
+          "& .MuiTableCell-root": {
+            backgroundColor: nyssPalette.background.light,
+          },
         },
       },
       MuiTableCell: {
@@ -225,6 +250,9 @@ export const theme = (direction) =>
         head: {
           fontWeight: 600,
           borderBottomColor: "#8C8C8C",
+        },
+        stickyHeader: {
+          backgroundColor: "#F1F1F1",
         },
       },
       MuiTabs: {

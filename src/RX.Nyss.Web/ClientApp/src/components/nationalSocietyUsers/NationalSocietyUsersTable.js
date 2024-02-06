@@ -8,6 +8,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TableContainer,
   Tooltip,
 } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
@@ -20,7 +21,6 @@ import { Loading } from "../common/loading/Loading";
 import { strings, stringKeys } from "../../strings";
 import { TableRowMenu } from "../common/tableRowAction/TableRowMenu";
 import { accessMap } from "../../authentication/accessMap";
-import { TableContainer } from "../common/table/TableContainer";
 import { TableRowActions } from "../common/tableRowAction/TableRowActions";
 
 export const NationalSocietyUsersTable = ({
@@ -94,8 +94,8 @@ export const NationalSocietyUsersTable = ({
   };
 
   return (
-    <TableContainer sticky>
-      <Table>
+    <TableContainer>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>{strings(stringKeys.common.name)}</TableCell>

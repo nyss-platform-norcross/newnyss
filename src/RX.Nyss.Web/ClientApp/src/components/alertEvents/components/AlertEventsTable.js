@@ -84,8 +84,8 @@ export const AlertEventsTable = ({
 
   return (
     <Fragment>
-      <TableContainer sticky="true">
-        <Table>
+      <TableContainer>
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell style={{ width: "10%", minWidth: 150 }}>
