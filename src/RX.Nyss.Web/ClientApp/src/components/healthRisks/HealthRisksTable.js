@@ -26,12 +26,12 @@ export const HealthRisksTable = ({
   list,
   rtl,
 }) => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  
   if (isListFetching) {
     return <Loading />;
   }
-  
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <TableContainer>
       <Table stickyHeader>
@@ -53,7 +53,7 @@ export const HealthRisksTable = ({
               key={row.id}
               hover
               onClick={() => goToEdition(row.id)}
-              className={`${styles.clickableRow} ${isSmallScreen && styles.smallDeviceTableRow}`}
+              className={`${styles.clickableRow} ${isSmallScreen ? styles.smallDeviceTableRow : ""}`}
             >
               <TableCell>{row.healthRiskCode}</TableCell>
               <TableCell>{row.name}</TableCell>
