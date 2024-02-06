@@ -78,10 +78,11 @@ export const ProjectsDashboardFilters = ({
   const handleHealthRiskChange = (filteredHealthRisks) =>
     handleFiltersChange({ healthRisks: filteredHealthRisks });
 
-  const handleOrganizationChange = (event) =>
-    handleFiltersChange({
-      organizationId: event.target.value === 0 ? null : event.target.value,
-    });
+   {/* See comment below, (organization filter comment), explaining commented out code */}
+  // const handleOrganizationChange = (event) =>
+  //   handleFiltersChange({
+  //     organizationId: event.target.value === 0 ? null : event.target.value,
+  //   });
 
   const handleDateFromChange = (date) =>
     handleFiltersChange({ startDate: convertToUtc(date) });
@@ -190,7 +191,9 @@ export const ProjectsDashboardFilters = ({
                 />
               </Grid>
             )}
-            {!isFilterExpanded && localFilters.organizationId && (
+
+            {/* See comment below, (organization filter comment), explaining commented out code */}
+            {/* {!isFilterExpanded && localFilters.organizationId && (
               <Grid item>
                 <Chip
                   label={
@@ -202,7 +205,7 @@ export const ProjectsDashboardFilters = ({
                   onClick={() => setIsFilterExpanded(!isFilterExpanded)}
                 />
               </Grid>
-            )}
+            )} */}
             {!isFilterExpanded &&
               !userRoles.some((r) => r === DataConsumer) &&
               localFilters.reportStatus.kept && (
@@ -393,8 +396,9 @@ export const ProjectsDashboardFilters = ({
                 </MenuItem>
               </TextField>
             </Grid>
-
-            {organizations.length > 1 && (
+            
+            {/* NOTE: The organization filter is commented out since the overall multiple organization implementation in Nyss is currently deprecated/unclear of how it should be used. Don't delete commented code before clarification. Commented code causes an error. */}
+            {/* {organizations.length > 1 && (
               <Grid item>
                 <TextField
                   select
@@ -418,7 +422,7 @@ export const ProjectsDashboardFilters = ({
                   ))}
                 </TextField>
               </Grid>
-            )}
+            )} */}
 
             <Grid item>
               <FormControl>
