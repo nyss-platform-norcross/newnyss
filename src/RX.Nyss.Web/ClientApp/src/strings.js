@@ -527,6 +527,7 @@ export const stringKeys = {
       unspecifiedSexAndAge:
         "dashboard.reportsPerFeatureAndDate.unspecifiedSexAndAge",
       numberOfReports: "dashboard.reportsPerFeatureAndDate.numberOfReports",
+      percentageOfReportedPeople: "dashboard.reportsPerFeatureAndDate.percentageOfReportedPeople",
       title: "dashboard.reportsPerFeatureAndDate.title",
     },
     reportsPerVillageAndDate: {

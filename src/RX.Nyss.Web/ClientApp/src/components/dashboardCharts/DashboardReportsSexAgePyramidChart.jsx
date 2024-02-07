@@ -1,57 +1,71 @@
 import React from "react";
-import { Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  useTheme,
+} from "@material-ui/core";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { strings, stringKeys } from "../../strings";
 import useHoverChartTracking from "../../utils/useHoverChartTracking";
 
-const getOptions = (valuesLabel, series, categories) => ({
-  chart: {
-    type: "bar",
-  },
-  title: {
-    text: "",
-  },
-  xAxis: {
-    categories: categories,
-    reversed: true, // Set to true to reverse the order of categories
-  },
-  yAxis: {
-    title: {
-      text: valuesLabel,
+const getOptions = (valuesLabel, series, categories) => {
+  // Calculate maximum absolute value in the series data
+  const maxAbsValue = Math.max(
+    ...series.flatMap((s) => s.data.map((d) => Math.abs(d))),
+  );
+  return {
+    chart: {
+      type: "bar",
     },
-    labels: {
-      formatter: function () {
-        // Display positive values on the x-axis for the negative stack side (Female)
-        return Math.abs(this.value);
+    title: {
+      text: "",
+    },
+    xAxis: {
+      categories: categories,
+    },
+    yAxis: {
+      title: {
+        text: valuesLabel,
+      },
+      labels: {
+        formatter: function () {
+          // Display positive values on the x-axis
+          return Math.abs(this.value) + "%";
+        },
+      },
+      allowDecimals: false,
+      min: -maxAbsValue,
+      max: maxAbsValue,
+    },
+    plotOptions: {
+      series: {
+        stacking: "normal", // Set to 'normal' for side-by-side bars
       },
     },
-    allowDecimals: false,
-    reversedStacks: true, // Set to true to reverse the order of stacking
-  },
-  plotOptions: {
-    series: {
-      stacking: "normal", // Set to 'normal' for side-by-side bars
+    tooltip: {
+      formatter: function () {
+        // Customize tooltip to display positive values
+        return (
+          "<b>" +
+          this.x +
+          "</b><br/>" +
+          this.series.name +
+          ": " +
+          Math.abs(this.y).toFixed(1) +
+          "%"
+        );
+      },
     },
-  },
-  tooltip: {
-    formatter: function () {
-      // Customize tooltip to display positive values for the negative stack side (Female)
-      return (
-        "<b>" +
-        this.x +
-        "</b><br/>" +
-        this.series.name +
-        ": " +
-        Math.abs(this.y)
-      );
-    },
-  },
-  series: series,
-});
+    series: series,
+  };
+};
 
 export const DashboardReportSexAgePyramidChart = ({ data }) => {
   const trackHoveredChart = useHoverChartTracking();
+  const theme = useTheme();
   const categories = [
     strings(stringKeys.dashboard.reportsPerFeature.above5),
     strings(stringKeys.dashboard.reportsPerFeature.below5),
@@ -77,32 +91,49 @@ export const DashboardReportSexAgePyramidChart = ({ data }) => {
     },
   );
 
+  // Calculate total count
+  const totalCount =
+    totalNumbers.countFemalesAtLeastFive +
+    totalNumbers.countFemalesBelowFive +
+    totalNumbers.countMalesAtLeastFive +
+    totalNumbers.countMalesBelowFive +
+    totalNumbers.countUnspecifiedSexAndAge;
+
+  // Calculate percentages if there is data
+  const femaleAtLeastFivePercentage = totalCount
+    ? (totalNumbers.countFemalesAtLeastFive / totalCount) * 100
+    : 0;
+  const femaleBelowFivePercentage = totalCount
+    ? (totalNumbers.countFemalesBelowFive / totalCount) * 100
+    : 0;
+  const maleAtLeastFivePercentage = totalCount
+    ? (totalNumbers.countMalesAtLeastFive / totalCount) * 100
+    : 0;
+  const maleBelowFivePercentage = totalCount
+    ? (totalNumbers.countMalesBelowFive / totalCount) * 100
+    : 0;
+  const unspecifiedPercentage = totalCount
+    ? (totalNumbers.countUnspecifiedSexAndAge / totalCount) * 100
+    : 0;
+
   const series = [
     {
       name: strings(stringKeys.reports.sexAgeConstants.female),
       stack: "stack",
-      data: [
-        -totalNumbers.countFemalesAtLeastFive,
-        -totalNumbers.countFemalesBelowFive,
-        -totalNumbers.countUnspecifiedSexAndAge,
-      ],
+      data: [-femaleAtLeastFivePercentage, -femaleBelowFivePercentage],
       color: "#078e5e",
     },
     {
       name: strings(stringKeys.reports.sexAgeConstants.male),
       stack: "stack",
-      data: [
-        totalNumbers.countMalesAtLeastFive,
-        totalNumbers.countMalesBelowFive,
-        totalNumbers.countUnspecifiedSexAndAge,
-      ],
+      data: [maleAtLeastFivePercentage, maleBelowFivePercentage],
       color: "#72d5fb",
     },
   ];
 
   const chartData = getOptions(
     strings(
-      stringKeys.dashboard.reportsPerFeatureAndDate.numberOfReports,
+      stringKeys.dashboard.reportsPerFeatureAndDate.percentageOfReportedPeople,
       true,
     ),
     series,
@@ -128,6 +159,12 @@ export const DashboardReportSexAgePyramidChart = ({ data }) => {
           ref={(element) => element && element.chart.reflow()}
           options={chartData}
         />
+        <Typography variant="h6" align="center">
+          {strings(
+            stringKeys.dashboard.reportsPerFeatureAndDate.unspecifiedSexAndAge,
+          )}
+          : {unspecifiedPercentage.toFixed(1)}%
+        </Typography>
       </CardContent>
     </Card>
   );
