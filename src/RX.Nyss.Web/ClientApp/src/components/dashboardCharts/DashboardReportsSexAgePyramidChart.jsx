@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  useTheme,
-} from "@material-ui/core";
+import { Card, CardContent, CardHeader, Typography } from "@material-ui/core";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { strings, stringKeys } from "../../strings";
@@ -65,7 +59,6 @@ const getOptions = (valuesLabel, series, categories) => {
 
 export const DashboardReportSexAgePyramidChart = ({ data }) => {
   const trackHoveredChart = useHoverChartTracking();
-  const theme = useTheme();
   const categories = [
     strings(stringKeys.dashboard.reportsPerFeature.above5),
     strings(stringKeys.dashboard.reportsPerFeature.below5),
