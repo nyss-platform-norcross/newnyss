@@ -86,10 +86,12 @@ export const NationalSocietyDashboardFilters = ({
   const handleHealthRiskChange = (filteredHealthRisks) =>
     handleFiltersChange({ healthRisks: filteredHealthRisks });
 
-  const handleOrganizationChange = (event) =>
-    handleFiltersChange({
-      organizationId: event.target.value === 0 ? null : event.target.value,
-    });
+  {/* See comment below, (organization filter comment), explaining commented out code */}
+  // const handleOrganizationChange = (event) =>
+  //   handleFiltersChange({
+  //     organizationId: event.target.value === 0 ? null : event.target.value,
+  //   });
+
   const handleDateFromChange = (date) =>
     handleFiltersChange({ startDate: convertToUtc(date) });
 
@@ -183,7 +185,9 @@ export const NationalSocietyDashboardFilters = ({
                 />
               </Grid>
             )}
-            {!isFilterExpanded && localFilters.organizationId && (
+
+            {/* See comment below, (organization filter comment), explaining commented out code */}
+            {/* {!isFilterExpanded && localFilters.organizationId && (
               <Grid item>
                 <Chip
                   label={
@@ -195,7 +199,7 @@ export const NationalSocietyDashboardFilters = ({
                   onClick={() => setIsFilterExpanded(!isFilterExpanded)}
                 />
               </Grid>
-            )}
+            )} */}
             {!isFilterExpanded &&
               !userRoles.some((r) => r === DataConsumer) &&
               localFilters.reportStatus.kept && (
@@ -348,7 +352,8 @@ export const NationalSocietyDashboardFilters = ({
               </TextField>
             </Grid>
 
-            {organizations.length > 1 && (
+            {/* NOTE: The organization filter is commented out since the overall multiple organization implementation in Nyss is currently deprecated/unclear of how it should be used. Don't delete commented code before clarification. Commented code causes an error. */}
+            {/* {organizations.length > 1 && (
               <Grid item>
                 <TextField
                   select
@@ -372,7 +377,7 @@ export const NationalSocietyDashboardFilters = ({
                   ))}
                 </TextField>
               </Grid>
-            )}
+            )} */}
 
             {!userRoles.some((r) => r === DataConsumer) && (
               <Grid item>
