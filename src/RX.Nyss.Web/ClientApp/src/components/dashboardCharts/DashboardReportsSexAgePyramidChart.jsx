@@ -60,11 +60,15 @@ const getOptions = (valuesLabel, series, categories) => {
 export const DashboardReportSexAgePyramidChart = ({ data }) => {
   const trackHoveredChart = useHoverChartTracking();
   const categories = [
-    strings(stringKeys.dashboard.reportsPerFeature.above5),
-    strings(stringKeys.dashboard.reportsPerFeature.below5),
+    strings(stringKeys.dashboard.reportsPerFeature.above5, true),
+    strings(stringKeys.dashboard.reportsPerFeature.below5, true),
     `${strings(
       stringKeys.dashboard.reportsPerFeature.unspecifiedAge,
-    )} + ${strings(stringKeys.dashboard.reportsPerFeature.unspecifiedSex)}`,
+      true,
+    )} + ${strings(
+      stringKeys.dashboard.reportsPerFeature.unspecifiedSex,
+      true,
+    )}`,
   ];
   const totalNumbers = data.reduce(
     (acc, obj) => {
@@ -111,13 +115,13 @@ export const DashboardReportSexAgePyramidChart = ({ data }) => {
 
   const series = [
     {
-      name: strings(stringKeys.reports.sexAgeConstants.female),
+      name: strings(stringKeys.reports.sexAgeConstants.female, true),
       stack: "stack",
       data: [-femaleAtLeastFivePercentage, -femaleBelowFivePercentage],
       color: "#078e5e",
     },
     {
-      name: strings(stringKeys.reports.sexAgeConstants.male),
+      name: strings(stringKeys.reports.sexAgeConstants.male, true),
       stack: "stack",
       data: [maleAtLeastFivePercentage, maleBelowFivePercentage],
       color: "#72d5fb",
