@@ -138,6 +138,7 @@ const CorrectReportsListPageComponent = (props) => {
           filters={props.filters}
           showCorrectReportFilters={true}
           rtl={useRtlDirection}
+          isListFetching={props.isListFetching}
         />
       </div>
 

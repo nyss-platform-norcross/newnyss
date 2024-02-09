@@ -1,7 +1,7 @@
 import styles from "./LocationFilter.module.scss";
 
 import { Fragment, useState } from "react";
-import { Popover, TextField } from "@material-ui/core";
+import { Popover, TextField, useMediaQuery } from "@material-ui/core";
 import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -25,6 +25,7 @@ export const DropdownPopover = ({
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const handleDropdownClick = (event) => {
     event.preventDefault();
