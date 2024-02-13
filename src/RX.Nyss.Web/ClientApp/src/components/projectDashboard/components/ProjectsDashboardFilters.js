@@ -133,7 +133,7 @@ export const ProjectsDashboardFilters = ({
           <Grid item>
             <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>} className={isFilterExpanded ? styles.filterTitle : null}/>
           </Grid>
-          {!isFilterExpanded && (
+          {!isGeneratingPdf && !isFilterExpanded && (
             <Fragment>
               <Grid item>
                 <Chip
@@ -158,7 +158,7 @@ export const ProjectsDashboardFilters = ({
               </Grid>
             </Fragment>
           )}
-          {!isFilterExpanded && !allLocationsSelected() && (
+          {!isGeneratingPdf && !isFilterExpanded && !allLocationsSelected() && (
             <Grid item>
               <Chip
                 label={locationsFilterLabel}
@@ -166,7 +166,7 @@ export const ProjectsDashboardFilters = ({
               />
             </Grid>
           )}
-          {!isFilterExpanded && localFilters.healthRiskId && (
+          {!isGeneratingPdf && !isFilterExpanded && localFilters.healthRiskId && (
             <Grid item>
               <Chip
                 label={
@@ -179,7 +179,7 @@ export const ProjectsDashboardFilters = ({
               />
             </Grid>
           )}
-          {!isFilterExpanded && localFilters.dataCollectorType !== "all" && (
+          {!isGeneratingPdf && !isFilterExpanded && localFilters.dataCollectorType !== "all" && (
             <Grid item>
               <Chip
                 label={collectionsTypes[localFilters.dataCollectorType]}
@@ -205,7 +205,7 @@ export const ProjectsDashboardFilters = ({
               />
             </Grid>
           )} */}
-          {!isFilterExpanded &&
+          {!isGeneratingPdf && !isFilterExpanded &&
             !userRoles.some((r) => r === DataConsumer) &&
             localFilters.reportStatus.kept && (
               <Grid item>
@@ -223,7 +223,7 @@ export const ProjectsDashboardFilters = ({
                 />
               </Grid>
             )}
-          {!isFilterExpanded &&
+          {!isGeneratingPdf && !isFilterExpanded &&
             !userRoles.some((r) => r === DataConsumer) &&
             localFilters.reportStatus.dismissed && (
               <Grid item>
@@ -241,7 +241,7 @@ export const ProjectsDashboardFilters = ({
                 />
               </Grid>
             )}
-          {!isFilterExpanded &&
+          {!isGeneratingPdf && !isFilterExpanded &&
             !userRoles.some((r) => r === DataConsumer) &&
             localFilters.reportStatus.notCrossChecked && (
               <Grid item>
@@ -259,7 +259,7 @@ export const ProjectsDashboardFilters = ({
                 />
               </Grid>
             )}
-          {!isFilterExpanded &&
+          {!isGeneratingPdf && !isFilterExpanded &&
             !userRoles.some((r) => r === DataConsumer) &&
             localFilters.trainingStatus !== "Trained" && (
               <Grid item>

@@ -128,7 +128,7 @@ export const NationalSocietyDashboardFilters = ({
             <Grid item>
               <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>} className={isFilterExpanded ? styles.filterTitle : null}/>
             </Grid>
-            {!isFilterExpanded && (
+            {!isGeneratingPdf && !isFilterExpanded && (
               <Fragment>
                 <Grid item>
                   <Chip
@@ -153,7 +153,7 @@ export const NationalSocietyDashboardFilters = ({
                 </Grid>
               </Fragment>
             )}
-            {!isFilterExpanded && !allLocationsSelected() && (
+            {!isGeneratingPdf && !isFilterExpanded && !allLocationsSelected() && (
               <Grid item>
                 <Chip
                   label={locationsFilterLabel}
@@ -161,7 +161,7 @@ export const NationalSocietyDashboardFilters = ({
                 />
               </Grid>
             )}
-            {!isFilterExpanded && localFilters.healthRiskId && (
+            {!isGeneratingPdf && !isFilterExpanded && localFilters.healthRiskId && (
               <Grid item>
                 <Chip
                   label={
@@ -174,7 +174,7 @@ export const NationalSocietyDashboardFilters = ({
                 />
               </Grid>
             )}
-            {!isFilterExpanded && localFilters.dataCollectorType !== "all" && (
+            {!isGeneratingPdf && !isFilterExpanded && localFilters.dataCollectorType !== "all" && (
               <Grid item>
                 <Chip
                   label={collectionsTypes[localFilters.dataCollectorType]}
@@ -200,7 +200,7 @@ export const NationalSocietyDashboardFilters = ({
                 />
               </Grid>
             )} */}
-            {!isFilterExpanded &&
+            {!isGeneratingPdf && !isFilterExpanded &&
               !userRoles.some((r) => r === DataConsumer) &&
               localFilters.reportStatus.kept && (
                 <Grid item>
@@ -218,7 +218,7 @@ export const NationalSocietyDashboardFilters = ({
                   />
                 </Grid>
               )}
-            {!isFilterExpanded &&
+            {!isGeneratingPdf && !isFilterExpanded &&
               !userRoles.some((r) => r === DataConsumer) &&
               localFilters.reportStatus.notCrossChecked && (
                 <Grid item>
