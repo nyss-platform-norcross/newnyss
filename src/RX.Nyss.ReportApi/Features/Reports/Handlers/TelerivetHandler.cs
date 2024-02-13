@@ -18,6 +18,7 @@ using RX.Nyss.ReportApi.Features.Reports.Exceptions;
 using RX.Nyss.ReportApi.Features.Reports.Models;
 using RX.Nyss.ReportApi.Services;
 using Report = RX.Nyss.Data.Models.Report;
+using RX.Nyss.Common.Services;
 
 namespace RX.Nyss.ReportApi.Features.Reports.Handlers
 {
@@ -345,7 +346,6 @@ namespace RX.Nyss.ReportApi.Features.Reports.Handlers
                 return;
             }
             var senderNumber = long.Parse(errorReport.DataCollector.PhoneNumber);
-
             await _queuePublisherService.SendTelerivetSms(senderNumber, feedbackMessage, gatewaySetting.TelerivetSendSmsApiKey, gatewaySetting.TelerivetProjectId);
         }
 
