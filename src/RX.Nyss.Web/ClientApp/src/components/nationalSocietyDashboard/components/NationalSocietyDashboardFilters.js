@@ -42,6 +42,7 @@ export const NationalSocietyDashboardFilters = ({
   locations,
   onChange,
   isFetching,
+  isGeneratingPdf,
   userRoles,
   isFilterExpanded,
   setIsFilterExpanded,
@@ -122,11 +123,10 @@ export const NationalSocietyDashboardFilters = ({
   return (
     <Card className={styles.filters}>
       {isFetching && <LinearProgress color="primary" />}
-      {isSmallScreen && (
         <CardContent className={styles.collapsedFilterBar}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
-              <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>} />
+              <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>} className={isFilterExpanded ? styles.filterTitle : null}/>
             </Grid>
             {!isFilterExpanded && (
               <Fragment>
@@ -251,19 +251,10 @@ export const NationalSocietyDashboardFilters = ({
             </Grid>
           </Grid>
         </CardContent>
-      )}
       <ConditionalCollapse
-        collapsible={isSmallScreen}
+        collapsible={!isGeneratingPdf}
         expanded={isFilterExpanded}
       >
-        {!isSmallScreen && (
-          <Grid container>
-            <CardHeader
-              title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>}
-              className={styles.filterTitle}
-            />
-          </Grid>
-        )}
         <CardContent data-printable={true}>
           <Grid container spacing={2}>
             <Grid item>
