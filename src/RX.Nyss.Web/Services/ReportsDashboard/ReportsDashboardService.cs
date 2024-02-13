@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,9 @@ namespace RX.Nyss.Web.Services.ReportsDashboard;
 
 public interface IReportsDashboardService
 {
-    Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, int? projectId=null, ReportsFilter reportsFilter=null);
+    Task<IList<HealthRiskReportsGroupedByDateDto>> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, int? projectId=null, ReportsFilter reportsFilter=null);
 
-    Task<ReportHistogramResponseDto> GroupReportsByHealthRiskAndDate(IQueryable<Report> reports);
+    Task<IList<HealthRiskReportsGroupedByDateDto>> GroupReportsByHealthRiskAndDate(IQueryable<Report> reports);
 }
 
 public class ReportsDashboardService : IReportsDashboardService
@@ -29,7 +30,7 @@ public class ReportsDashboardService : IReportsDashboardService
         _nyssContext = nyssContext;
     }
 
-    public async Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, int? projectId=null, ReportsFilter reportsFilter=null)
+    public async Task<IList<HealthRiskReportsGroupedByDateDto>> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, int? projectId=null, ReportsFilter reportsFilter=null)
     {
         var baseQuery = _nyssContext.Alerts
             .Where(a => a.ProjectHealthRisk.Project.NationalSociety.Id == nationalSocietyId)
@@ -62,10 +63,11 @@ public class ReportsDashboardService : IReportsDashboardService
         return groupedReports;
     }
 
-    public async Task<ReportHistogramResponseDto> GroupReportsByHealthRiskAndDate(IQueryable<Report> reports)
+    public async Task<IList<HealthRiskReportsGroupedByDateDto>> GroupReportsByHealthRiskAndDate(IQueryable<Report> reports)
     {
         // Reduce Reports into only the necessary data
-        var reducedReports = reports.Select(r => new
+        var reducedReports = reports
+            .Select(r => new
         {
             ReportId = r.Id,
             HealthRiskId = r.ProjectHealthRisk.HealthRiskId,
@@ -98,13 +100,13 @@ public class ReportsDashboardService : IReportsDashboardService
                 Period = dateGroup.Key,
                 Count = dateGroup.Count(),
             }).ToList()
-        }).Select(groupedReport => new ReportHistogramResponseDto.HealthRiskReportsGroupedByDateDto
+        }).Select(groupedReport => new HealthRiskReportsGroupedByDateDto
         {
             HealthRiskId = groupedReport.HealthRiskId,
             HealthRiskName = groupedReport.HealthRiskName,
-            Data = groupedReport.Data,
+            Data = groupedReport.Data.ToList(),
         }).ToList();
 
-        return new ReportHistogramResponseDto { groupedReports = reportsGroupedByHealthRiskAndDate };
+        return reportsGroupedByHealthRiskAndDate;
     }
 }
