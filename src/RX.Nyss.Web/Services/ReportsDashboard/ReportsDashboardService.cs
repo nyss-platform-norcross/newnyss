@@ -14,7 +14,7 @@ namespace RX.Nyss.Web.Services.ReportsDashboard;
 
 public interface IReportsDashboardService
 {
-    Task<IList<HealthRiskReportsGroupedByDateDto>> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, int? projectId=null, ReportsFilter reportsFilter=null);
+    Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, int? projectId=null, ReportsFilter reportsFilter=null);
 
     Task<IList<HealthRiskReportsGroupedByDateDto>> GroupReportsByHealthRiskAndDate(IQueryable<Report> reports);
 }
@@ -30,7 +30,7 @@ public class ReportsDashboardService : IReportsDashboardService
         _nyssContext = nyssContext;
     }
 
-    public async Task<IList<HealthRiskReportsGroupedByDateDto>> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, int? projectId=null, ReportsFilter reportsFilter=null)
+    public async Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, int? projectId=null, ReportsFilter reportsFilter=null)
     {
         var baseQuery = _nyssContext.Alerts
             .Where(a => a.ProjectHealthRisk.Project.NationalSociety.Id == nationalSocietyId)
@@ -60,7 +60,12 @@ public class ReportsDashboardService : IReportsDashboardService
 
         var groupedReports = await GroupReportsByHealthRiskAndDate(reports);
 
-        return groupedReports;
+        return new ReportHistogramResponseDto
+        {
+            startDateString = reportsFilter?.StartDate.Date.ToShortDateString(),
+            endDateString = reportsFilter?.EndDate.Date.ToShortDateString(),
+            groupedReports = groupedReports,
+        };
     }
 
     public async Task<IList<HealthRiskReportsGroupedByDateDto>> GroupReportsByHealthRiskAndDate(IQueryable<Report> reports)
