@@ -146,7 +146,9 @@ export const DashboardReportSexAgePyramidChart = ({ data }) => {
       <CardHeader
         title={
           <Typography variant="h5">
-            {strings(stringKeys.dashboard.reportsPerFeatureAndDate.title)}
+            {strings(
+              stringKeys.dashboard.reportsPerFeatureAndDate.titlePercentage,
+            )}
           </Typography>
         }
       />
