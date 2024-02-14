@@ -142,7 +142,9 @@ const NationalSocietyDashboardPageComponent = ({
             />
           </Grid>
           <Grid item xs={12}>
-            <DashboardKeptReportByHealthRiskChart data={null} />
+            <DashboardKeptReportByHealthRiskChart
+              data={props.keptReportsInEscalatedAlertsHistogramData}
+            />
           </Grid>
         </Fragment>
       )}
@@ -185,6 +187,8 @@ const mapStateToProps = (state) => ({
     state.nationalSocietyDashboard.reportsGroupedByFeaturesAndDate,
   reportsGroupedByFeatures:
     state.nationalSocietyDashboard.reportsGroupedByFeatures,
+  keptReportsInEscalatedAlertsHistogramData:
+    state.nationalSocietyDashboard.keptReportsInEscalatedAlertsHistogramData,
 });
 
 const mapDispatchToProps = {

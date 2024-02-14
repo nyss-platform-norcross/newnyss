@@ -10,6 +10,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { strings, stringKeys } from "../../strings";
 import useHoverChartTracking from "../../utils/useHoverChartTracking";
+import { eachDayOfInterval, parseISO, format } from "date-fns";
 
 const getOptions = (valuesLabel, series, categories) => ({
   chart: {
@@ -50,39 +51,41 @@ const getOptions = (valuesLabel, series, categories) => ({
   series,
 });
 
-const dummyData = {
-  data: [
-    {
-      healthRiskId: 1,
-      name: "AWD",
-      data: [
-        { date: "07/02/24", count: 5 },
-        { date: "08/02/24", count: 10 },
-        { date: "11/02/24", count: 11 },
-        { date: "12/02/24", count: 16 },
-        { date: "10/02/24", count: 4 },
-        { date: "06/02/24", count: 2 },
-        { date: "06/12/23", count: 2 },
-      ],
-    },
-    {
-      healthRiskId: 2,
-      name: "Fever and rash",
-      data: [
-        { date: "07/02/24", count: 3 },
-        { date: "08/02/24", count: 9 },
-        { date: "10/02/24", count: 20 },
-        { date: "13/02/24", count: 11 },
-        { date: "11/02/24", count: 5 },
-        { date: "12/02/24", count: 17 },
-        { date: "06/02/24", count: 14 },
-        { date: "05/02/24", count: 13 },
-      ],
-    },
-  ],
+// Function to parse input data and generate categories and series data for charting.
+// The function takes a data object containing startDateString, endDateString, and groupedReports.
+const getCategoryAndSeriesData = (data) => {
+  const startDate = parseISO(data.chartStartDateString);
+  const endDate = parseISO(data.chartEndDateString);
+
+  // Generate categories as an array of date strings for each day in the interval between startDate and endDate.
+  const categories = eachDayOfInterval({ start: startDate, end: endDate }).map(
+    (day) => format(day, "yyyy-MM-dd"),
+  );
+
+  // Helper function to aggregate series data based on the categories and input data.
+  const getAggregatedSeriesData = (categories, data) => {
+    let aggregatedSeries = [];
+    // Iterate over each category (date) to find matching data and accumulate counts.
+    for (let dateString of categories) {
+      const period = data.find((d) => d.period === dateString);
+      const count = period ? period.count : 0;
+      aggregatedSeries.push(count);
+    }
+    return aggregatedSeries;
+  };
+
+  const series = data.groupedReports.map((healthRiskReports) => ({
+    healthRiskId: healthRiskReports.healthRiskId,
+    name: healthRiskReports.healthRiskName,
+    data: getAggregatedSeriesData(categories, healthRiskReports.data),
+  }));
+
+  return [categories, series];
 };
 
 export const DashboardKeptReportByHealthRiskChart = ({ data }) => {
+  let [categories, series] = getCategoryAndSeriesData(data);
+
   const trackHoveredChart = useHoverChartTracking();
   const resizeChart = (element) => {
     element && element.chart.reflow();
@@ -97,109 +100,13 @@ export const DashboardKeptReportByHealthRiskChart = ({ data }) => {
     }
   };
 
-  const formatDate = (date) => {
-    const [day, month, year] = date.split("/").map(Number);
-    const dateObject = new Date(2000 + year, month - 1, day); // Year 2000 is arbitrary, as the years are represented as two-digit
-    return dateObject;
-  };
-
-  const generateIntervalDates = (data) => {
-    const allDates = data.map((datum) => formatDate(datum.date));
-    const minDate = new Date(Math.min(...allDates));
-    const maxDate = new Date(Math.max(...allDates));
-
-    const intervalDates = [];
-    for (
-      let date = new Date(minDate);
-      date <= maxDate;
-      date.setDate(date.getDate() + 1)
-    ) {
-      intervalDates.push(new Date(date));
-    }
-
-    return intervalDates.map((date) =>
-      date.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "2-digit",
-      }),
-    );
-  };
-
-  const fillMissingDates = (data, formattedDates) => {
-    const existingDates = new Set(data.map((datum) => datum.date));
-    formattedDates.forEach((date) => {
-      if (!existingDates.has(date)) {
-        data.push({ date, count: 0 });
-      }
-    });
-    data.sort((a, b) => formatDate(a.date) - formatDate(b.date));
-  };
-
-  let categories = [];
-  let seriesData = [];
-
-  if (selectedHealthRisk) {
-    const selectedHealthRiskData = dummyData.data.find(
-      (data) => data.healthRiskId === selectedHealthRisk,
-    );
-    const formattedDates = generateIntervalDates(selectedHealthRiskData.data);
-    fillMissingDates(selectedHealthRiskData.data, formattedDates);
-
-    categories = formattedDates;
-    seriesData.push({
-      name: selectedHealthRiskData.name,
-      data: selectedHealthRiskData.data.map((datum) => datum.count),
-    });
-  } else {
-    // Find minimum and maximum dates
-    const allDates = [];
-    dummyData.data.forEach((healthRisk) => {
-      healthRisk.data.forEach((datum) => {
-        allDates.push(datum.date);
-      });
-    });
-    const minDate = new Date(
-      Math.min(...allDates.map((date) => formatDate(date))),
-    );
-    const maxDate = new Date(
-      Math.max(...allDates.map((date) => formatDate(date))),
-    );
-
-    // Generate all dates within the interval
-    const intervalDates = [];
-    for (
-      let date = new Date(minDate);
-      date <= maxDate;
-      date.setDate(date.getDate() + 1)
-    ) {
-      intervalDates.push(new Date(date));
-    }
-
-    // Convert dates to string format
-    categories = intervalDates.map((date) =>
-      date.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "2-digit",
-      }),
-    );
-
-    // Fill in missing counts for each health risk
-    dummyData.data.forEach((healthRisk) => {
-      const counts = new Map(
-        healthRisk.data.map(({ date, count }) => [date, count]),
-      );
-      seriesData.push({
-        name: healthRisk.name,
-        data: categories.map((date) => counts.get(date) || 0),
-      });
-    });
-  }
-
+  series =
+    selectedHealthRisk != null
+      ? series.filter((s) => s.healthRiskId === selectedHealthRisk)
+      : series;
   const chartData = getOptions(
     strings(stringKeys.dashboard.reportsPerHealthRisk.numberOfReports, true),
-    seriesData,
+    series,
     categories,
   );
 
@@ -226,18 +133,18 @@ export const DashboardKeptReportByHealthRiskChart = ({ data }) => {
             }}
             onClick={() => toggleHealthRisk()}
           />
-          {dummyData.data.map((healthRisk) => (
+          {data.groupedReports.map((healthRiskReports) => (
             <Chip
-              key={healthRisk.healthRiskId}
-              label={healthRisk.name}
+              key={healthRiskReports.healthRiskId}
+              label={healthRiskReports.healthRiskName}
               style={{
                 marginRight: "10px",
                 fontWeight:
-                  selectedHealthRisk === healthRisk.healthRiskId
+                  selectedHealthRisk === healthRiskReports.healthRiskId
                     ? "bold"
                     : "normal",
               }}
-              onClick={() => toggleHealthRisk(healthRisk.healthRiskId)}
+              onClick={() => toggleHealthRisk(healthRiskReports.healthRiskId)}
             />
           ))}
         </div>

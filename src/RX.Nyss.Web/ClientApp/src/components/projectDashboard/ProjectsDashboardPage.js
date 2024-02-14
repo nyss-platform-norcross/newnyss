@@ -137,9 +137,9 @@ const ProjectDashboardPageComponent = ({
               data={props.reportsGroupedByFeaturesAndDate}
             />
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <DashboardKeptReportByHealthRiskChart data={null} />
-          </Grid>
+          </Grid> */}
 
           {props.filters.reportsType === "dataCollectionPoint" && (
             <Grid item xs={12}>
