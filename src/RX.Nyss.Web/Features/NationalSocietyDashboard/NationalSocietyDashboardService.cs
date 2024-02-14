@@ -96,7 +96,7 @@ namespace RX.Nyss.Web.Features.NationalSocietyDashboard
             var reportsGroupedByHealthRiskAndDate = await _reportsDashboardByHealthRiskService.GetReportsGroupedByHealthRiskAndDate(filters, filtersDto.GroupingType, epiWeekStartDay);
             var reportsGroupedByFeaturesAndDate = await _reportsDashboardByFeatureService.GetReportsGroupedByFeaturesAndDate(filters, filtersDto.GroupingType, epiWeekStartDay);
 
-            var keptReportsInEscalatedAlertsHistogramData = await _reportsDashboardService.GetKeptReportsInEscalatedAlertsHistogramData(nationalSocietyId, projectId: null, reportsFilter: filters);
+            var keptReportsInEscalatedAlertsHistogramData = await _reportsDashboardService.GetKeptReportsInEscalatedAlertsHistogramData(nationalSocietyId, filters, projectId: null);
 
             var dashboardDataDto = new NationalSocietyDashboardResponseDto
             {
@@ -134,6 +134,7 @@ namespace RX.Nyss.Web.Features.NationalSocietyDashboard
             new ReportsFilter
             {
                 StartDate = filtersDto.StartDate,
+                // 1 Day must be added to the End date in order to include the reports created on the last day
                 EndDate = filtersDto.EndDate.AddDays(1),
                 HealthRisks = filtersDto.HealthRisks.ToList(),
                 NationalSocietyId = nationalSocietyId,

@@ -14,9 +14,9 @@ namespace RX.Nyss.Web.Services.ReportsDashboard;
 
 public interface IReportsDashboardService
 {
-    Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, int? projectId=null, ReportsFilter reportsFilter=null);
+    Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, ReportsFilter reportsFilter, int? projectId=null);
 
-    Task<IList<HealthRiskReportsGroupedByDateDto>> GroupReportsByHealthRiskAndDate(IQueryable<Report> reports);
+    Task<IList<HealthRiskReportsGroupedByDateDto>> GroupReportsByHealthRiskAndDate(IQueryable<Report> reports, int utcOffset);
 }
 
 public class ReportsDashboardService : IReportsDashboardService
@@ -30,7 +30,7 @@ public class ReportsDashboardService : IReportsDashboardService
         _nyssContext = nyssContext;
     }
 
-    public async Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, int? projectId=null, ReportsFilter reportsFilter=null)
+    public async Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, ReportsFilter reportsFilter, int? projectId=null)
     {
         var baseQuery = _nyssContext.Alerts
             .Where(a => a.ProjectHealthRisk.Project.NationalSociety.Id == nationalSocietyId)
@@ -39,12 +39,10 @@ public class ReportsDashboardService : IReportsDashboardService
             .SelectMany(a => a.AlertReports);
 
         // Apply reportsFilter to the baseQuery if it exists
-        baseQuery = reportsFilter != null
-            ? baseQuery
-                .FilterByDate(reportsFilter.StartDate, reportsFilter.EndDate)
-                .FilterByHealthRisks(reportsFilter.HealthRisks)
-                .FilterByArea(reportsFilter.Area)
-            : baseQuery;
+        baseQuery = baseQuery
+            .FilterByDate(reportsFilter.StartDate, reportsFilter.EndDate)
+            .FilterByHealthRisks(reportsFilter.HealthRisks)
+            .FilterByArea(reportsFilter.Area);
 
         // Apply additional filters to select only kept reports that are included in an escalated alert
         var reports = baseQuery
@@ -58,17 +56,20 @@ public class ReportsDashboardService : IReportsDashboardService
             //.AllReportsKeptBeforeAlertWasEscalated(); // Only select reports that were cross checked before escalation
             .Select(ar => ar.Report);
 
-        var groupedReports = await GroupReportsByHealthRiskAndDate(reports);
+        var groupedReports = await GroupReportsByHealthRiskAndDate(reports, reportsFilter.UtcOffset);
 
         return new ReportHistogramResponseDto
         {
-            startDateString = reportsFilter?.StartDate.Date.ToShortDateString(),
-            endDateString = reportsFilter?.EndDate.Date.ToShortDateString(),
+            // We add utcOffset so we return the local dateStrings
+            chartStartDateString = reportsFilter.StartDate.AddHours(reportsFilter.UtcOffset).Date.ToString("yyyy-MM-dd"),
+            // End date is increased by 1 day in the reports filters (In order to actually fetch all reports created on the last day)
+            // Therefore we must subtract 1 day before returning the endDate, or the chart will display an extra day
+            chartEndDateString = reportsFilter.EndDate.AddDays(-1).AddHours(reportsFilter.UtcOffset).Date.ToString("yyyy-MM-dd"),
             groupedReports = groupedReports,
         };
     }
 
-    public async Task<IList<HealthRiskReportsGroupedByDateDto>> GroupReportsByHealthRiskAndDate(IQueryable<Report> reports)
+    public async Task<IList<HealthRiskReportsGroupedByDateDto>> GroupReportsByHealthRiskAndDate(IQueryable<Report> reports, int utcOffset)
     {
         // Reduce Reports into only the necessary data
         var reducedReports = reports
@@ -78,7 +79,7 @@ public class ReportsDashboardService : IReportsDashboardService
             HealthRiskId = r.ProjectHealthRisk.HealthRiskId,
             HealthRiskName =
                 r.ProjectHealthRisk.HealthRisk.LanguageContents.FirstOrDefault(hr => hr.ContentLanguage.LanguageCode == r.ProjectHealthRisk.Project.NationalSociety.ContentLanguage.LanguageCode).Name,
-            Date = r.CreatedAt.Date
+            Date = r.CreatedAt.AddHours(utcOffset).Date //Apply utc offset to Date
         });
 
         // Group Report based on healthRiskId and healthRiskName
@@ -100,7 +101,7 @@ public class ReportsDashboardService : IReportsDashboardService
         {
             HealthRiskId = groupedReport.HealthRiskId,
             HealthRiskName = groupedReport.HealthRiskName,
-            Data = groupedReport.Data.GroupBy(d => d.Date.Date.ToShortDateString()).Select(dateGroup => new PeriodDto
+            Data = groupedReport.Data.GroupBy(d => d.Date.Date.ToString("yyyy-MM-dd")).Select(dateGroup => new PeriodDto
             {
                 Period = dateGroup.Key,
                 Count = dateGroup.Count(),
