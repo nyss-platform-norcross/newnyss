@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, ScaleControl } from 'react-leaflet';
 import { calculateBounds, calculateCenter, calculateIconSize } from '../../utils/map';
 import { TextIcon } from "../common/map/MarkerIcon";
@@ -38,14 +38,26 @@ export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) =>
   const handleMarkerClick = e =>
     onMarkerClick(e.latlng.lat, e.latlng.lng);
 
+  let resizeObserver = useRef(null);
+
+  const setMap = map => {
+    resizeObserver.current = new ResizeObserver(() => {
+        map.invalidateSize();
+    });
+    const container = document.getElementById("map-container");
+    resizeObserver.current.observe(container);
+  };
+
   return (!!center || !!bounds) && (
     <MapContainer
-      style={{ height: "500px" }}
+      id='map-container'
+      style={{ minHeight: "100%", borderRadius: 8 }}
       zoom={5}
       bounds={bounds}
       center={center}
       scrollWheelZoom={false}
       maxZoom={19}
+      whenCreated={setMap}
     >
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

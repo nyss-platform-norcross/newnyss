@@ -1,7 +1,7 @@
 import styles from "./NationalSocietyDashboardNumbers.module.scss";
 
 import React from "react";
-import { Grid, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
+import { Grid, Card, CardContent, CardHeader, Typography, useMediaQuery } from "@material-ui/core";
 import { Loading } from "../../common/loading/Loading";
 import { stringKeys, strings } from "../../../strings";
 
@@ -9,9 +9,17 @@ export const NationalSocietyDashboardNumbers = ({
   isFetching,
   summary,
   reportsType,
+  isMapExpanded,
 }) => {
+  const isSmallScreen = useMediaQuery(theme => theme.breakpoints.down("sm"));
+
   if (isFetching || !summary) {
     return <Loading />;
+  }
+
+
+  const cardSizes = {
+    xs: isSmallScreen || isMapExpanded ? 12 : 6,
   }
 
   const renderNumber = (label, value) => (
@@ -27,7 +35,7 @@ export const NationalSocietyDashboardNumbers = ({
 
   return (
     <Grid container spacing={2} data-printable={true}>
-      <Grid item sm={6} md={3} xs={12} className={styles.numberBox}>
+      <Grid item xs={cardSizes.xs} className={styles.numberBox}>
         <Card className={styles.card}>
           <CardHeader
             title={<Typography variant="h5">{strings(stringKeys.dashboard.numbers.reportCountTitle)}</Typography>}
@@ -41,7 +49,7 @@ export const NationalSocietyDashboardNumbers = ({
         </Card>
       </Grid>
 
-      <Grid item sm={6} md={3} xs={12} className={styles.numberBox}>
+      <Grid item xs={cardSizes.xs} className={styles.numberBox}>
         <Card className={styles.card}>
           <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.dataCollectors)}</Typography>} />
           <CardContent>
@@ -54,7 +62,7 @@ export const NationalSocietyDashboardNumbers = ({
       </Grid>
 
       {reportsType === "dataCollectionPoint" && (
-        <Grid item sm={6} md={3} xs={12} className={styles.numberBox}>
+        <Grid item xs={cardSizes.xs} className={styles.numberBox}>
           <Card className={styles.card}>
             <CardHeader
               title={<Typography variant="h5">{strings(stringKeys.dashboard.dataCollectionPoints)}</Typography>}
@@ -78,7 +86,7 @@ export const NationalSocietyDashboardNumbers = ({
       )}
 
       {reportsType !== "dataCollectionPoint" && (
-        <Grid item sm={6} md={3} xs={12} className={styles.numberBox}>
+        <Grid item xs={cardSizes.xs} className={styles.numberBox}>
           <Card className={styles.card}>
             <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.alertsSummary)}</Typography>} />
             <CardContent>
@@ -103,7 +111,7 @@ export const NationalSocietyDashboardNumbers = ({
         </Grid>
       )}
 
-      <Grid item sm={6} md={3} xs={12} className={styles.numberBox}>
+      <Grid item xs={cardSizes.xs} className={styles.numberBox}>
         <Card className={styles.card}>
           <CardHeader
             title={<Typography variant="h5">{strings(stringKeys.dashboard.geographicalCoverageSummary)}</Typography>}
