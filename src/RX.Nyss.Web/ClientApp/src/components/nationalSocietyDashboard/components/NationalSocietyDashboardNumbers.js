@@ -53,7 +53,7 @@ export const NationalSocietyDashboardNumbers = ({
 
       <Grid item xs={cardSizes.xs} className={styles.numberBox}>
         <Card className={styles.card} data-printable={true}>
-          <CardHeader title={<Typography variant="h5" align="center">{strings(stringKeys.dashboard.dataCollectors)}</Typography>} />
+          <CardHeader style={{ paddingBottom: 0 }} title={<Typography variant="h5" align="center">{strings(stringKeys.dashboard.dataCollectors)}</Typography>} />
           <CardContent>
             {renderNumber(
               strings(stringKeys.dashboard.activeDataCollectorCount),
