@@ -19,26 +19,7 @@ import { DashboardReportSexAgeChart } from "../dashboardCharts/DashboardReportSe
 import { DashboardReportSexAgeTable } from "../dashboardTables/DashboardReportSexAgeTable";
 import { trackEvent, trackPageView } from "../../utils/appInsightsHelper";
 import { RcIcon } from "../icons/RcIcon";
-
-
-const useStyles = makeStyles((theme) => ({
-  mapExpanded: {
-    transition: "0.3s"
-  },
-  mapCollapsed: {
-    transition: "0.3s"
-  },
-  mapButton: {
-    fontSize: "2rem",
-    position: "absolute",
-    zIndex: 1000,
-    right: 0,
-    top: -2,
-    "&:hover": {
-        cursor: "pointer"
-    }
-  }
-}));
+import { MapAndDashboardNumbers } from "../dashboard/MapAndDashboardNumbers";
 
 const NationalSocietyDashboardPageComponent = ({
   nationalSocietyId,
@@ -64,8 +45,6 @@ const NationalSocietyDashboardPageComponent = ({
   const dashboardElement = useRef(null);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const [isMapExpanded, setIsMapExpanded] = useState(false);
-  const classes = useStyles();
-  const isSmallScreen = useMediaQuery(theme => theme.breakpoints.down("sm"))
 
   const handleFiltersChange = (filters) =>
     getDashboardData(nationalSocietyId, filters);
@@ -108,13 +87,16 @@ const NationalSocietyDashboardPageComponent = ({
         <Loading />
       ) : (
         <Fragment>
-          <Grid item style={{ marginBottom: -20 }}>
-            <Typography variant="h5">{strings(stringKeys.dashboard.map.title)}</Typography>
-          </Grid>
-          <Grid spacing={2} container item xs={12}>
-            <Grid item xs={12} md={isMapExpanded ? 8 : 5} style={{ position: "relative" }} className={isMapExpanded ? classes.mapExpanded : classes.mapCollapsed}>
-              {!isSmallScreen && <RcIcon className={classes.mapButton} onClick={() => setIsMapExpanded(prev => !prev)} icon={isMapExpanded ? "Collapse" : "Expand"}/>}
-              <DashboardReportsMap
+        <MapAndDashboardNumbers
+          DashboardNumbers={
+            <NationalSocietyDashboardNumbers
+              summary={props.summary}
+              reportsType={props.filters.reportsType}
+              isMapExpanded={isMapExpanded}
+            />
+          }
+          DashboardReportsMap={
+            <DashboardReportsMap
                 data={props.reportsGroupedByLocation}
                 detailsFetching={props.reportsGroupedByLocationDetailsFetching}
                 details={props.reportsGroupedByLocationDetails}
@@ -122,16 +104,10 @@ const NationalSocietyDashboardPageComponent = ({
                   props.getReportHealthRisks(nationalSocietyId, lat, long)
                 }
               />
-            </Grid>
-            <Grid item xs={12} md={isMapExpanded ? 4 : 7}>
-              <NationalSocietyDashboardNumbers
-                summary={props.summary}
-                reportsType={props.filters.reportsType}
-                isMapExpanded={isMapExpanded}
-              />
-            </Grid>
-          </Grid>
-
+          }
+          isMapExpanded={isMapExpanded}
+          setIsMapExpanded={setIsMapExpanded}
+        />
           <Grid item xs={12}>
             <DashboardReportChart
               data={props.reportsGroupedByHealthRiskAndDate}
