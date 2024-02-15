@@ -22,12 +22,12 @@ export const NationalSocietyDashboardNumbers = ({
     xs: isSmallScreen || isMapExpanded ? 12 : 6,
   }
 
-  const renderNumber = (label, value) => (
-    <Grid container spacing={2}>
-      <Grid item className={styles.numberName}>
+  const renderNumber = (label, value, minimalSpacing) => (
+    <Grid container spacing={2} justifyContent="center" alignItems="center">
+      <Grid item xs={minimalSpacing ? 2 : 3}>
         {label}
       </Grid>
-      <Grid item className={styles.numberValue}>
+      <Grid item xs={2} style={{ fontWeight: "bold", fontSize: "1.125rem" }} container justifyContent={minimalSpacing ? "flex-start" : "flex-end"}>
         {value}
       </Grid>
     </Grid>
@@ -38,12 +38,14 @@ export const NationalSocietyDashboardNumbers = ({
       <Grid item xs={cardSizes.xs} className={styles.numberBox}>
         <Card className={styles.card} data-printable={true}>
           <CardHeader
-            title={<Typography variant="h5">{strings(stringKeys.dashboard.numbers.reportCountTitle)}</Typography>}
+            style={{ paddingBottom: 0 }}
+            title={<Typography variant="h5" align="center">{strings(stringKeys.dashboard.numbers.reportCountTitle)}</Typography>}
           />
           <CardContent>
             {renderNumber(
               strings(stringKeys.dashboard.numbers.totalReportCount),
               summary.totalReportCount,
+              true
             )}
           </CardContent>
         </Card>
@@ -51,11 +53,12 @@ export const NationalSocietyDashboardNumbers = ({
 
       <Grid item xs={cardSizes.xs} className={styles.numberBox}>
         <Card className={styles.card} data-printable={true}>
-          <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.dataCollectors)}</Typography>} />
+          <CardHeader title={<Typography variant="h5" align="center">{strings(stringKeys.dashboard.dataCollectors)}</Typography>} />
           <CardContent>
             {renderNumber(
               strings(stringKeys.dashboard.activeDataCollectorCount),
               summary.activeDataCollectorCount,
+              true
             )}
           </CardContent>
         </Card>
@@ -65,7 +68,8 @@ export const NationalSocietyDashboardNumbers = ({
         <Grid item xs={cardSizes.xs} className={styles.numberBox}>
           <Card className={styles.card} data-printable={true}>
             <CardHeader
-              title={<Typography variant="h5">{strings(stringKeys.dashboard.dataCollectionPoints)}</Typography>}
+              style={{ paddingBottom: 0 }}
+              title={<Typography variant="h5" align="center">{strings(stringKeys.dashboard.dataCollectionPoints)}</Typography>}
             />
             <CardContent>
               {renderNumber(
@@ -88,7 +92,7 @@ export const NationalSocietyDashboardNumbers = ({
       {reportsType !== "dataCollectionPoint" && (
         <Grid item xs={cardSizes.xs} className={styles.numberBox}>
           <Card className={styles.card} data-printable={true}>
-            <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.alertsSummary)}</Typography>} />
+            <CardHeader style={{ paddingBottom: 0 }} title={<Typography variant="h5" align="center">{strings(stringKeys.dashboard.alertsSummary)}</Typography>} />
             <CardContent>
               {renderNumber(
                 strings(stringKeys.dashboard.numbers.openAlerts),
@@ -114,7 +118,8 @@ export const NationalSocietyDashboardNumbers = ({
       <Grid item xs={cardSizes.xs} className={styles.numberBox}>
         <Card className={styles.card} data-printable={true}>
           <CardHeader
-            title={<Typography variant="h5">{strings(stringKeys.dashboard.geographicalCoverageSummary)}</Typography>}
+            style={{ paddingBottom: 0 }}
+            title={<Typography variant="h5" align="center">{strings(stringKeys.dashboard.geographicalCoverageSummary)}</Typography>}
           />
           <CardContent>
             {renderNumber(
