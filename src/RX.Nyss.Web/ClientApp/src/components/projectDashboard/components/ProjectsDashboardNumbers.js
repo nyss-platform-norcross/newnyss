@@ -33,9 +33,9 @@ export const ProjectsDashboardNumbers = ({
   );
 
   return (
-    <Grid container spacing={2} data-printable={true}>
+    <Grid container spacing={2}>
       <Grid item xs={cardSizes.xs} className={styles.numberBox}>
-        <Card className={styles.card}>
+        <Card className={styles.card} data-printable={true}>
           <CardHeader
             title={<Typography variant="h5">{strings(stringKeys.dashboard.numbers.reportCountTitle)}</Typography>}
           />
@@ -49,7 +49,7 @@ export const ProjectsDashboardNumbers = ({
       </Grid>
 
       <Grid item xs={cardSizes.xs} className={styles.numberBox}>
-        <Card className={styles.card}>
+        <Card className={styles.card} data-printable={true}>
           <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.dataCollectors)}</Typography>} />
           <CardContent>
             {renderNumber(
@@ -62,7 +62,7 @@ export const ProjectsDashboardNumbers = ({
 
       {reportsType === "dataCollectionPoint" && (
       <Grid item xs={cardSizes.xs} className={styles.numberBox}>
-        <Card className={styles.card}>
+        <Card className={styles.card} data-printable={true}>
             <CardHeader
               title={<Typography variant="h5">{strings(stringKeys.dashboard.dataCollectionPoints)}</Typography>}
             />
@@ -88,7 +88,7 @@ export const ProjectsDashboardNumbers = ({
 
       {reportsType !== "dataCollectionPoint" && (
       <Grid item xs={cardSizes.xs} className={styles.numberBox}>
-        <Card className={styles.card}>
+        <Card className={styles.card} data-printable={true}>
             <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.alertsSummary)}</Typography>} />
             <CardContent>
               {renderNumber(
@@ -113,7 +113,7 @@ export const ProjectsDashboardNumbers = ({
       )}
 
       <Grid item xs={cardSizes.xs} className={styles.numberBox}>
-        <Card className={styles.card}>
+        <Card className={styles.card} data-printable={true}>
           <CardHeader
             title={<Typography variant="h5">{strings(stringKeys.dashboard.geographicalCoverageSummary)}</Typography>}
           />

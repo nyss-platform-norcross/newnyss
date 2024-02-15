@@ -86,27 +86,27 @@ const NationalSocietyDashboardPageComponent = ({
         <Loading />
       ) : (
         <Fragment>
-        <MapAndDashboardNumbers
-          DashboardNumbers={
-            <NationalSocietyDashboardNumbers
-              summary={props.summary}
-              reportsType={props.filters.reportsType}
-              isMapExpanded={isMapExpanded}
-            />
-          }
-          DashboardReportsMap={
-            <DashboardReportsMap
-                data={props.reportsGroupedByLocation}
-                detailsFetching={props.reportsGroupedByLocationDetailsFetching}
-                details={props.reportsGroupedByLocationDetails}
-                getReportHealthRisks={(lat, long) =>
-                  props.getReportHealthRisks(nationalSocietyId, lat, long)
-                }
+          <MapAndDashboardNumbers
+            DashboardNumbers={
+              <NationalSocietyDashboardNumbers
+                summary={props.summary}
+                reportsType={props.filters.reportsType}
+                isMapExpanded={isMapExpanded}
               />
-          }
-          isMapExpanded={isMapExpanded}
-          setIsMapExpanded={setIsMapExpanded}
-        />
+            }
+            DashboardReportsMap={
+              <DashboardReportsMap
+                  data={props.reportsGroupedByLocation}
+                  detailsFetching={props.reportsGroupedByLocationDetailsFetching}
+                  details={props.reportsGroupedByLocationDetails}
+                  getReportHealthRisks={(lat, long) =>
+                    props.getReportHealthRisks(nationalSocietyId, lat, long)
+                  }
+                />
+            }
+            isMapExpanded={isMapExpanded}
+            setIsMapExpanded={setIsMapExpanded}
+          />
           <Grid item xs={12}>
             <DashboardReportChart
               data={props.reportsGroupedByHealthRiskAndDate}
