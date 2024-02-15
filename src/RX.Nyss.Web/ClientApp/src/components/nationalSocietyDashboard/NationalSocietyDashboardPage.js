@@ -18,6 +18,7 @@ import { DashboardReportChart } from "../dashboardCharts/DashboardReportChart";
 import { DashboardReportSexAgeChart } from "../dashboardCharts/DashboardReportSexAgeChart";
 import { DashboardReportSexAgeTable } from "../dashboardTables/DashboardReportSexAgeTable";
 import { trackEvent, trackPageView } from "../../utils/appInsightsHelper";
+import { DashboardReportSexAgePyramidChart } from "../dashboardCharts/DashboardReportsSexAgePyramidChart";
 
 const NationalSocietyDashboardPageComponent = ({
   nationalSocietyId,
@@ -120,8 +121,11 @@ const NationalSocietyDashboardPageComponent = ({
             />
           </Grid>
 
-          <Grid item sm={6} xs={12}>
+          <Grid item xs={12} sm={6}>
             <DashboardReportSexAgeTable data={props.reportsGroupedByFeatures} />
+          </Grid>
+          <Grid item xs={12}>
+            <DashboardReportSexAgePyramidChart data={props.reportsGroupedByFeaturesAndDate} />
           </Grid>
         </Fragment>
       )}
