@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "2rem",
     position: "absolute",
     zIndex: 1000,
-    right: "3%",
+    right: "4%",
     top: -15,
     "&:hover": {
       cursor: "pointer",
@@ -29,8 +29,6 @@ export const MapAndDashboardNumbers = ({
 }) => {
   const classes = useStyles();
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-
-  if (!DashboardNumbers && !DashboardReportsMap) return null;
 
   if (isSmallScreen) {
     return (
