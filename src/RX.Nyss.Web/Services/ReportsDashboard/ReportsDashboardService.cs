@@ -16,6 +16,8 @@ public interface IReportsDashboardService
 {
     Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, ReportsFilter reportsFilter, int? projectId=null);
 
+    IQueryable<Report> GetKeptReportsInEscalatedAlertsQuery(int nationalSocietyId, ReportsFilter reportsFilter, int? projectId = null);
+
     Task<IList<HealthRiskReportsGroupedByDateDto>> GroupReportsByHealthRiskAndDate(IQueryable<Report> reports, int utcOffset);
 }
 
@@ -31,6 +33,23 @@ public class ReportsDashboardService : IReportsDashboardService
     }
 
     public async Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(int nationalSocietyId, ReportsFilter reportsFilter, int? projectId=null)
+    {
+        var reportsQuery = GetKeptReportsInEscalatedAlertsQuery(nationalSocietyId, reportsFilter, projectId);
+
+        var groupedReports = await GroupReportsByHealthRiskAndDate(reportsQuery, reportsFilter.UtcOffset);
+
+        return new ReportHistogramResponseDto
+        {
+            // We add utcOffset so we return the local dateStrings
+            chartStartDateString = reportsFilter.StartDate.AddHours(reportsFilter.UtcOffset).Date.ToString("yyyy-MM-dd"),
+            // End date is increased by 1 day in the reports filters (In order to actually fetch all reports created on the last day)
+            // Therefore we must subtract 1 day before returning the endDate, or the chart will display an extra day
+            chartEndDateString = reportsFilter.EndDate.AddDays(-1).AddHours(reportsFilter.UtcOffset).Date.ToString("yyyy-MM-dd"),
+            groupedReports = groupedReports,
+        };
+    }
+
+    public IQueryable<Report> GetKeptReportsInEscalatedAlertsQuery(int nationalSocietyId, ReportsFilter reportsFilter, int? projectId = null)
     {
         var baseQuery = _nyssContext.Alerts
             .Where(a => a.ProjectHealthRisk.Project.NationalSociety.Id == nationalSocietyId)
@@ -56,17 +75,7 @@ public class ReportsDashboardService : IReportsDashboardService
             //.AllReportsKeptBeforeAlertWasEscalated(); // Only select reports that were cross checked before escalation
             .Select(ar => ar.Report);
 
-        var groupedReports = await GroupReportsByHealthRiskAndDate(reports, reportsFilter.UtcOffset);
-
-        return new ReportHistogramResponseDto
-        {
-            // We add utcOffset so we return the local dateStrings
-            chartStartDateString = reportsFilter.StartDate.AddHours(reportsFilter.UtcOffset).Date.ToString("yyyy-MM-dd"),
-            // End date is increased by 1 day in the reports filters (In order to actually fetch all reports created on the last day)
-            // Therefore we must subtract 1 day before returning the endDate, or the chart will display an extra day
-            chartEndDateString = reportsFilter.EndDate.AddDays(-1).AddHours(reportsFilter.UtcOffset).Date.ToString("yyyy-MM-dd"),
-            groupedReports = groupedReports,
-        };
+        return reports;
     }
 
     public async Task<IList<HealthRiskReportsGroupedByDateDto>> GroupReportsByHealthRiskAndDate(IQueryable<Report> reports, int utcOffset)
