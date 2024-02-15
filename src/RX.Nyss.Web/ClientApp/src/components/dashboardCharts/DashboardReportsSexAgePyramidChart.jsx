@@ -34,6 +34,9 @@ const getOptions = (valuesLabel, series, categories) => {
       min: -maxAbsValue,
       max: maxAbsValue,
     },
+    credits: {
+      enabled: false,
+    },
     plotOptions: {
       series: {
         stacking: "normal", // Set to 'normal' for side-by-side bars
