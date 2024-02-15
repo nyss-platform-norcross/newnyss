@@ -5,7 +5,7 @@ import { connect, useSelector } from "react-redux";
 import * as nationalSocietyDashboardActions from "./logic/nationalSocietyDashboardActions";
 import { withLayout } from "../../utils/layout";
 import Layout from "../layout/Layout";
-import { Grid, Typography, makeStyles, useMediaQuery } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { Loading } from "../common/loading/Loading";
 import { useMount } from "../../utils/lifecycle";
 import { NationalSocietyDashboardFilters } from "./components/NationalSocietyDashboardFilters";
@@ -18,7 +18,6 @@ import { DashboardReportChart } from "../dashboardCharts/DashboardReportChart";
 import { DashboardReportSexAgeChart } from "../dashboardCharts/DashboardReportSexAgeChart";
 import { DashboardReportSexAgeTable } from "../dashboardTables/DashboardReportSexAgeTable";
 import { trackEvent, trackPageView } from "../../utils/appInsightsHelper";
-import { RcIcon } from "../icons/RcIcon";
 import { MapAndDashboardNumbers } from "../dashboard/MapAndDashboardNumbers";
 
 const NationalSocietyDashboardPageComponent = ({
