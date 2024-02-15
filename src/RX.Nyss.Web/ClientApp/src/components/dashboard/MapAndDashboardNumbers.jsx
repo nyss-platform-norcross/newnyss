@@ -77,7 +77,12 @@ export const MapAndDashboardNumbers = ({
             {DashboardReportsMap}
           </div>
         </Grid>
-        <Grid item xs={12} md={isMapExpanded ? 4 : 7}>
+        <Grid
+          item
+          xs={12}
+          md={isMapExpanded ? 4 : 7}
+          className={isMapExpanded ? classes.mapExpanded : classes.mapCollapsed}
+        >
           {DashboardNumbers}
         </Grid>
       </Grid>
