@@ -53,7 +53,7 @@ export const RcIcon = ({ icon, ...props }) => {
     case "Expand":
       return <SvgIcon {...props} component={ExpandSvg} viewBox="0 0 38 38" />;
     case "Collapse":
-      return <SvgIcon {...props} component={CollapseSvg} viewBox="0 0 38 38" />;
+      return <SvgIcon {...props} component={CollapseSvg} viewBox="0 0 39 38" />;
     default:
       return null;
   }
