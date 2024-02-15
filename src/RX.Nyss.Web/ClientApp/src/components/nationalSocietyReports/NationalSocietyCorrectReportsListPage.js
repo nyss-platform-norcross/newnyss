@@ -56,6 +56,7 @@ const NationalSocietyCorrectReportsListPageComponent = (props) => {
           showCorrectReportFilters={true}
           hideTrainingStatusFilter
           rtl={useRtlDirection}
+          isListFetching={props.isListFetching}
         />
       </div>
 

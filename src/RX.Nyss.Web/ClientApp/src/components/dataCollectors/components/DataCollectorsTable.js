@@ -8,7 +8,6 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { TableRowAction } from "../../common/tableRowAction/TableRowAction";
 import { strings, stringKeys } from "../../../strings";
 import { TableRowMenu } from "../../common/tableRowAction/TableRowMenu";
-import { TableContainer } from "../../common/table/TableContainer";
 import { TableRowActions } from "../../common/tableRowAction/TableRowActions";
 import { accessMap } from "../../../authentication/accessMap";
 import {
@@ -22,8 +21,10 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TableContainer,
 } from "@material-ui/core";
 import TablePager from "../../common/tablePagination/TablePager";
+import { Loading } from "../../common/loading/Loading";
 
 export const DataCollectorsTable = ({
   isListFetching,
@@ -144,9 +145,13 @@ export const DataCollectorsTable = ({
     return `${firstLocation.region}, ${firstLocation.district}, ${firstLocation.village}`;
   };
 
+  if (isListFetching) {
+    return <Loading />;
+  }
+
   return (
-    <TableContainer sticky isFetching={isListFetching}>
-      <Table>
+    <TableContainer>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell className={styles.checkCell}>

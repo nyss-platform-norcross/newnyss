@@ -19,6 +19,7 @@ import { strings, stringKeys } from "../../strings";
 import { DashboardReportVillageChart } from "../dashboardCharts/DashboardReportVillageChart";
 import SubmitButton from "../common/buttons/submitButton/SubmitButton";
 import { trackEvent, trackPageView } from "../../utils/appInsightsHelper";
+import { DashboardReportSexAgePyramidChart } from "../dashboardCharts/DashboardReportsSexAgePyramidChart";
 
 const ProjectDashboardPageComponent = ({
   openDashboard,
@@ -115,8 +116,11 @@ const ProjectDashboardPageComponent = ({
               data={props.reportsGroupedByFeaturesAndDate}
             />
           </Grid>
-          <Grid item sm={6} xs={12}>
+          <Grid item xs={12} sm={6}>
             <DashboardReportSexAgeTable data={props.reportsGroupedByFeatures} />
+          </Grid>
+          <Grid item xs={12}>
+            <DashboardReportSexAgePyramidChart data={props.reportsGroupedByFeaturesAndDate} />
           </Grid>
 
           {props.filters.reportsType === "dataCollectionPoint" && (

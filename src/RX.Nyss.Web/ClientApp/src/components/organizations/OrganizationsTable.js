@@ -7,13 +7,13 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TableContainer
 } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import EditIcon from "@material-ui/icons/Edit";
 import { TableRowAction } from "../common/tableRowAction/TableRowAction";
 import { Loading } from "../common/loading/Loading";
 import { strings, stringKeys } from "../../strings";
-import { TableContainer } from "../common/table/TableContainer";
 import { TableRowActions } from "../common/tableRowAction/TableRowActions";
 
 export const OrganizationsTable = ({
@@ -34,8 +34,8 @@ export const OrganizationsTable = ({
     list.length > 1 && row.isDefaultOrganization === true;
 
   return (
-    <TableContainer sticky>
-      <Table>
+    <TableContainer>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>{strings(stringKeys.common.name)}</TableCell>
