@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, ScaleControl } from 'react-leaflet';
+import { MapContainer, TileLayer, ScaleControl, useMap } from 'react-leaflet';
 import { calculateBounds, calculateCenter, calculateIconSize } from '../../utils/map';
 import { TextIcon } from "../common/map/MarkerIcon";
 import { MarkerClusterComponent } from "./MarkerClusterComponent";
@@ -19,6 +19,20 @@ export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) =>
     setBounds(data.length > 1 ? calculateBounds(data) : null)
     setCenter(data.length > 1 ? null : calculateCenter(data.map(l => ({ lat: l.location.latitude, lng: l.location.longitude }))));
   }, [data]);
+
+  // Re-center map when the center useState changes or map is rendered in.
+  const CenterMapController = (center) => {
+    const map = useMap();
+    
+    useEffect(() => {
+      if (center) {
+        map.setView(center.center);
+      }
+    }, [center, map]);
+
+    // Returns null such that it can be rendered as a react component.
+    return null;
+  }
 
   const createClusterIcon = (cluster) => {
     const count = cluster.getAllChildMarkers().reduce((sum, item) => item.options.reportsCount + sum, 0);
@@ -62,6 +76,8 @@ export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) =>
       />
 
       <ScaleControl imperial={false}></ScaleControl>
+      {/* CenterMapController must be added as a component since the useMap hook must be initialized inside a MapContainer.*/}
+      <CenterMapController center={center} />
     </MapContainer>
   );
 }
