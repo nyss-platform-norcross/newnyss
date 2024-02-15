@@ -79,13 +79,6 @@ import { ProjectAlertRecipientsListPage } from "../projectAlertRecipients/Projec
 import { ProjectSetupPage } from "../projectSetup/ProjectSetupPage";
 import { Administrator } from "../../authentication/roles";
 import { ApplicationInsightsProvider } from "./ApplicationInsightsProvider";
-import Highcharts from "highcharts";
-import exportingInit from 'highcharts/modules/exporting';
-import exportingFullscreen from 'highcharts/modules/full-screen';
-
-// Initialize the exporting and fullscreen modules
-exportingInit(Highcharts);
-exportingFullscreen(Highcharts);
 
 export const App = ({ history }) => {
   const direction = useSelector((state) => state.appData.direction);
