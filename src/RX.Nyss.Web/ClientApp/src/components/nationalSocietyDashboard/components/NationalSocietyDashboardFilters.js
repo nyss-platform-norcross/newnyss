@@ -42,6 +42,7 @@ export const NationalSocietyDashboardFilters = ({
   locations,
   onChange,
   isFetching,
+  isGeneratingPdf,
   userRoles,
   isFilterExpanded,
   setIsFilterExpanded,
@@ -122,13 +123,12 @@ export const NationalSocietyDashboardFilters = ({
   return (
     <Card className={styles.filters}>
       {isFetching && <LinearProgress color="primary" />}
-      {isSmallScreen && (
         <CardContent className={styles.collapsedFilterBar}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>
-              <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>} />
+              <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>} className={isFilterExpanded ? styles.filterTitle : null}/>
             </Grid>
-            {!isFilterExpanded && (
+            {!isGeneratingPdf && !isFilterExpanded && (
               <Fragment>
                 <Grid item>
                   <Chip
@@ -153,7 +153,7 @@ export const NationalSocietyDashboardFilters = ({
                 </Grid>
               </Fragment>
             )}
-            {!isFilterExpanded && !allLocationsSelected() && (
+            {!isGeneratingPdf && !isFilterExpanded && !allLocationsSelected() && (
               <Grid item>
                 <Chip
                   label={locationsFilterLabel}
@@ -161,7 +161,7 @@ export const NationalSocietyDashboardFilters = ({
                 />
               </Grid>
             )}
-            {!isFilterExpanded && localFilters.healthRiskId && (
+            {!isGeneratingPdf && !isFilterExpanded && localFilters.healthRiskId && (
               <Grid item>
                 <Chip
                   label={
@@ -174,7 +174,7 @@ export const NationalSocietyDashboardFilters = ({
                 />
               </Grid>
             )}
-            {!isFilterExpanded && localFilters.dataCollectorType !== "all" && (
+            {!isGeneratingPdf && !isFilterExpanded && localFilters.dataCollectorType !== "all" && (
               <Grid item>
                 <Chip
                   label={collectionsTypes[localFilters.dataCollectorType]}
@@ -200,7 +200,7 @@ export const NationalSocietyDashboardFilters = ({
                 />
               </Grid>
             )} */}
-            {!isFilterExpanded &&
+            {!isGeneratingPdf && !isFilterExpanded &&
               !userRoles.some((r) => r === DataConsumer) &&
               localFilters.reportStatus.kept && (
                 <Grid item>
@@ -218,7 +218,7 @@ export const NationalSocietyDashboardFilters = ({
                   />
                 </Grid>
               )}
-            {!isFilterExpanded &&
+            {!isGeneratingPdf && !isFilterExpanded &&
               !userRoles.some((r) => r === DataConsumer) &&
               localFilters.reportStatus.notCrossChecked && (
                 <Grid item>
@@ -251,19 +251,10 @@ export const NationalSocietyDashboardFilters = ({
             </Grid>
           </Grid>
         </CardContent>
-      )}
       <ConditionalCollapse
-        collapsible={isSmallScreen}
+        collapsible={!isGeneratingPdf}
         expanded={isFilterExpanded}
       >
-        {!isSmallScreen && (
-          <Grid container>
-            <CardHeader
-              title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>}
-              className={styles.filterTitle}
-            />
-          </Grid>
-        )}
         <CardContent data-printable={true}>
           <Grid container spacing={2}>
             <Grid item>
