@@ -54,6 +54,24 @@ const callApi = (
   authenticate = false,
   abortSignal = null,
 ) => {
+  const securityHeaders = {
+    "Content-Security-Policy":
+      "base-uri 'self'; " +
+      "script-src 'self' 'unsafe-inline'; " +
+      "frame-ancestors 'self'; " +
+      "form-action 'self'; " +
+      "img-src 'self' data: https://*.tile.openstreetmap.org/; " +
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/icon?family=Material+Icons https://unpkg.com/leaflet@1.7.1/dist/leaflet.css; " +
+      "object-src 'none'; " +
+      "frame-src 'self'; " +
+      "connect-src 'self' wss://localhost:0/sockjs-node https://*.in.applicationinsights.azure.com/; " +
+      "media-src 'self'; " +
+      "font-src 'self' https://fonts.gstatic.com/s/materialicons/v140/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2; " +
+      "manifest-src 'self';",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "SAMEORIGIN",
+  };
+
   return new Promise((resolve, reject) => {
     let init = {
       method,
@@ -67,6 +85,7 @@ const callApi = (
         ...(window.userLanguage
           ? { "Accept-Language": `${window.userLanguage}, en;q=0.5` }
           : {}),
+        ...securityHeaders,
       }),
       signal: abortSignal,
     };
