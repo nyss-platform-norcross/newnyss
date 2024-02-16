@@ -52,19 +52,18 @@ public class ReportsDashboardService : IReportsDashboardService
     public IQueryable<Report> GetKeptReportsInEscalatedAlertsQuery(int nationalSocietyId, ReportsFilter reportsFilter, int? projectId = null)
     {
         var baseQuery = _nyssContext.Alerts
-            .Where(a => a.ProjectHealthRisk.Project.NationalSociety.Id == nationalSocietyId)
-            .FilterByProject(projectId)
-            .Where(a => a.Status == AlertStatus.Escalated) // Only Include escalated alerts
-            .SelectMany(a => a.AlertReports);
+            .Where(a => a.ProjectHealthRisk.Project.NationalSociety.Id == nationalSocietyId);
+        baseQuery = baseQuery.FilterByProject(projectId);
+        baseQuery = baseQuery.Where(a => a.Status == AlertStatus.Escalated); // Only Include escalated alerts
+        var arQuery = baseQuery.SelectMany(a => a.AlertReports);
 
         // Apply reportsFilter to the baseQuery if it exists
-        baseQuery = baseQuery
-            .FilterByDate(reportsFilter.StartDate, reportsFilter.EndDate)
-            .FilterByHealthRisks(reportsFilter.HealthRisks)
-            .FilterByArea(reportsFilter.Area);
+        arQuery = arQuery.FilterByDate(reportsFilter.StartDate, reportsFilter.EndDate);
+        arQuery = arQuery.FilterByHealthRisks(reportsFilter.HealthRisks);
+        arQuery = arQuery.FilterByArea(reportsFilter.Area);
 
         // Apply additional filters to select only kept reports that are included in an escalated alert
-        var reports = baseQuery
+        var reports = arQuery
             .FilterByReportStatus(new ReportStatusFilterDto
             {
                 Kept = true,
