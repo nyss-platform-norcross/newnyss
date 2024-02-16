@@ -13,7 +13,6 @@ export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) =>
     if (!data) {
       return;
     }
-
     setTotalReports(data.reduce((a, d) => a + d.reportsCount, 0));
 
     setBounds(data.length > 1 ? calculateBounds(data) : null)
@@ -23,9 +22,8 @@ export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) =>
   // Re-center map when the center useState changes or map is rendered in.
   const CenterMapController = (center) => {
     const map = useMap();
-    
     useEffect(() => {
-      if (center) {
+      if (center.center) {
         map.setView(center.center);
       }
     }, [center, map]);
