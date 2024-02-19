@@ -188,7 +188,7 @@ public class ReportsDashboardServiceTestBase
         return nyssContext;
     }
 
-    public void ArrangeTwoKeptReportsInEscalatedAlertsInTwoDifferentNationalSocieties()
+    protected void ArrangeTwoKeptReportsInEscalatedAlertsInTwoDifferentNationalSocieties()
     {
         var projectHealthRisks = _nyssContext.ProjectHealthRisks.ToList();
 
@@ -263,7 +263,7 @@ public class ReportsDashboardServiceTestBase
         _nyssContext.Alerts.Returns(alertsDbSet);
     }
 
-    public void ArrangeTwoKeptReportsInEscalatedAlertsInTwoDifferentProjectsInTheSameNationalSociety()
+    protected void ArrangeTwoKeptReportsInEscalatedAlertsInTwoDifferentProjectsInTheSameNationalSociety()
     {
         var projectHealthRisks = _nyssContext.ProjectHealthRisks.ToList();
 
@@ -328,6 +328,348 @@ public class ReportsDashboardServiceTestBase
                 ProjectHealthRisk = projectHealthRisks[2], // Health risk 1 in project 2 in national society 1
             }
         };
+
+        var reportsDbSet = reports.AsQueryable().BuildMockDbSet();
+        var alertReportDbSet = alertReports.AsQueryable().BuildMockDbSet();
+        var alertsDbSet = alerts.AsQueryable().BuildMockDbSet();
+
+        _nyssContext.Reports.Returns(reportsDbSet);
+        _nyssContext.AlertReports.Returns(alertReportDbSet);
+        _nyssContext.Alerts.Returns(alertsDbSet);
+    }
+
+    protected void ArrangeOneReportInEachPossibleState()
+    {
+        var projectHealthRisks = _nyssContext.ProjectHealthRisks.ToList();
+
+        var reports = new List<Report>
+        {
+            new Report
+            {
+                Id = 1,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted, // Kept report
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0], // Health risk 1 in project 1 in national society 1
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0)
+            },
+            new Report
+            {
+                Id = 2,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Pending, // In Alert, Not cross-checked
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0],
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0)
+            },
+            new Report
+            {
+                Id = 3,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Rejected, // Dismissed report
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0],
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0)
+            },
+            new Report
+            {
+                Id = 4,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.New, // New report not in alert, Not cross-checked
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0],
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0)
+            },
+            new Report
+            {
+                Id = 5,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Closed, // Report is part of a closed alert, is not cross checked
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0],
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0)
+            },
+        };
+
+        var alertReports = new List<AlertReport>
+        {
+            new AlertReport
+            {
+                ReportId = 1,
+                Report = reports[0],
+            },
+            new AlertReport
+            {
+                ReportId = 2,
+                Report = reports[1]
+            }
+        };
+
+        var alerts = new List<Alert>
+        {
+            new Alert
+            {
+                Id = 1,
+                Status = AlertStatus.Escalated,
+                AlertReports = alertReports.GetRange(0, 1),
+                ProjectHealthRisk = projectHealthRisks[0], // Health risk 1 in project 1 in national society 1
+            },
+            new Alert
+            {
+                Id = 2,
+                Status = AlertStatus.Escalated,
+                AlertReports = alertReports.GetRange(1, 1),
+                ProjectHealthRisk = projectHealthRisks[2], // Health risk 1 in project 2 in national society 1
+            }
+        };
+
+        var reportsDbSet = reports.AsQueryable().BuildMockDbSet();
+        var alertReportDbSet = alertReports.AsQueryable().BuildMockDbSet();
+        var alertsDbSet = alerts.AsQueryable().BuildMockDbSet();
+
+        _nyssContext.Reports.Returns(reportsDbSet);
+        _nyssContext.AlertReports.Returns(alertReportDbSet);
+        _nyssContext.Alerts.Returns(alertsDbSet);
+    }
+
+    protected void ArrangeKeptDismissedAndNotCrossCheckedReportsInAnEscalatedAlert()
+    {
+        var projectHealthRisks = _nyssContext.ProjectHealthRisks.ToList();
+
+        var reports = new List<Report>
+        {
+            new Report
+            {
+                Id = 1,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted, // Kept report
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[1], // HealthRisk 2 in Project 1 in National Society 1
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0)
+            },
+            new Report
+            {
+                Id = 2,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Pending, // In Alert, Not cross-checked
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[1],
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0)
+            },
+            new Report
+            {
+                Id = 3,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Rejected, // Dismissed report
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[1],
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0)
+            },
+        };
+
+        var alertReports = new List<AlertReport>
+        {
+            new AlertReport
+            {
+                ReportId = 1,
+                Report = reports[0],
+            },
+            new AlertReport
+            {
+                ReportId = 2,
+                Report = reports[1]
+            },
+            new AlertReport
+            {
+                ReportId = 3,
+                Report = reports[2]
+            }
+        };
+
+        var alerts = new List<Alert>
+        {
+            new Alert
+            {
+                Id = 1,
+                Status = AlertStatus.Escalated,
+                AlertReports = alertReports,
+                ProjectHealthRisk = projectHealthRisks[1], // Health risk 2 in project 1 in national society 1
+            },
+        };
+
+        alertReports = alertReports.Select(ar =>
+        {
+            ar.Alert = alerts[0];
+            ar.AlertId = 1;
+            return ar;
+        }).ToList();
+
+        var reportsDbSet = reports.AsQueryable().BuildMockDbSet();
+        var alertReportDbSet = alertReports.AsQueryable().BuildMockDbSet();
+        var alertsDbSet = alerts.AsQueryable().BuildMockDbSet();
+
+        _nyssContext.Reports.Returns(reportsDbSet);
+        _nyssContext.AlertReports.Returns(alertReportDbSet);
+        _nyssContext.Alerts.Returns(alertsDbSet);
+    }
+
+    protected void ArrangeKeptReportsInOpenClosedDismissedAndEscalatedAlerts()
+    {
+        var projectHealthRisks = _nyssContext.ProjectHealthRisks.ToList();
+
+        var reports = new List<Report>
+        {
+            new Report
+            {
+                Id = 1,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted, // Kept report
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0], // HealthRisk 1 in Project 1 in National Society 1
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0)
+            },
+            new Report
+            {
+                Id = 2,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted,
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0],
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0)
+            },
+            new Report
+            {
+                Id = 3,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted,
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0],
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0)
+            },
+            new Report
+            {
+                Id = 4,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted,
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0],
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0)
+            },
+        };
+
+        var alertReports = new List<AlertReport>
+        {
+            new AlertReport
+            {
+                ReportId = 1,
+                Report = reports[0],
+            },
+            new AlertReport
+            {
+                ReportId = 2,
+                Report = reports[1]
+            },
+            new AlertReport
+            {
+                ReportId = 3,
+                Report = reports[2]
+            },
+            new AlertReport
+            {
+                ReportId = 4,
+                Report = reports[3]
+            }
+        };
+
+        reports[0].ReportAlerts = alertReports.GetRange(0, 1);
+        reports[1].ReportAlerts = alertReports.GetRange(1, 1);
+        reports[2].ReportAlerts = alertReports.GetRange(2, 1);
+        reports[3].ReportAlerts = alertReports.GetRange(3, 1);
+
+        var alerts = new List<Alert>
+        {
+            new Alert
+            {
+                Id = 1,
+                Status = AlertStatus.Escalated,
+                AlertReports = alertReports.GetRange(0, 1), // Report 1
+                ProjectHealthRisk = projectHealthRisks[0], // Health risk 1 in project 1 in national society 1
+            },
+            new Alert
+            {
+                Id = 2,
+                Status = AlertStatus.Open,
+                AlertReports = alertReports.GetRange(1, 1), // Report 2
+                ProjectHealthRisk = projectHealthRisks[0],
+            },
+            new Alert
+            {
+                Id = 3,
+                Status = AlertStatus.Closed,
+                AlertReports = alertReports.GetRange(2, 1), // Report 3
+                ProjectHealthRisk = projectHealthRisks[0],
+            },
+            new Alert
+            {
+                Id = 4,
+                Status = AlertStatus.Dismissed,
+                AlertReports = alertReports.GetRange(3, 1), // Report 4
+                ProjectHealthRisk = projectHealthRisks[0],
+            },
+        };
+
+        alertReports[0].Alert = alerts[0];
+        alertReports[1].Alert = alerts[1];
+        alertReports[2].Alert = alerts[2];
+        alertReports[3].Alert = alerts[3];
 
         var reportsDbSet = reports.AsQueryable().BuildMockDbSet();
         var alertReportDbSet = alertReports.AsQueryable().BuildMockDbSet();
