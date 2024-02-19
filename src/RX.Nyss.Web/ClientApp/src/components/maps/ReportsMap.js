@@ -7,26 +7,35 @@ import { MarkerClusterComponent } from "./MarkerClusterComponent";
 export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) => {
   const [bounds, setBounds] = useState(null);
   const [center, setCenter] = useState(null);
+  const [zoom, setZoom] = useState(2);
   const [totalReports, setTotalReports] = useState(null);
 
   useEffect(() => {
     if (!data) {
       return;
     }
-    setTotalReports(data.reduce((a, d) => a + d.reportsCount, 0));
+    const totalReportCount = data.reduce((a, d) => a + d.reportsCount, 0);
+    setTotalReports(totalReportCount);
 
-    setBounds(data.length > 1 ? calculateBounds(data) : null)
+    // If there are no reports zoom is decreased creating a more generic map.
+    setZoom(totalReportCount >= 1 ? 5 : 2);
+    setBounds(data.length > 1 ? calculateBounds(data) : null);  
     setCenter(data.length > 1 ? null : calculateCenter(data.map(l => ({ lat: l.location.latitude, lng: l.location.longitude }))));
   }, [data]);
 
-  // Re-center map when the center useState changes or map is rendered in.
-  const CenterMapController = (center) => {
+  // Re-center / update map bounds when the center, bounds or map change.
+  const MapViewController = (center) => {
     const map = useMap();
     useEffect(() => {
       if (center.center) {
-        map.setView(center.center);
+        // If there are no reports, use [0,0] as a default value for a more generic world map.
+        const centerLatLong = totalReports > 0 ? center.center : [0,0];
+        map.setView(centerLatLong, zoom);
       }
-    }, [center, map]);
+      if (bounds) {
+        map.fitBounds(bounds);
+      }
+    }, [center, map, bounds]);
 
     // Returns null such that it can be rendered as a react component.
     return null;
@@ -53,7 +62,7 @@ export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) =>
   return (!!center || !!bounds) && (
     <MapContainer
       style={{ height: "500px" }}
-      zoom={5}
+      zoom={zoom}
       bounds={bounds}
       center={center}
       scrollWheelZoom={false}
@@ -75,7 +84,7 @@ export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) =>
 
       <ScaleControl imperial={false}></ScaleControl>
       {/* CenterMapController must be added as a component since the useMap hook must be initialized inside a MapContainer.*/}
-      <CenterMapController center={center} />
+      <MapViewController center={center} />
     </MapContainer>
   );
 }
