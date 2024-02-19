@@ -9,11 +9,13 @@ export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) =>
   const [center, setCenter] = useState(null);
   const [zoom, setZoom] = useState(2);
   const [totalReports, setTotalReports] = useState(null);
+  const [hasInteractedWithMap, setHasInteractedWithMap] = useState(false);
 
   useEffect(() => {
     if (!data) {
       return;
     }
+    setHasInteractedWithMap(false);
     const totalReportCount = data.reduce((a, d) => a + d.reportsCount, 0);
     setTotalReports(totalReportCount);
 
@@ -26,16 +28,20 @@ export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) =>
   // Re-center / update map bounds when the center, bounds or map change.
   const MapViewController = (center) => {
     const map = useMap();
-    useEffect(() => {
-      if (center.center) {
-        // If there are no reports, use [0,0] as a default value for a more generic world map.
-        const centerLatLong = totalReports > 0 ? center.center : [0,0];
-        map.setView(centerLatLong, zoom);
-      }
-      if (bounds) {
-        map.fitBounds(bounds);
-      }
-    }, [center, map, bounds]);
+    
+    // Avoid updates when user is interacting with the map. 
+    if(!hasInteractedWithMap) {
+      useEffect(() => {
+        if (center.center) {
+          // If there are no reports, use [0,0] as a default value for a more generic world map.
+          const centerLatLong = totalReports > 0 ? center.center : [0,0];
+          map.setView(centerLatLong, zoom);
+        }
+        if (bounds) {
+          map.fitBounds(bounds);
+        }
+      }, [center, map, bounds]);
+    }
 
     // Returns null such that it can be rendered as a react component.
     return null;
@@ -56,8 +62,10 @@ export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) =>
     });
   }
 
-  const handleMarkerClick = e =>
+  const handleMarkerClick = e => {
+    setHasInteractedWithMap(true);
     onMarkerClick(e.latlng.lat, e.latlng.lng);
+  }
 
   return (!!center || !!bounds) && (
     <MapContainer
