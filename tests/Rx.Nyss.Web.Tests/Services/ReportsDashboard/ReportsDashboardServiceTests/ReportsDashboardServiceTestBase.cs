@@ -680,4 +680,296 @@ public class ReportsDashboardServiceTestBase
         _nyssContext.Alerts.Returns(alertsDbSet);
     }
 
+    protected void ArrangeKeptReportsInEscalatedAlertsInsideAndOutsideOfTimeRange()
+    {
+        // Time range should be from 01-01-2024 - 08-01-2024 with 1 hour utc offset
+        // This means that the utc time-range should be 31-12-2023 23:00 - 08-01-2024 23:00
+
+        var projectHealthRisks = _nyssContext.ProjectHealthRisks.ToList();
+
+        var reports = new List<Report>
+        {
+            new Report
+            {
+                Id = 1,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted, // Kept report
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0], // HealthRisk 1 in Project 1 in National Society 1
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0).AddHours(-1) // Should be included (DateTime is stored in UTC, we assume a 1 hour utc offset for these tests)
+            },
+            new Report
+            {
+                Id = 2,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted,
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0],
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0).AddHours(-1).AddSeconds(-1) // Should not be included
+            },
+            new Report
+            {
+                Id = 3,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted,
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0],
+                ReceivedAt = new DateTime(2024, 1, 4, 0, 0, 0).AddHours(-1) // Should be included
+            },
+            new Report
+            {
+                Id = 4,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted,
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0],
+                ReceivedAt = new DateTime(2024, 1, 9, 0, 0, 0).AddHours(-1).AddSeconds(-1) // Should be included
+            },
+            new Report
+            {
+                Id = 5,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted,
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[0],
+                ReceivedAt = new DateTime(2024, 1, 9, 0, 0, 0).AddHours(-1) // Should not be included
+            },
+        };
+
+        var alertReports = new List<AlertReport>
+        {
+            new AlertReport
+            {
+                ReportId = 1,
+                Report = reports[0],
+            },
+            new AlertReport
+            {
+                ReportId = 2,
+                Report = reports[1],
+            },
+            new AlertReport
+            {
+                ReportId = 3,
+                Report = reports[2],
+            },
+            new AlertReport
+            {
+                ReportId = 4,
+                Report = reports[3],
+            },
+            new AlertReport
+            {
+                ReportId = 5,
+                Report = reports[4],
+            },
+
+        };
+
+        var alerts = new List<Alert>
+        {
+            new Alert
+            {
+                Id = 1,
+                Status = AlertStatus.Escalated,
+                AlertReports = alertReports.GetRange(0, 1), // Report 1
+                ProjectHealthRisk = projectHealthRisks[0], // Health risk 1 in project 1 in national society 1
+            },
+            new Alert
+            {
+                Id = 2,
+                Status = AlertStatus.Escalated,
+                AlertReports = alertReports.GetRange(1, 1), // Report 2
+                ProjectHealthRisk = projectHealthRisks[0],
+            },
+            new Alert
+            {
+                Id = 3,
+                Status = AlertStatus.Escalated,
+                AlertReports = alertReports.GetRange(2, 1), // Report 3
+                ProjectHealthRisk = projectHealthRisks[0],
+            },
+            new Alert
+            {
+                Id = 4,
+                Status = AlertStatus.Escalated,
+                AlertReports = alertReports.GetRange(3, 1), // Report 4
+                ProjectHealthRisk = projectHealthRisks[0],
+            },
+            new Alert
+            {
+                Id = 5,
+                Status = AlertStatus.Escalated,
+                AlertReports = alertReports.GetRange(4, 1), // Report 5
+                ProjectHealthRisk = projectHealthRisks[0],
+            },
+        };
+
+        alertReports[0].Alert = alerts[0];
+        alertReports[1].Alert = alerts[1];
+        alertReports[2].Alert = alerts[2];
+        alertReports[3].Alert = alerts[3];
+        alertReports[4].Alert = alerts[4];
+
+        var reportsDbSet = reports.AsQueryable().BuildMockDbSet();
+        var alertReportDbSet = alertReports.AsQueryable().BuildMockDbSet();
+        var alertsDbSet = alerts.AsQueryable().BuildMockDbSet();
+
+        _nyssContext.Reports.Returns(reportsDbSet);
+        _nyssContext.AlertReports.Returns(alertReportDbSet);
+        _nyssContext.Alerts.Returns(alertsDbSet);
+    }
+
+    protected void ArrangeKeptReportsInTheSameEscalatedAlertInsideAndOutsideOfTimeRange()
+    {
+        // Time range should be from 01-01-2024 - 08-01-2024 with 1 hour utc offset
+        // This means that the utc time-range should be 31-12-2023 23:00 - 08-01-2024 23:00
+
+        var projectHealthRisks = _nyssContext.ProjectHealthRisks.ToList();
+
+        var reports = new List<Report>
+        {
+            new Report
+            {
+                Id = 1,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted, // Kept report
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[1], // HealthRisk 1 in Project 1 in National Society 1
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0).AddHours(-1) // Should be included (DateTime is stored in UTC, we assume a 1 hour utc offset for these tests)
+            },
+            new Report
+            {
+                Id = 2,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted,
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[1],
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0).AddHours(-1).AddSeconds(-1) // Should not be included
+            },
+            new Report
+            {
+                Id = 3,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted,
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[1],
+                ReceivedAt = new DateTime(2024, 1, 4, 0, 0, 0).AddHours(-1) // Should be included
+            },
+            new Report
+            {
+                Id = 4,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted,
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[1],
+                ReceivedAt = new DateTime(2024, 1, 9, 0, 0, 0).AddHours(-1).AddSeconds(-1) // Should be included
+            },
+            new Report
+            {
+                Id = 5,
+                ReportType = ReportType.Single,
+                Status = ReportStatus.Accepted,
+                IsTraining = false,
+                ReportedCase = new ReportCase
+                {
+                    CountMalesAtLeastFive = 1,
+                },
+                ProjectHealthRisk = projectHealthRisks[1],
+                ReceivedAt = new DateTime(2024, 1, 9, 0, 0, 0).AddHours(-1) // Should not be included
+            },
+        };
+
+        var alertReports = new List<AlertReport>
+        {
+            new AlertReport
+            {
+                ReportId = 1,
+                Report = reports[0],
+            },
+            new AlertReport
+            {
+                ReportId = 2,
+                Report = reports[1],
+            },
+            new AlertReport
+            {
+                ReportId = 3,
+                Report = reports[2],
+            },
+            new AlertReport
+            {
+                ReportId = 4,
+                Report = reports[3],
+            },
+            new AlertReport
+            {
+                ReportId = 5,
+                Report = reports[4],
+            },
+
+        };
+
+        var alerts = new List<Alert>
+        {
+            new Alert
+            {
+                Id = 1,
+                Status = AlertStatus.Escalated,
+                AlertReports = alertReports,
+                ProjectHealthRisk = projectHealthRisks[1], // Health risk 2 in project 1 in national society 1
+            },
+        };
+
+        alertReports[0].Alert = alerts[0];
+        alertReports[1].Alert = alerts[0];
+        alertReports[2].Alert = alerts[0];
+        alertReports[3].Alert = alerts[0];
+        alertReports[4].Alert = alerts[0];
+
+        var reportsDbSet = reports.AsQueryable().BuildMockDbSet();
+        var alertReportDbSet = alertReports.AsQueryable().BuildMockDbSet();
+        var alertsDbSet = alerts.AsQueryable().BuildMockDbSet();
+
+        _nyssContext.Reports.Returns(reportsDbSet);
+        _nyssContext.AlertReports.Returns(alertReportDbSet);
+        _nyssContext.Alerts.Returns(alertsDbSet);
+    }
+
 }

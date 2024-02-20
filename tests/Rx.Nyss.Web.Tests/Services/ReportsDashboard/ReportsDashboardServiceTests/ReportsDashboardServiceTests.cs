@@ -25,6 +25,15 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         _reportsDashboardService = new ReportsDashboardService(_nyssContext);
     }
 
+    private ReportsFilter GetReportFilters() =>
+        new ReportsFilter // Filter from 01.01.2024 - 08.01.2024
+        {
+            StartDate = new DateTimeOffset(2024, 1, 1, 0, 0, 0, new TimeSpan(1, 0, 0)),
+            EndDate = new DateTimeOffset(2024, 1, 8, 0, 0, 0, new TimeSpan(1, 0, 0)).AddDays(1),
+            // Reports Filters EndDate gets added 1 day so we include all the reports that have come in on the last day
+            // This should make it so that all reports registered by 08-01-2024 23:59:59 are included, but after 09-01-2024 0:0:0 are excluded
+        };
+
     [Fact]
     public void GetKeptReportsInEscalatedAlertsQuery_ShouldNotReturnReportsFromWrongNationalSocieties()
     {
@@ -33,11 +42,7 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         var nationalSocietyIdCorrect = 1;
         var nationalSocietyIdWrong = 2;
 
-        var reportsFilter = new ReportsFilter
-        {
-            StartDate = new DateTimeOffset(2024, 1, 1, 0, 0, 0, new TimeSpan(1, 0, 0)),
-            EndDate = new DateTimeOffset(2024, 1, 8, 0, 0, 0, new TimeSpan(1, 0, 0)),
-        };
+        var reportsFilter = GetReportFilters();
 
         // act
         var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyIdCorrect, reportsFilter);
@@ -56,11 +61,7 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         var projectIdFirst = 1;
         var projectIdSecond = 2;
 
-        var reportsFilter = new ReportsFilter
-        {
-            StartDate = new DateTimeOffset(2024, 1, 1, 0, 0, 0, new TimeSpan(1, 0, 0)),
-            EndDate = new DateTimeOffset(2024, 1, 8, 0, 0, 0, new TimeSpan(1, 0, 0)),
-        };
+        var reportsFilter = GetReportFilters();
 
         // act
         var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyId, reportsFilter);
@@ -79,11 +80,7 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         var projectIdCorrect = 1;
         var projectIdWrong = 2;
 
-        var reportsFilter = new ReportsFilter
-        {
-            StartDate = new DateTimeOffset(2024, 1, 1, 0, 0, 0, new TimeSpan(1, 0, 0)),
-            EndDate = new DateTimeOffset(2024, 1, 8, 0, 0, 0, new TimeSpan(1, 0, 0)),
-        };
+        var reportsFilter = GetReportFilters();
 
         // act
         var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyId, reportsFilter, projectId: projectIdCorrect);
@@ -100,11 +97,7 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         ArrangeKeptDismissedAndNotCrossCheckedReportsInAnEscalatedAlert();
         var nationalSocietyId = 1;
 
-        var reportsFilter = new ReportsFilter // Filter from 01.01.2024 - 08.01.2024
-        {
-            StartDate = new DateTimeOffset(2024, 1, 1, 0, 0, 0, new TimeSpan(1, 0, 0)),
-            EndDate = new DateTimeOffset(2024, 1, 8, 0, 0, 0, new TimeSpan(1, 0, 0)),
-        };
+        var reportsFilter = GetReportFilters();
 
         // act
         var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyId, reportsFilter);
@@ -122,15 +115,10 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         ArrangeKeptReportsInOpenClosedDismissedAndEscalatedAlerts();
         var nationalSocietyId = 1;
 
-        var reportsFilter = new ReportsFilter // Filter from 01.01.2024 - 08.01.2024
-        {
-            StartDate = new DateTimeOffset(2024, 1, 1, 0, 0, 0, new TimeSpan(1, 0, 0)),
-            EndDate = new DateTimeOffset(2024, 1, 8, 0, 0, 0, new TimeSpan(1, 0, 0)),
-        };
+        var reportsFilter = GetReportFilters();
 
         // act
         var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyId, reportsFilter);
-        var test = reportQuery.ToList();
 
         // assert
         reportQuery.Any(r => r.ReportAlerts.Any(ar => ar.Alert.Status == AlertStatus.Open)).ShouldBe(false);
@@ -139,6 +127,47 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         reportQuery.All(r => r.ReportAlerts.All(ar => ar.Alert.Status == AlertStatus.Escalated)).ShouldBe(true);
 
     }
+
+    [Fact]
+    // Tests that all reports returned by GetKeptReportsInEscalatedAlertsQuery are within the filter time-range
+    public void GetKeptReportsInEscalatedAlertsQuery_ShouldReturnAllKeptReportsInEscalatedAlertsWithinTheFilterTimeRange()
+    {
+        // Arrange test data
+        ArrangeKeptReportsInEscalatedAlertsInsideAndOutsideOfTimeRange();
+        // Reports are inside and just outside of the time range 01.01.2024 - 08.01.2024
+        var nationalSocietyId = 1;
+
+        var reportsFilter = GetReportFilters();
+
+        // act
+        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyId, reportsFilter);
+
+        // assert
+        reportQuery.Count().ShouldBe(3); // We expect 3 reports given the test data
+        reportQuery.All(r => r.ReceivedAt >= reportsFilter.StartDate.UtcDateTime && r.ReceivedAt < reportsFilter.EndDate.UtcDateTime).ShouldBe(true);
+    }
+
+    [Fact]
+    // Tests that GetKeptReportsInEscalatedAlertsQuery only returns reports within the filter time-range, even if all the reports are
+    // Included in the same escalated alert
+    public void GetKeptReportsInEscalatedAlertsQuery_ShouldOnlyReturnKeptReportsInTheSameEscalatedAlertWithinTheFilterTimeRange()
+    {
+        // Arrange test data
+        ArrangeKeptReportsInTheSameEscalatedAlertInsideAndOutsideOfTimeRange();
+        // Reports are inside and just outside of the time range 01.01.2024 - 08.01.2024
+        var nationalSocietyId = 1;
+
+        var reportsFilter = GetReportFilters();
+
+        // act
+        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyId, reportsFilter);
+
+        // assert
+        reportQuery.Count().ShouldBe(3); // We expect 3 reports given the test data
+        reportQuery.All(r => r.ReceivedAt >= reportsFilter.StartDate.UtcDateTime && r.ReceivedAt < reportsFilter.EndDate.UtcDateTime).ShouldBe(true);
+    }
+
+
 
 
 }

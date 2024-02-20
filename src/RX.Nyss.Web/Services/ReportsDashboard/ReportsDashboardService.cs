@@ -58,7 +58,7 @@ public class ReportsDashboardService : IReportsDashboardService
         var arQuery = baseQuery.SelectMany(a => a.AlertReports);
 
         // Apply reportsFilter to the baseQuery if it exists
-        arQuery = arQuery.FilterByDate(reportsFilter.StartDate, reportsFilter.EndDate);
+        arQuery = arQuery.FilterByDate(reportsFilter.StartDate.UtcDateTime, reportsFilter.EndDate.UtcDateTime);
         arQuery = arQuery.FilterByHealthRisks(reportsFilter.HealthRisks);
         arQuery = arQuery.FilterByArea(reportsFilter.Area);
 

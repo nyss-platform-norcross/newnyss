@@ -9,7 +9,7 @@ namespace RX.Nyss.Web.Features.Common.Extensions;
 
 public static class AlertReportQueries
 {
-    public static IQueryable<AlertReport> FilterByDate(this IQueryable<AlertReport> alertReports, DateTimeOffset startDate, DateTimeOffset endDate) =>
+    public static IQueryable<AlertReport> FilterByDate(this IQueryable<AlertReport> alertReports, DateTime startDate, DateTime endDate) =>
         alertReports
             .Where(ar => ar.Report.ReceivedAt >= startDate && ar.Report.ReceivedAt < endDate);
 
