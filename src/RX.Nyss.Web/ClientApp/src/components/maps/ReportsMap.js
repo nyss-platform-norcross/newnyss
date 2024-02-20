@@ -34,7 +34,7 @@ export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) =>
       useEffect(() => {
         if (center.center) {
           // If there are no reports, use [0,0] as a default value for a more generic world map.
-          const centerLatLong = totalReports > 0 ? center.center : [0,0];
+          const centerLatLong = totalReports > 0 ? center.center : [20,0];
           map.setView(centerLatLong, zoom);
         }
         if (bounds) {
