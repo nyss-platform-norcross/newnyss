@@ -18,7 +18,8 @@ export const ProjectAlertNotHandledRecipientItem = ({
   isEditing,
   error,
   setError,
-  remove
+  remove,
+  hideDelete,
 }) => {
   const [user, setUser] = useState(unhandledRecipient);
   const users = useSelector(
@@ -70,9 +71,16 @@ export const ProjectAlertNotHandledRecipientItem = ({
             value={user?.userId}
             onChange={handleRecipientChange}
             error={error}
+            MenuProps={{
+              PaperProps: {
+                style: {
+                  width: "90%",
+                },
+              },
+            }}
           >
             {userList.map((u) => (
-              <MenuItem key={`recipient_user_${u.userId}`} value={u.userId}>
+              <MenuItem style={{ whiteSpace: "normal" }} key={`recipient_user_${u.userId}`} value={u.userId}>
                 {u.name}
               </MenuItem>
             ))}
@@ -98,7 +106,7 @@ export const ProjectAlertNotHandledRecipientItem = ({
           {user?.organizationName}
         </Typography>
       )}
-      {(!isEditing && !isCreating && unhandledRecipients.length > 1) && (
+      {(!isEditing && !isCreating && !hideDelete && unhandledRecipients.length > 1) && (
         <IconButton color="primary" onClick={handleRecipientDelete}><DeleteIcon/></IconButton>
       )}
     </Grid>

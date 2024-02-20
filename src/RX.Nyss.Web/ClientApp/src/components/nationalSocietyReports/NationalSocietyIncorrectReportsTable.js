@@ -2,7 +2,6 @@ import styles from "./NationalSocietyReportsTable.module.scss";
 
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { TableContainer } from "../common/table/TableContainer";
 import { Loading } from "../common/loading/Loading";
 import { strings, stringKeys } from "../../strings";
 import dayjs from "dayjs";
@@ -16,6 +15,7 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  TableContainer
 } from "@material-ui/core";
 import { renderDataCollectorDisplayName } from "../reports/logic/reportsService";
 
@@ -60,9 +60,9 @@ export const NationalSocietyIncorrectReportsTable = ({
   };
 
   return (
-    <TableContainer sticky>
+    <TableContainer>
       {isListFetching && <Loading absolute />}
-      <Table>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell style={{ width: "6%", minWidth: "80px" }}>

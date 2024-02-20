@@ -69,9 +69,11 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
     name: "",
   });
   const [error, setError] = useState(false);
+  const [hideDelete, setHideDelete] = useState(false);
 
   const onEdit = () => {
     setIsEditing(false);
+    setHideDelete(false);
     let editedRecipientIds = unhandledRecipients.map(recipient => recipient.userId);
     let oldRecipientIds = organizations.flatMap(org => org.users.map(user => user.userId));
 
@@ -84,7 +86,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
           userId: recipient.userId,
         })),
       );
-    } 
+    }
   };
 
   const cancel = () => {
@@ -100,6 +102,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
     setUnhandledRecipients(recipients);
     setIsEditing(false);
     setIsCreating(false);
+    setHideDelete(false);
     setError(false);
   };
 
@@ -113,6 +116,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
       organizationId: newRecipient.organizationId,
     });
     setIsCreating(false);
+    setHideDelete(false);
     setNewRecipient({
       userId: "",
       name: "",
@@ -120,9 +124,11 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
   };
 
   const onAddClick = () => {
+    setHideDelete(true);
     setIsCreating(true);
   };
   const onEditClick = () => {
+    setHideDelete(true);
     setIsEditing(true);
   };
 
@@ -148,10 +154,10 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
                 getFormData={getFormData}
                 rtl={useRtlDirection}
                 isEditing={isEditing}
-                isCreating={isCreating}
                 error={error}
                 setError={setError}
                 remove={remove}
+                hideDelete={hideDelete}
               />
             ))}
             {isCreating && (
@@ -169,6 +175,7 @@ export const ProjectAlertNotHandledRecipientsComponent = ({
                 isEditing={isEditing}
                 error={error}
                 setError={setError}
+                hideDelete={hideDelete}
               />
             )}
           </Grid>

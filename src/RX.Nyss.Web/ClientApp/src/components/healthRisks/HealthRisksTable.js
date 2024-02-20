@@ -7,13 +7,15 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  useTheme,
+  useMediaQuery,
+  TableContainer
 } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import EditIcon from "@material-ui/icons/Edit";
 import { TableRowAction } from "../common/tableRowAction/TableRowAction";
 import { Loading } from "../common/loading/Loading";
 import { stringKeys, strings } from "../../strings";
-import { TableContainer } from "../common/table/TableContainer";
 import { TableRowActions } from "../common/tableRowAction/TableRowActions";
 
 export const HealthRisksTable = ({
@@ -24,13 +26,15 @@ export const HealthRisksTable = ({
   list,
   rtl,
 }) => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  
   if (isListFetching) {
     return <Loading />;
   }
-
   return (
-    <TableContainer sticky>
-      <Table>
+    <TableContainer>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell style={{ width: "10%", minWidth: 100 }}>
@@ -49,7 +53,7 @@ export const HealthRisksTable = ({
               key={row.id}
               hover
               onClick={() => goToEdition(row.id)}
-              className={styles.clickableRow}
+              className={`${styles.clickableRow} ${isSmallScreen ? styles.smallDeviceTableRow : ""}`}
             >
               <TableCell>{row.healthRiskCode}</TableCell>
               <TableCell>{row.name}</TableCell>
