@@ -37,7 +37,22 @@ public class ReportsDashboardServiceTestBase
     {
         var nyssContext = Substitute.For<INyssContext>();
 
-        var nationalSocieties = new List<NationalSociety> { new NationalSociety { Id = 1 }, new NationalSociety { Id = 2 } };
+        var nationalSocieties = new List<NationalSociety> {
+            new NationalSociety {
+                Id = 1,
+                ContentLanguage = new ContentLanguage
+                    {
+                        LanguageCode = "en",
+                    },
+            },
+            new NationalSociety {
+                Id = 2,
+                ContentLanguage = new ContentLanguage
+                    {
+                        LanguageCode = "en",
+                    },
+            },
+        };
 
         var projects = new List<Project>
             {
@@ -105,13 +120,35 @@ public class ReportsDashboardServiceTestBase
                 {
                     Id = 1,
                     AlertRule = alertRules[0],
-                    HealthRiskType = HealthRiskType.Human
+                    HealthRiskType = HealthRiskType.Human,
+                    LanguageContents = new List<HealthRiskLanguageContent>
+                    {
+                        new HealthRiskLanguageContent
+                        {
+                            Name = "Fever",
+                            ContentLanguage = new ContentLanguage
+                            {
+                                LanguageCode = "en",
+                            }
+                        }
+                    }
                 },
                 new HealthRisk // Health Risk with count Threshold 2
                 {
                     Id = 2,
                     AlertRule = alertRules[1],
-                    HealthRiskType = HealthRiskType.Human
+                    HealthRiskType = HealthRiskType.Human,
+                    LanguageContents = new List<HealthRiskLanguageContent>
+                    {
+                        new HealthRiskLanguageContent
+                        {
+                            Name = "Acute Watery Diarrhea (AWD)",
+                            ContentLanguage = new ContentLanguage
+                            {
+                                LanguageCode = "en",
+                            }
+                        }
+                    }
                 }
             };
 

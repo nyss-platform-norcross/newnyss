@@ -92,7 +92,7 @@ public class ReportsDashboardService : IReportsDashboardService
 
         // Group Report based on healthRiskId and healthRiskName
         // Must be converted to a List as further groupBy operations causes errors with Linq
-        var reportsGroupedByHealthRisk = await reducedReports.GroupBy(r => new
+        var reportsGroupedByHealthRisk = reducedReports.GroupBy(r => new
             {
                 HealthRiskId = r.HealthRiskId,
                 HealthRiskName = r.HealthRiskName,
@@ -102,7 +102,7 @@ public class ReportsDashboardService : IReportsDashboardService
                 HealthRiskId = group.Key.HealthRiskId,
                 HealthRiskName = group.Key.HealthRiskName,
                 Data = group.ToList()
-            }).ToListAsync();
+            }).ToList();
 
         // Further group the entries by Date and count entries in each dateGroup
         var reportsGroupedByHealthRiskAndDate = reportsGroupedByHealthRisk.Select(groupedReport => new

@@ -7,10 +7,12 @@ using NSubstitute;
 using RX.Nyss.Common.Utils;
 using RX.Nyss.Data;
 using RX.Nyss.Data.Concepts;
+using RX.Nyss.Data.Models;
 using RX.Nyss.Web.Configuration;
 using RX.Nyss.Web.Features.Common.Dto;
 using RX.Nyss.Web.Features.Reports;
 using RX.Nyss.Web.Services.ReportsDashboard;
+using RX.Nyss.Web.Services.ReportsDashboard.Dto;
 using Shouldly;
 using Xunit;
 
@@ -167,6 +169,113 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         reportQuery.All(r => r.ReceivedAt >= reportsFilter.StartDate.UtcDateTime && r.ReceivedAt < reportsFilter.EndDate.UtcDateTime).ShouldBe(true);
     }
 
+    [Fact]
+    // Tests that GetKeptReportsInEscalatedAlertsQuery only returns reports within the filter time-range, even if all the reports are
+    // Included in the same escalated alert
+    public async void GroupReportsByHealthRiskAndDate_ShouldGroupReportQueriesToTheCorrectFormat()
+    {
+        var projectHealthRisks = _nyssContext.ProjectHealthRisks.ToList();
+        var reportQuery = new List<Report>()
+        {
+            new Report
+            {
+                Id = 1,
+                CreatedAt = new DateTime(2023, 12, 31, 23, 0, 0),
+                ProjectHealthRisk = projectHealthRisks[0] // Health risk 1 in project 1 in national society 1
+            },
+            new Report
+            {
+                Id = 2,
+                CreatedAt = new DateTime(2024, 1, 2, 0, 0, 0),
+                ProjectHealthRisk = projectHealthRisks[0]
+            },
+            new Report
+            {
+                Id = 3,
+                CreatedAt = new DateTime(2024, 1, 2, 23, 0, 0),
+                ProjectHealthRisk = projectHealthRisks[0]
+            },
+            new Report
+            {
+                Id = 4,
+                CreatedAt = new DateTime(2024, 1, 3, 22, 59, 59),
+                ProjectHealthRisk = projectHealthRisks[0]
+            },
+            new Report
+            {
+                Id = 5,
+                CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0),
+                ProjectHealthRisk = projectHealthRisks[1] // HealthRisk 2 in project 1 in national society 1
+            },
+            new Report
+            {
+                Id = 6,
+                CreatedAt = new DateTime(2024, 1, 3, 0, 0, 0),
+                ProjectHealthRisk = projectHealthRisks[1]
+            },
+        }.AsQueryable();
+
+        // Considering the reportQuery input, and a utc offset of 1, this is the expected output of the grouping function
+        var expectedReturnValue = new List<HealthRiskReportsGroupedByDateDto>
+        {
+            new HealthRiskReportsGroupedByDateDto
+            {
+                HealthRiskId = 1,
+                HealthRiskName = "Fever",
+                Data = new List<PeriodDto>
+                {
+                    new PeriodDto
+                    {
+                        Count = 1,
+                        Period = "2024-01-01"
+                    },
+                    new PeriodDto
+                    {
+                        Count = 1,
+                        Period = "2024-01-02"
+                    },
+                    new PeriodDto
+                    {
+                        Count = 2,
+                        Period = "2024-01-03"
+                    }
+                }
+            },
+            new HealthRiskReportsGroupedByDateDto
+            {
+                HealthRiskId = 2,
+                HealthRiskName = "Acute Watery Diarrhea (AWD)",
+                Data = new List<PeriodDto>
+                {
+                    new PeriodDto
+                    {
+                        Count = 1,
+                        Period = "2024-01-01"
+                    },
+                    new PeriodDto
+                    {
+                        Count = 1,
+                        Period = "2024-01-03"
+                    }
+                }
+            }
+        };
+
+        // Comparison function between two lists of HealthRiskReportsGroupedByDateDtos
+        bool GroupedReportsListEquals(IEnumerable<HealthRiskReportsGroupedByDateDto> first, IEnumerable<HealthRiskReportsGroupedByDateDto> second)
+        {
+            return first.All(group => second.Any(group.ValueEquals));
+        }
+
+        // Reports are inside and just outside of the time range 01.01.2024 - 08.01.2024
+        var nationalSocietyId = 1;
+
+        // act
+        var groupedReports = await _reportsDashboardService.GroupReportsByHealthRiskAndDate(reportQuery, 1);
+
+        // assert
+        GroupedReportsListEquals(groupedReports, expectedReturnValue).ShouldBe(true);
+    }
 
 
 
