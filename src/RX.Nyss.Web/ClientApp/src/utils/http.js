@@ -60,7 +60,7 @@ const callApi = (
       "script-src 'self' 'unsafe-inline'; " +
       "frame-ancestors 'self'; " +
       "form-action 'self'; " +
-      "img-src 'self' data: https://*.tile.openstreetmap.org/; " +
+      "img-src 'self' data: https://*.tile.openstreetmap.org/ https://unpkg.com/leaflet@1.7.1/dist/images/; " +
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/ https://unpkg.com/leaflet@1.7.1/dist/leaflet.css; " +
       "object-src 'none'; " +
       "frame-src 'self'; " +
