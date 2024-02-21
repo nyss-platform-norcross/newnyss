@@ -47,6 +47,27 @@ public class Startup
             app.UseHsts();
         }
 
+        app.Use(async (context, next) =>
+        {
+            context.Response.Headers.Add("Content-Security-Policy",
+                "base-uri 'self'; " +
+                "script-src 'self' 'unsafe-inline'; " +
+                "frame-ancestors 'self'; " +
+                "form-action 'self'; " +
+                "img-src 'self' data: https://*.tile.openstreetmap.org/; " +
+                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/ https://unpkg.com/leaflet@1.7.1/dist/leaflet.css; " +
+                "object-src 'none'; " +
+                "frame-src 'self'; " +
+                "connect-src 'self' wss://localhost:0/sockjs-node https://*.in.applicationinsights.azure.com/; " +
+                "media-src 'self'; " +
+                "font-src 'self' https://fonts.gstatic.com/s/materialicons/; " +
+                "manifest-src 'self';");
+            context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+            context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+
+            await next();
+        });
+
         app.UseCustomExceptionHandler();
 
         var supportedCultures = config.Languages.Split(",").Select(lang => new CultureInfo(lang)).ToList();

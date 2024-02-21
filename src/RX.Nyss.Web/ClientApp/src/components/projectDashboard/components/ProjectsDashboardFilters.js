@@ -128,186 +128,175 @@ export const ProjectsDashboardFilters = ({
   return (
     <Card className={styles.filters}>
       {isFetching && <LinearProgress color="primary" />}
-      {isSmallScreen && (
-        <CardContent className={styles.collapsedFilterBar}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item>
-              <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>} />
-            </Grid>
-            {!isFilterExpanded && (
-              <Fragment>
-                <Grid item>
-                  <Chip
-                    icon={<DateRange />}
-                    label={`${convertToLocalDate(localFilters.startDate).format(
-                      "YYYY-MM-DD",
-                    )} - ${convertToLocalDate(localFilters.endDate).format(
-                      "YYYY-MM-DD",
-                    )}`}
-                    onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                  />
-                </Grid>
-                <Grid item>
-                  <Chip
-                    onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                    label={
-                      localFilters.groupingType === "Day"
-                        ? strings(stringKeys.dashboard.filters.timeGroupingDay)
-                        : strings(stringKeys.dashboard.filters.timeGroupingWeek)
-                    }
-                  />
-                </Grid>
-              </Fragment>
-            )}
-            {!isFilterExpanded && !allLocationsSelected() && (
-              <Grid item>
-                <Chip
-                  label={locationsFilterLabel}
-                  onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                />
-              </Grid>
-            )}
-            {!isFilterExpanded && localFilters.healthRiskId && (
-              <Grid item>
-                <Chip
-                  label={
-                    healthRisks.filter(
-                      (hr) => hr.id === localFilters.healthRiskId,
-                    )[0].name
-                  }
-                  onDelete={() => handleFiltersChange({ healthRiskId: null })}
-                  onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                />
-              </Grid>
-            )}
-            {!isFilterExpanded && localFilters.dataCollectorType !== "all" && (
-              <Grid item>
-                <Chip
-                  label={collectionsTypes[localFilters.dataCollectorType]}
-                  onDelete={() =>
-                    handleFiltersChange({ dataCollectorType: "all" })
-                  }
-                  onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                />
-              </Grid>
-            )}
-
-            {/* See comment below, (organization filter comment), explaining commented out code */}
-            {/* {!isFilterExpanded && localFilters.organizationId && (
-              <Grid item>
-                <Chip
-                  label={
-                    organizations.filter(
-                      (o) => o.id === localFilters.organizationId,
-                    )[0].name
-                  }
-                  onDelete={() => handleFiltersChange({ organizationId: null })}
-                  onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                />
-              </Grid>
-            )} */}
-            {!isFilterExpanded &&
-              !userRoles.some((r) => r === DataConsumer) &&
-              localFilters.reportStatus.kept && (
-                <Grid item>
-                  <Chip
-                    label={strings(stringKeys.filters.report.kept)}
-                    onDelete={() =>
-                      handleFiltersChange({
-                        reportStatus: {
-                          ...localFilters.reportStatus,
-                          kept: false,
-                        },
-                      })
-                    }
-                    onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                  />
-                </Grid>
-              )}
-            {!isFilterExpanded &&
-              !userRoles.some((r) => r === DataConsumer) &&
-              localFilters.reportStatus.dismissed && (
-                <Grid item>
-                  <Chip
-                    label={strings(stringKeys.filters.report.dismissed)}
-                    onDelete={() =>
-                      handleFiltersChange({
-                        reportStatus: {
-                          ...localFilters.reportStatus,
-                          dismissed: false,
-                        },
-                      })
-                    }
-                    onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                  />
-                </Grid>
-              )}
-            {!isFilterExpanded &&
-              !userRoles.some((r) => r === DataConsumer) &&
-              localFilters.reportStatus.notCrossChecked && (
-                <Grid item>
-                  <Chip
-                    label={strings(stringKeys.filters.report.notCrossChecked)}
-                    onDelete={() =>
-                      handleFiltersChange({
-                        reportStatus: {
-                          ...localFilters.reportStatus,
-                          notCrossChecked: false,
-                        },
-                      })
-                    }
-                    onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                  />
-                </Grid>
-              )}
-            {!isFilterExpanded &&
-              !userRoles.some((r) => r === DataConsumer) &&
-              localFilters.trainingStatus !== "Trained" && (
-                <Grid item>
-                  <Chip
-                    label={strings(
-                      stringKeys.dataCollectors.constants.trainingStatus
-                        .InTraining,
-                    )}
-                    onDelete={() =>
-                      handleFiltersChange({
-                        ...localFilters,
-                        trainingStatus: "Trained",
-                      })
-                    }
-                    onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                  />
-                </Grid>
-              )}
-            <Grid
-              item
-              className={`${styles.expandFilterButton} ${
-                rtl ? styles.rtl : ""
-              }`}
-            >
-              <IconButton
-                data-expanded={isFilterExpanded}
-                onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-              >
-                <ExpandMore />
-              </IconButton>
-            </Grid>
+      <CardContent className={styles.collapsedFilterBar}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item>
+            <CardHeader title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>} className={isFilterExpanded ? styles.filterTitle : null}/>
           </Grid>
-        </CardContent>
-      )}
+          {!isGeneratingPdf && !isFilterExpanded && (
+            <Fragment>
+              <Grid item>
+                <Chip
+                  icon={<DateRange />}
+                  label={`${convertToLocalDate(localFilters.startDate).format(
+                    "YYYY-MM-DD",
+                  )} - ${convertToLocalDate(localFilters.endDate).format(
+                    "YYYY-MM-DD",
+                  )}`}
+                  onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+                />
+              </Grid>
+              <Grid item>
+                <Chip
+                  onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+                  label={
+                    localFilters.groupingType === "Day"
+                      ? strings(stringKeys.dashboard.filters.timeGroupingDay)
+                      : strings(stringKeys.dashboard.filters.timeGroupingWeek)
+                  }
+                />
+              </Grid>
+            </Fragment>
+          )}
+          {!isGeneratingPdf && !isFilterExpanded && !allLocationsSelected() && (
+            <Grid item>
+              <Chip
+                label={locationsFilterLabel}
+                onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+              />
+            </Grid>
+          )}
+          {!isGeneratingPdf && !isFilterExpanded && localFilters.healthRiskId && (
+            <Grid item>
+              <Chip
+                label={
+                  healthRisks.filter(
+                    (hr) => hr.id === localFilters.healthRiskId,
+                  )[0].name
+                }
+                onDelete={() => handleFiltersChange({ healthRiskId: null })}
+                onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+              />
+            </Grid>
+          )}
+          {!isGeneratingPdf && !isFilterExpanded && localFilters.dataCollectorType !== "all" && (
+            <Grid item>
+              <Chip
+                label={collectionsTypes[localFilters.dataCollectorType]}
+                onDelete={() =>
+                  handleFiltersChange({ dataCollectorType: "all" })
+                }
+                onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+              />
+            </Grid>
+          )}
 
+          {/* See comment below, (organization filter comment), explaining commented out code */}
+          {/* {!isFilterExpanded && localFilters.organizationId && (
+            <Grid item>
+              <Chip
+                label={
+                  organizations.filter(
+                    (o) => o.id === localFilters.organizationId,
+                  )[0].name
+                }
+                onDelete={() => handleFiltersChange({ organizationId: null })}
+                onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+              />
+            </Grid>
+          )} */}
+          {!isGeneratingPdf && !isFilterExpanded &&
+            !userRoles.some((r) => r === DataConsumer) &&
+            localFilters.reportStatus.kept && (
+              <Grid item>
+                <Chip
+                  label={strings(stringKeys.filters.report.kept)}
+                  onDelete={() =>
+                    handleFiltersChange({
+                      reportStatus: {
+                        ...localFilters.reportStatus,
+                        kept: false,
+                      },
+                    })
+                  }
+                  onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+                />
+              </Grid>
+            )}
+          {!isGeneratingPdf && !isFilterExpanded &&
+            !userRoles.some((r) => r === DataConsumer) &&
+            localFilters.reportStatus.dismissed && (
+              <Grid item>
+                <Chip
+                  label={strings(stringKeys.filters.report.dismissed)}
+                  onDelete={() =>
+                    handleFiltersChange({
+                      reportStatus: {
+                        ...localFilters.reportStatus,
+                        dismissed: false,
+                      },
+                    })
+                  }
+                  onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+                />
+              </Grid>
+            )}
+          {!isGeneratingPdf && !isFilterExpanded &&
+            !userRoles.some((r) => r === DataConsumer) &&
+            localFilters.reportStatus.notCrossChecked && (
+              <Grid item>
+                <Chip
+                  label={strings(stringKeys.filters.report.notCrossChecked)}
+                  onDelete={() =>
+                    handleFiltersChange({
+                      reportStatus: {
+                        ...localFilters.reportStatus,
+                        notCrossChecked: false,
+                      },
+                    })
+                  }
+                  onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+                />
+              </Grid>
+            )}
+          {!isGeneratingPdf && !isFilterExpanded &&
+            !userRoles.some((r) => r === DataConsumer) &&
+            localFilters.trainingStatus !== "Trained" && (
+              <Grid item>
+                <Chip
+                  label={strings(
+                    stringKeys.dataCollectors.constants.trainingStatus
+                      .InTraining,
+                  )}
+                  onDelete={() =>
+                    handleFiltersChange({
+                      ...localFilters,
+                      trainingStatus: "Trained",
+                    })
+                  }
+                  onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+                />
+              </Grid>
+            )}
+          <Grid
+            item
+            className={`${styles.expandFilterButton} ${
+              rtl ? styles.rtl : ""
+            }`}
+          >
+            <IconButton
+              data-expanded={isFilterExpanded}
+              onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+            >
+              <ExpandMore />
+            </IconButton>
+          </Grid>
+        </Grid>
+      </CardContent>
       <ConditionalCollapse
-        collapsible={isSmallScreen && !isGeneratingPdf}
+        collapsible={!isGeneratingPdf}
         expanded={isFilterExpanded}
       >
-        {!isSmallScreen && (
-          <Grid container>
-            <CardHeader
-              title={<Typography variant="h5">{strings(stringKeys.dashboard.filters.title)}</Typography>}
-              className={styles.filterTitle}
-            />
-          </Grid>
-        )}
         <CardContent data-printable={true}>
           <Grid container spacing={2}>
             <Grid item>
