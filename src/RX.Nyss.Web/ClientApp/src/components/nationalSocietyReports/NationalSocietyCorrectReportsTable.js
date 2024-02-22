@@ -39,6 +39,7 @@ export const NationalSocietyCorrectReportsTable = ({
   rtl,
 }) => {
   const [value, setValue] = useState(sorting);
+  const isDataCollectionPointTable = filters.dataCollectorType === DataCollectorType.collectionPoint;
 
   const updateValue = (change) => {
     const newValue = {
@@ -114,7 +115,7 @@ export const NationalSocietyCorrectReportsTable = ({
             <TableCell style={{ width: "8%" }}>
               {strings(stringKeys.reports.list.femalesAtLeastFive)}
             </TableCell>
-            {reportsType === DataCollectorType.collectionPoint && (
+            {isDataCollectionPointTable && (
               <Fragment>
                 <TableCell style={{ width: "10%", minWidth: "50px" }}>
                   {strings(stringKeys.reports.list.referredCount)}
@@ -154,20 +155,20 @@ export const NationalSocietyCorrectReportsTable = ({
                 </TableCell>
               )}
               <TableCell>
-                {renderReportValue(row.countMalesBelowFive)}
+                {renderReportValue(row.countMalesBelowFive, isDataCollectionPointTable)}
               </TableCell>
               <TableCell>
-                {renderReportValue(row.countMalesAtLeastFive)}
+                {renderReportValue(row.countMalesAtLeastFive, isDataCollectionPointTable)}
               </TableCell>
               <TableCell>
-                {renderReportValue(row.countFemalesBelowFive)}
+                {renderReportValue(row.countFemalesBelowFive, isDataCollectionPointTable)}
               </TableCell>
               <TableCell>
-                {renderReportValue(row.countFemalesAtLeastFive)}
+                {renderReportValue(row.countFemalesAtLeastFive, isDataCollectionPointTable)}
               </TableCell>
-              {reportsType === DataCollectorType.collectionPoint && (
+              {isDataCollectionPointTable && (
                 <Fragment>
-                  <TableCell>{renderReportValue(row.referredCount)}</TableCell>
+                  <TableCell>{renderReportValue(row.referredCount, true)}</TableCell>
                   <TableCell>{renderReportValue(row.deathCount)}</TableCell>
                   <TableCell>
                     {renderReportValue(row.fromOtherVillagesCount)}

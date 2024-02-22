@@ -55,6 +55,7 @@ export const CorrectReportsTable = ({
   rtl,
 }) => {
   const [value, setValue] = useState(sorting);
+  const isDataCollectionPointTable = filters.dataCollectorType === DataCollectorType.collectionPoint;
 
   const updateValue = (change) => {
     const newValue = {
@@ -221,22 +222,21 @@ export const CorrectReportsTable = ({
                 </TableCell>
                 <TableCell>{dashIfEmpty(row.healthRiskName)}</TableCell>
                 <TableCell>
-                  {renderReportValue(row.countMalesBelowFive)}
+                  {renderReportValue(row.countMalesBelowFive, isDataCollectionPointTable)}
                 </TableCell>
                 <TableCell>
-                  {renderReportValue(row.countMalesAtLeastFive)}
+                  {renderReportValue(row.countMalesAtLeastFive, isDataCollectionPointTable)}
                 </TableCell>
                 <TableCell>
-                  {renderReportValue(row.countFemalesBelowFive)}
+                  {renderReportValue(row.countFemalesBelowFive, isDataCollectionPointTable)}
                 </TableCell>
                 <TableCell>
-                  {renderReportValue(row.countFemalesAtLeastFive)}
+                  {renderReportValue(row.countFemalesAtLeastFive, isDataCollectionPointTable)}
                 </TableCell>
-                {filters.dataCollectorType ===
-                  DataCollectorType.collectionPoint && (
+                {isDataCollectionPointTable && (
                   <Fragment>
                     <TableCell>
-                      {renderReportValue(row.referredCount)}
+                      {renderReportValue(row.referredCount, true)}
                     </TableCell>
                     <TableCell>{renderReportValue(row.deathCount)}</TableCell>
                     <TableCell>
