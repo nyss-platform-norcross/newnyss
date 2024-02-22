@@ -539,9 +539,9 @@ export const stringKeys = {
     dataCollectionPointReportsByDate: {
       referredToHospitalCount:
         "dashboard.dataCollectionPointReportsByDate.referredToHospitalCount",
-      deathCount: "dashboard.dataCollectionPointReportsByDate.deathCount",
-      fromOtherVillagesCount:
-        "dashboard.dataCollectionPointReportsByDate.fromOtherVillagesCount",
+      //deathCount: "dashboard.dataCollectionPointReportsByDate.deathCount",
+      //fromOtherVillagesCount:
+        //"dashboard.dataCollectionPointReportsByDate.fromOtherVillagesCount",
       numberOfReports:
         "dashboard.dataCollectionPointReportsByDate.numberOfReports",
       title: "dashboard.dataCollectionPointReportsByDate.title",

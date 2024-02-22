@@ -119,12 +119,7 @@ const ReportsEditPageComponent = (props) => {
       referredCount: !!props.data.referredCount
         ? props.data.referredCount.toString()
         : "",
-      deathCount: !!props.data.deathCount
-        ? props.data.deathCount.toString()
-        : "",
-      fromOtherVillagesCount: !!props.data.fromOtherVillagesCount
-        ? props.data.fromOtherVillagesCount.toString()
-        : "",
+      
     };
 
     const validation = {
@@ -153,11 +148,11 @@ const ReportsEditPageComponent = (props) => {
         validators.nonNegativeNumber,
       ],
       referredCount: [validators.integer, validators.nonNegativeNumber],
-      deathCount: [validators.integer, validators.nonNegativeNumber],
-      fromOtherVillagesCount: [
+      //deathCount: [validators.integer, validators.nonNegativeNumber],
+      /*fromOtherVillagesCount: [
         validators.integer,
         validators.nonNegativeNumber,
-      ],
+      ],*/
     };
 
     const newForm = createForm(fields, validation);
@@ -224,12 +219,12 @@ const ReportsEditPageComponent = (props) => {
       countFemalesAtLeastFive: parseInt(values.countFemalesAtLeastFive),
       countUnspecifiedSexAndAge: parseInt(values.countUnspecifiedSexAndAge),
       referredCount:
-        values.referredCount === "" ? null : parseInt(values.referredCount),
-      deathCount: values.deathCount === "" ? null : parseInt(values.deathCount),
+        values.referredCount === "" ? 0 : parseInt(values.referredCount),
+     /* deathCount: values.deathCount === "" ? null : parseInt(values.deathCount),
       fromOtherVillagesCount:
         values.fromOtherVillagesCount === ""
           ? null
-          : parseInt(values.fromOtherVillagesCount),
+          : parseInt(values.fromOtherVillagesCount),*/
     });
   };
 
@@ -475,7 +470,7 @@ const ReportsEditPageComponent = (props) => {
                 />
               </Grid>
 
-              <Grid item>
+              {/*<Grid item>
                 <TextInputField
                   label={strings(stringKeys.reports.form.deathCount)}
                   name="deathCount"
@@ -491,7 +486,7 @@ const ReportsEditPageComponent = (props) => {
                   name="fromOtherVillagesCount"
                   field={form.fields.fromOtherVillagesCount}
                 />
-              </Grid>
+              </Grid>*/}
             </Fragment>
           )}
 

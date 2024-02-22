@@ -55,17 +55,13 @@ namespace RX.Nyss.Web.Services.ReportsDashboard
                 .Select(r => new
                 {
                     r.ReceivedAt,
-                    r.DataCollectionPointCase.ReferredCount,
-                    r.DataCollectionPointCase.DeathCount,
-                    r.DataCollectionPointCase.FromOtherVillagesCount
+                    r.DataCollectionPointCase.ReferredCount
                 })
                 .GroupBy(r => r.ReceivedAt.Date)
                 .Select(grouping => new
                 {
                     Period = grouping.Key,
-                    ReferredCount = (int)grouping.Sum(g => g.ReferredCount),
-                    DeathCount = (int)grouping.Sum(g => g.DeathCount),
-                    FromOtherVillagesCount = (int)grouping.Sum(g => g.FromOtherVillagesCount)
+                    ReferredCount = (int)grouping.Sum(g => g.ReferredCount)
                 })
                 .ToListAsync();
 
@@ -74,9 +70,7 @@ namespace RX.Nyss.Web.Services.ReportsDashboard
                 .Select(day => new
                 {
                     Period = day,
-                    ReferredCount = 0,
-                    DeathCount = 0,
-                    FromOtherVillagesCount = 0
+                    ReferredCount = 0
                 });
 
             return groupedReports
@@ -85,9 +79,7 @@ namespace RX.Nyss.Web.Services.ReportsDashboard
                 .Select(x => new DataCollectionPointsReportsByDateDto
                 {
                     Period = x.Period.ToString("dd/MM/yy", CultureInfo.InvariantCulture),
-                    ReferredCount = x.ReferredCount,
-                    DeathCount = x.DeathCount,
-                    FromOtherVillagesCount = x.FromOtherVillagesCount
+                    ReferredCount = x.ReferredCount
                 })
                 .ToList();
         }
@@ -99,9 +91,7 @@ namespace RX.Nyss.Web.Services.ReportsDashboard
                 {
                     r.EpiYear,
                     r.EpiWeek,
-                    r.DataCollectionPointCase.ReferredCount,
-                    r.DataCollectionPointCase.DeathCount,
-                    r.DataCollectionPointCase.FromOtherVillagesCount
+                    r.DataCollectionPointCase.ReferredCount
                 })
                 .GroupBy(r => new
                 {
@@ -111,9 +101,7 @@ namespace RX.Nyss.Web.Services.ReportsDashboard
                 .Select(grouping => new
                 {
                     EpiPeriod = grouping.Key,
-                    ReferredCount = (int)grouping.Sum(g => g.ReferredCount),
-                    DeathCount = (int)grouping.Sum(g => g.DeathCount),
-                    FromOtherVillagesCount = (int)grouping.Sum(g => g.FromOtherVillagesCount)
+                    ReferredCount = (int)grouping.Sum(g => g.ReferredCount)
                 })
                 .ToListAsync();
 
@@ -126,9 +114,7 @@ namespace RX.Nyss.Web.Services.ReportsDashboard
                         epiDate.EpiYear,
                         epiDate.EpiWeek
                     },
-                    ReferredCount = 0,
-                    DeathCount = 0,
-                    FromOtherVillagesCount = 0
+                    ReferredCount = 0
                 });
 
             return groupedReports
@@ -138,9 +124,7 @@ namespace RX.Nyss.Web.Services.ReportsDashboard
                 .Select(x => new DataCollectionPointsReportsByDateDto
                 {
                     Period = x.EpiPeriod.EpiWeek.ToString(),
-                    ReferredCount = x.ReferredCount,
-                    DeathCount = x.DeathCount,
-                    FromOtherVillagesCount = x.FromOtherVillagesCount
+                    ReferredCount = x.ReferredCount
                 })
                 .ToList();
         }

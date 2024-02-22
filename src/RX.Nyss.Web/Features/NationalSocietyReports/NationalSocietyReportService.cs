@@ -105,8 +105,6 @@ namespace RX.Nyss.Web.Features.NationalSocietyReports
                     CountFemalesBelowFive = r.Report.ReportedCase.CountFemalesBelowFive,
                     CountFemalesAtLeastFive = r.Report.ReportedCase.CountFemalesAtLeastFive,
                     ReferredCount = r.Report.DataCollectionPointCase.ReferredCount,
-                    DeathCount = r.Report.DataCollectionPointCase.DeathCount,
-                    FromOtherVillagesCount = r.Report.DataCollectionPointCase.FromOtherVillagesCount,
                     Status = r.Report.Status != null
                         ? r.Report.Status
                         : ReportStatus.New,

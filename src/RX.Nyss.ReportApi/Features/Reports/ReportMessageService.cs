@@ -29,8 +29,10 @@ namespace RX.Nyss.ReportApi.Features.Reports
         private const string AggregatedReportPattern =
             @"^(?<healthRiskCode>[1-9][0-9]*)(?<separator>[#*])(?<malesBelowFive>[0-9]+)\k<separator>(?<malesAtLeastFive>[0-9]+)\k<separator>(?<femalesBelowFive>[0-9]+)\k<separator>(?<femalesAtLeastFive>[0-9]+)$";
 
+        //private const string DcpReportPattern =
+            //@"^(?<healthRiskCode>[1-9][0-9]*)(?<separator>[#*])(?<malesBelowFive>[0-9]+)\k<separator>(?<malesAtLeastFive>[0-9]+)\k<separator>(?<femalesBelowFive>[0-9]+)\k<separator>(?<femalesAtLeastFive>[0-9]+)\k<separator>(?<referredToHealthFacility>[0-9]+)\k<separator>(?<diedInOrp>[0-9]+)\k<separator>(?<cameFromOtherVillage>[0-9]+)$";
         private const string DcpReportPattern =
-            @"^(?<healthRiskCode>[1-9][0-9]*)(?<separator>[#*])(?<malesBelowFive>[0-9]+)\k<separator>(?<malesAtLeastFive>[0-9]+)\k<separator>(?<femalesBelowFive>[0-9]+)\k<separator>(?<femalesAtLeastFive>[0-9]+)\k<separator>(?<referredToHealthFacility>[0-9]+)\k<separator>(?<diedInOrp>[0-9]+)\k<separator>(?<cameFromOtherVillage>[0-9]+)$";
+            @"^(?<healthRiskCode>[1-9][0-9]*)(?<separator>[#*])(?<malesBelowFive>[0-9]+)\k<separator>(?<malesAtLeastFive>[0-9]+)\k<separator>(?<femalesBelowFive>[0-9]+)\k<separator>(?<femalesAtLeastFive>[0-9]+)\k<separator>(?<referredToHealthFacility>[0-9]+)$";
 
         private static readonly Regex ReportRegex = new Regex(ReportPattern, RegexOptions.Compiled);
         private static readonly Regex AggregatedReportRegex = new Regex(AggregatedReportPattern, RegexOptions.Compiled);
@@ -192,8 +194,8 @@ namespace RX.Nyss.ReportApi.Features.Reports
             var femalesBelowFiveMatch = dcpReportMatch.Groups["femalesBelowFive"].Value;
             var femalesAtLeastFiveMatch = dcpReportMatch.Groups["femalesAtLeastFive"].Value;
             var referredToHealthFacilityMatch = dcpReportMatch.Groups["referredToHealthFacility"].Value;
-            var diedInOrpMatch = dcpReportMatch.Groups["diedInOrp"].Value;
-            var cameFromOtherVillageMatch = dcpReportMatch.Groups["cameFromOtherVillage"].Value;
+            //var diedInOrpMatch = dcpReportMatch.Groups["diedInOrp"].Value;
+            //var cameFromOtherVillageMatch = dcpReportMatch.Groups["cameFromOtherVillage"].Value;
 
             var healthRiskCode = int.Parse(healthRiskCodeMatch);
             var malesBelowFive = int.Parse(malesBelowFiveMatch);
@@ -201,8 +203,8 @@ namespace RX.Nyss.ReportApi.Features.Reports
             var femalesBelowFive = int.Parse(femalesBelowFiveMatch);
             var femalesAtLeastFive = int.Parse(femalesAtLeastFiveMatch);
             var referredToHealthFacility = int.Parse(referredToHealthFacilityMatch);
-            var diedInOrp = int.Parse(diedInOrpMatch);
-            var cameFromOtherVillage = int.Parse(cameFromOtherVillageMatch);
+            //var diedInOrp = int.Parse(diedInOrpMatch);
+            //var cameFromOtherVillage = int.Parse(cameFromOtherVillageMatch);
 
             var parsedReport = new ParsedReport
             {
@@ -218,9 +220,9 @@ namespace RX.Nyss.ReportApi.Features.Reports
                 },
                 DataCollectionPointCase =
                 {
-                    ReferredCount = referredToHealthFacility,
-                    DeathCount = diedInOrp,
-                    FromOtherVillagesCount = cameFromOtherVillage
+                    ReferredCount = referredToHealthFacility
+                    //DeathCount = diedInOrp,
+                    //FromOtherVillagesCount = cameFromOtherVillage
                 }
             };
 

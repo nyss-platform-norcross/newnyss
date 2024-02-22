@@ -64,14 +64,6 @@ export const NationalSocietyDashboardNumbers = ({
                 strings(stringKeys.dashboard.referredToHospitalCount),
                 summary.dataCollectionPointSummary.referredToHospitalCount,
               )}
-              {renderNumber(
-                strings(stringKeys.dashboard.fromOtherVillagesCount),
-                summary.dataCollectionPointSummary.fromOtherVillagesCount,
-              )}
-              {renderNumber(
-                strings(stringKeys.dashboard.deathCount),
-                summary.dataCollectionPointSummary.deathCount,
-              )}
             </CardContent>
           </Card>
         </Grid>

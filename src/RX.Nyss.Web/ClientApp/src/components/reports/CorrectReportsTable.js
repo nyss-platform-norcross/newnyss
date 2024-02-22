@@ -189,12 +189,7 @@ export const CorrectReportsTable = ({
                   <TableCell style={{ width: "10%", minWidth: "50px" }}>
                     {strings(stringKeys.reports.list.referredCount)}
                   </TableCell>
-                  <TableCell style={{ width: "10%", minWidth: "50px" }}>
-                    {strings(stringKeys.reports.list.deathCount)}
-                  </TableCell>
-                  <TableCell style={{ width: "10%", minWidth: "50px" }}>
-                    {strings(stringKeys.reports.list.fromOtherVillagesCount)}
-                  </TableCell>
+                  
                 </Fragment>
               )}
               <TableCell style={{ width: "3%" }} />
@@ -237,10 +232,6 @@ export const CorrectReportsTable = ({
                   <Fragment>
                     <TableCell>
                       {renderReportValue(row.referredCount)}
-                    </TableCell>
-                    <TableCell>{renderReportValue(row.deathCount)}</TableCell>
-                    <TableCell>
-                      {renderReportValue(row.fromOtherVillagesCount)}
                     </TableCell>
                   </Fragment>
                 )}
