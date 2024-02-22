@@ -148,11 +148,6 @@ const ReportsEditPageComponent = (props) => {
         validators.nonNegativeNumber,
       ],
       referredCount: [validators.integer, validators.nonNegativeNumber],
-      //deathCount: [validators.integer, validators.nonNegativeNumber],
-      /*fromOtherVillagesCount: [
-        validators.integer,
-        validators.nonNegativeNumber,
-      ],*/
     };
 
     const newForm = createForm(fields, validation);
@@ -220,11 +215,6 @@ const ReportsEditPageComponent = (props) => {
       countUnspecifiedSexAndAge: parseInt(values.countUnspecifiedSexAndAge),
       referredCount:
         values.referredCount === "" ? 0 : parseInt(values.referredCount),
-     /* deathCount: values.deathCount === "" ? null : parseInt(values.deathCount),
-      fromOtherVillagesCount:
-        values.fromOtherVillagesCount === ""
-          ? null
-          : parseInt(values.fromOtherVillagesCount),*/
     });
   };
 
@@ -469,24 +459,6 @@ const ReportsEditPageComponent = (props) => {
                   field={form.fields.referredCount}
                 />
               </Grid>
-
-              {/*<Grid item>
-                <TextInputField
-                  label={strings(stringKeys.reports.form.deathCount)}
-                  name="deathCount"
-                  field={form.fields.deathCount}
-                />
-              </Grid>
-
-              <Grid item>
-                <TextInputField
-                  label={strings(
-                    stringKeys.reports.form.fromOtherVillagesCount,
-                  )}
-                  name="fromOtherVillagesCount"
-                  field={form.fields.fromOtherVillagesCount}
-                />
-              </Grid>*/}
             </Fragment>
           )}
 
