@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, ScaleControl, useMap } from 'react-leaflet';
 import { calculateBounds, calculateCenter, calculateIconSize } from '../../utils/map';
 import { TextIcon } from "../common/map/MarkerIcon";
@@ -30,18 +30,18 @@ export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) =>
     const map = useMap();
     
     // Avoid updates when user is interacting with the map. 
-    if(!hasInteractedWithMap) {
-      useEffect(() => {
-        if (center.center) {
-          // If there are no reports, use [0,0] as a default value for a more generic world map.
-          const centerLatLong = totalReports > 0 ? center.center : [20,0];
-          map.setView(centerLatLong, zoom);
-        }
-        if (bounds) {
-          map.fitBounds(bounds);
-        }
+    useEffect(() => {
+        if(!hasInteractedWithMap) {
+          if (center.center) {
+            // If there are no reports, use [0,0] as a default value for a more generic world map.
+            const centerLatLong = totalReports > 0 ? center.center : [20,0];
+            map.setView(centerLatLong, zoom);
+          }
+          if (bounds) {
+            map.fitBounds(bounds);
+          }
+      }
       }, [center, map, bounds]);
-    }
 
     // Returns null such that it can be rendered as a react component.
     return null;
@@ -67,14 +67,26 @@ export const ReportsMap = ({ data, details, detailsFetching, onMarkerClick }) =>
     onMarkerClick(e.latlng.lat, e.latlng.lng);
   }
 
+  let resizeObserver = useRef(null);
+
+  const setMap = map => {
+    resizeObserver.current = new ResizeObserver(() => {
+        map.invalidateSize();
+    });
+    const container = document.getElementById("map-container");
+    resizeObserver.current.observe(container);
+  };
+
   return (!!center || !!bounds) && (
     <MapContainer
-      style={{ height: "500px" }}
-      zoom={zoom}
+      id='map-container'
+      style={{ minHeight: "100%", borderRadius: 8 }}
+      zoom={5}
       bounds={bounds}
       center={center}
       scrollWheelZoom={false}
       maxZoom={19}
+      whenCreated={setMap}
     >
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

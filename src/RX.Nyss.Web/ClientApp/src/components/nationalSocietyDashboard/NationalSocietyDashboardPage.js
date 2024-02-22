@@ -18,6 +18,7 @@ import { DashboardReportChart } from "../dashboardCharts/DashboardReportChart";
 import { DashboardReportSexAgeChart } from "../dashboardCharts/DashboardReportSexAgeChart";
 import { DashboardReportSexAgeTable } from "../dashboardTables/DashboardReportSexAgeTable";
 import { trackEvent, trackPageView } from "../../utils/appInsightsHelper";
+import { MapAndDashboardNumbers } from "../dashboard/MapAndDashboardNumbers";
 import { DashboardReportSexAgePyramidChart } from "../dashboardCharts/DashboardReportsSexAgePyramidChart";
 
 const NationalSocietyDashboardPageComponent = ({
@@ -43,6 +44,7 @@ const NationalSocietyDashboardPageComponent = ({
 
   const dashboardElement = useRef(null);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+  const [isMapExpanded, setIsMapExpanded] = useState(false);
 
   const isSmallScreen = useMediaQuery(theme => theme.breakpoints.down("sm"))
 
@@ -87,24 +89,27 @@ const NationalSocietyDashboardPageComponent = ({
         <Loading />
       ) : (
         <Fragment>
-          <Grid item xs={12}>
-            <NationalSocietyDashboardNumbers
-              summary={props.summary}
-              reportsType={props.filters.reportsType}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <DashboardReportsMap
-              data={props.reportsGroupedByLocation}
-              detailsFetching={props.reportsGroupedByLocationDetailsFetching}
-              details={props.reportsGroupedByLocationDetails}
-              getReportHealthRisks={(lat, long) =>
-                props.getReportHealthRisks(nationalSocietyId, lat, long)
-              }
-            />
-          </Grid>
-
+          <MapAndDashboardNumbers
+            DashboardNumbers={
+              <NationalSocietyDashboardNumbers
+                summary={props.summary}
+                reportsType={props.filters.reportsType}
+                isMapExpanded={isMapExpanded}
+              />
+            }
+            DashboardReportsMap={
+              <DashboardReportsMap
+                  data={props.reportsGroupedByLocation}
+                  detailsFetching={props.reportsGroupedByLocationDetailsFetching}
+                  details={props.reportsGroupedByLocationDetails}
+                  getReportHealthRisks={(lat, long) =>
+                    props.getReportHealthRisks(nationalSocietyId, lat, long)
+                  }
+                />
+            }
+            isMapExpanded={isMapExpanded}
+            setIsMapExpanded={setIsMapExpanded}
+          />
           <Grid item xs={12}>
             <DashboardReportChart
               data={props.reportsGroupedByHealthRiskAndDate}

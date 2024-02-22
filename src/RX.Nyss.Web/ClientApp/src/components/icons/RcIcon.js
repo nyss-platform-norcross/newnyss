@@ -11,6 +11,8 @@ import { ReactComponent as CovidSvg } from "../../assets/icons/COVID-19.svg";
 import { ReactComponent as UrbanSvg } from "../../assets/icons/Urban.svg";
 import { ReactComponent as RemoteSupportSvg } from "../../assets/icons/Remote-support.svg";
 import { ReactComponent as AlertsSvg } from "../../assets/icons/Alerts.svg";
+import { ReactComponent as CollapseSvg } from "../../assets/icons/collapse.svg";
+import { ReactComponent as ExpandSvg } from "../../assets/icons/expand.svg";
 
 export const RcIcon = ({ icon, ...props }) => {
   switch (icon) {
@@ -48,6 +50,10 @@ export const RcIcon = ({ icon, ...props }) => {
         );
     case "Alerts":
       return <SvgIcon {...props} component={AlertsSvg} viewBox="0 0 38 48" />;
+    case "Expand":
+      return <SvgIcon {...props} component={ExpandSvg} viewBox="0 0 38 38" />;
+    case "Collapse":
+      return <SvgIcon {...props} component={CollapseSvg} viewBox="0 0 39 38" />;
     default:
       return null;
   }
