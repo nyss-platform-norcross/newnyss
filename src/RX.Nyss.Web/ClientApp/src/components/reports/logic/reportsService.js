@@ -19,6 +19,6 @@ export function renderDataCollectorDisplayName(row) {
   );
 }
 
-export const renderReportValue = (value) => {
-  return value ? value : "";
+export const renderReportValue = (value, displayZero = false) => {
+  return value ? value : (displayZero ? 0 : "");
 };
