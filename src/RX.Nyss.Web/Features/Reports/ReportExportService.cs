@@ -108,8 +108,6 @@ namespace RX.Nyss.Web.Features.Reports
                 CountFemalesBelowFive = r.Report.ReportedCase.CountFemalesBelowFive,
                 CountFemalesAtLeastFive = r.Report.ReportedCase.CountFemalesAtLeastFive,
                 ReferredCount = r.Report.DataCollectionPointCase.ReferredCount,
-                DeathCount = r.Report.DataCollectionPointCase.DeathCount,
-                FromOtherVillagesCount = r.Report.DataCollectionPointCase.FromOtherVillagesCount,
                 EpiWeek = r.Report != null ? r.Report.EpiWeek : _dateTimeProvider.GetEpiWeek(r.ReceivedAt, epiWeekStartDay),
                 EpiYear = r.Report != null ? r.Report.EpiYear : _dateTimeProvider.GetEpiDate(r.ReceivedAt, epiWeekStartDay).EpiYear,
                 ReportAlertId = r.Report.ReportAlerts

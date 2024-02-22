@@ -56,23 +56,7 @@ export const DashboardDataCollectionPointChart = ({ data }) => {
       data: data.map((d) => d.referredCount),
       color: "#078e5e",
     },
-    {
-      name: strings(
-        stringKeys.dashboard.dataCollectionPointReportsByDate
-          .fromOtherVillagesCount,
-        true,
-      ),
-      data: data.map((d) => d.fromOtherVillagesCount),
-      color: "#00a0dc",
-    },
-    {
-      name: strings(
-        stringKeys.dashboard.dataCollectionPointReportsByDate.deathCount,
-        true,
-      ),
-      data: data.map((d) => d.deathCount),
-      color: "#47c79a",
-    },
+    
   ];
 
   const chartData = getOptions(

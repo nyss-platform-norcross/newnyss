@@ -78,15 +78,6 @@ export const ProjectsDashboardNumbers = ({
                 projectSummary.dataCollectionPointSummary
                   .referredToHospitalCount,
               )}
-              {renderNumber(
-                strings(stringKeys.dashboard.fromOtherVillagesCount),
-                projectSummary.dataCollectionPointSummary
-                  .fromOtherVillagesCount,
-              )}
-              {renderNumber(
-                strings(stringKeys.dashboard.deathCount),
-                projectSummary.dataCollectionPointSummary.deathCount,
-              )}
             </CardContent>
           </Card>
         </Grid>

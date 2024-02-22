@@ -80,8 +80,6 @@ namespace RX.Nyss.ReportApi.Tests.Features.Reports
             parsedReport.ReportedCase.CountFemalesBelowFive.ShouldBeNull();
             parsedReport.ReportedCase.CountFemalesAtLeastFive.ShouldBeNull();
             parsedReport.DataCollectionPointCase.ReferredCount.ShouldBeNull();
-            parsedReport.DataCollectionPointCase.DeathCount.ShouldBeNull();
-            parsedReport.DataCollectionPointCase.FromOtherVillagesCount.ShouldBeNull();
         }
 
         [Fact]
@@ -101,8 +99,6 @@ namespace RX.Nyss.ReportApi.Tests.Features.Reports
             parsedReport.ReportedCase.CountFemalesBelowFive.ShouldBeNull();
             parsedReport.ReportedCase.CountFemalesAtLeastFive.ShouldBeNull();
             parsedReport.DataCollectionPointCase.ReferredCount.ShouldBeNull();
-            parsedReport.DataCollectionPointCase.DeathCount.ShouldBeNull();
-            parsedReport.DataCollectionPointCase.FromOtherVillagesCount.ShouldBeNull();
         }
 
         [Theory]
@@ -131,8 +127,6 @@ namespace RX.Nyss.ReportApi.Tests.Features.Reports
             parsedReport.ReportedCase.CountFemalesAtLeastFive.ShouldBe(femalesAtLeastFive);
             parsedReport.ReportedCase.CountUnspecifiedSexAndAge.ShouldBe(unspecifiedSexAndAge);
             parsedReport.DataCollectionPointCase.ReferredCount.ShouldBeNull();
-            parsedReport.DataCollectionPointCase.DeathCount.ShouldBeNull();
-            parsedReport.DataCollectionPointCase.FromOtherVillagesCount.ShouldBeNull();
         }
 
         [Theory]
@@ -153,16 +147,14 @@ namespace RX.Nyss.ReportApi.Tests.Features.Reports
             parsedReport.ReportedCase.CountFemalesBelowFive.ShouldBe(femalesBelowFive);
             parsedReport.ReportedCase.CountFemalesAtLeastFive.ShouldBe(femalesAtLeastFive);
             parsedReport.DataCollectionPointCase.ReferredCount.ShouldBeNull();
-            parsedReport.DataCollectionPointCase.DeathCount.ShouldBeNull();
-            parsedReport.DataCollectionPointCase.FromOtherVillagesCount.ShouldBeNull();
         }
 
         [Theory]
-        [InlineData("10#20#30#40#50#60#70#80", 10, 20, 30, 40, 50, 60, 70, 80)]
-        [InlineData("10*20*30*40*50*60*70*80", 10, 20, 30, 40, 50, 60, 70, 80)]
-        [InlineData("10*20*30*40*50*60*70*80  ", 10, 20, 30, 40, 50, 60, 70, 80)]
+        [InlineData("10#20#30#40#50#60", 10, 20, 30, 40, 50, 60)]
+        [InlineData("10*20*30*40*50*60", 10, 20, 30, 40, 50, 60)]
+        [InlineData("10*20*30*40*50*60", 10, 20, 30, 40, 50, 60)]
         public async Task ParseReport_WhenDataCollectionPointReportSent_ShouldParseCorrectly(string reportMessage, int healthRiskCode,
-            int malesBelowFive, int malesAtLeastFive, int femalesBelowFive, int femalesAtLeastFive, int referredCount, int deathCount, int fromOtherVillagesCount)
+            int malesBelowFive, int malesAtLeastFive, int femalesBelowFive, int femalesAtLeastFive, int referredCount)
         {
             // Act
             var parsedReport = await _reportMessageService.ParseReport(reportMessage.Trim());
@@ -175,8 +167,6 @@ namespace RX.Nyss.ReportApi.Tests.Features.Reports
             parsedReport.ReportedCase.CountFemalesBelowFive.ShouldBe(femalesBelowFive);
             parsedReport.ReportedCase.CountFemalesAtLeastFive.ShouldBe(femalesAtLeastFive);
             parsedReport.DataCollectionPointCase.ReferredCount.ShouldBe(referredCount);
-            parsedReport.DataCollectionPointCase.DeathCount.ShouldBe(deathCount);
-            parsedReport.DataCollectionPointCase.FromOtherVillagesCount.ShouldBe(fromOtherVillagesCount);
         }
 
         [Theory]
