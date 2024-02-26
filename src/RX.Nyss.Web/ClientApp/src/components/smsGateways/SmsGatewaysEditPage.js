@@ -9,6 +9,7 @@ import Form from "../forms/form/Form";
 import FormActions from "../forms/formActions/FormActions";
 import SubmitButton from "../common/buttons/submitButton/SubmitButton";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
+import PasswordInputField from "../forms/PasswordInputField";
 import TextInputField from "../forms/TextInputField";
 import SelectInput from "../forms/SelectField";
 import { Loading } from "../common/loading/Loading";
@@ -81,7 +82,7 @@ const SmsGatewaysEditPageComponent = (props) => {
       gatewayExtraKeyName: props.data.gatewayExtraKeyName || "",
       gatewayUrl: props.data.gatewayUrl || "",
       gatewaySenderId: props.data.gatewaySenderId || "",
-      emailAddress: props.data.emailAddress,
+      emailAddress: props.data.emailAddress || "",
       useIotHub: !!props.data.iotHubDeviceName,
       iotHubDeviceName: props.data.iotHubDeviceName || "",
       useDualModem: !!props.data.modemOneName,
@@ -180,6 +181,9 @@ const SmsGatewaysEditPageComponent = (props) => {
       name: values.name,
       apiKey: values.apiKey,
       gatewayType: values.gatewayType,
+      emailAddress: values.gatewayType.toString() === smsEagle
+        ? values.emailAddress
+        : null,
       telerivetApiKey:
         values.gatewayType.toString() === telerivet
           ? values.telerivetApiKey
@@ -210,7 +214,6 @@ const SmsGatewaysEditPageComponent = (props) => {
         values.gatewayType.toString() === smsGateway
           ? values.gatewaySenderId
           : null,
-      emailAddress: values.emailAddress,
       iotHubDeviceName: values.useIotHub ? values.iotHubDeviceName : null,
       modemOneName: values.useDualModem ? values.modemOneName : null,
       modemTwoName: values.useDualModem ? values.modemTwoName : null,
@@ -307,7 +310,7 @@ const SmsGatewaysEditPageComponent = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <TextInputField
+            <PasswordInputField
               label={strings(stringKeys.smsGateway.form.telerivetApiKey)}
               name="telerivetApiKey"
               field={form.fields.telerivetApiKey}
@@ -328,7 +331,7 @@ const SmsGatewaysEditPageComponent = (props) => {
               name="gatewayApiKeyName"
               field={form.fields.gatewayApiKeyName}
             />
-            <TextInputField
+            <PasswordInputField
               label={strings(stringKeys.smsGateway.form.gatewayApiKey)}
               name="gatewayApiKey"
               field={form.fields.gatewayApiKey}
@@ -340,7 +343,7 @@ const SmsGatewaysEditPageComponent = (props) => {
               name="gatewayExtraKeyName"
               field={form.fields.gatewayExtraKeyName}
             />
-            <TextInputField
+            <PasswordInputField
               label={strings(stringKeys.smsGateway.form.gatewayExtraKey)}
               name="gatewayExtraKey"
               field={form.fields.gatewayExtraKey}

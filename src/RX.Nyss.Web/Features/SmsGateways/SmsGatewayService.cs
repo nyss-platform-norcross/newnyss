@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Transactions;
 using Microsoft.EntityFrameworkCore;
+using RX.Nyss.Common.Services;
 using RX.Nyss.Common.Utils.DataContract;
 using RX.Nyss.Common.Utils.Logging;
 using RX.Nyss.Data;
 using RX.Nyss.Data.Concepts;
 using RX.Nyss.Data.Models;
+using RX.Nyss.Web.Configuration;
 using RX.Nyss.Web.Features.SmsGateways.Dto;
 using RX.Nyss.Web.Services;
 using static RX.Nyss.Common.Utils.DataContract.Result;
@@ -34,53 +34,90 @@ namespace RX.Nyss.Web.Features.SmsGateways
         private readonly ILoggerAdapter _loggerAdapter;
         private readonly ISmsGatewayBlobProvider _smsGatewayBlobProvider;
         private readonly IIotHubService _iotHubService;
+        private readonly ICryptographyService _cryptographyService;
+        private readonly INyssWebConfig _nyssWebConfig;
 
         public SmsGatewayService(
             INyssContext nyssContext,
             ILoggerAdapter loggerAdapter,
-            ISmsGatewayBlobProvider smsGatewayBlobProvider, IIotHubService iotHubService)
+            ISmsGatewayBlobProvider smsGatewayBlobProvider, IIotHubService iotHubService,
+            ICryptographyService cryptographyService,
+            INyssWebConfig nyssWebConfig)
         {
             _nyssContext = nyssContext;
             _loggerAdapter = loggerAdapter;
             _smsGatewayBlobProvider = smsGatewayBlobProvider;
             _iotHubService = iotHubService;
+            _cryptographyService = cryptographyService;
+            _nyssWebConfig = nyssWebConfig;
         }
 
         public async Task<Result<GatewaySettingResponseDto>> Get(int smsGatewayId)
         {
             var gatewaySetting = await _nyssContext.GatewaySettings
-                .Select(gs => new GatewaySettingResponseDto
-                {
-                    Id = gs.Id,
-                    Name = gs.Name,
-                    ApiKey = gs.ApiKey,
-                    GatewayType = gs.GatewayType,
-                    TelerivetApiKey = gs.TelerivetSendSmsApiKey,
-                    TelerivetProjectId = gs.TelerivetProjectId,
-                    GatewayApiKey = gs.GatewayApiKey,
-                    GatewayApiKeyName = gs.GatewayApiKeyName,
-                    GatewayExtraKey = gs.GatewayExtraKey,
-                    GatewayExtraKeyName = gs.GatewayExtraKeyName,
-                    GatewayUrl = gs.GatewayUrl,
-                    GatewaySenderId = gs.GatewaySenderId,
-                    EmailAddress = gs.EmailAddress,
-                    IotHubDeviceName = gs.IotHubDeviceName,
-                    ModemOneName = gs.Modems != null && gs.Modems.Any(gm => gm.ModemId == 1)
-                        ? gs.Modems.First(gm => gm.ModemId == 1).Name
-                        : null,
-                    ModemTwoName = gs.Modems != null && gs.Modems.Any(gm => gm.ModemId == 2)
-                        ? gs.Modems.First(gm => gm.ModemId == 2).Name
-                        : null
-                })
-                .FirstOrDefaultAsync(gs => gs.Id == smsGatewayId);
-
+                    .FirstOrDefaultAsync(gs => gs.Id == smsGatewayId);
             if (gatewaySetting == null)
             {
                 return Error<GatewaySettingResponseDto>(ResultKey.NationalSociety.SmsGateway.SettingDoesNotExist);
             }
 
-            var result = Success(gatewaySetting);
+            var telerivetApiKey = "";
+            try
+            {
+                telerivetApiKey = gatewaySetting.GatewayType == GatewayType.Telerivet ? _cryptographyService.Decrypt(
+                    gatewaySetting?.TelerivetSendSmsApiKey,
+                    _nyssWebConfig.Key,
+                    _nyssWebConfig.SupplementaryKey) : null;
+            }
+            catch { telerivetApiKey = gatewaySetting?.TelerivetSendSmsApiKey;}
 
+            var gatewayApiKey = "";
+            try
+            {
+                gatewayApiKey = gatewaySetting?.GatewayApiKey == default ? default :
+                    gatewaySetting.GatewayType == GatewayType.SmsGateway ? _cryptographyService.Decrypt(
+                        gatewaySetting?.GatewayApiKey,
+                        _nyssWebConfig.Key,
+                        _nyssWebConfig.SupplementaryKey) : null;
+            }
+            catch { gatewayApiKey = gatewaySetting?.GatewayApiKey;}
+
+            var gatewayExtraKey = "";
+            try
+            {
+                gatewayExtraKey = gatewaySetting?.GatewayExtraKey == default ? default :
+                    gatewaySetting.GatewayType == GatewayType.SmsGateway ? _cryptographyService.Decrypt(
+                        gatewaySetting?.GatewayExtraKey,
+                        _nyssWebConfig.Key,
+                        _nyssWebConfig.SupplementaryKey) : null;
+            }
+            catch { gatewayExtraKey = gatewaySetting?.GatewayExtraKey; }
+            
+            var gatewaySettingDto = new GatewaySettingResponseDto
+                {
+                    Id = gatewaySetting.Id,
+                    Name = gatewaySetting.Name,
+                    ApiKey = gatewaySetting.ApiKey,
+                    GatewayType = gatewaySetting.GatewayType,
+                    TelerivetApiKey = telerivetApiKey,
+                    TelerivetProjectId = gatewaySetting.TelerivetProjectId,
+                    GatewayApiKey = gatewayApiKey,
+                    GatewayApiKeyName = gatewaySetting.GatewayApiKeyName,
+                    GatewayExtraKey = gatewayExtraKey,
+                    GatewayExtraKeyName = gatewaySetting.GatewayExtraKeyName,
+                    GatewayUrl = gatewaySetting.GatewayUrl,
+                    GatewaySenderId = gatewaySetting.GatewaySenderId,
+                    EmailAddress = gatewaySetting.EmailAddress,
+                    IotHubDeviceName = gatewaySetting.IotHubDeviceName,
+                    ModemOneName = gatewaySetting.Modems != null && gatewaySetting.Modems.Any(gm => gm.ModemId == 1)
+                        ? gatewaySetting.Modems.First(gm => gm.ModemId == 1).Name
+                        : null,
+                    ModemTwoName = gatewaySetting.Modems != null && gatewaySetting.Modems.Any(gm => gm.ModemId == 2)
+                        ? gatewaySetting.Modems.First(gm => gm.ModemId == 2).Name
+                        : null
+                };
+
+                var result = Success(gatewaySettingDto);
             return result;
         }
 
@@ -118,11 +155,23 @@ namespace RX.Nyss.Web.Features.SmsGateways
                     Name = editGatewaySettingRequestDto.Name,
                     ApiKey = editGatewaySettingRequestDto.ApiKey,
                     GatewayType = editGatewaySettingRequestDto.GatewayType,
-                    TelerivetSendSmsApiKey = editGatewaySettingRequestDto.TelerivetApiKey,
+                    TelerivetSendSmsApiKey = editGatewaySettingRequestDto.GatewayType == GatewayType.Telerivet ? _cryptographyService.Encrypt(
+                        editGatewaySettingRequestDto.TelerivetApiKey,
+                        _nyssWebConfig.Key,
+                        _nyssWebConfig.SupplementaryKey
+                    ):null,
                     TelerivetProjectId = editGatewaySettingRequestDto.TelerivetProjectId,
-                    GatewayApiKey = editGatewaySettingRequestDto.GatewayApiKey,
+                    GatewayApiKey = editGatewaySettingRequestDto.GatewayType == GatewayType.SmsGateway ? _cryptographyService.Encrypt(
+                        editGatewaySettingRequestDto.GatewayApiKey,
+                        _nyssWebConfig.Key,
+                        _nyssWebConfig.SupplementaryKey
+                    ):null,
                     GatewayApiKeyName = editGatewaySettingRequestDto.GatewayApiKeyName,
-                    GatewayExtraKey = editGatewaySettingRequestDto.GatewayExtraKey,
+                    GatewayExtraKey = editGatewaySettingRequestDto.GatewayType == GatewayType.SmsGateway ? _cryptographyService.Encrypt(
+                        editGatewaySettingRequestDto.GatewayExtraKey,
+                        _nyssWebConfig.Key,
+                        _nyssWebConfig.SupplementaryKey
+                    ):null,
                     GatewayExtraKeyName = editGatewaySettingRequestDto.GatewayExtraKeyName,
                     GatewayUrl = editGatewaySettingRequestDto.GatewayUrl,
                     GatewaySenderId = editGatewaySettingRequestDto.GatewaySenderId,
@@ -163,12 +212,30 @@ namespace RX.Nyss.Web.Features.SmsGateways
                 gatewaySettingToUpdate.Name = editGatewaySettingRequestDto.Name;
                 gatewaySettingToUpdate.ApiKey = editGatewaySettingRequestDto.ApiKey;
                 gatewaySettingToUpdate.GatewayType = editGatewaySettingRequestDto.GatewayType;
-                gatewaySettingToUpdate.TelerivetSendSmsApiKey = editGatewaySettingRequestDto.TelerivetApiKey;
+                gatewaySettingToUpdate.TelerivetSendSmsApiKey = editGatewaySettingRequestDto.TelerivetApiKey == default
+                    ? default
+                    : _cryptographyService.Encrypt(
+                        editGatewaySettingRequestDto.TelerivetApiKey,
+                        _nyssWebConfig.Key,
+                        _nyssWebConfig.SupplementaryKey
+                    );
                 gatewaySettingToUpdate.TelerivetProjectId = editGatewaySettingRequestDto.TelerivetProjectId;
-                gatewaySettingToUpdate.GatewayApiKey = editGatewaySettingRequestDto.GatewayApiKey;
+                gatewaySettingToUpdate.GatewayApiKey = editGatewaySettingRequestDto.GatewayApiKey == default
+                    ? default
+                    : _cryptographyService.Encrypt(
+                        editGatewaySettingRequestDto.GatewayApiKey,
+                        _nyssWebConfig.Key,
+                        _nyssWebConfig.SupplementaryKey
+                    );
                 gatewaySettingToUpdate.GatewayApiKeyName = editGatewaySettingRequestDto.GatewayApiKeyName;
                 gatewaySettingToUpdate.GatewayExtraKeyName = editGatewaySettingRequestDto.GatewayExtraKeyName;
-                gatewaySettingToUpdate.GatewayExtraKey = editGatewaySettingRequestDto.GatewayExtraKey;
+                gatewaySettingToUpdate.GatewayExtraKey = editGatewaySettingRequestDto.GatewayExtraKey == default
+                    ? default
+                    : _cryptographyService.Encrypt(
+                        editGatewaySettingRequestDto.GatewayExtraKey,
+                        _nyssWebConfig.Key,
+                        _nyssWebConfig.SupplementaryKey
+                    );
                 gatewaySettingToUpdate.GatewayUrl = editGatewaySettingRequestDto.GatewayUrl;
                 gatewaySettingToUpdate.GatewaySenderId = editGatewaySettingRequestDto.GatewaySenderId;
                 gatewaySettingToUpdate.EmailAddress = editGatewaySettingRequestDto.EmailAddress;
