@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using NSubstitute;
 using RX.Nyss.Common.Configuration;
+using RX.Nyss.Common.Services;
 using RX.Nyss.Common.Utils;
 using RX.Nyss.Common.Utils.Logging;
 using RX.Nyss.Data.Models;
@@ -25,6 +26,7 @@ namespace RX.Nyss.ReportApi.Tests.Services
         private readonly ServiceBusSender _checkAlertQueueSenderMock;
         private readonly ILoggerAdapter _loggerAdapterMock;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ICryptographyService _cryptographyService;
 
         public QueuePublisherServiceTests()
         {
@@ -41,6 +43,7 @@ namespace RX.Nyss.ReportApi.Tests.Services
             _smsQueueSenderMock = Substitute.For<ServiceBusSender>();
             _checkAlertQueueSenderMock = Substitute.For<ServiceBusSender>();
             _httpClientFactory = Substitute.For<IHttpClientFactory>();
+            _cryptographyService = Substitute.For<ICryptographyService>();
             _serviceBusClientMock = Substitute.For<ServiceBusClient>();
             _serviceBusClientMock.CreateSender("SendEmail").Returns(_emailQueueSenderMock);
             _serviceBusClientMock.CreateSender("CheckAlert").Returns(_checkAlertQueueSenderMock);
@@ -52,7 +55,8 @@ namespace RX.Nyss.ReportApi.Tests.Services
                 Substitute.For<IDateTimeProvider>(),
                 _loggerAdapterMock,
                 _serviceBusClientMock,
-                _httpClientFactory);
+                _httpClientFactory,
+                _cryptographyService);
         }
 
         [Fact]

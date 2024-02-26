@@ -42,7 +42,6 @@
   <ItemGroup>
     <ProjectReference Include="..\RX.Nyss.Common\RX.Nyss.Common.csproj" />
     <ProjectReference Include="..\RX.Nyss.Data\RX.Nyss.Data.csproj" />
-    <ProjectReference Include="..\RX.Nyss.Web\RX.Nyss.Web.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,7 +13,6 @@ using RX.Nyss.ReportApi.Configuration;
 using RX.Nyss.ReportApi.Features.Common;
 using Telerivet.Client;
 using JsonSerializer = System.Text.Json.JsonSerializer;
-using RX.Nyss.Web.Configuration;
 using RX.Nyss.Common.Services;
 
 namespace RX.Nyss.ReportApi.Services
@@ -37,7 +36,6 @@ namespace RX.Nyss.ReportApi.Services
         private readonly ILoggerAdapter _loggerAdapter;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ICryptographyService _cryptographyService;
-        private readonly INyssWebConfig _nyssWebConfig;
 
         public QueuePublisherService(
             INyssReportApiConfig config,
@@ -45,8 +43,7 @@ namespace RX.Nyss.ReportApi.Services
             ILoggerAdapter loggerAdapter,
             ServiceBusClient serviceBusClient,
             IHttpClientFactory httpClientFactory,
-            ICryptographyService cryptographyService,
-            INyssWebConfig nyssWebConfig)
+            ICryptographyService cryptographyService)
         {
             _config = config;
             _dateTimeProvider = dateTimeProvider;
@@ -56,7 +53,6 @@ namespace RX.Nyss.ReportApi.Services
             _sendSmsQueueSender = serviceBusClient.CreateSender(config.ServiceBusQueues.SendSmsQueue);
             _httpClientFactory = httpClientFactory;
             _cryptographyService = cryptographyService;
-            _nyssWebConfig = nyssWebConfig;
         }
 
         public async Task SendSms(List<SendSmsRecipient> recipients, GatewaySetting gatewaySetting, string message)
@@ -181,8 +177,8 @@ namespace RX.Nyss.ReportApi.Services
             ////////////////////////////////////////////////////////
             var gatewayApiKey = _cryptographyService.Decrypt(
                 gatewaySetting?.GatewayApiKey,
-                _nyssWebConfig.Key,
-                _nyssWebConfig.SupplementaryKey);
+                _config.Key,
+                _config.SupplementaryKey);
             ///////////////////////////////////////////////////////
             httpRequestMessage.Headers.Add(gatewaySetting.GatewayApiKeyName, gatewayApiKey);
             if (gatewaySetting.GatewayExtraKey != null && gatewaySetting.GatewayExtraKeyName != null)
@@ -190,8 +186,8 @@ namespace RX.Nyss.ReportApi.Services
                 ///////////////////////////////////////////////////
                 var gatewayExtraKey = _cryptographyService.Decrypt(
                     gatewaySetting?.GatewayExtraKey,
-                    _nyssWebConfig.Key,
-                    _nyssWebConfig.SupplementaryKey);
+                    _config.Key,
+                    _config.SupplementaryKey);
                 ///////////////////////////////////////////////////
                 httpRequestMessage.Headers.Add(gatewaySetting.GatewayExtraKeyName, gatewayExtraKey);
             }
@@ -212,8 +208,8 @@ namespace RX.Nyss.ReportApi.Services
             ///////////////////////////////////////////////////////
             var telerivetApiKey = _cryptographyService.Decrypt(
                 apiKey,
-                _nyssWebConfig.Key,
-                _nyssWebConfig.SupplementaryKey);
+                _config.Key,
+                _config.SupplementaryKey);
             ////////////////////////////////////////////////////////
             var tr = new TelerivetAPI(telerivetApiKey);
             var project = tr.InitProjectById(projectId);

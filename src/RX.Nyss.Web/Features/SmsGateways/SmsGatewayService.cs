@@ -61,19 +61,38 @@ namespace RX.Nyss.Web.Features.SmsGateways
                 return Error<GatewaySettingResponseDto>(ResultKey.NationalSociety.SmsGateway.SettingDoesNotExist);
             }
 
-            var telerivetApiKey = gatewaySetting.GatewayType == GatewayType.Telerivet ? _cryptographyService.Decrypt(
-                gatewaySetting?.TelerivetSendSmsApiKey,
-                _nyssWebConfig.Key,
-                _nyssWebConfig.SupplementaryKey) : null;
-            var gatewayApiKey = gatewaySetting.GatewayType == GatewayType.SmsGateway ? _cryptographyService.Decrypt(
-                gatewaySetting?.GatewayApiKey,
-                _nyssWebConfig.Key,
-                _nyssWebConfig.SupplementaryKey) : null;
-            var gatewayExtraKey = gatewaySetting.GatewayType == GatewayType.SmsGateway ? _cryptographyService.Decrypt(
-                gatewaySetting?.GatewayExtraKey,
-                _nyssWebConfig.Key,
-                _nyssWebConfig.SupplementaryKey) : null;
+            var telerivetApiKey = "";
+            try
+            {
+                telerivetApiKey = gatewaySetting.GatewayType == GatewayType.Telerivet ? _cryptographyService.Decrypt(
+                    gatewaySetting?.TelerivetSendSmsApiKey,
+                    _nyssWebConfig.Key,
+                    _nyssWebConfig.SupplementaryKey) : null;
+            }
+            catch { telerivetApiKey = gatewaySetting?.TelerivetSendSmsApiKey;}
 
+            var gatewayApiKey = "";
+            try
+            {
+                gatewayApiKey = gatewaySetting?.GatewayApiKey == default ? default :
+                    gatewaySetting.GatewayType == GatewayType.SmsGateway ? _cryptographyService.Decrypt(
+                        gatewaySetting?.GatewayApiKey,
+                        _nyssWebConfig.Key,
+                        _nyssWebConfig.SupplementaryKey) : null;
+            }
+            catch { gatewayApiKey = gatewaySetting?.GatewayApiKey;}
+
+            var gatewayExtraKey = "";
+            try
+            {
+                gatewayExtraKey = gatewaySetting?.GatewayExtraKey == default ? default :
+                    gatewaySetting.GatewayType == GatewayType.SmsGateway ? _cryptographyService.Decrypt(
+                        gatewaySetting?.GatewayExtraKey,
+                        _nyssWebConfig.Key,
+                        _nyssWebConfig.SupplementaryKey) : null;
+            }
+            catch { gatewayExtraKey = gatewaySetting?.GatewayExtraKey; }
+            
             var gatewaySettingDto = new GatewaySettingResponseDto
                 {
                     Id = gatewaySetting.Id,
