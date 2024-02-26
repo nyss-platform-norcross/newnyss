@@ -285,15 +285,13 @@ export const renderFilterLabel = (
 
   // Checks if all location filter options are deselected or null and if unknownlocation is unchecked if shown.
   if (!filterValue.regionIds.length && !filterValue.districtIds.length && !filterValue.villageIds.length && !filterValue.zoneIds.length && (showUnknownLocation ? !filterValue.includeUnknownLocation : true)) {
-    return strings(stringKeys.filters.area.all)
+    return strings(stringKeys.filters.area.all);
   }
 
   if (filterValue.regionIds.length > 0) {
-    const regionNames = filterValue.regionIds.map(
-      (id) => regions.find((r) => r.id === id).name,
-    );
-
-    return compactNameDisplay(regionNames, filterValue.includeUnknownLocation)
+    let filterRegions = regions.filter(region => filterValue.regionIds.some(filterRegionId => region.id == filterRegionId));
+    let filteredRegionNames = filterRegions.map(reg => reg.name);
+    return compactNameDisplay(filteredRegionNames, filterValue.includeUnknownLocation);
   }
 
   if (filterValue.districtIds.length > 0) {
