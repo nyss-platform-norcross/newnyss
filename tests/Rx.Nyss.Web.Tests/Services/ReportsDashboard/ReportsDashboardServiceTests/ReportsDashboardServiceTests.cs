@@ -24,7 +24,8 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
 
     public ReportsDashboardServiceTests()
     {
-        _reportsDashboardService = new ReportsDashboardService(_nyssContext);
+        IDateTimeProvider dateTimeProvider = new DateTimeProvider();
+        _reportsDashboardService = new ReportsDashboardService(_nyssContext, dateTimeProvider);
     }
 
     private ReportsFilter GetReportFilters() =>
@@ -47,7 +48,7 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         var reportsFilter = GetReportFilters();
 
         // act
-        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyIdCorrect, reportsFilter);
+        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(reportsFilter, nationalSocietyIdCorrect);
 
         // assert
         reportQuery.Any(r => r.ProjectHealthRisk.Project.NationalSociety.Id == nationalSocietyIdCorrect).ShouldBe(true);
@@ -66,7 +67,7 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         var reportsFilter = GetReportFilters();
 
         // act
-        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyId, reportsFilter);
+        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(reportsFilter, nationalSocietyId);
 
         // assert
         reportQuery.Any(r => r.ProjectHealthRisk.Project.Id == projectIdFirst).ShouldBe(true);
@@ -85,7 +86,7 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         var reportsFilter = GetReportFilters();
 
         // act
-        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyId, reportsFilter, projectId: projectIdCorrect);
+        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(reportsFilter, nationalSocietyId, projectId: projectIdCorrect);
 
         // assert
         reportQuery.Any(r => r.ProjectHealthRisk.Project.Id == projectIdCorrect).ShouldBe(true);
@@ -102,7 +103,7 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         var reportsFilter = GetReportFilters();
 
         // act
-        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyId, reportsFilter);
+        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(reportsFilter, nationalSocietyId);
 
         // assert
         reportQuery.Any(r => r.Status == ReportStatus.Rejected).ShouldBe(false);
@@ -120,7 +121,7 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         var reportsFilter = GetReportFilters();
 
         // act
-        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyId, reportsFilter);
+        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(reportsFilter, nationalSocietyId);
 
         // assert
         reportQuery.Any(r => r.ReportAlerts.Any(ar => ar.Alert.Status == AlertStatus.Open)).ShouldBe(false);
@@ -142,7 +143,7 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         var reportsFilter = GetReportFilters();
 
         // act
-        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyId, reportsFilter);
+        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(reportsFilter, nationalSocietyId);
 
         // assert
         reportQuery.Count().ShouldBe(3); // We expect 3 reports given the test data
@@ -162,16 +163,18 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         var reportsFilter = GetReportFilters();
 
         // act
-        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(nationalSocietyId, reportsFilter);
+        var reportQuery = _reportsDashboardService.GetKeptReportsInEscalatedAlertsQuery(reportsFilter, nationalSocietyId);
 
         // assert
         reportQuery.Count().ShouldBe(3); // We expect 3 reports given the test data
         reportQuery.All(r => r.ReceivedAt >= reportsFilter.StartDate.UtcDateTime && r.ReceivedAt < reportsFilter.EndDate.UtcDateTime).ShouldBe(true);
     }
 
+    // Comparison function between two lists of HealthRiskReportsGroupedByDateDtos
+    private bool GroupedReportsListEquals(IEnumerable<HealthRiskReportsGroupedByDateDto> first, IEnumerable<HealthRiskReportsGroupedByDateDto> second) =>
+        first.All(group => second.Any(group.ValueEquals));
+
     [Fact]
-    // Tests that GetKeptReportsInEscalatedAlertsQuery only returns reports within the filter time-range, even if all the reports are
-    // Included in the same escalated alert
     public async void GroupReportsByHealthRiskAndDate_ShouldGroupReportQueriesToTheCorrectFormat()
     {
         var projectHealthRisks = _nyssContext.ProjectHealthRisks.ToList();
@@ -180,37 +183,37 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
             new Report
             {
                 Id = 1,
-                CreatedAt = new DateTime(2023, 12, 31, 23, 0, 0),
+                ReceivedAt = new DateTime(2023, 12, 31, 23, 0, 0),
                 ProjectHealthRisk = projectHealthRisks[0] // Health risk 1 in project 1 in national society 1
             },
             new Report
             {
                 Id = 2,
-                CreatedAt = new DateTime(2024, 1, 2, 0, 0, 0),
+                ReceivedAt = new DateTime(2024, 1, 2, 0, 0, 0),
                 ProjectHealthRisk = projectHealthRisks[0]
             },
             new Report
             {
                 Id = 3,
-                CreatedAt = new DateTime(2024, 1, 2, 23, 0, 0),
+                ReceivedAt = new DateTime(2024, 1, 2, 23, 0, 0),
                 ProjectHealthRisk = projectHealthRisks[0]
             },
             new Report
             {
                 Id = 4,
-                CreatedAt = new DateTime(2024, 1, 3, 22, 59, 59),
+                ReceivedAt = new DateTime(2024, 1, 3, 22, 59, 59),
                 ProjectHealthRisk = projectHealthRisks[0]
             },
             new Report
             {
                 Id = 5,
-                CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0),
+                ReceivedAt = new DateTime(2024, 1, 1, 0, 0, 0),
                 ProjectHealthRisk = projectHealthRisks[1] // HealthRisk 2 in project 1 in national society 1
             },
             new Report
             {
                 Id = 6,
-                CreatedAt = new DateTime(2024, 1, 3, 0, 0, 0),
+                ReceivedAt = new DateTime(2024, 1, 3, 0, 0, 0),
                 ProjectHealthRisk = projectHealthRisks[1]
             },
         }.AsQueryable();
@@ -261,12 +264,6 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
             }
         };
 
-        // Comparison function between two lists of HealthRiskReportsGroupedByDateDtos
-        bool GroupedReportsListEquals(IEnumerable<HealthRiskReportsGroupedByDateDto> first, IEnumerable<HealthRiskReportsGroupedByDateDto> second)
-        {
-            return first.All(group => second.Any(group.ValueEquals));
-        }
-
         // Reports are inside and just outside of the time range 01.01.2024 - 08.01.2024
         var nationalSocietyId = 1;
 
@@ -277,6 +274,116 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         GroupedReportsListEquals(groupedReports, expectedReturnValue).ShouldBe(true);
     }
 
+    [Fact]
+    public async void GroupReportsByHealthRiskAndEpiWeek_ShouldGroupReportQueriesToTheCorrectFormat()
+    {
+        var projectHealthRisks = _nyssContext.ProjectHealthRisks.ToList();
+        // Dummy raw report with link to national society (reference is used in groupByEpiWeek)
+        var dummyRawReport = new RawReport
+        {
+            NationalSociety = projectHealthRisks[0].Project.NationalSociety
+        };
 
+        var reportQuery = new List<Report>()
+        {
+            new Report
+            {
+                Id = 1,
+                ReceivedAt = new DateTime(2023, 12, 30, 0, 0, 0),
+                ProjectHealthRisk = projectHealthRisks[0], // Health risk 1 in project 1 in national society 1
+                RawReport = dummyRawReport
+            },
+            new Report
+            {
+                Id = 2,
+                ReceivedAt = new DateTime(2023, 12, 31, 23, 0, 0),
+                ProjectHealthRisk = projectHealthRisks[0],
+                RawReport = dummyRawReport
+            },
+            new Report
+            {
+                Id = 3,
+                ReceivedAt = new DateTime(2024, 1, 6, 23, 0, 0).AddSeconds(-1),
+                ProjectHealthRisk = projectHealthRisks[0],
+                RawReport = dummyRawReport
+            },
+            new Report
+            {
+                Id = 4,
+                ReceivedAt = new DateTime(2024, 1, 6, 23, 0, 0),
+                ProjectHealthRisk = projectHealthRisks[0],
+                RawReport = dummyRawReport
+            },
+            new Report
+            {
+                Id = 5,
+                ReceivedAt = new DateTime(2024, 12, 28, 23, 0, 0).AddSeconds(-1),
+                ProjectHealthRisk = projectHealthRisks[1], // HealthRisk 2 in project 1 in national society 1
+                RawReport = dummyRawReport
+            },
+            new Report
+            {
+                Id = 6,
+                ReceivedAt = new DateTime(2024, 12, 28, 23, 0, 0),
+                ProjectHealthRisk = projectHealthRisks[1],
+                RawReport = dummyRawReport
+            },
+        }.AsQueryable();
+
+        // Considering the reportQuery input, and a utc offset of 1, this is the expected output of the grouping function
+        var expectedReturnValue = new List<HealthRiskReportsGroupedByDateDto>
+        {
+            new HealthRiskReportsGroupedByDateDto
+            {
+                HealthRiskId = 1,
+                HealthRiskName = "Fever",
+                Data = new List<PeriodDto>
+                {
+                    new PeriodDto
+                    {
+                        Count = 1,
+                        Period = "2023/52"
+                    },
+                    new PeriodDto
+                    {
+                        Count = 2,
+                        Period = "2024/1"
+                    },
+                    new PeriodDto
+                    {
+                        Count = 1,
+                        Period = "2024/2"
+                    }
+                }
+            },
+            new HealthRiskReportsGroupedByDateDto
+            {
+                HealthRiskId = 2,
+                HealthRiskName = "Acute Watery Diarrhea (AWD)",
+                Data = new List<PeriodDto>
+                {
+                    new PeriodDto
+                    {
+                        Count = 1,
+                        Period = "2024/52"
+                    },
+                    new PeriodDto
+                    {
+                        Count = 1,
+                        Period = "2025/1"
+                    }
+                }
+            }
+        };
+
+        // Reports are inside and just outside of the time range 01.01.2024 - 08.01.2024
+        var nationalSocietyId = 1;
+
+        // act
+        var groupedReports = await _reportsDashboardService.GroupReportsByHealthRiskAndEpiWeek(reportQuery, 1);
+
+        // assert
+        GroupedReportsListEquals(groupedReports, expectedReturnValue).ShouldBe(true);
+    }
 
 }

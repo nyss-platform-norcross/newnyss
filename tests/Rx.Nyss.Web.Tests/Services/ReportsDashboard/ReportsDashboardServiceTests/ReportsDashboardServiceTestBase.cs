@@ -30,7 +30,7 @@ public class ReportsDashboardServiceTestBase
         _config = Substitute.For<INyssWebConfig>();
 
         _reportService = Substitute.For<IReportService>();
-        _reportsDashboardService = new ReportsDashboardService(_nyssContext);
+        _reportsDashboardService = new ReportsDashboardService(_nyssContext, dateTimeProvider);
     }
 
     private INyssContext GetBaseNyssContext()
@@ -44,6 +44,7 @@ public class ReportsDashboardServiceTestBase
                     {
                         LanguageCode = "en",
                     },
+                EpiWeekStartDay = DayOfWeek.Sunday,
             },
             new NationalSociety {
                 Id = 2,
@@ -51,6 +52,7 @@ public class ReportsDashboardServiceTestBase
                     {
                         LanguageCode = "en",
                     },
+                EpiWeekStartDay = DayOfWeek.Monday,
             },
         };
 

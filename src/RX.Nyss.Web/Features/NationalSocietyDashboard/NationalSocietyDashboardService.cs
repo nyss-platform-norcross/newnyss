@@ -96,7 +96,7 @@ namespace RX.Nyss.Web.Features.NationalSocietyDashboard
             var reportsGroupedByHealthRiskAndDate = await _reportsDashboardByHealthRiskService.GetReportsGroupedByHealthRiskAndDate(filters, filtersDto.GroupingType, epiWeekStartDay);
             var reportsGroupedByFeaturesAndDate = await _reportsDashboardByFeatureService.GetReportsGroupedByFeaturesAndDate(filters, filtersDto.GroupingType, epiWeekStartDay);
 
-            var keptReportsInEscalatedAlertsHistogramData = await _reportsDashboardService.GetKeptReportsInEscalatedAlertsHistogramData(nationalSocietyId, filters, projectId: null);
+            var keptReportsInEscalatedAlertsHistogramData = await _reportsDashboardService.GetKeptReportsInEscalatedAlertsHistogramData(filters, filtersDto.GroupingType, epiWeekStartDay, nationalSocietyId, projectId: null);
 
             var dashboardDataDto = new NationalSocietyDashboardResponseDto
             {
