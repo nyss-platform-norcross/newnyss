@@ -5,7 +5,7 @@ import HighchartsReact from "highcharts-react-official";
 import { strings, stringKeys } from "../../strings";
 import useHoverChartTracking from "../../utils/useHoverChartTracking";
 
-const getOptions = (valuesLabel, series, categories, groupingType) => ({
+const getOptions = (valuesLabel, series, categories) => ({
   chart: {
     type: "column",
     backgroundColor: "transparent",
@@ -18,16 +18,6 @@ const getOptions = (valuesLabel, series, categories, groupingType) => ({
   },
   xAxis: {
     categories: categories,
-    labels: {
-      formatter: function () {
-        // Display only week, input data format "yyyy/MM", output format "MM"
-        if (groupingType === "Week") {
-          let weekWithoutYear = this.value.split("/")[1]
-          return weekWithoutYear;
-        }
-        return this.value;
-      },
-    },
   },
   yAxis: {
     title: {
@@ -67,7 +57,7 @@ const getOptions = (valuesLabel, series, categories, groupingType) => ({
   series,
 });
 
-export const DashboardReportVillageChart = ({ data, groupingType }) => {
+export const DashboardReportVillageChart = ({ data }) => {
   const trackHoveredChart = useHoverChartTracking();
   const categories = data.allPeriods;
   const villages = data.villages.length
@@ -95,7 +85,6 @@ export const DashboardReportVillageChart = ({ data, groupingType }) => {
     ),
     series,
     categories,
-    groupingType,
   );
   return (
     <Card data-printable={true} onMouseEnter={() => trackHoveredChart("hoveredReportVillageChart")} onTouchStart={() => trackHoveredChart("hoveredReportVillageChart")}>
