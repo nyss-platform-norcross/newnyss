@@ -42,6 +42,7 @@ export const getDashboardData = {
     reportsGroupedByFeatures,
     reportsGroupedByLocation,
     dataCollectionPointReports,
+    keptReportsInEscalatedAlertsHistogramData,
   ) => ({
     type: GET_PROJECT_DASHBOARD_DATA.SUCCESS,
     filters,
@@ -52,6 +53,7 @@ export const getDashboardData = {
     reportsGroupedByFeatures,
     reportsGroupedByLocation,
     dataCollectionPointReports,
+    keptReportsInEscalatedAlertsHistogramData,
   }),
   failure: (message) => ({ type: GET_PROJECT_DASHBOARD_DATA.FAILURE, message }),
 };

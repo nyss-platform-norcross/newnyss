@@ -17,9 +17,9 @@ namespace RX.Nyss.Web.Services.ReportsDashboard;
 
 public interface IReportsDashboardService
 {
-    Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(ReportsFilter reportsFilter, DatesGroupingType groupingType, DayOfWeek epiWeekStartDay, int nationalSocietyId, int? projectId=null);
+    Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(ReportsFilter reportsFilter, DatesGroupingType groupingType, DayOfWeek epiWeekStartDay, int? nationalSocietyId=null, int? projectId=null);
 
-    IQueryable<Report> GetKeptReportsInEscalatedAlertsQuery(ReportsFilter reportsFilter, int nationalSocietyId, int? projectId = null);
+    IQueryable<Report> GetKeptReportsInEscalatedAlertsQuery(ReportsFilter reportsFilter, int? nationalSocietyId = null, int? projectId = null);
 
     Task<IList<HealthRiskReportsGroupedByDateDto>> GroupReportsByHealthRiskAndDate(IQueryable<Report> reports, int utcOffset);
 
@@ -40,7 +40,7 @@ public class ReportsDashboardService : IReportsDashboardService
         _dateTimeProvider = dateTimeProvider;
     }
 
-    public async Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(ReportsFilter reportsFilter, DatesGroupingType groupingType, DayOfWeek epiWeekStartDay, int nationalSocietyId, int? projectId=null)
+    public async Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(ReportsFilter reportsFilter, DatesGroupingType groupingType, DayOfWeek epiWeekStartDay, int? nationalSocietyId=null, int? projectId=null)
     {
         var reportsQuery = GetKeptReportsInEscalatedAlertsQuery(reportsFilter, nationalSocietyId, projectId);
 
@@ -75,10 +75,10 @@ public class ReportsDashboardService : IReportsDashboardService
         };
     }
 
-    public IQueryable<Report> GetKeptReportsInEscalatedAlertsQuery(ReportsFilter reportsFilter, int nationalSocietyId, int? projectId = null)
+    public IQueryable<Report> GetKeptReportsInEscalatedAlertsQuery(ReportsFilter reportsFilter, int? nationalSocietyId = null, int? projectId = null)
     {
         var baseQuery = _nyssContext.Alerts
-            .Where(a => a.ProjectHealthRisk.Project.NationalSociety.Id == nationalSocietyId);
+            .FilterByNationalSociety(nationalSocietyId);
         baseQuery = baseQuery.FilterByProject(projectId);
         baseQuery = baseQuery.Where(a => a.Status == AlertStatus.Escalated); // Only Include escalated alerts
         var arQuery = baseQuery.SelectMany(a => a.AlertReports);

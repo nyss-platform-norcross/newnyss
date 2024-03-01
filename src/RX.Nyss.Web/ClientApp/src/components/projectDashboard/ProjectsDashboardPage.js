@@ -137,9 +137,11 @@ const ProjectDashboardPageComponent = ({
               data={props.reportsGroupedByFeaturesAndDate}
             />
           </Grid>
-          {/* <Grid item xs={12}>
-            <DashboardKeptReportByHealthRiskChart data={null} />
-          </Grid> */}
+          <Grid item xs={12}>
+            <DashboardKeptReportByHealthRiskChart
+              data={props.keptReportsInEscalatedAlertsHistogramData}
+            />
+          </Grid>
 
           {props.filters.reportsType === "dataCollectionPoint" && (
             <Grid item xs={12}>
@@ -186,6 +188,8 @@ const mapStateToProps = (state) => ({
     state.projectDashboard.reportsGroupedByLocationDetailsFetching,
   dataCollectionPointsReportData:
     state.projectDashboard.dataCollectionPointsReportData,
+  keptReportsInEscalatedAlertsHistogramData:
+    state.projectDashboard.keptReportsInEscalatedAlertsHistogramData,
   isGeneratingPdf: state.projectDashboard.isGeneratingPdf,
   isFetching: state.projectDashboard.isFetching,
   userRoles: state.appData.user.roles,
