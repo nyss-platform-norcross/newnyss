@@ -16,20 +16,14 @@ import {
   getDateStringInterval,
   getEpiWeekStringInterval,
 } from "../../utils/dateStrings";
+import { format, parse, parseISO } from "date-fns";
 
-const getOptions = (
-  valuesLabel,
-  series,
-  categories,
-  groupingType,
-  theme,
-  yMax = null,
-) => ({
+const getOptions = (series, categories, groupingType, theme, yMax = null) => ({
   chart: {
     type: "column",
   },
   title: {
-    text: valuesLabel,
+    text: "",
   },
   xAxis: {
     categories: categories,
@@ -37,8 +31,8 @@ const getOptions = (
       formatter: function () {
         switch (groupingType) {
           case "Day":
-            const date = this.value.split("-");
-            return `${this.value}`;
+            const date = parseISO(this.value);
+            return `${format(date, "d LLL")}`;
           case "Week":
             const yearandWeek = this.value.split("/");
             return categories.length > 25
@@ -56,7 +50,7 @@ const getOptions = (
   },
   yAxis: {
     title: {
-      text: valuesLabel,
+      text: "Number of reports", //TODO: Add to string keys
     },
     allowDecimals: false,
     min: 0,
@@ -67,6 +61,9 @@ const getOptions = (
     gridZIndex: 6,
     stackLabels: {
       enabled: true,
+      formatter: function () {
+        return this.total > 0 ? this.total : null;
+      },
     },
   },
   colors: [
@@ -99,7 +96,16 @@ const getOptions = (
   },
   tooltip: {
     headerFormat: "",
-    pointFormat: "{series.name}: <b>{point.y}</b>",
+    useHTML: true,
+    formatter: function () {
+      const date = parseISO(this.x);
+      return `<table><tr><td>
+      ${this.series.name}: <b>${this.y}</b></td></tr><tr><td>
+      ${format(date, "d LLL yyyy")}</td></tr></table>`;
+    },
+    style: {
+      textAlign: "center",
+    },
   },
   series,
 });
@@ -182,7 +188,6 @@ export const DashboardKeptReportByHealthRiskChart = ({ data }) => {
   const theme = useTheme();
 
   const chartData = getOptions(
-    "",
     series,
     categories,
     data.dateGroupingType,
