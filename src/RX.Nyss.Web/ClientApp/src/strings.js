@@ -527,7 +527,8 @@ export const stringKeys = {
       unspecifiedSexAndAge:
         "dashboard.reportsPerFeatureAndDate.unspecifiedSexAndAge",
       numberOfReports: "dashboard.reportsPerFeatureAndDate.numberOfReports",
-      percentageOfReportedPeople: "dashboard.reportsPerFeatureAndDate.percentageOfReportedPeople",
+      percentageOfReportedPeople:
+        "dashboard.reportsPerFeatureAndDate.percentageOfReportedPeople",
       title: "dashboard.reportsPerFeatureAndDate.title",
       titlePercentage: "dashboard.reportsPerFeatureAndDate.titlePercentage",
     },
@@ -541,10 +542,16 @@ export const stringKeys = {
         "dashboard.dataCollectionPointReportsByDate.referredToHospitalCount",
       //deathCount: "dashboard.dataCollectionPointReportsByDate.deathCount",
       //fromOtherVillagesCount:
-        //"dashboard.dataCollectionPointReportsByDate.fromOtherVillagesCount",
+      //"dashboard.dataCollectionPointReportsByDate.fromOtherVillagesCount",
       numberOfReports:
         "dashboard.dataCollectionPointReportsByDate.numberOfReports",
       title: "dashboard.dataCollectionPointReportsByDate.title",
+    },
+    keptReportsInEscalatedAlerts: {
+      title: "dashboard.keptReportsInEscalatedAlerts.title",
+      timeRangeDescription:
+        "dashboard.keptReportsInEscalatedAlerts.timeRangeDescription",
+      yLabel: "dashboard.keptReportsInEscalatedAlerts.yLabel",
     },
     activeDataCollectorCount: "dashboard.activeDataCollectorCount",
     referredToHospitalCount: "dashboard.referredToHospitalCount",
@@ -558,6 +565,9 @@ export const stringKeys = {
       title: "dashboard.map.title",
     },
     generatePdf: "dashboard.generatePdf",
+    buttons: {
+      all: "dashboard.buttons.all",
+    },
   },
   globalCoordinator: {
     title: "globalCoordinator.title",

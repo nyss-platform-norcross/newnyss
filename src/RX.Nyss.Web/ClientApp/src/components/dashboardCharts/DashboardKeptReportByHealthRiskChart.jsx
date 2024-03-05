@@ -16,7 +16,7 @@ import {
   getDateStringInterval,
   getEpiWeekStringInterval,
 } from "../../utils/dateStrings";
-import { format, parse, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 const getOptions = (series, categories, groupingType, theme, yMax = null) => ({
   chart: {
@@ -50,7 +50,10 @@ const getOptions = (series, categories, groupingType, theme, yMax = null) => ({
   },
   yAxis: {
     title: {
-      text: "Number of kept reports in escalated alerts", //TODO: Add to string keys
+      text: strings(
+        stringKeys.dashboard.keptReportsInEscalatedAlerts.yLabel,
+        true,
+      ),
     },
     allowDecimals: false,
     min: 0,
@@ -212,27 +215,31 @@ export const DashboardKeptReportByHealthRiskChart = ({ data }) => {
   return (
     <Card
       data-printable={true}
-      onMouseEnter={() => trackHoveredChart("hoveredReportChart")}
-      onTouchStart={trackHoveredChart("hoveredReportChart")}
+      onMouseEnter={() => trackHoveredChart("hoveredKeptReportsHistogramChart")}
+      onTouchStart={trackHoveredChart("hoveredKeptReportsHistogramChart")}
     >
       <CardHeader
         title={
           <Typography variant="h5">
-            {/* Add to string keys */}
-            {"Kept reports in escalated alerts"}
+            {strings(stringKeys.dashboard.keptReportsInEscalatedAlerts.title)}
           </Typography>
         }
         subheader={
           <Typography variant="subtitle2" style={{ opacity: "60%" }}>
-            {/* Add to string keys */}
-            {`Data from: ${data.chartStartDateString} to ${data.chartEndDateString}`}
+            {`${strings(
+              stringKeys.dashboard.keptReportsInEscalatedAlerts
+                .timeRangeDescription,
+            )} ${format(
+              parseISO(data.chartStartDateString),
+              "dd LLL yyyy",
+            )} - ${format(parseISO(data.chartEndDateString), "dd LLL yyyy")}`}
           </Typography>
         }
       />
       <CardContent>
         <Box mb={"1rem"} ml={"2rem"}>
           <Chip
-            label={"All"} // TODO: Make string key
+            label={strings(stringKeys.dashboard.buttons.all)}
             style={{
               marginRight: "10px",
               fontWeight: selectedHealthRisk ? "normal" : "bold",
