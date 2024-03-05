@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using RX.Nyss.Common.Utils;
 using RX.Nyss.Data;
 using RX.Nyss.Data.Concepts;
 using RX.Nyss.Data.Models;
 using RX.Nyss.Web.Features.Common.Dto;
 using RX.Nyss.Web.Features.Common.Extensions;
-using RX.Nyss.Web.Features.NationalSocieties;
 using RX.Nyss.Web.Features.Reports;
 using RX.Nyss.Web.Services.ReportsDashboard.Dto;
 
@@ -80,7 +78,7 @@ public class ReportsDashboardService : IReportsDashboardService
         var baseQuery = _nyssContext.Alerts
             .FilterByNationalSociety(nationalSocietyId);
         baseQuery = baseQuery.FilterByProject(projectId);
-        baseQuery = baseQuery.Where(a => a.Status == AlertStatus.Escalated); // Only Include escalated alerts
+        baseQuery = baseQuery.Where(a => a.Status == AlertStatus.Escalated || a.Status == AlertStatus.Closed); // Only Include escalated or closed alerts
         var arQuery = baseQuery.SelectMany(a => a.AlertReports);
 
         // Apply reportsFilter to the baseQuery if it exists
@@ -96,8 +94,6 @@ public class ReportsDashboardService : IReportsDashboardService
                 Dismissed = false,
                 NotCrossChecked = false
             }) // Filter out non-kept reports
-
-            //.AllReportsKeptBeforeAlertWasEscalated(); // Only select reports that were cross checked before escalation
             .Select(ar => ar.Report);
 
         return reports;

@@ -34,5 +34,4 @@
     <ProjectReference Include="..\RX.Nyss.TestData\RX.Nyss.TestData.csproj" />
   </ItemGroup>
 
-
 </Project>

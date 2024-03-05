@@ -1,15 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using NSubstitute;
 using RX.Nyss.Common.Utils;
-using RX.Nyss.Data;
 using RX.Nyss.Data.Concepts;
 using RX.Nyss.Data.Models;
-using RX.Nyss.Web.Configuration;
-using RX.Nyss.Web.Features.Common.Dto;
 using RX.Nyss.Web.Features.Reports;
 using RX.Nyss.Web.Services.ReportsDashboard;
 using RX.Nyss.Web.Services.ReportsDashboard.Dto;
@@ -112,7 +106,7 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
     }
 
     [Fact]
-    public void GetKeptReportsInEscalatedAlertsQuery_ShouldOnlyReturnReportsFromAnEscalatedAlert()
+    public void GetKeptReportsInEscalatedAlertsQuery_ShouldOnlyReturnReportsFromAnEscalatedOrClosedAlert()
     {
         // Arrange test data
         ArrangeKeptReportsInOpenClosedDismissedAndEscalatedAlerts();
@@ -125,9 +119,8 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
 
         // assert
         reportQuery.Any(r => r.ReportAlerts.Any(ar => ar.Alert.Status == AlertStatus.Open)).ShouldBe(false);
-        reportQuery.Any(r => r.ReportAlerts.Any(ar => ar.Alert.Status == AlertStatus.Closed)).ShouldBe(false);
         reportQuery.Any(r => r.ReportAlerts.Any(ar => ar.Alert.Status == AlertStatus.Dismissed)).ShouldBe(false);
-        reportQuery.All(r => r.ReportAlerts.All(ar => ar.Alert.Status == AlertStatus.Escalated)).ShouldBe(true);
+        reportQuery.All(r => r.ReportAlerts.All(ar => ar.Alert.Status == AlertStatus.Escalated || ar.Alert.Status == AlertStatus.Closed)).ShouldBe(true);
 
     }
 

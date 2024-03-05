@@ -125,7 +125,7 @@ namespace RX.Nyss.Web.Features.ProjectDashboard
             var reportsByFeaturesAndDate = await _reportsDashboardByFeatureService.GetReportsGroupedByFeaturesAndDate(filters, filtersDto.GroupingType, epiWeekStartDay);
 
             var keptReportsInEscalatedAlertsHistogramData =
-                await _reportsDashboardService.GetKeptReportsInEscalatedAlertsHistogramData(filters, filtersDto.GroupingType, epiWeekStartDay, projectId: projectId);
+                await _reportsDashboardService.GetKeptReportsInEscalatedAlertsHistogramData(filters, filtersDto.GroupingType, epiWeekStartDay, nationalSocietyId: null, projectId: projectId);
 
             var dashboardDataDto = new ProjectDashboardResponseDto
             {
