@@ -32,7 +32,7 @@ const getOptions = (series, categories, groupingType, theme, yMax = null) => ({
         switch (groupingType) {
           case "Day":
             const date = parseISO(this.value);
-            return `${format(date, "d LLL")}`;
+            return `${format(date, "dd/MM/yy")}`;
           case "Week":
             const yearandWeek = this.value.split("/");
             return categories.length > 25
@@ -50,7 +50,7 @@ const getOptions = (series, categories, groupingType, theme, yMax = null) => ({
   },
   yAxis: {
     title: {
-      text: "Number of reports", //TODO: Add to string keys
+      text: "Number of kept reports in escalated alerts", //TODO: Add to string keys
     },
     allowDecimals: false,
     min: 0,
@@ -98,10 +98,24 @@ const getOptions = (series, categories, groupingType, theme, yMax = null) => ({
     headerFormat: "",
     useHTML: true,
     formatter: function () {
-      const date = parseISO(this.x);
-      return `<table><tr><td>
-      ${this.series.name}: <b>${this.y}</b></td></tr><tr><td>
-      ${format(date, "d LLL yyyy")}</td></tr></table>`;
+      switch (groupingType) {
+        case "Day":
+          const date = parseISO(this.x);
+          return `<table><tr><td>
+            ${this.series.name}: <b>${
+              this.y
+            }</b></td></tr><tr style="opacity: 70%;"><td>
+            ${format(date, "d LLL yyyy")}</td></tr></table>`;
+        case "Week":
+          const yearandWeek = this.x.split("/");
+          return `<table><tr><td>
+            ${this.series.name}: <b>${
+              this.y
+            }</b></td></tr><tr style="opacity: 70%;"><td>
+            Epi Week ${yearandWeek[1]} Year ${yearandWeek[0].slice(
+              -2,
+            )}</td></tr></table>`;
+      }
     },
     style: {
       textAlign: "center",
@@ -209,14 +223,14 @@ export const DashboardKeptReportByHealthRiskChart = ({ data }) => {
           </Typography>
         }
         subheader={
-          <Typography variant="subtitle2">
+          <Typography variant="subtitle2" style={{ opacity: "60%" }}>
             {/* Add to string keys */}
             {`Data from: ${data.chartStartDateString} to ${data.chartEndDateString}`}
           </Typography>
         }
       />
       <CardContent>
-        <Box mb={"1rem"}>
+        <Box mb={"1rem"} ml={"2rem"}>
           <Chip
             label={"All"} // TODO: Make string key
             style={{
