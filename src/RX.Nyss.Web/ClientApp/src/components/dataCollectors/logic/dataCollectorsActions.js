@@ -240,11 +240,12 @@ export const getDataCollectorsPerformanceList = {
     filters,
   }),
   request: () => ({ type: GET_DATA_COLLECTORS_PERFORMANCE.REQUEST }),
-  success: (list, completeness, epiDateRange) => ({
+  success: (list, completeness, epiDateRange, filters) => ({
     type: GET_DATA_COLLECTORS_PERFORMANCE.SUCCESS,
     list,
     completeness,
     epiDateRange,
+    filters,
   }),
   failure: (message) => ({
     type: GET_DATA_COLLECTORS_PERFORMANCE.FAILURE,

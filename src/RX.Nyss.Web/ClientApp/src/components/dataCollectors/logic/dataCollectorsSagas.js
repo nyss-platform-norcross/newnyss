@@ -313,6 +313,7 @@ function* getDataCollectorsPerformance({ projectId, filters }) {
         response.value.performance,
         response.value.completeness,
         response.value.epiDateRange,
+        filters,
       ),
     );
   } catch (error) {

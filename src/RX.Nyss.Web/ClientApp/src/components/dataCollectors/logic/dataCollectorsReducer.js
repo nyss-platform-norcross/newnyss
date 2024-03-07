@@ -279,6 +279,7 @@ export function dataCollectorsReducer(
         performanceListData: action.list,
         completeness: action.completeness,
         epiDateRange: action.epiDateRange,
+        performanceListFilters: action.filters,
       };
 
     case actions.GET_DATA_COLLECTORS_PERFORMANCE.FAILURE:
