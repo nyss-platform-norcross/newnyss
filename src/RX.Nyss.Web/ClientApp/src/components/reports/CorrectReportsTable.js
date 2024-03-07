@@ -149,7 +149,7 @@ export const CorrectReportsTable = ({
       <TableContainer>
         {isListFetching && <Loading absolute />}
         <Table stickyHeader>
-          <TableHead>
+          <TableHead style={{whiteSpace: "nowrap"}}>
             <TableRow>
               <TableCell style={{ width: "6%", minWidth: "80px" }}>
                 <TableSortLabel
@@ -193,7 +193,7 @@ export const CorrectReportsTable = ({
                   
                 </Fragment>
               )}
-              <TableCell style={{ width: "3%" }} />
+              <TableCell style={{ width: "3%", whiteSpace: "normal" }} />
             </TableRow>
           </TableHead>
           <TableBody>
