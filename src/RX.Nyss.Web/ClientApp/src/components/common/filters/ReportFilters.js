@@ -1,5 +1,3 @@
-import styles from "./ReportFilters.module.scss";
-
 import {
   Grid,
   MenuItem,
@@ -14,6 +12,7 @@ import {
   Radio,
   useMediaQuery,
   LinearProgress,
+  makeStyles,
 } from "@material-ui/core";
 import { strings, stringKeys } from "../../../strings";
 import {
@@ -21,13 +20,21 @@ import {
   DataCollectorType,
   correctedStateTypes,
 } from "./logic/reportFilterConstsants";
-import { Fragment } from "react";
 import { ReportStatusFilter } from "./ReportStatusFilter";
 import LocationFilter from "./LocationFilter";
 import { HealthRiskFilter } from "../../common/filters/HealthRiskFilter";
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";
 import { DrawerFilter } from "./DrawerFilter";
+
+const useStyles = makeStyles(() => ({
+  radio: {
+    height: "23px",
+  },
+  radioGroup: {
+    paddingTop: "5px",
+  },
+}));
 
 const Filter = ({
   localFilters,
@@ -41,6 +48,7 @@ const Filter = ({
   hideTrainingStatusFilter,
   rtl,
 }) => {
+  const classes = useStyles();
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const handleLocationChange = (newValue) => {
@@ -78,11 +86,13 @@ const Filter = ({
   return (
     <Grid
       container
+      direction={"row"}
+      alignItems={"flex-start"}
+      justifyContent="flex-start"
       spacing={2}
-      direction={isSmallScreen ? "column" : "row"}
-      alignItems={isSmallScreen ? "center" : "flex-start"}
     >
-      <Grid item>
+      {/* Material UI v4 lacks some key features for Grids and breakpoints, so the reordering of components in the grid must be done with css order properties and ternaries using isSmallScreen */}
+      <Grid item style={{ order: 1 }} xs={isSmallScreen ? 6 : null}>
         <LocationFilter
           filteredLocations={localFilters.locations}
           allLocations={locations}
@@ -93,8 +103,14 @@ const Filter = ({
         />
       </Grid>
 
-      <Grid item>
-        <FormControl className={styles.filterItem}>
+      <Grid
+        item
+        style={{ order: isSmallScreen ? 6 : 2 }}
+        xs={isSmallScreen ? 6 : null}
+      >
+        {/* Data Collector Type filter */}
+        {/* For some reason the max with of location filters and health risk filter caps at 222.3px, so it is set here for consistancy */}
+        <FormControl style={{ width: "100%", maxWidth: "222.3px" }}>
           <InputLabel>
             {strings(stringKeys.filters.report.selectReportListType)}
           </InputLabel>
@@ -116,110 +132,114 @@ const Filter = ({
       </Grid>
 
       {showCorrectReportFilters && (
-        <Fragment>
-          <Grid item>
-            <HealthRiskFilter
-              allHealthRisks={healthRisks}
-              filteredHealthRisks={localFilters.healthRisks}
-              onChange={handleHealthRiskChange}
-              updateValue={updateLocalFilters}
-              rtl={rtl}
-            />
-          </Grid>
-        </Fragment>
+        <Grid item style={{ order: 3 }} xs={isSmallScreen ? 6 : null}>
+          <HealthRiskFilter
+            allHealthRisks={healthRisks}
+            filteredHealthRisks={localFilters.healthRisks}
+            onChange={handleHealthRiskChange}
+            updateValue={updateLocalFilters}
+            rtl={rtl}
+          />
+        </Grid>
       )}
 
       {!showCorrectReportFilters && (
-        <Fragment>
-          <Grid item>
-            <FormControl className={styles.filterItem}>
-              <InputLabel>
-                {strings(stringKeys.filters.report.selectErrorType)}
-              </InputLabel>
-              <Select
-                onChange={handleErrorTypeChange}
-                value={localFilters.errorType}
-              >
-                {reportErrorFilterTypes.map((errorType) => (
-                  <MenuItem value={errorType} key={`errorfilter_${errorType}`}>
-                    {strings(stringKeys.filters.report.errorTypes[errorType])}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-        </Fragment>
+        <Grid
+          item
+          style={{ order: isSmallScreen ? 7 : 4 }}
+          xs={isSmallScreen ? 6 : null}
+        >
+          {/* Error Type filter */}
+          <FormControl style={{ width: "100%", maxWidth: "222.3px" }}>
+            <InputLabel>
+              {strings(stringKeys.filters.report.selectErrorType)}
+            </InputLabel>
+            <Select
+              onChange={handleErrorTypeChange}
+              value={localFilters.errorType}
+            >
+              {reportErrorFilterTypes.map((errorType) => (
+                <MenuItem value={errorType} key={`errorfilter_${errorType}`}>
+                  {strings(stringKeys.filters.report.errorTypes[errorType])}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
       )}
 
       {!showCorrectReportFilters && !hideCorrectedFilter && (
-        <Fragment>
-          <Grid item>
-            <FormControl className={styles.filterItem}>
-              <InputLabel>
-                {strings(stringKeys.filters.report.isCorrected)}
-              </InputLabel>
-              <Select
-                onChange={handleCorrectedStateChange}
-                value={localFilters.correctedState}
-              >
-                {correctedStateTypes.map((state) => (
-                  <MenuItem value={state} key={`correctedState_${state}`}>
-                    {strings(stringKeys.filters.report.correctedStates[state])}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-        </Fragment>
+        <Grid item style={{ order: 5 }} xs={isSmallScreen ? 6 : null}>
+          {/* Is Corrected filter */}
+          <FormControl style={{ width: "100%", maxWidth: "220px" }}>
+            <InputLabel>
+              {strings(stringKeys.filters.report.isCorrected)}
+            </InputLabel>
+            <Select
+              onChange={handleCorrectedStateChange}
+              value={localFilters.correctedState}
+            >
+              {correctedStateTypes.map((state) => (
+                <MenuItem value={state} key={`correctedState_${state}`}>
+                  {strings(stringKeys.filters.report.correctedStates[state])}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
       )}
 
       {!hideTrainingStatusFilter && (
-        <Fragment>
-          <Grid item>
-            <FormControl>
-              <FormLabel component="legend">
-                {strings(stringKeys.dashboard.filters.trainingStatus)}
-              </FormLabel>
-              <RadioGroup
-                value={localFilters.trainingStatus}
-                onChange={handleTrainingStatusChange}
-                className={styles.radioGroup}
-              >
-                <FormControlLabel
-                  className={styles.radio}
-                  label={strings(
-                    stringKeys.dataCollectors.constants.trainingStatus.Trained,
-                  )}
-                  value={"Trained"}
-                  control={<Radio color="primary" />}
-                />
-                <FormControlLabel
-                  className={styles.radio}
-                  label={strings(
-                    stringKeys.dataCollectors.constants.trainingStatus
-                      .InTraining,
-                  )}
-                  value={"InTraining"}
-                  control={<Radio color="primary" />}
-                />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
-        </Fragment>
+        <Grid
+          item
+          style={{ order: isSmallScreen ? 2 : 6, maxWidth: "220px" }}
+          xs={isSmallScreen ? 6 : null}
+        >
+          {/* Training status filter */}
+          <FormControl>
+            <FormLabel component="legend">
+              {strings(stringKeys.dashboard.filters.trainingStatus)}
+            </FormLabel>
+            <RadioGroup
+              value={localFilters.trainingStatus}
+              onChange={handleTrainingStatusChange}
+              className={classes.radioGroup}
+            >
+              <FormControlLabel
+                className={classes.radio}
+                label={strings(
+                  stringKeys.dataCollectors.constants.trainingStatus.Trained,
+                )}
+                value={"Trained"}
+                control={<Radio color="primary" />}
+              />
+              <FormControlLabel
+                className={classes.radio}
+                label={strings(
+                  stringKeys.dataCollectors.constants.trainingStatus.InTraining,
+                )}
+                value={"InTraining"}
+                control={<Radio color="primary" />}
+              />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
       )}
 
       {showCorrectReportFilters && (
-        <Fragment>
-          <Grid item>
-            <ReportStatusFilter
-              filter={localFilters.reportStatus}
-              onChange={handleReportStatusChange}
-              correctReports={showCorrectReportFilters}
-              showDismissedFilter
-              doNotWrap
-            />
-          </Grid>
-        </Fragment>
+        <Grid
+          item
+          style={{ order: isSmallScreen ? 4 : 7 }}
+          xs={isSmallScreen ? 6 : null}
+        >
+          <ReportStatusFilter
+            filter={localFilters.reportStatus}
+            onChange={handleReportStatusChange}
+            correctReports={showCorrectReportFilters}
+            showDismissedFilter
+            doNotWrap
+          />
+        </Grid>
       )}
     </Grid>
   );

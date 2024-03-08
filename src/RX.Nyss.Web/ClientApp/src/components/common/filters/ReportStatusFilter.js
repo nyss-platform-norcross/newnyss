@@ -1,13 +1,26 @@
-import styles from "./ReportFilters.module.scss";
 import {
   Checkbox,
   FormControl,
   FormControlLabel,
   FormGroup,
   FormLabel,
+  makeStyles,
 } from "@material-ui/core";
 import { Fragment } from "react";
 import { stringKeys, strings } from "../../../strings";
+
+const useStyles = makeStyles(() => ({
+  checkbox: {
+    height: "23px ",
+  },
+  filterCheckboxGroup: {
+    maxHeight: "50px",
+    paddingTop: "5px",
+  },
+  noFlexWrap: {
+    flexWrap: "nowrap",
+  },
+}));
 
 export const ReportStatusFilter = ({
   filter,
@@ -16,23 +29,25 @@ export const ReportStatusFilter = ({
   showDismissedFilter,
   doNotWrap,
 }) => {
+  const classes = useStyles();
+
   return (
     <Fragment>
-      <FormControl className={styles.filterItem}>
+      <FormControl className={classes.filterItem}>
         <FormLabel component="legend">
           {strings(stringKeys.filters.report.status)}
         </FormLabel>
         <FormGroup
           className={
             doNotWrap
-              ? `${styles.filterCheckboxGroup} ${styles.noFlexWrap}`
-              : styles.filterCheckboxGroup
+              ? `${classes.filterCheckboxGroup} ${classes.noFlexWrap}`
+              : classes.filterCheckboxGroup
           }
         >
           {correctReports && (
             <Fragment>
               <FormControlLabel
-                className={styles.checkbox}
+                className={classes.checkbox}
                 control={
                   <Checkbox
                     checked={filter.kept}
@@ -44,7 +59,7 @@ export const ReportStatusFilter = ({
                 label={strings(stringKeys.filters.report.kept)}
               />
               <FormControlLabel
-                className={styles.checkbox}
+                className={classes.checkbox}
                 control={
                   <Checkbox
                     checked={filter.notCrossChecked}
@@ -57,7 +72,7 @@ export const ReportStatusFilter = ({
               />
               {showDismissedFilter && (
                 <FormControlLabel
-                  className={styles.checkbox}
+                  className={classes.checkbox}
                   control={
                     <Checkbox
                       checked={filter.dismissed}
@@ -74,7 +89,7 @@ export const ReportStatusFilter = ({
           {!correctReports && (
             <Fragment>
               <FormControlLabel
-                className={styles.checkbox}
+                className={classes.checkbox}
                 control={
                   <Checkbox
                     checked={filter.real}
@@ -86,7 +101,7 @@ export const ReportStatusFilter = ({
                 label={strings(stringKeys.filters.report.nonTrainingReports)}
               />
               <FormControlLabel
-                className={styles.checkbox}
+                className={classes.checkbox}
                 control={
                   <Checkbox
                     checked={filter.corrected}
