@@ -41,7 +41,7 @@ const Filter = ({
   hideTrainingStatusFilter,
   rtl,
 }) => {
-  const isSmallScreen = useMediaQuery(theme => theme.breakpoints.down("sm"));
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const handleLocationChange = (newValue) => {
     handleFiltersChange({
@@ -76,7 +76,12 @@ const Filter = ({
     });
 
   return (
-    <Grid container spacing={2} direction={isSmallScreen ? "column" : "row"} alignItems={isSmallScreen ? "center" : "flex-start"} >
+    <Grid
+      container
+      spacing={2}
+      direction={isSmallScreen ? "column" : "row"}
+      alignItems={isSmallScreen ? "center" : "flex-start"}
+    >
       <Grid item>
         <LocationFilter
           filteredLocations={localFilters.locations}
@@ -98,9 +103,7 @@ const Filter = ({
             value={localFilters.dataCollectorType}
           >
             <MenuItem value={DataCollectorType.unknownSender}>
-              {strings(
-                stringKeys.filters.report.unknownSenderReportListType,
-              )}
+              {strings(stringKeys.filters.report.unknownSenderReportListType)}
             </MenuItem>
             <MenuItem value={DataCollectorType.human}>
               {strings(stringKeys.filters.report.mainReportsListType)}
@@ -138,13 +141,8 @@ const Filter = ({
                 value={localFilters.errorType}
               >
                 {reportErrorFilterTypes.map((errorType) => (
-                  <MenuItem
-                    value={errorType}
-                    key={`errorfilter_${errorType}`}
-                  >
-                    {strings(
-                      stringKeys.filters.report.errorTypes[errorType],
-                    )}
+                  <MenuItem value={errorType} key={`errorfilter_${errorType}`}>
+                    {strings(stringKeys.filters.report.errorTypes[errorType])}
                   </MenuItem>
                 ))}
               </Select>
@@ -166,9 +164,7 @@ const Filter = ({
               >
                 {correctedStateTypes.map((state) => (
                   <MenuItem value={state} key={`correctedState_${state}`}>
-                    {strings(
-                      stringKeys.filters.report.correctedStates[state],
-                    )}
+                    {strings(stringKeys.filters.report.correctedStates[state])}
                   </MenuItem>
                 ))}
               </Select>
@@ -192,8 +188,7 @@ const Filter = ({
                 <FormControlLabel
                   className={styles.radio}
                   label={strings(
-                    stringKeys.dataCollectors.constants.trainingStatus
-                      .Trained,
+                    stringKeys.dataCollectors.constants.trainingStatus.Trained,
                   )}
                   value={"Trained"}
                   control={<Radio color="primary" />}
@@ -221,14 +216,14 @@ const Filter = ({
               onChange={handleReportStatusChange}
               correctReports={showCorrectReportFilters}
               showDismissedFilter
+              doNotWrap
             />
           </Grid>
         </Fragment>
       )}
     </Grid>
-  )
-}
-
+  );
+};
 
 export const ReportFilters = ({
   filters,
@@ -256,18 +251,18 @@ export const ReportFilters = ({
     locations,
     localFilters,
     updateLocalFilters,
-    showUnknownLocation
+    showUnknownLocation,
   );
 
-  const isSmallScreen = useMediaQuery(theme => theme.breakpoints.down("sm"));
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   if (!localFilters) {
     return null;
   }
 
-  if(isSmallScreen) {
-    if(isListFetching){
-      return <LinearProgress color="primary"/>
+  if (isSmallScreen) {
+    if (isListFetching) {
+      return <LinearProgress color="primary" />;
     }
     return (
       <Grid container justifyContent="center" style={{ marginBottom: 20 }}>
@@ -287,7 +282,8 @@ export const ReportFilters = ({
               rtl={rtl}
             />
           }
-          showResults={handleFiltersChange}/>
+          showResults={handleFiltersChange}
+        />
       </Grid>
     );
   }
