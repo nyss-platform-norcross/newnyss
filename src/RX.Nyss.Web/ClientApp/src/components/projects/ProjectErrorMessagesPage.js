@@ -95,7 +95,7 @@ const ProjectErrorMessagesPageComponent = (props) => {
 
   return (
     <Grid style={{ maxWidth: 800 }}>
-      <TableHeader>
+      <TableHeader settingsHeader>
         <FormActions className={styles.formsActions}>
           {form && (
             <>

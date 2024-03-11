@@ -11,13 +11,22 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: "column",
     },
   },
+  settingsHeaderStyle: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
 }));
 
-const TableHeader = ({ children }) => {
+const TableHeader = ({ children, settingsHeader = false }) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.tableHeader}>
+    <div
+      className={`${
+        settingsHeader ? classes.settingsHeaderStyle : classes.tableHeader
+      }`}
+    >
       <SubMenuTitle />
       {children}
     </div>

@@ -27,7 +27,7 @@ const ProjectAlertRecipientsListPageComponent = (props) => {
 
   return (
     <Fragment>
-      <TableHeader>
+      <TableHeader settingsHeader>
         {!props.nationalSocietyIsArchived && !props.projectIsClosed && (
           <TableActionsButton
             onClick={() => props.goToCreation(props.projectId)}
