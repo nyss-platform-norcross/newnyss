@@ -27,7 +27,14 @@ import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";
 import { DrawerFilter } from "./DrawerFilter";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+  selectFilterItem: {
+    width: "150px",
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+      maxWidth: "220px",
+    },
+  },
   radio: {
     height: "23px",
   },
@@ -49,7 +56,7 @@ const Filter = ({
   rtl,
 }) => {
   const classes = useStyles();
-  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("xs"));
 
   const handleLocationChange = (newValue) => {
     handleFiltersChange({
@@ -109,8 +116,7 @@ const Filter = ({
         xs={isSmallScreen ? 6 : null}
       >
         {/* Data Collector Type filter */}
-        {/* For some reason the max with of location filters and health risk filter caps at 222.3px, so it is set here for consistancy */}
-        <FormControl style={{ width: "100%", maxWidth: "222.3px" }}>
+        <FormControl className={classes.selectFilterItem}>
           <InputLabel>
             {strings(stringKeys.filters.report.selectReportListType)}
           </InputLabel>
@@ -150,7 +156,7 @@ const Filter = ({
           xs={isSmallScreen ? 6 : null}
         >
           {/* Error Type filter */}
-          <FormControl style={{ width: "100%", maxWidth: "222.3px" }}>
+          <FormControl className={classes.selectFilterItem}>
             <InputLabel>
               {strings(stringKeys.filters.report.selectErrorType)}
             </InputLabel>
@@ -171,7 +177,7 @@ const Filter = ({
       {!showCorrectReportFilters && !hideCorrectedFilter && (
         <Grid item style={{ order: 5 }} xs={isSmallScreen ? 6 : null}>
           {/* Is Corrected filter */}
-          <FormControl style={{ width: "100%", maxWidth: "220px" }}>
+          <FormControl className={classes.selectFilterItem}>
             <InputLabel>
               {strings(stringKeys.filters.report.isCorrected)}
             </InputLabel>
@@ -192,7 +198,7 @@ const Filter = ({
       {!hideTrainingStatusFilter && (
         <Grid
           item
-          style={{ order: isSmallScreen ? 2 : 6, maxWidth: "220px" }}
+          style={{ order: isSmallScreen ? 2 : 6 }}
           xs={isSmallScreen ? 6 : null}
         >
           {/* Training status filter */}
@@ -274,13 +280,13 @@ export const ReportFilters = ({
     showUnknownLocation,
   );
 
-  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   if (!localFilters) {
     return null;
   }
 
-  if (isSmallScreen) {
+  if (isMediumScreen) {
     if (isListFetching) {
       return <LinearProgress color="primary" />;
     }

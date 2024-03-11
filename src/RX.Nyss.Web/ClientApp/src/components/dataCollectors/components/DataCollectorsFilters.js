@@ -1,4 +1,3 @@
-import styles from "./DataCollectorsFilters.module.scss";
 import { useEffect, useReducer } from "react";
 import { strings, stringKeys } from "../../../strings";
 import {
@@ -18,6 +17,7 @@ import {
   CardContent,
   useTheme,
   useMediaQuery,
+  makeStyles,
 } from "@material-ui/core";
 import * as roles from "../../../authentication/roles";
 import useDebounce from "../../../utils/debounce";
@@ -25,6 +25,28 @@ import LocationFilter from "../../common/filters/LocationFilter";
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";
 import { DrawerFilter } from "../../common/filters/DrawerFilter";
+
+const useStyles = makeStyles((theme) => ({
+  filterItem: {
+    width: "150px",
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+      maxWidth: "220px",
+    },
+  },
+  filters: {
+    boxShadow: "#fff 0px 5px 5px 5px",
+  },
+  filterRadioGroup: {
+    paddingTop: "5px",
+  },
+  radio: {
+    height: "23px",
+  },
+  filterLabel: {
+    fontWeight: 400,
+  },
+}));
 
 export const DataCollectorsFilters = ({
   supervisors,
@@ -36,6 +58,8 @@ export const DataCollectorsFilters = ({
 }) => {
   //Reducer for local filters state
   const [localFilters, updateLocalFilters] = useLocalFilters(filters);
+
+  const classes = useStyles();
 
   //Fetches new data based on changes in filters
   const handleFiltersChange = (filters) => {
@@ -50,8 +74,9 @@ export const DataCollectorsFilters = ({
     updateLocalFilters,
   );
 
-  const theme = useTheme()
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const updateValue = (change) => {
     handleFiltersChange(change);
@@ -74,7 +99,6 @@ export const DataCollectorsFilters = ({
   const handleDeployedModeChange = (event) =>
     updateValue({ deployedMode: event.target.value });
 
-
   const Filter = () => {
     const [name, setName] = useReducer(
       (state, action) => {
@@ -92,7 +116,8 @@ export const DataCollectorsFilters = ({
     const handleNameChange = (event) => setName(event.target.value);
 
     useEffect(() => {
-      debouncedName.changed && handleFiltersChange({ name: debouncedName.value });
+      debouncedName.changed &&
+        handleFiltersChange({ name: debouncedName.value });
     }, [debouncedName.value]);
 
     useEffect(() => {
@@ -100,17 +125,17 @@ export const DataCollectorsFilters = ({
     }, [debouncedName]);
 
     return (
-      <Grid container spacing={2} direction={isSmallScreen ? "column" : "row"} alignItems={isSmallScreen ? "center" : "flex-start"} >
-        <Grid item>
+      <Grid container spacing={2} direction={"row"} alignItems={"flex-start"}>
+        <Grid item xs={isSmallScreen ? 6 : null}>
           <TextField
             label={strings(stringKeys.dataCollectors.filters.name)}
             value={name.value}
             onChange={handleNameChange}
-            className={styles.filterItem}
+            className={classes.filterItem}
             InputLabelProps={{ shrink: true }}
           ></TextField>
         </Grid>
-        <Grid item>
+        <Grid item xs={isSmallScreen ? 6 : null}>
           <LocationFilter
             filteredLocations={localFilters.locations}
             allLocations={locations}
@@ -121,19 +146,19 @@ export const DataCollectorsFilters = ({
         </Grid>
 
         {!callingUserRoles.some((r) => r === roles.Supervisor) && (
-          <Grid item>
+          <Grid item xs={isSmallScreen ? 6 : null}>
             <TextField
               select
               label={strings(stringKeys.dataCollectors.filters.supervisors)}
               onChange={handleSupervisorChange}
               value={localFilters.supervisorId || 0}
-              className={styles.filterItem}
+              className={classes.filterItem}
               InputLabelProps={{ shrink: true }}
               SelectProps={{
                 MenuProps: {
                   PaperProps: {
                     style: {
-                      maxWidth: '90%',
+                      maxWidth: "90%",
                     },
                   },
                 },
@@ -155,13 +180,14 @@ export const DataCollectorsFilters = ({
           </Grid>
         )}
 
-        <Grid item>
+        {/* DC sex filter */}
+        <Grid item xs={isSmallScreen ? 6 : null}>
           <TextField
             select
             label={strings(stringKeys.dataCollectors.filters.sex)}
             onChange={handleSexChange}
             value={localFilters.sex || "all"}
-            className={styles.filterItem}
+            className={classes.filterItem}
             InputLabelProps={{ shrink: true }}
           >
             <MenuItem value="all">
@@ -171,33 +197,30 @@ export const DataCollectorsFilters = ({
             {sexValues.map((sex) => (
               <MenuItem key={`datacollector_filter_${sex}`} value={sex}>
                 {strings(
-                  stringKeys.dataCollectors.constants.sex[
-                    sex.toLowerCase()
-                  ],
+                  stringKeys.dataCollectors.constants.sex[sex.toLowerCase()],
                 )}
               </MenuItem>
             ))}
           </TextField>
         </Grid>
 
-        <Grid item>
+        {/* Training status filter */}
+        <Grid item xs={isSmallScreen ? 6 : null}>
           <InputLabel>
             {strings(stringKeys.dataCollectors.filters.trainingStatus)}
           </InputLabel>
           <RadioGroup
             value={localFilters.trainingStatus || "All"}
             onChange={handleTrainingStatusChange}
-            className={styles.filterRadioGroup}
+            className={classes.filterRadioGroup}
           >
             {trainingStatus.map((status) => (
               <FormControlLabel
                 key={`trainingStatus_filter_${status}`}
                 control={<Radio />}
-                className={styles.radio}
+                className={classes.radio}
                 label={strings(
-                  stringKeys.dataCollectors.constants.trainingStatus[
-                    status
-                  ],
+                  stringKeys.dataCollectors.constants.trainingStatus[status],
                 )}
                 value={status}
               />
@@ -205,20 +228,20 @@ export const DataCollectorsFilters = ({
           </RadioGroup>
         </Grid>
 
-        <Grid item>
+        <Grid item xs={isSmallScreen ? 6 : null}>
           <InputLabel>
             {strings(stringKeys.dataCollectors.filters.deployedMode)}
           </InputLabel>
           <RadioGroup
             value={localFilters.deployedMode}
             onChange={handleDeployedModeChange}
-            className={styles.filterRadioGroup}
+            className={classes.filterRadioGroup}
           >
             {deployedMode.map((status) => (
               <FormControlLabel
                 key={`deployedMode_filter_${status}`}
                 control={<Radio />}
-                className={styles.radio}
+                className={classes.radio}
                 label={strings(
                   stringKeys.dataCollectors.constants.deployedMode[status],
                 )}
@@ -228,24 +251,28 @@ export const DataCollectorsFilters = ({
           </RadioGroup>
         </Grid>
       </Grid>
-    )
-  }
+    );
+  };
 
-  if(isSmallScreen) {
+  if (isMediumScreen) {
     return (
-    !!localFilters && (
-      <Grid container justifyContent="center" style={{ marginBottom: 20 }}>
-        <DrawerFilter title={strings(stringKeys.dataCollectors.title)} children={<Filter/>} showResults={handleFiltersChange}/>
-      </Grid>
+      !!localFilters && (
+        <Grid container justifyContent="center" style={{ marginBottom: 20 }}>
+          <DrawerFilter
+            title={strings(stringKeys.dataCollectors.title)}
+            children={<Filter />}
+            showResults={handleFiltersChange}
+          />
+        </Grid>
       )
-    )
+    );
   }
 
   return (
     !!localFilters && (
-      <Card className={styles.filters}>
+      <Card className={classes.filters}>
         <CardContent>
-          <Filter/>
+          <Filter />
         </CardContent>
       </Card>
     )

@@ -12,6 +12,9 @@ import { stringKeys, strings } from "../../../strings";
 const useStyles = makeStyles(() => ({
   checkbox: {
     height: "23px ",
+    "& .MuiTypography-body1": {
+      lineHeight: "0.8",
+    },
   },
   filterCheckboxGroup: {
     maxHeight: "50px",
