@@ -88,6 +88,7 @@ function* getNationalSocietyDashboardData({ nationalSocietyId, filters }) {
         response.value.reportsGroupedByHealthRiskAndDate,
         response.value.reportsGroupedByFeaturesAndDate,
         response.value.reportsGroupedByFeatures,
+        response.value.keptReportsInEscalatedAlertsHistogramData,
       ),
     );
   } catch (error) {

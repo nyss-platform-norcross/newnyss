@@ -52,6 +52,8 @@ export function nationalSocietyDashboardReducer(
           action.reportsGroupedByHealthRiskAndDate,
         reportsGroupedByFeaturesAndDate: action.reportsGroupedByFeaturesAndDate,
         reportsGroupedByFeatures: action.reportsGroupedByFeatures,
+        keptReportsInEscalatedAlertsHistogramData:
+          action.keptReportsInEscalatedAlertsHistogramData,
         isFetching: false,
       };
 
