@@ -193,7 +193,7 @@ export const CorrectReportsTable = ({
                   
                 </Fragment>
               )}
-              <TableCell style={{ width: "3%", whiteSpace: "normal" }} />
+              <TableCell style={{ width: "3%" }} />
             </TableRow>
           </TableHead>
           <TableBody>
