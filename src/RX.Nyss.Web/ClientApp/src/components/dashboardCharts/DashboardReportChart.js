@@ -5,7 +5,7 @@ import HighchartsReact from "highcharts-react-official";
 import { strings, stringKeys } from "../../strings";
 import useHoverChartTracking from "../../utils/useHoverChartTracking";
 
-const getOptions = (valuesLabel, series, categories) => ({
+const getOptions = (valuesLabel, series, categories, groupingType) => ({
   chart: {
     type: "column",
     backgroundColor: "transparent",
@@ -18,6 +18,16 @@ const getOptions = (valuesLabel, series, categories) => ({
   },
   xAxis: {
     categories: categories,
+    labels: {
+      formatter: function () {
+        // Display only week, input data format "yyyy/MM", output format "MM"
+        if (groupingType === "Week") {
+          let weekWithoutYear = this.value.split("/")[1]
+          return weekWithoutYear;
+        }
+        return this.value;
+      },
+    },
   },
   yAxis: {
     title: {
@@ -57,7 +67,7 @@ const getOptions = (valuesLabel, series, categories) => ({
   series,
 });
 
-export const DashboardReportChart = ({ data }) => {
+export const DashboardReportChart = ({ data, groupingType }) => {
   const trackHoveredChart = useHoverChartTracking();
   const resizeChart = (element) => {
     element && element.chart.reflow();
@@ -86,6 +96,7 @@ export const DashboardReportChart = ({ data }) => {
     strings(stringKeys.dashboard.reportsPerHealthRisk.numberOfReports, true),
     series,
     categories,
+    groupingType,
   );
 
   return (

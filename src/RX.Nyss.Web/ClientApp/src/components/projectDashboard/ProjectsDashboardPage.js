@@ -112,16 +112,19 @@ const ProjectDashboardPageComponent = ({
           <Grid item xs={12}>
             <DashboardReportChart
               data={props.reportsGroupedByHealthRiskAndDate}
+              groupingType={props.filters.groupingType}
             />
           </Grid>
           <Grid item xs={12}>
             <DashboardReportVillageChart
               data={props.reportsGroupedByVillageAndDate}
+              groupingType={props.filters.groupingType}
             />
           </Grid>
           <Grid item xs={12}>
             <DashboardReportSexAgeChart
               data={props.reportsGroupedByFeaturesAndDate}
+              groupingType={props.filters.groupingType}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
