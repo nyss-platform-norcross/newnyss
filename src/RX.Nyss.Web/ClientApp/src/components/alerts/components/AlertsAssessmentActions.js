@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { stringKeys, strings } from "../../../strings";
 import SubmitButton from "../../common/buttons/submitButton/SubmitButton";
-import CancelButton from "../../common/buttons/cancelButton/CancelButton";
 import { AlertsEscalationDialog } from "./AlertsEscalationDialog";
 import { assessmentStatus } from "../logic/alertsConstants";
 import { AlertsCloseDialog } from "./AlertsCloseDialog";
@@ -11,6 +10,7 @@ import { validators, createForm } from "../../../utils/forms";
 import { Button, CircularProgress, Grid, Snackbar, useMediaQuery} from "@material-ui/core";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import { trackEvent } from "../../../utils/appInsightsHelper";
+import GoBackToButton from "../../common/buttons/goBackToButton/GoBackToButton";
 
 export const AlertsAssessmentActions = ({
   projectId,
@@ -141,11 +141,11 @@ export const AlertsAssessmentActions = ({
           </>
         )}
       </Grid>
-      <Grid item container justifyContent={isSmallScreen ? "" : "space-between"} direction={isSmallScreen ? "column-reverse" : ""}>
-        <Grid item>
-          <CancelButton onClick={() => props.goToList(projectId)}>
+      <Grid item container justifyContent={isSmallScreen ? "" : "space-between"} spacing={1}>
+        <Grid item xs={isSmallScreen ? 12 : 6} style={{ order: isSmallScreen ? 2 : 1 }}>
+          <GoBackToButton onClick={() => props.goToList(projectId)} >
             {strings(stringKeys.alerts.assess.goBack)}
-          </CancelButton>
+          </GoBackToButton>
         </Grid>
         {!props.isPendingAlertState && (
           <Fragment>
@@ -174,22 +174,22 @@ export const AlertsAssessmentActions = ({
                       setEscalationWithoutNotificationDialogOpened(false)
                     }
                   />
-                <Grid container alignItems="center" item style={{ maxWidth: "fit-content" }}>
-                <Grid item style={{ marginRight: 10 }}>
-                  <CheckboxField
-                    name="escalateWithoutNotification"
-                    label={strings(
-                      stringKeys.alerts.assess.alert
-                      .escalateWithoutNotification,
-                      )}
-                      field={form.fields.escalateWithoutNotification}
-                  />
-                </Grid>
-                <Grid item>
-                  <SubmitButton onClick={handleEscalateAlert}>
-                    {strings(stringKeys.alerts.assess.alert.escalate)}
-                  </SubmitButton>
-                </Grid>
+                <Grid item xs={isSmallScreen ? 12 : 6} container alignItems="center" justifyContent={isSmallScreen ? "space-between" : "flex-end"} style={{ order: isSmallScreen ? 1 : 2 }}>
+                  <Grid item style={{ marginRight: 10 }}>
+                    <CheckboxField
+                      name="escalateWithoutNotification"
+                      label={strings(
+                        stringKeys.alerts.assess.alert
+                        .escalateWithoutNotification,
+                        )}
+                        field={form.fields.escalateWithoutNotification}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <SubmitButton onClick={handleEscalateAlert}>
+                      {strings(stringKeys.alerts.assess.alert.escalate)}
+                    </SubmitButton>
+                  </Grid>
                 </Grid>
                 </Fragment>
               )}
@@ -203,22 +203,23 @@ export const AlertsAssessmentActions = ({
                 >
                   {strings(stringKeys.alerts.assess.alert.dismiss)}
                 </SubmitButton>
-              )}
-
+            )}
             {alertAssessmentStatus === assessmentStatus.escalated &&
-              hasAccess && (
-                <Fragment>
-                  <AlertsCloseDialog
-                    alertId={alertId}
-                    closeAlert={props.closeAlert}
-                    isClosing={props.isClosing}
-                    isOpened={closeDialogOpened}
-                    close={() => setCloseDialogOpened(false)}
-                  />
-                  <SubmitButton onClick={() => setCloseDialogOpened(true)}>
-                    {strings(stringKeys.alerts.assess.alert.close)}
-                  </SubmitButton>
-                </Fragment>
+                hasAccess && (
+                  <Fragment>
+                    <AlertsCloseDialog
+                      alertId={alertId}
+                      closeAlert={props.closeAlert}
+                      isClosing={props.isClosing}
+                      isOpened={closeDialogOpened}
+                      close={() => setCloseDialogOpened(false)}
+                    />
+                  <Grid container item xs={isSmallScreen ? 12 : 6} justifyContent={isSmallScreen ? "space-between" : "flex-end"}  style={{ order: isSmallScreen ? 1 : 2 }}>
+                    <SubmitButton onClick={() => setCloseDialogOpened(true)}>
+                      {strings(stringKeys.alerts.assess.alert.close)}
+                    </SubmitButton>
+                  </Grid>
+                  </Fragment>
               )}
           </Fragment>
         )}
