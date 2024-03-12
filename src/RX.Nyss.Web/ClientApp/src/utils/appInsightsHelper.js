@@ -9,7 +9,7 @@ export const trackPageView = (name, properties) => {
   const projectName = appData?.siteMap?.parameters?.projectName;
 
   const appInsights = getAppInsights();
-  appInsights.trackPageView({
+  appInsights?.trackPageView({
     name,
     properties: {
       userRole,
@@ -28,7 +28,7 @@ export const trackEvent = (name, properties) => {
   const projectName = appData?.siteMap?.parameters?.projectName;
 
   const appInsights = getAppInsights();
-  appInsights.trackEvent({
+  appInsights?.trackEvent({
     name,
     properties: {
       userRole,
