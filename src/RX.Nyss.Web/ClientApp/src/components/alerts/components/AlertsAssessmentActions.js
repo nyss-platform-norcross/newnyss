@@ -142,7 +142,7 @@ export const AlertsAssessmentActions = ({
         )}
       </Grid>
       <Grid item container justifyContent={isSmallScreen ? "" : "space-between"} spacing={1}>
-        <Grid item xs={isSmallScreen ? 12 : 6} style={{ order: isSmallScreen ? 2 : 1 }}>
+        <Grid item xs={6} style={{ order: isSmallScreen ? 2 : 1 }}>
           <GoBackToButton onClick={() => props.goToList(projectId)} >
             {strings(stringKeys.alerts.assess.goBack)}
           </GoBackToButton>
@@ -214,7 +214,7 @@ export const AlertsAssessmentActions = ({
                       isOpened={closeDialogOpened}
                       close={() => setCloseDialogOpened(false)}
                     />
-                  <Grid container item xs={isSmallScreen ? 12 : 6} justifyContent={isSmallScreen ? "space-between" : "flex-end"}  style={{ order: isSmallScreen ? 1 : 2 }}>
+                  <Grid container item xs={6} justifyContent={"flex-end"}  style={{ order: isSmallScreen ? 2 : 1 }}>
                     <SubmitButton onClick={() => setCloseDialogOpened(true)}>
                       {strings(stringKeys.alerts.assess.alert.close)}
                     </SubmitButton>
