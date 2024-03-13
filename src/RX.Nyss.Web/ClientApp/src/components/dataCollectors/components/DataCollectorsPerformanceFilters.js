@@ -1,4 +1,3 @@
-import styles from "./DataCollectorsPerformanceFilters.module.scss";
 import { useEffect, useReducer } from "react";
 import {
   Card,
@@ -12,6 +11,7 @@ import {
   InputLabel,
   useTheme,
   useMediaQuery,
+  makeStyles,
 } from "@material-ui/core";
 import { strings, stringKeys } from "../../../strings";
 import useDebounce from "../../../utils/debounce";
@@ -21,6 +21,22 @@ import LocationFilter from "../../common/filters/LocationFilter";
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";
 import { DrawerFilter } from "../../common/filters/DrawerFilter";
+
+const useStyles = makeStyles((theme) => ({
+  selectFilterItem: {
+    width: "150px",
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+      maxWidth: "220px",
+    },
+  },
+  filterRadioGroup: {
+    paddingTop: "5px",
+  },
+  radio: {
+    height: "23px",
+  },
+}));
 
 export const DataCollectorsPerformanceFilters = ({
   onChange,
@@ -45,12 +61,13 @@ export const DataCollectorsPerformanceFilters = ({
     updateLocalFilters,
   );
 
-  const theme = useTheme()
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const theme = useTheme();
+  const classes = useStyles();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleAreaChange = (newValue) =>
     handleFiltersChange({ locations: newValue, pageNumber: 1 });
-
 
   const handleSupervisorChange = (event) =>
     handleFiltersChange({
@@ -81,22 +98,22 @@ export const DataCollectorsPerformanceFilters = ({
     const handleNameChange = (event) => setName(event.target.value);
 
     useEffect(() => {
-      debouncedName.changed && handleFiltersChange({ name: debouncedName.value });
+      debouncedName.changed &&
+        handleFiltersChange({ name: debouncedName.value });
     }, [debouncedName.value]);
 
-
     return (
-      <Grid container spacing={2} direction={isSmallScreen ? "column" : "row"} alignItems={isSmallScreen ? "center" : "flex-start"} >
-        <Grid item>
+      <Grid container spacing={2} direction={"row"} alignItems={"flex-start"}>
+        <Grid item xs={isSmallScreen ? 6 : null}>
           <TextField
             label={strings(stringKeys.common.name)}
             onChange={handleNameChange}
             value={name.value}
-            className={styles.filterItem}
+            className={classes.selectFilterItem}
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={isSmallScreen ? 6 : null}>
           <LocationFilter
             allLocations={locations}
             filteredLocations={filters.locations}
@@ -107,19 +124,19 @@ export const DataCollectorsPerformanceFilters = ({
         </Grid>
 
         {!userRoles.some((r) => r === roles.Supervisor) && (
-          <Grid item>
+          <Grid item xs={isSmallScreen ? 6 : null}>
             <TextField
               select
               label={strings(stringKeys.dataCollectors.filters.supervisors)}
               onChange={handleSupervisorChange}
               value={filters.supervisorId || 0}
-              className={styles.filterItem}
+              className={classes.selectFilterItem}
               InputLabelProps={{ shrink: true }}
               SelectProps={{
                 MenuProps: {
                   PaperProps: {
                     style: {
-                      maxWidth: '90%',
+                      maxWidth: "90%",
                     },
                   },
                 },
@@ -141,20 +158,20 @@ export const DataCollectorsPerformanceFilters = ({
           </Grid>
         )}
 
-        <Grid item>
+        <Grid item xs={isSmallScreen ? 6 : null}>
           <InputLabel>
             {strings(stringKeys.dataCollectors.filters.trainingStatus)}
           </InputLabel>
           <RadioGroup
             value={localFilters.trainingStatus || "All"}
             onChange={handleTrainingStatusChange}
-            className={styles.filterRadioGroup}
+            className={classes.filterRadioGroup}
           >
             {trainingStatus.map((status) => (
               <FormControlLabel
                 key={`trainingStatus_filter_${status}`}
                 control={<Radio />}
-                className={styles.radio}
+                className={classes.radio}
                 label={strings(
                   stringKeys.dataCollectors.constants.trainingStatus[status],
                 )}
@@ -165,20 +182,24 @@ export const DataCollectorsPerformanceFilters = ({
         </Grid>
       </Grid>
     );
-  }
+  };
 
-  if (isSmallScreen) {
+  if (isMediumScreen) {
     return (
       <Grid container justifyContent="center" style={{ marginBottom: 20 }}>
-        <DrawerFilter title={strings(stringKeys.dataCollectors.title)} children={<Filter/>} showResults={handleFiltersChange}/>
+        <DrawerFilter
+          title={strings(stringKeys.dataCollectors.title)}
+          children={<Filter />}
+          showResults={handleFiltersChange}
+        />
       </Grid>
-    )
+    );
   }
 
   return (
     <Card>
       <CardContent>
-        <Filter/>
+        <Filter />
       </CardContent>
     </Card>
   );
