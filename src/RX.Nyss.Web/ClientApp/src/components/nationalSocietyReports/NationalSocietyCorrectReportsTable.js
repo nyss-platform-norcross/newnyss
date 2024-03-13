@@ -120,12 +120,6 @@ export const NationalSocietyCorrectReportsTable = ({
                 <TableCell style={{ width: "10%", minWidth: "50px" }}>
                   {strings(stringKeys.reports.list.referredCount)}
                 </TableCell>
-                <TableCell style={{ width: "10%", minWidth: "50px" }}>
-                  {strings(stringKeys.reports.list.deathCount)}
-                </TableCell>
-                <TableCell style={{ width: "10%", minWidth: "50px" }}>
-                  {strings(stringKeys.reports.list.fromOtherVillagesCount)}
-                </TableCell>
               </Fragment>
             )}
           </TableRow>
@@ -169,10 +163,6 @@ export const NationalSocietyCorrectReportsTable = ({
               {isDataCollectionPointTable && (
                 <Fragment>
                   <TableCell>{renderReportValue(row.referredCount, true)}</TableCell>
-                  <TableCell>{renderReportValue(row.deathCount)}</TableCell>
-                  <TableCell>
-                    {renderReportValue(row.fromOtherVillagesCount)}
-                  </TableCell>
                 </Fragment>
               )}
             </TableRow>
