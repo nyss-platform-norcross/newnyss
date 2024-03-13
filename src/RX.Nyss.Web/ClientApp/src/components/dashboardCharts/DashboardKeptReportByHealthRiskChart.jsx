@@ -146,7 +146,7 @@ const getCategoryAndSeriesData = (data) => {
       );
       break;
     default:
-      throw new Error(`Invalid date grouping type: ${dateGroupingType}`);
+      throw new Error(`Invalid date grouping type: ${data.dateGroupingType}`);
   }
 
   // Helper function to aggregate series data based on the categories and input data.
