@@ -12,6 +12,7 @@ import { Typography } from "@material-ui/core";
 import TableHeader from "../common/tableHeader/TableHeader";
 import { trackPageView } from "../../utils/appInsightsHelper";
 import { makeStyles } from "@material-ui/core/styles";
+import AddIcon from "@material-ui/icons/Add";
 
 const useStyles = makeStyles(() => ({
   buttonContainer: {
@@ -50,6 +51,7 @@ const ProjectAlertRecipientsListPageComponent = (props) => {
               add
               variant="contained"
               rtl={useRtlDirection}
+              startIcon={<AddIcon />}
             >
               {strings(stringKeys.common.buttons.add)}
             </TableActionsButton>
