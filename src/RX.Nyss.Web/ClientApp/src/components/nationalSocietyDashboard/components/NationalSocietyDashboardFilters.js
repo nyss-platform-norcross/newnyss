@@ -51,23 +51,22 @@ const useStyles = makeStyles((theme) => ({
   },
   filters: {
     boxShadow: "#fff 0px 5px 5px 5px",
+    padding: "0px",
+    paddingBottom: "0px",
   },
   filterTitle: {
     paddingBottom: "1px",
   },
   collapsedFilterBar: {
-    paddingTop: "5px",
-    paddingBottom: "5px",
-    paddingLeft: "5px",
+    padding: "0px 5px",
+    "&:last-child": {
+      paddingBottom: "0px",
+    },
   },
   expandFilterButton: {
     marginLeft: "auto",
     "> button": {
-      transform: "rotate(0deg)",
       transition: "transform 150ms",
-      "&[data-expanded='true']": {
-        transform: "rotate(180deg)",
-      },
     },
   },
   rtl: {
@@ -90,7 +89,6 @@ const Filter = ({
 }) => {
   const classes = useStyles();
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("xs"));
-  const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const handleLocationChange = (locations) => {
     handleFiltersChange({ locations: locations });
@@ -278,7 +276,7 @@ export const NationalSocietyDashboardFilters = ({
   //Fetches new data based on changes in filters
   const handleFiltersChange = (filters) => {
     trackEvent("NsDashboardFilterChange", { filters });
-    if (isSmallScreen) {
+    if (isMediumScreen) {
       updateLocalFilters(filters);
     } else {
       onChange(updateLocalFilters(filters));
@@ -298,7 +296,6 @@ export const NationalSocietyDashboardFilters = ({
   );
 
   const classes = useStyles();
-  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("xs"));
   const isMediumScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const collectionsTypes = {
@@ -484,7 +481,9 @@ export const NationalSocietyDashboardFilters = ({
             }`}
           >
             <IconButton
-              data-expanded={isFilterExpanded}
+              style={{
+                transform: isFilterExpanded ? "rotate(180deg)" : "rotate(0deg)",
+              }}
               onClick={() => setIsFilterExpanded(!isFilterExpanded)}
             >
               <ExpandMore />
