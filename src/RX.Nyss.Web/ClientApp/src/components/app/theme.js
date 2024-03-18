@@ -233,13 +233,14 @@ export const theme = (direction) =>
         },
       },
       MuiTableHead: {
-        root: {},
-      },
-      MuiTableHead: {
         root: {
           "& .MuiTableCell-root": {
             backgroundColor: nyssPalette.background.light,
           },
+          whiteSpace: "normal",
+          "@media screen and (max-width: 500px)": {
+            whiteSpace: "nowrap",
+          }
         },
       },
       MuiTableCell: {

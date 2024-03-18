@@ -89,7 +89,7 @@ export const IncorrectReportsTable = ({
       <TableContainer>
         {isListFetching && <Loading absolute />}
         <Table stickyHeader>
-          <TableHead style={{whiteSpace: "nowrap"}}>
+          <TableHead>
             <TableRow>
               <TableCell style={{ width: "6%", minWidth: "80px" }}>
                 <TableSortLabel
