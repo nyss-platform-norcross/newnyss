@@ -9,7 +9,7 @@ import { TableActionsButton } from "../common/buttons/tableActionsButton/TableAc
 import { withLayout } from "../../utils/layout";
 import Layout from "../layout/Layout";
 import { Typography } from "@material-ui/core";
-import TableHeader from "../common/tableHeader/TableHeader";
+import SettingsTableHeader from "../common/settingsTableHeader/SettingsTableHeader";
 import { trackPageView } from "../../utils/appInsightsHelper";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
@@ -39,24 +39,23 @@ const ProjectAlertRecipientsListPageComponent = (props) => {
 
   return (
     <Fragment>
-      <TableHeader settingsHeader>
-      </TableHeader>
-        <Typography variant="subtitle1">
-          {strings(stringKeys.projectAlertRecipient.description)}
-        </Typography>
-        {!props.nationalSocietyIsArchived && !props.projectIsClosed && (
-          <div className={classes.buttonContainer}>
-          <TableActionsButton
-              onClick={() => props.goToCreation(props.projectId)}
-              add
-              variant="contained"
-              rtl={useRtlDirection}
-              startIcon={<AddIcon />}
-            >
-              {strings(stringKeys.common.buttons.add)}
-            </TableActionsButton>
-            </div>
-          )}
+      <SettingsTableHeader />
+      <Typography variant="subtitle1">
+        {strings(stringKeys.projectAlertRecipient.description)}
+      </Typography>
+      {!props.nationalSocietyIsArchived && !props.projectIsClosed && (
+        <div className={classes.buttonContainer}>
+        <TableActionsButton
+            onClick={() => props.goToCreation(props.projectId)}
+            add
+            variant="contained"
+            rtl={useRtlDirection}
+            startIcon={<AddIcon />}
+          >
+            {strings(stringKeys.common.buttons.add)}
+          </TableActionsButton>
+          </div>
+        )}
       <ProjectAlertRecipientsTable
         list={props.list}
         isListFetching={props.isListFetching}

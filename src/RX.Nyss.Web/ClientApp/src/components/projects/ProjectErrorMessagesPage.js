@@ -16,7 +16,7 @@ import * as http from "../../utils/http";
 import { openErrorMessages } from "./logic/projectsActions";
 import styles from "./ProjectErrorMessagesPage.module.scss";
 import CancelButton from "../common/buttons/cancelButton/CancelButton";
-import TableHeader from "../common/tableHeader/TableHeader";
+import SettingsTableHeader from "../common/settingsTableHeader/SettingsTableHeader";
 import EditIcon from "@material-ui/icons/Edit";
 import { trackPageView } from "../../utils/appInsightsHelper";
 import { useMount } from "../../utils/lifecycle";
@@ -95,7 +95,7 @@ const ProjectErrorMessagesPageComponent = (props) => {
 
   return (
     <Grid style={{ maxWidth: 800 }}>
-      <TableHeader settingsHeader>
+      <SettingsTableHeader>
         <FormActions className={styles.formsActions}>
           {form && (
             <>
@@ -118,7 +118,7 @@ const ProjectErrorMessagesPageComponent = (props) => {
             </TableActionsButton>
           )}
         </FormActions>
-      </TableHeader>
+      </SettingsTableHeader>
       <Form onSubmit={onSubmit} fullWidth>
         <Grid container spacing={4} fixed="true">
           {errorMessages.map((itm) => (
