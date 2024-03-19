@@ -275,6 +275,13 @@ export const theme = (direction) =>
           fontWeight: "bold",
         },
       },
+      MuiCardContent: {
+        root: {
+          "&:last-child": {
+            paddingBottom: "16px",
+          },
+        },
+      },
       MuiTab: {
         root: {
           "&:hover": {
