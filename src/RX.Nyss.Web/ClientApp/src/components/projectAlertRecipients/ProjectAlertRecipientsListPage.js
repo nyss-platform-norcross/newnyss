@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect, useSelector } from "react-redux";
 import * as projectAlertRecipientsActions from "./logic/projectAlertRecipientsActions";
-import TableActions from "../common/tableActions/TableActions";
 import ProjectAlertRecipientsTable from "./ProjectAlertRecipientsTable";
 import { useMount } from "../../utils/lifecycle";
 import { strings, stringKeys } from "../../strings";
@@ -10,8 +9,20 @@ import { TableActionsButton } from "../common/buttons/tableActionsButton/TableAc
 import { withLayout } from "../../utils/layout";
 import Layout from "../layout/Layout";
 import { Typography } from "@material-ui/core";
-import TableHeader from "../common/tableHeader/TableHeader";
+import SettingsTableHeader from "../common/settingsTableHeader/SettingsTableHeader";
 import { trackPageView } from "../../utils/appInsightsHelper";
+import { makeStyles } from "@material-ui/core/styles";
+import AddIcon from "@material-ui/icons/Add";
+
+const useStyles = makeStyles(() => ({
+  buttonContainer: {
+    width:"100%",
+    display:"flex", 
+    justifyContent:"end",
+    marginTop: 8,
+    marginBottom: 4
+  }
+}));
 
 const ProjectAlertRecipientsListPageComponent = (props) => {
   useMount(() => {
@@ -21,27 +32,30 @@ const ProjectAlertRecipientsListPageComponent = (props) => {
     trackPageView("ProjectAlertRecipientsListPage");
   });
 
+  const classes = useStyles();
   const useRtlDirection = useSelector(
     (state) => state.appData.direction === "rtl",
   );
 
   return (
     <Fragment>
-      <TableHeader>
-        {!props.nationalSocietyIsArchived && !props.projectIsClosed && (
-          <TableActionsButton
+      <SettingsTableHeader />
+      <Typography variant="subtitle1">
+        {strings(stringKeys.projectAlertRecipient.description)}
+      </Typography>
+      {!props.nationalSocietyIsArchived && !props.projectIsClosed && (
+        <div className={classes.buttonContainer}>
+        <TableActionsButton
             onClick={() => props.goToCreation(props.projectId)}
             add
             variant="contained"
             rtl={useRtlDirection}
+            startIcon={<AddIcon />}
           >
             {strings(stringKeys.common.buttons.add)}
           </TableActionsButton>
+          </div>
         )}
-      </TableHeader>
-      <Typography variant="subtitle1">
-        {strings(stringKeys.projectAlertRecipient.description)}
-      </Typography>
       <ProjectAlertRecipientsTable
         list={props.list}
         isListFetching={props.isListFetching}
