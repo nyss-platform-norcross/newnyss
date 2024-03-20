@@ -9,19 +9,19 @@ import {
 import { Fragment } from "react";
 import { stringKeys, strings } from "../../../strings";
 
-const useStyles = makeStyles((theme) => ({
-  filterItem: {},
+const useStyles = makeStyles(() => ({
+  checkbox: {
+    height: "23px ",
+    "& .MuiTypography-body1": {
+      lineHeight: "0.8",
+    },
+  },
   filterCheckboxGroup: {
+    maxHeight: "50px",
     paddingTop: "5px",
   },
   noFlexWrap: {
     flexWrap: "nowrap",
-  },
-  checkbox: {
-    height: "23px",
-    "& .MuiTypography-body1": {
-      lineHeight: "0.8",
-    },
   },
 }));
 

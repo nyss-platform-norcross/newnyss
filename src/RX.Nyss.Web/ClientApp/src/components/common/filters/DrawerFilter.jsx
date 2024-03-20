@@ -31,10 +31,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: 10,
+    padding: "30px 10px",
     overflowX: "hidden",
     maxHeight: 350,
     overflowY: "auto",
+    [theme.breakpoints.down("xs")]: {
+      padding: "20px 10px",
+    },
   },
   resultsContainer: {
     display: "flex",
