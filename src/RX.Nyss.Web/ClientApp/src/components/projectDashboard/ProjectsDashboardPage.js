@@ -21,6 +21,7 @@ import SubmitButton from "../common/buttons/submitButton/SubmitButton";
 import { trackEvent, trackPageView } from "../../utils/appInsightsHelper";
 import { MapAndDashboardNumbers } from "../dashboard/MapAndDashboardNumbers";
 import { DashboardReportSexAgePyramidChart } from "../dashboardCharts/DashboardReportsSexAgePyramidChart";
+import { DashboardKeptReportByHealthRiskChart } from "../dashboardCharts/DashboardKeptReportByHealthRiskChart";
 
 const ProjectDashboardPageComponent = ({
   openDashboard,
@@ -46,7 +47,7 @@ const ProjectDashboardPageComponent = ({
   const dashboardElement = useRef(null);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const [isMapExpanded, setIsMapExpanded] = useState(false);
-  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"))
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const handleFiltersChange = (filters) => getDashboardData(projectId, filters);
 
@@ -68,7 +69,11 @@ const ProjectDashboardPageComponent = ({
 
   return (
     <Grid container spacing={2} ref={dashboardElement}>
-      <Grid item xs={12} className={!isSmallScreen ? styles.filtersGrid : undefined}>
+      <Grid
+        item
+        xs={12}
+        className={!isSmallScreen ? styles.filtersGrid : undefined}
+      >
         <ProjectsDashboardFilters
           healthRisks={props.healthRisks}
           organizations={props.organizations}
@@ -112,23 +117,33 @@ const ProjectDashboardPageComponent = ({
           <Grid item xs={12}>
             <DashboardReportChart
               data={props.reportsGroupedByHealthRiskAndDate}
+              groupingType={props.filters.groupingType}
             />
           </Grid>
           <Grid item xs={12}>
             <DashboardReportVillageChart
               data={props.reportsGroupedByVillageAndDate}
+              groupingType={props.filters.groupingType}
             />
           </Grid>
           <Grid item xs={12}>
             <DashboardReportSexAgeChart
               data={props.reportsGroupedByFeaturesAndDate}
+              groupingType={props.filters.groupingType}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <DashboardReportSexAgeTable data={props.reportsGroupedByFeatures} />
           </Grid>
           <Grid item xs={12}>
-            <DashboardReportSexAgePyramidChart data={props.reportsGroupedByFeaturesAndDate} />
+            <DashboardReportSexAgePyramidChart
+              data={props.reportsGroupedByFeaturesAndDate}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <DashboardKeptReportByHealthRiskChart
+              data={props.keptReportsInEscalatedAlertsHistogramData}
+            />
           </Grid>
 
           {props.filters.reportsType === "dataCollectionPoint" && (
@@ -176,6 +191,8 @@ const mapStateToProps = (state) => ({
     state.projectDashboard.reportsGroupedByLocationDetailsFetching,
   dataCollectionPointsReportData:
     state.projectDashboard.dataCollectionPointsReportData,
+  keptReportsInEscalatedAlertsHistogramData:
+    state.projectDashboard.keptReportsInEscalatedAlertsHistogramData,
   isGeneratingPdf: state.projectDashboard.isGeneratingPdf,
   isFetching: state.projectDashboard.isFetching,
   userRoles: state.appData.user.roles,

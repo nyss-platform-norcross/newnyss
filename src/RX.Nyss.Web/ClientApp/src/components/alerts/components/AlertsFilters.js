@@ -1,4 +1,3 @@
-import styles from "./AlertsFilters.module.scss";
 import {
   Grid,
   TextField,
@@ -8,6 +7,7 @@ import {
   useMediaQuery,
   useTheme,
   Typography,
+  makeStyles,
 } from "@material-ui/core";
 import LocationFilter from "../../common/filters/LocationFilter";
 import { strings, stringKeys } from "../../../strings";
@@ -19,6 +19,19 @@ import useLocationFilter from "../../common/filters/useLocationFilter";
 import { DrawerFilter } from "../../common/filters/DrawerFilter";
 import { useEffect } from "react";
 
+const useStyles = makeStyles((theme) => ({
+  selectFilterItem: {
+    width: "150px",
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+      maxWidth: "220px",
+    },
+  },
+  filters: {
+    boxShadow: "#fff 0px 5px 5px 5px",
+  },
+}));
+
 export const AlertsFilters = ({
   filters,
   locations,
@@ -26,8 +39,10 @@ export const AlertsFilters = ({
   onChange,
   rtl,
 }) => {
-  const theme = useTheme()
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const theme = useTheme();
+  const classes = useStyles();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
   //Reducer for local filters state
   const [localFilters, updateLocalFilters] = useLocalFilters(filters);
 
@@ -36,7 +51,7 @@ export const AlertsFilters = ({
     onChange(updateLocalFilters(filters));
   };
 
-  useEffect(() => {  
+  useEffect(() => {
     updateLocalFilters(filters);
   }, [filters]);
 
@@ -74,28 +89,28 @@ export const AlertsFilters = ({
 
   const Filter = () => {
     return (
-      <Grid container spacing={2} direction={isSmallScreen ? "column" : "row"} alignItems={isSmallScreen ? "center" : "flex-start"} >
-        <Grid item>
+      <Grid container spacing={2} direction={"row"} alignItems={"flex-start"}>
+        <Grid item xs={isSmallScreen ? 6 : null}>
           <DatePicker
             select
             label={strings(stringKeys.dashboard.filters.startDate)}
             value={convertToLocalDate(localFilters.startDate)}
             onChange={handleDateFromChange}
-            className={styles.filterItem}
+            className={classes.selectFilterItem}
             InputLabelProps={{ shrink: true }}
           ></DatePicker>
         </Grid>
-        <Grid item>
+        <Grid item xs={isSmallScreen ? 6 : null}>
           <DatePicker
             select
             label={strings(stringKeys.dashboard.filters.endDate)}
             value={convertToLocalDate(localFilters.endDate)}
             onChange={handleDateToChange}
-            className={styles.filterItem}
+            className={classes.selectFilterItem}
             InputLabelProps={{ shrink: true }}
           ></DatePicker>
         </Grid>
-        <Grid item>
+        <Grid item xs={isSmallScreen ? 6 : null}>
           <LocationFilter
             filteredLocations={localFilters.locations}
             allLocations={locations}
@@ -105,19 +120,19 @@ export const AlertsFilters = ({
           />
         </Grid>
 
-        <Grid item>
+        <Grid item xs={isSmallScreen ? 6 : null}>
           <TextField
             select
             label={strings(stringKeys.alerts.filters.healthRisks)}
             onChange={handleHealthRiskChange}
             value={localFilters.healthRiskId || 0}
-            className={styles.filterItem}
+            className={classes.selectFilterItem}
             InputLabelProps={{ shrink: true }}
             SelectProps={{
               MenuProps: {
                 PaperProps: {
                   style: {
-                    maxWidth: '90%',
+                    maxWidth: "90%",
                   },
                 },
               },
@@ -137,13 +152,13 @@ export const AlertsFilters = ({
           </TextField>
         </Grid>
 
-        <Grid item>
+        <Grid item xs={isSmallScreen ? 6 : null}>
           <TextField
             select
             label={strings(stringKeys.alerts.filters.status)}
             value={localFilters.status || "All"}
             onChange={handleStatusChange}
-            className={styles.filterItem}
+            className={classes.selectFilterItem}
             InputLabelProps={{ shrink: true }}
           >
             {Object.values(alertStatusFilters).map((status) => (
@@ -154,21 +169,25 @@ export const AlertsFilters = ({
           </TextField>
         </Grid>
       </Grid>
-    )
-  }
+    );
+  };
 
-  if(isSmallScreen) {
+  if (isMediumScreen) {
     return (
       <Grid container justifyContent="center" style={{ marginBottom: 20 }}>
-        <DrawerFilter title={strings(stringKeys.alerts.title)} children={<Filter/>} showResults={handleFiltersChange}/>
+        <DrawerFilter
+          title={strings(stringKeys.alerts.title)}
+          children={<Filter />}
+          showResults={handleFiltersChange}
+        />
       </Grid>
     );
   }
 
   return (
-    <Card className={styles.filters}>
+    <Card className={classes.filters}>
       <CardContent>
-        <Filter/>
+        <Filter />
       </CardContent>
     </Card>
   );

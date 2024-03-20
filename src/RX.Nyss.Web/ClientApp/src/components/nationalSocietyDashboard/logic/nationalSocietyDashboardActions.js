@@ -42,6 +42,7 @@ export const getDashboardData = {
     reportsGroupedByHealthRiskAndDate,
     reportsGroupedByFeaturesAndDate,
     reportsGroupedByFeatures,
+    keptReportsInEscalatedAlertsHistogramData,
   ) => ({
     type: GET_NATIONAL_SOCIETY_DASHBOARD_DATA.SUCCESS,
     filters,
@@ -51,6 +52,7 @@ export const getDashboardData = {
     reportsGroupedByHealthRiskAndDate,
     reportsGroupedByFeaturesAndDate,
     reportsGroupedByFeatures,
+    keptReportsInEscalatedAlertsHistogramData,
   }),
   failure: (message) => ({
     type: GET_NATIONAL_SOCIETY_DASHBOARD_DATA.FAILURE,

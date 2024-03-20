@@ -53,6 +53,8 @@ export function projectDashboardReducer(
         reportsGroupedByFeatures: action.reportsGroupedByFeatures,
         reportsGroupedByLocation: action.reportsGroupedByLocation,
         dataCollectionPointsReportData: action.dataCollectionPointReports,
+        keptReportsInEscalatedAlertsHistogramData:
+          action.keptReportsInEscalatedAlertsHistogramData,
         isFetching: false,
       };
 

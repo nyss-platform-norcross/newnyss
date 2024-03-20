@@ -12,6 +12,7 @@ import { strings, stringKeys } from "../../strings";
 import * as nationalSocietyDashboardActions from "../nationalSocietyDashboard/logic/nationalSocietyDashboardActions";
 import { TableActionsButton } from "../common/buttons/tableActionsButton/TableActionsButton";
 import { trackPageView } from "../../utils/appInsightsHelper";
+import { accessMap } from "../../authentication/accessMap";
 
 const NationalSocietiesListPageComponent = ({
   showStringsKeys,
@@ -28,22 +29,25 @@ const NationalSocietiesListPageComponent = ({
     trackPageView("NationalSocietiesListPage");
   });
 
-  const userLanguageCode = useSelector(
-    (state) => state.appData.user.languageCode,
-  );
+  const user = useSelector((state) => state.appData.user);
+  const userHasAddAccess =
+    user &&
+    user.roles.some((role) => accessMap.nationalSocieties.add.includes(role));
 
   return (
     <Fragment>
-      <TableActions>
-        <TableActionsButton
-          onClick={props.goToCreation}
-          add
-          variant="contained"
-          rtl={userLanguageCode === "ar"}
-        >
-          {strings(stringKeys.common.buttons.add)}
-        </TableActionsButton>
-      </TableActions>
+      {userHasAddAccess && (
+        <TableActions>
+          <TableActionsButton
+            onClick={props.goToCreation}
+            add
+            variant="contained"
+            rtl={user.languageCode === "ar"}
+          >
+            {strings(stringKeys.common.buttons.add)}
+          </TableActionsButton>
+        </TableActions>
+      )}
 
       <NationalSocietiesTable
         list={props.list}
@@ -54,7 +58,7 @@ const NationalSocietiesListPageComponent = ({
         reopen={props.reopen}
         isArchiving={props.isArchiving}
         isReopening={props.isReopening}
-        rtl={userLanguageCode === "ar"}
+        rtl={user.languageCode === "ar"}
       />
     </Fragment>
   );

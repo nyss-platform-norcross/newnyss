@@ -154,7 +154,7 @@ namespace RX.Nyss.Web.Services.ReportsDashboard
                 .ThenBy(r => r.EpiPeriod.EpiWeek)
                 .Select(x => new ReportByFeaturesAndDateResponseDto
                 {
-                    Period = x.EpiPeriod.EpiWeek.ToString(),
+                    Period = $"{x.EpiPeriod.EpiYear.ToString()}/{x.EpiPeriod.EpiWeek.ToString()}",
                     CountFemalesAtLeastFive = x.CountFemalesAtLeastFive,
                     CountFemalesBelowFive = x.CountFemalesBelowFive,
                     CountMalesAtLeastFive = x.CountMalesAtLeastFive,

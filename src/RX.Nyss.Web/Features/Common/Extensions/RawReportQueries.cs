@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using RX.Nyss.Data.Concepts;
 using RX.Nyss.Data.Models;
 using RX.Nyss.Web.Features.Common.Dto;
+using RX.Nyss.Web.Features.Reports;
 
 namespace RX.Nyss.Web.Features.Common.Extensions
 {
@@ -116,5 +118,36 @@ namespace RX.Nyss.Web.Features.Common.Extensions
                 CorrectedStateReportFilterType.NotCorrected => rawReports.Where(r => r.MarkedAsCorrectedAtUtc == null),
                 _ => rawReports,
             };
+
+        private static Alert GetRawReportAlert(RawReport rawReport)
+        {
+            var report = rawReport.Report;
+            var alerts = report.ReportAlerts;
+            return rawReport?.Report?.ReportAlerts?.FirstOrDefault()?.Alert;
+
+        }
+
+        private static bool ReportAlertHasStatus(RawReport report, AlertStatus alertStatus)
+        {
+            Alert alert = GetRawReportAlert(report);
+            var test = alert.Status;
+            return alert != null && alert.Status == alertStatus;
+        }
+
+        public static IQueryable<RawReport> FilterByReportAlertStatus(this IQueryable<RawReport> rawReports, AlertStatus alertStatus) =>
+            rawReports.Where(r => ReportAlertHasStatus(r, alertStatus));
+
+
+        public static bool ReportWasCrossCheckedBeforeAlertWasEscalated(RawReport report)
+        {
+          Alert alert = GetRawReportAlert(report);
+
+          return alert != null && (report.Report.AcceptedAt < alert.EscalatedAt || report.Report.RejectedAt < alert.EscalatedAt);
+        }
+        public static IQueryable<RawReport> AllReportsCrossCheckedBeforeAlertEscalated(this IQueryable<RawReport> rawReports) =>
+            rawReports.Where(r => ReportWasCrossCheckedBeforeAlertWasEscalated(r));
+
+
+
     }
 }

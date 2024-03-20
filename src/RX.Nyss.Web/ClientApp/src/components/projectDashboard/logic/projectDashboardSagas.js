@@ -78,6 +78,7 @@ function* getProjectDashboardData({ projectId, filters }) {
         response.value.reportsGroupedByFeatures,
         response.value.reportsGroupedByLocation,
         response.value.dataCollectionPointReportsGroupedByDate,
+        response.value.keptReportsInEscalatedAlertsHistogramData,
       ),
     );
   } catch (error) {

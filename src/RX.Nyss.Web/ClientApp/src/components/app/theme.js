@@ -233,13 +233,14 @@ export const theme = (direction) =>
         },
       },
       MuiTableHead: {
-        root: {},
-      },
-      MuiTableHead: {
         root: {
           "& .MuiTableCell-root": {
             backgroundColor: nyssPalette.background.light,
           },
+          whiteSpace: "normal",
+          "@media screen and (max-width: 500px)": {
+            whiteSpace: "nowrap",
+          }
         },
       },
       MuiTableCell: {
@@ -273,6 +274,13 @@ export const theme = (direction) =>
         title: {
           fontSize: "1rem",
           fontWeight: "bold",
+        },
+      },
+      MuiCardContent: {
+        root: {
+          "&:last-child": {
+            paddingBottom: "16px",
+          },
         },
       },
       MuiTab: {
