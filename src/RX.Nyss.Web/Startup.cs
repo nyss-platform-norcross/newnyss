@@ -16,7 +16,6 @@ using RX.Nyss.Common.Configuration;
 using RX.Nyss.Web.Configuration;
 
 namespace RX.Nyss.Web;
-//
 public class Startup
 {
     public IConfiguration Configuration { get; }
@@ -46,27 +45,6 @@ public class Startup
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
-
-        app.Use(async (context, next) =>
-        {
-            context.Response.Headers.Add("Content-Security-Policy",
-                "base-uri 'self'; " +
-                "script-src 'self' 'unsafe-inline'; " +
-                "frame-ancestors 'self'; " +
-                "form-action 'self'; " +
-                "img-src 'self' data: https://*.tile.openstreetmap.org/ https://unpkg.com/leaflet@1.7.1/dist/images/; " +
-                "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/ https://unpkg.com/leaflet@1.7.1/dist/leaflet.css; " +
-                "object-src 'none'; " +
-                "frame-src 'self'; " +
-                "connect-src 'self' wss://localhost:0/sockjs-node https://*.in.applicationinsights.azure.com/; " +
-                "media-src 'self'; " +
-                "font-src 'self' https://fonts.gstatic.com/s/materialicons/; " +
-                "manifest-src 'self';");
-            context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
-            context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-
-            await next();
-        });
 
         app.UseCustomExceptionHandler();
 
@@ -148,4 +126,3 @@ public class Startup
         });
     }
 }
-////
