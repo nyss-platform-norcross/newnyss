@@ -17,6 +17,7 @@ import {
   smsGatewayTypes,
   smsEagle,
   smsGateway,
+  mtnSmsGateway,
   telerivet,
 } from "./logic/smsGatewayTypes";
 import { useMount } from "../../utils/lifecycle";
@@ -114,22 +115,32 @@ const SmsGatewaysEditPageComponent = (props) => {
       ],
       gatewayApiKey: [
         validators.requiredWhen(
-          (tr) => tr.gatewayType.toString() === smsGateway,
+          (tr) => tr.gatewayType.toString() === smsGateway || tr.gatewayType.toString() === mtnSmsGateway,
         ),
       ],
       gatewayApiKeyName: [
         validators.requiredWhen(
-          (tp) => tp.gatewayType.toString() === smsGateway,
+          (tp) => tp.gatewayType.toString() === smsGateway || tp.gatewayType.toString() === mtnSmsGateway,
+        ),
+      ],
+      gatewayExtraKey: [
+        validators.requiredWhen(
+          (tr) => tr.gatewayType.toString() === mtnSmsGateway,
+        ),
+      ],
+      gatewayExtraKeyName: [
+        validators.requiredWhen(
+          (tp) => tp.gatewayType.toString() === mtnSmsGateway,
         ),
       ],
       gatewayUrl: [
         validators.requiredWhen(
-          (tr) => tr.gatewayType.toString() === smsGateway,
+          (tr) => tr.gatewayType.toString() === smsGateway || tr.gatewayType.toString() === mtnSmsGateway,
         ),
       ],
       gatewaySenderId: [
         validators.requiredWhen(
-          (tp) => tp.gatewayType.toString() === smsGateway,
+          (tp) => tp.gatewayType.toString() === smsGateway || tp.gatewayType.toString() === mtnSmsGateway,
         ),
       ],
       emailAddress: [
@@ -193,25 +204,26 @@ const SmsGatewaysEditPageComponent = (props) => {
           ? values.telerivetProjectId
           : null,
       gatewayApiKey:
-        values.gatewayType.toString() === smsGateway
+        values.gatewayType.toString() === smsGateway || values.gatewayType.toString() === mtnSmsGateway
           ? values.gatewayApiKey
           : null,
       gatewayApiKeyName:
-        values.gatewayType.toString() === smsGateway
+        values.gatewayType.toString() === smsGateway || values.gatewayType.toString() === mtnSmsGateway
           ? values.gatewayApiKeyName
           : null,
       gatewayExtraKey:
-        values.gatewayType.toString() === smsGateway
+        values.gatewayType.toString() === smsGateway || values.gatewayType.toString() === mtnSmsGateway
           ? values.gatewayExtraKey
           : null,
       gatewayExtraKeyName:
-        values.gatewayType.toString() === smsGateway
+        values.gatewayType.toString() === smsGateway || values.gatewayType.toString() === mtnSmsGateway
           ? values.gatewayExtraKeyName
           : null,
       gatewayUrl:
-        values.gatewayType.toString() === smsGateway ? values.gatewayUrl : null,
+        values.gatewayType.toString() === smsGateway || values.gatewayType.toString() === mtnSmsGateway
+          ? values.gatewayUrl : null,
       gatewaySenderId:
-        values.gatewayType.toString() === smsGateway
+        values.gatewayType.toString() === smsGateway || values.gatewayType.toString() === mtnSmsGateway
           ? values.gatewaySenderId
           : null,
       iotHubDeviceName: values.useIotHub ? values.iotHubDeviceName : null,

@@ -14,7 +14,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using RX.Nyss.Common.Configuration;
 using RX.Nyss.Web.Configuration;
-using RX.Nyss.Web.Services;
 
 namespace RX.Nyss.Web;
 public class Startup
@@ -29,8 +28,6 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddHostedService<GetMTNMessageService>();
-
         services.AddDatabaseDeveloperPageExceptionFilter();
 
         services.ConfigureDependencies(Configuration);

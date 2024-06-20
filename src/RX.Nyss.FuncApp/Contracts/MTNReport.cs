@@ -1,13 +1,7 @@
 ﻿using RX.Nyss.Common.Utils.DataContract;
 
-namespace RX.Nyss.FuncApp.Contracts
-{
+namespace RX.Nyss.FuncApp.Contracts;
 
-    /*
-     * {"senderAddress":"237675159734","receiverAddress":"8748","
-submittedDate":1678269860786,"message":"Stop","created":1678269860786,"
-id":"CMR-b184ecfd-9f03-4c4d-9a72-dbdfd88c0253"}
-     * */
     public class MTNReport
     {
         public string SenderAddress { get; set; }
@@ -19,4 +13,3 @@ id":"CMR-b184ecfd-9f03-4c4d-9a72-dbdfd88c0253"}
         public ReportSource ReportSource { get; set; }
 
     }
-}

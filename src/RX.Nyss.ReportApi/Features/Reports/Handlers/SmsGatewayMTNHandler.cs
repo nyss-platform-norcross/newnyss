@@ -1,47 +1,44 @@
-using System;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Transactions;
-using System.Web;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
-using RX.Nyss.Common.Services.StringsResources;
-using RX.Nyss.Common.Utils;
+﻿using RX.Nyss.Common.Services.StringsResources;
 using RX.Nyss.Common.Utils.Logging;
-using RX.Nyss.Data;
+using RX.Nyss.Common.Utils;
 using RX.Nyss.Data.Concepts;
 using RX.Nyss.Data.Models;
+using RX.Nyss.Data;
 using RX.Nyss.ReportApi.Features.Alerts;
 using RX.Nyss.ReportApi.Features.Common.Extensions;
 using RX.Nyss.ReportApi.Features.Reports.Exceptions;
 using RX.Nyss.ReportApi.Features.Reports.Models;
 using RX.Nyss.ReportApi.Services;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Threading.Tasks;
+using System.Transactions;
+using System.Web;
+using System;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Report = RX.Nyss.Data.Models.Report;
-using RX.Nyss.Common.Services;
 
 namespace RX.Nyss.ReportApi.Features.Reports.Handlers;
 
-public interface ITelerivetHandler
+public interface ISmsGatewayMTNHandler
 {
     Task Handle(string queryString);
 
     Task<DataCollector> ValidateDataCollector(string phoneNumber, int gatewayNationalSocietyId);
 }
 
-public class TelerivetHandler : ITelerivetHandler
+public class SmsGatewayMTNHandler : ISmsGatewayMTNHandler
 {
-    private const string _senderParameterName = "from_number_e164";
+    private const string _senderParameterName = "senderAddress";
 
-    private const string _timestampParameterName = "time_created";
+    private const string _timestampParameterName = "created";
 
-    private const string _textParameterName = "content";
+    private const string _textParameterName = "message";
 
-    private const string _incomingMessageIdParameterName = "time_updated";
+    //private const string _incomingMessageIdParameterName = "id";
 
-    private const string _apiKeyParameterName = "apikey";
-
-    private const string _projectIdParameterName = "project_id";
+    private const string _shortCodeParameterName = "receiverAddress";
 
     private readonly IReportMessageService _reportMessageService;
 
@@ -61,7 +58,7 @@ public class TelerivetHandler : ITelerivetHandler
 
     private readonly IAlertNotificationService _alertNotificationService;
 
-    public TelerivetHandler(
+    public SmsGatewayMTNHandler(
         IReportMessageService reportMessageService,
         INyssContext nyssContext,
         ILoggerAdapter loggerAdapter,
@@ -87,11 +84,10 @@ public class TelerivetHandler : ITelerivetHandler
     {
         var parsedQueryString = HttpUtility.ParseQueryString(queryString);
         var sender = parsedQueryString[_senderParameterName];
-        var time_created = parsedQueryString[_timestampParameterName];
+        var timestamp = parsedQueryString[_timestampParameterName];
         var text = parsedQueryString[_textParameterName]?.Trim() ?? string.Empty;
-        var time_updated = parsedQueryString[_incomingMessageIdParameterName].ParseToNullableInt();
-        var apiKey = parsedQueryString[_apiKeyParameterName];
-        var projectId = parsedQueryString[_projectIdParameterName].ParseToNullableInt();
+        //var incomingMessageId = parsedQueryString[_incomingMessageIdParameterName].Trim();
+        var shortCode = parsedQueryString[_shortCodeParameterName];
 
         if (sender != null)
         {
@@ -113,18 +109,18 @@ public class TelerivetHandler : ITelerivetHandler
             var rawReport = new RawReport
             {
                 Sender = sender,
-                Timestamp = time_created,
+                Timestamp = timestamp,
                 ReceivedAt = _dateTimeProvider.UtcNow,
                 Text = text.Truncate(160),
-                IncomingMessageId = time_updated,
-                ApiKey = apiKey
+                //IncomingMessageId = incomingMessageId,
+                ApiKey = shortCode,//We haven't apikey but we will keep short code value for using as a reference later
             };
 
-            var exists = await _nyssContext.RawReports.AnyAsync(r => r.IncomingMessageId == time_updated && r.ApiKey == apiKey);
+            /*var exists = await _nyssContext.RawReports.AnyAsync(r => r.IncomingMessageId == incomingMessageId && r.ApiKey == shortCode);
             if (exists)
             {
                 return;
-            }
+            }*/
 
             await _nyssContext.AddAsync(rawReport);
 
@@ -136,7 +132,11 @@ public class TelerivetHandler : ITelerivetHandler
                 var reportData = reportValidationResult.ReportData;
 
                 var epiDate = _dateTimeProvider.GetEpiDate(reportValidationResult.ReportData.ReceivedAt, gatewaySetting.NationalSociety.EpiWeekStartDay);
-
+                var phoneNumber = "";
+                if (reportData.DataCollector != null)
+                {
+                    phoneNumber = reportData.DataCollector.PhoneNumber ?? "";
+                }
                 var report = new Report
                 {
                     IsTraining = reportData.DataCollector?.IsInTrainingMode ?? false,
@@ -147,7 +147,7 @@ public class TelerivetHandler : ITelerivetHandler
                     DataCollector = reportData.DataCollector,
                     EpiWeek = epiDate.EpiWeek,
                     EpiYear = epiDate.EpiYear,
-                    PhoneNumber = sender,
+                    PhoneNumber = phoneNumber,
                     Location = reportData.DataCollector?.DataCollectorLocations.Count == 1
                         ? reportData.DataCollector.DataCollectorLocations.First().Location
                         : null,
@@ -177,6 +177,7 @@ public class TelerivetHandler : ITelerivetHandler
             await _nyssContext.SaveChangesAsync();
             transactionScope.Complete();
         }
+
         await SendNotifications(sender, alertData, errorReportData, projectHealthRisk, gatewaySetting);
     }
 
@@ -214,12 +215,12 @@ public class TelerivetHandler : ITelerivetHandler
         DataCollector dataCollector = null;
         try
         {
-            var apiKey = parsedQueryString[_apiKeyParameterName];
+            var shortCode = parsedQueryString[_shortCodeParameterName];
             var sender = rawReport.Sender;
             var timestamp = parsedQueryString[_timestampParameterName];
             var text = parsedQueryString[_textParameterName].Trim();
 
-            gatewaySetting = await _reportValidationService.ValidateGatewaySetting(apiKey);
+            gatewaySetting = await _reportValidationService.ValidateMTNGatewaySetting(shortCode);
             rawReport.NationalSociety = gatewaySetting.NationalSociety;
 
             int convertedTimestamp;
@@ -232,6 +233,7 @@ public class TelerivetHandler : ITelerivetHandler
                 _loggerAdapter.Warn(e.Message);
                 return new ReportValidationResult { IsSuccess = false };
             }
+
             var receivedAt = _reportValidationService.ParseTelerivetTimestamp(convertedTimestamp);
             _reportValidationService.ValidateReceivalTime(receivedAt);
             rawReport.ReceivedAt = receivedAt;
@@ -305,10 +307,17 @@ public class TelerivetHandler : ITelerivetHandler
     {
         if (errorReportData == null)
         {
-            var senderNumber = long.Parse(senderPhoneNumber);
-            await _queuePublisherService.SendTelerivetSms(senderNumber, projectHealthRisk.FeedbackMessage, gatewaySetting.TelerivetSendSmsApiKey, gatewaySetting.TelerivetProjectId);
+            var recipients = new List<SendGatewaySmsRecipient>
+            {
+                new SendGatewaySmsRecipient
+                {
+                    PhoneNumber = senderPhoneNumber
+                }
+            };
 
-            if (alertData != null && alertData.Alert != null)
+            await _queuePublisherService.SendMTNGatewayHttpSms(recipients, gatewaySetting, projectHealthRisk.FeedbackMessage);
+
+            if (alertData.Alert != null)
             {
                 if (alertData.IsExistingAlert)
                 {
@@ -345,8 +354,16 @@ public class TelerivetHandler : ITelerivetHandler
             _loggerAdapter.Warn($"No feedback message found for error type {errorReport.ReportErrorType}");
             return;
         }
-        var senderNumber = long.Parse(errorReport.DataCollector.PhoneNumber);
-        await _queuePublisherService.SendTelerivetSms(senderNumber, feedbackMessage, gatewaySetting.TelerivetSendSmsApiKey, gatewaySetting.TelerivetProjectId);
+
+        var senderList = new List<SendGatewaySmsRecipient>
+        {
+            new SendGatewaySmsRecipient
+            {
+                PhoneNumber = errorReport.DataCollector.PhoneNumber
+            }
+        };
+
+        await _queuePublisherService.SendGatewayHttpSms(senderList, gatewaySetting, feedbackMessage);
     }
 
     private async Task<string> GetFeedbackMessageContent(string key, string languageCode)
@@ -364,3 +381,4 @@ public class TelerivetHandler : ITelerivetHandler
         return message;
     }
 }
+

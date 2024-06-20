@@ -75,7 +75,7 @@ namespace RX.Nyss.Web.Features.SmsGateways
             try
             {
                 gatewayApiKey = gatewaySetting?.GatewayApiKey == default ? default :
-                    gatewaySetting.GatewayType == GatewayType.SmsGateway ? _cryptographyService.Decrypt(
+                    gatewaySetting.GatewayType == GatewayType.SmsGateway || gatewaySetting.GatewayType == GatewayType.MTNSmsGateway ? _cryptographyService.Decrypt(
                         gatewaySetting?.GatewayApiKey,
                         _nyssWebConfig.Key,
                         _nyssWebConfig.SupplementaryKey) : null;
@@ -86,7 +86,7 @@ namespace RX.Nyss.Web.Features.SmsGateways
             try
             {
                 gatewayExtraKey = gatewaySetting?.GatewayExtraKey == default ? default :
-                    gatewaySetting.GatewayType == GatewayType.SmsGateway ? _cryptographyService.Decrypt(
+                    gatewaySetting.GatewayType == GatewayType.SmsGateway || gatewaySetting.GatewayType == GatewayType.MTNSmsGateway ? _cryptographyService.Decrypt(
                         gatewaySetting?.GatewayExtraKey,
                         _nyssWebConfig.Key,
                         _nyssWebConfig.SupplementaryKey) : null;

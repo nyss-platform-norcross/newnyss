@@ -12,6 +12,12 @@ using RX.Nyss.FuncApp.Configuration;
 using RX.Nyss.Common.Utils.DataContract;
 using RX.Nyss.FuncApp.Contracts;
 using RX.Nyss.FuncApp.Services;
+using System.Text;
+using System.Net;
+using JsonSerializer = System.Text.Json.JsonSerializer;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Amqp.Framing;
 
 namespace RX.Nyss.FuncApp;
 
@@ -29,9 +35,8 @@ public class SmsGatewayMTNReportReceiver
     }
 
     [FunctionName("EnqueueSmsGatewayMTNReport")]
-    public async Task<IActionResult> EnqueueSmsGatewayMTNReport(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "enqueueSmsGatewayMTNReport")] HttpRequestMessage httpRequest,
-        [Blob("%AuthorizedApiKeysBlobPath%", FileAccess.Read)] string authorizedApiKeys)
+    public async Task<HttpResponseMessage> EnqueueSmsGatewayMTNReport(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "enqueueSmsGatewayMTNReport")] HttpRequestMessage httpRequest)
     {
         var maxContentLength = _config.MaxContentLength;
         if (httpRequest.Content != null)
@@ -39,7 +44,7 @@ public class SmsGatewayMTNReportReceiver
             if (httpRequest.Content.Headers.ContentLength == null || httpRequest.Content.Headers.ContentLength > maxContentLength)
             {
                 _logger.Log(LogLevel.Warning, $"Received an SMS Gateway MTN request with length more than {maxContentLength} bytes. (length: {httpRequest.Content.Headers.ContentLength.ToString() ?? "N/A"})");
-                return new BadRequestResult();
+                return ReturnBadHttpResult(httpRequest);
             }
             var httpRequestContent = await httpRequest.Content.ReadAsStringAsync();
             _logger.Log(LogLevel.Debug, $"Received SMS Gateway MTN report: {httpRequestContent}.{Environment.NewLine}HTTP request: {httpRequest}");
@@ -47,7 +52,7 @@ public class SmsGatewayMTNReportReceiver
             if (string.IsNullOrWhiteSpace(httpRequestContent))
             {
                 _logger.Log(LogLevel.Warning, "Received an empty SMS Gateway MTN report.");
-                return new BadRequestResult();
+                return ReturnBadHttpResult(httpRequest);
             }
 
             var decodedHttpRequestContent = HttpUtility.UrlDecode(httpRequestContent);
@@ -61,14 +66,56 @@ public class SmsGatewayMTNReportReceiver
                 Message = result["message"],
                 Created= result["created"],
                 Id= result["id"],
-                ReportSource = ReportSource.SmsGatewayMtn
+                ReportSource = ReportSource.MTNSmsGateway
             };
 
             await _reportPublisherService.AddMTNReportToQueue(report);
-            return new OkResult();
+            //_logger.LogError(LogLevel.Error, result);
+            _logger.Log(LogLevel.Error, result.ToString());
+            return ReturnOkHttpResult(httpRequest, result["id"]);
         }
 
-        _logger.Log(LogLevel.Warning, $"Received an SMS Gateway MTN request with NULL content");
-        return new BadRequestResult();
+        _logger.Log(LogLevel.Error, $"Received an SMS Gateway MTN request with NULL content");
+        return ReturnBadHttpResult(httpRequest);
     }
+
+    private HttpResponseMessage ReturnBadHttpResult(HttpRequestMessage httpRequest)
+    {
+        using StringContent jsonContent = new(
+                JsonSerializer.Serialize(new SendSuccessCallbackMessageObject
+                {
+                    Status = "Error",
+                    TransactionId = null,
+                }),
+                Encoding.UTF8,
+                "application/json");
+        var response = httpRequest.CreateResponse(HttpStatusCode.BadRequest);
+        response.Content = jsonContent;
+        return response;
+    }
+
+    private HttpResponseMessage ReturnOkHttpResult(HttpRequestMessage httpRequest,string messageId)
+    {
+        using StringContent jsonContent = new(
+                JsonSerializer.Serialize(new SendSuccessCallbackMessageObject
+                {
+                    Status = "Processed",
+                    TransactionId = messageId,
+                }),
+                Encoding.UTF8,
+                "application/json");
+        var response = httpRequest.CreateResponse(HttpStatusCode.OK);
+        response.Content = jsonContent;
+        return response;
+    }
+
+}
+
+public class SendSuccessCallbackMessageObject
+{
+    [JsonPropertyName("status")]
+    public string Status { get; set; }
+
+    [JsonPropertyName("transactionId")]
+    public string TransactionId { get; set; }
 }

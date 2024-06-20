@@ -15,6 +15,6 @@
         Nyss,
         Telerivet,
         SmsGateway,
-        SmsGatewayMtn
+        MTNSmsGateway
     }
 }
