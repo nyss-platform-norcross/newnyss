@@ -106,6 +106,7 @@ namespace RX.Nyss.Web.Features.SmsGateways
                     GatewayExtraKey = gatewayExtraKey,
                     GatewayExtraKeyName = gatewaySetting.GatewayExtraKeyName,
                     GatewayUrl = gatewaySetting.GatewayUrl,
+                    GatewayAuthUrl = gatewaySetting.GatewayAuthUrl,
                     GatewaySenderId = gatewaySetting.GatewaySenderId,
                     EmailAddress = gatewaySetting.EmailAddress,
                     IotHubDeviceName = gatewaySetting.IotHubDeviceName,
@@ -174,6 +175,7 @@ namespace RX.Nyss.Web.Features.SmsGateways
                     ):null,
                     GatewayExtraKeyName = editGatewaySettingRequestDto.GatewayExtraKeyName,
                     GatewayUrl = editGatewaySettingRequestDto.GatewayUrl,
+                    GatewayAuthUrl = editGatewaySettingRequestDto.GatewayAuthUrl,
                     GatewaySenderId = editGatewaySettingRequestDto.GatewaySenderId,
                     EmailAddress = editGatewaySettingRequestDto.EmailAddress,
                     NationalSocietyId = nationalSocietyId,
@@ -237,6 +239,7 @@ namespace RX.Nyss.Web.Features.SmsGateways
                         _nyssWebConfig.SupplementaryKey
                     );
                 gatewaySettingToUpdate.GatewayUrl = editGatewaySettingRequestDto.GatewayUrl;
+                gatewaySettingToUpdate.GatewayAuthUrl = editGatewaySettingRequestDto.GatewayAuthUrl;
                 gatewaySettingToUpdate.GatewaySenderId = editGatewaySettingRequestDto.GatewaySenderId;
                 gatewaySettingToUpdate.EmailAddress = editGatewaySettingRequestDto.EmailAddress;
                 gatewaySettingToUpdate.IotHubDeviceName = editGatewaySettingRequestDto.IotHubDeviceName;

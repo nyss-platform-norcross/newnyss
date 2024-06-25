@@ -14,7 +14,8 @@ using RX.Nyss.ReportApi.Features.Common;
 using Telerivet.Client;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using RX.Nyss.Common.Services;
-using System.Web;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace RX.Nyss.ReportApi.Services;
 
@@ -190,8 +191,8 @@ public class QueuePublisherService : IQueuePublisherService
             _config.SupplementaryKey);
         ///////////////////////////////////////////////////
 
-        var accessToken = GetApiKey(gatewaySetting.GatewayApiKeyName, gatewayApiKey, gatewaySetting.GatewayExtraKeyName, gatewayExtraKey);
-        httpRequestMessage.Headers.Add("Authorization", "Bearer " + accessToken);
+        var accessToken = GetApiKey(gatewaySetting.GatewayAuthUrl, gatewaySetting.GatewayApiKeyName, gatewayApiKey, gatewaySetting.GatewayExtraKeyName, gatewayExtraKey);
+        httpRequestMessage.Headers.Add("Authorization", "Bearer "+ accessToken);
         httpRequestMessage.Content = strContent;
 
         var res = await httpClient.SendAsync(httpRequestMessage);
@@ -203,9 +204,9 @@ public class QueuePublisherService : IQueuePublisherService
         return false;
     }
 
-    private async Task<string> GetApiKey(string key1, string valueKey1, string key2, string valueKey2)
+    private string GetApiKey(string authUrl, string key1, string valueKey1, string key2, string valueKey2)
     {
-        var oauthAddress = new Uri("https://preprod.api.mtn.com/v1/oauth/access_token/accesstoken?grant_type=client_credentials");
+        var oauthAddress = new Uri(authUrl);
         using (var httpClient = new HttpClient { BaseAddress = oauthAddress })
         {
             // Form data is typically sent as key-value pairs
@@ -216,25 +217,26 @@ public class QueuePublisherService : IQueuePublisherService
             };
             // Encodes the key-value pairs for the ContentType 'application/x-www-form-urlencoded'
             HttpContent content = new FormUrlEncodedContent(formData);
-
             try
             {
-                // Send a POST request to the specified Uri as an asynchronous operation.
-                var httpResponse = await httpClient.PostAsync(oauthAddress, content);
-                // Read the response as a string.
-                var response = await httpResponse.Content.ReadAsStringAsync();
-                var decodedHttpResponse = HttpUtility.UrlDecode(response);
-                var result = HttpUtility.ParseQueryString(decodedHttpResponse);
+                var oauthRequest = new HttpRequestMessage(HttpMethod.Post, oauthAddress)
+                {
+                    Content = content
+                };
+                var response = httpClient.Send(oauthRequest);
+                using var reader = new StreamReader(response.Content.ReadAsStream());
+                var readerResult = reader.ReadToEnd();
+                reader.Close();
 
-                return result["access_token"];
-
+                var oauthResult = JsonConvert.DeserializeObject<MTNAccessTokenObject>(readerResult);
+                _loggerAdapter.Info(oauthResult.Access_token);
+                return oauthResult.Status == "approved" ? oauthResult.Access_token : " ";
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException ex)
             {
-                _loggerAdapter.Error(e.Message);
+                _loggerAdapter.Error(ex.Message);
                 return " ";
             }
-
         }
     }
 
@@ -392,5 +394,29 @@ public class SendMTNSmsObject
 
     [JsonPropertyName("requestDeliveryReceipt")]
     public bool RequestDeliveryReceipt { get; set; }
+
+}
+
+
+public class MTNAccessTokenObject
+{
+    [JsonPropertyName("token_type")]
+    public string TokenType { get; set; }
+    [JsonPropertyName("issued_at")]
+    public string Issued_at { get; set; }
+    [JsonPropertyName("client_id")]
+    public string Client_id { get; set; }
+    [JsonPropertyName("access_token")]
+    public string Access_token { get; set; }
+    [JsonPropertyName("application_name")]
+    public string Application_name { get; set; }
+    [JsonPropertyName("scope")]
+    public string Scope { get; set; }
+    [JsonPropertyName("expires_in")]
+    public string Expires_in { get; set; }
+    [JsonPropertyName("refresh_count")]
+    public string Refresh_count { get; set; }
+    [JsonPropertyName("status")]
+    public string Status { get; set; }
 
 }

@@ -219,6 +219,7 @@ export const stringKeys = {
       gatewayExtraKeyName: "smsGateway.form.gatewayExtraKeyName",
       gatewayExtraKey: "smsGateway.form.gatewayExtraKey",
       gatewayUrl: "smsGateway.form.gatewayUrl",
+      gatewayAuthUrl: "smsGateway.form.gatewayAuthUrl",
       gatewaySenderId: "smsGateway.form.gatewaySenderId",
       emailAddress: "smsGateway.form.emailAddress",
       useIotHub: "smsGateway.form.useIotHub",

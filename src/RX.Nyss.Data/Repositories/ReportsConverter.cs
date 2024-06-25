@@ -118,7 +118,7 @@ public class ReportsConverter : IReportsConverter
         }
         catch (Exception e)
         {
-            return "";
+            return e.Message;
         }
     }
 
@@ -139,7 +139,7 @@ public class ReportsConverter : IReportsConverter
         }
         catch (Exception e)
         {
-            return "";
+            return e.Message;
         }
     }
 

@@ -38,5 +38,7 @@ namespace RX.Nyss.Data.Models
 
         public string GatewaySenderId { get; set; }
 
+        public string GatewayAuthUrl { get; set; }
+
     }
 }

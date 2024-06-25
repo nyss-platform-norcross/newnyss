@@ -82,6 +82,7 @@ const SmsGatewaysEditPageComponent = (props) => {
       gatewayExtraKey: props.data.gatewayExtraKey || "",
       gatewayExtraKeyName: props.data.gatewayExtraKeyName || "",
       gatewayUrl: props.data.gatewayUrl || "",
+      gatewayAuthUrl: props.data.gatewayAuthUrl || "",
       gatewaySenderId: props.data.gatewaySenderId || "",
       emailAddress: props.data.emailAddress || "",
       useIotHub: !!props.data.iotHubDeviceName,
@@ -136,6 +137,11 @@ const SmsGatewaysEditPageComponent = (props) => {
       gatewayUrl: [
         validators.requiredWhen(
           (tr) => tr.gatewayType.toString() === smsGateway || tr.gatewayType.toString() === mtnSmsGateway,
+        ),
+      ],
+      gatewayAuthUrl: [
+        validators.requiredWhen(
+          (tr) => tr.gatewayType.toString() === mtnSmsGateway,
         ),
       ],
       gatewaySenderId: [
@@ -222,6 +228,9 @@ const SmsGatewaysEditPageComponent = (props) => {
       gatewayUrl:
         values.gatewayType.toString() === smsGateway || values.gatewayType.toString() === mtnSmsGateway
           ? values.gatewayUrl : null,
+      gatewayAuthUrl:
+        values.gatewayType.toString() === mtnSmsGateway
+          ? values.gatewayAuthUrl : null,
       gatewaySenderId:
         values.gatewayType.toString() === smsGateway || values.gatewayType.toString() === mtnSmsGateway
           ? values.gatewaySenderId
@@ -366,6 +375,13 @@ const SmsGatewaysEditPageComponent = (props) => {
               label={strings(stringKeys.smsGateway.form.gatewayUrl)}
               name="gatewayUrl"
               field={form.fields.gatewayUrl}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextInputField
+              label={strings(stringKeys.smsGateway.form.gatewayAuthUrl)}
+              name="gatewayAuthUrl"
+              field={form.fields.gatewayAuthUrl}
             />
           </Grid>
           <Grid item xs={12}>
