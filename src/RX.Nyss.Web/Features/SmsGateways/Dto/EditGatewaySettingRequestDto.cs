@@ -23,6 +23,7 @@ namespace RX.Nyss.Web.Features.SmsGateways.Dto
         public string GatewayExtraKey { get; set; }
         public string GatewayExtraKeyName { get; set; }
         public string GatewayUrl { get; set; }
+        public string GatewayAuthUrl { get; set; }
         public string GatewaySenderId { get; set; }
 
         public class GatewaySettingRequestValidator : AbstractValidator<EditGatewaySettingRequestDto>

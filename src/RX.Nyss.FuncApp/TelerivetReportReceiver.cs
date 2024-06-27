@@ -16,7 +16,7 @@ namespace RX.Nyss.FuncApp;
 
 public class TelerivetReportReceiver
 {
-    private const string ApiKeyQueryParameterName = "apikey";
+    private const string _apiKeyQueryParameterName = "apikey";
     private readonly ILogger<TelerivetReportReceiver> _logger;
     private readonly IConfig _config;
     private readonly ITelerivetReportPublisherService _reportPublisherService;
@@ -86,7 +86,7 @@ public class TelerivetReportReceiver
         }
 
         var authorizedApiKeyList = authorizedApiKeys.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-        var apiKey = HttpUtility.ParseQueryString(decodedHttpRequestContent)[ApiKeyQueryParameterName];
+        var apiKey = HttpUtility.ParseQueryString(decodedHttpRequestContent)[_apiKeyQueryParameterName];
 
         if (string.IsNullOrWhiteSpace(apiKey))
         {

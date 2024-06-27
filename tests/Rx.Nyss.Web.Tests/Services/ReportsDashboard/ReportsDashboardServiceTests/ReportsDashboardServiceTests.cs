@@ -258,7 +258,7 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         };
 
         // Reports are inside and just outside of the time range 01.01.2024 - 08.01.2024
-        var nationalSocietyId = 1;
+        //var nationalSocietyId = 1;
 
         // act
         var groupedReports = await _reportsDashboardService.GroupReportsByHealthRiskAndDate(reportQuery, 1);
@@ -370,7 +370,7 @@ public class ReportsDashboardServiceTests : ReportsDashboardServiceTestBase
         };
 
         // Reports are inside and just outside of the time range 01.01.2024 - 08.01.2024
-        var nationalSocietyId = 1;
+        //var nationalSocietyId = 1;
 
         // act
         var groupedReports = await _reportsDashboardService.GroupReportsByHealthRiskAndEpiWeek(reportQuery, 1);
