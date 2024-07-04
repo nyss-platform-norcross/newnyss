@@ -52,8 +52,7 @@ public class SmsGatewayMTNReportReceiver
                 return new BadRequestResult();
             }
 
-            var decodedHttpRequestContent = HttpUtility.UrlDecode(httpRequestContent);
-            var report = JsonConvert.DeserializeObject<MTNReport>(decodedHttpRequestContent);
+            var report = JsonConvert.DeserializeObject<MTNReport>(httpRequestContent);
             report.ReportSource = ReportSource.MTNSmsGateway;
 
             await _reportPublisherService.AddMTNReportToQueue(report);
