@@ -15,7 +15,7 @@ namespace RX.Nyss.Web.Services.ReportsDashboard;
 
 public interface IReportsDashboardService
 {
-    Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(ReportsFilter reportsFilter, DatesGroupingType groupingType, DayOfWeek epiWeekStartDay, int? nationalSocietyId=null, int? projectId=null);
+    Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(ReportsFilter reportsFilter, DatesGroupingType groupingType, DayOfWeek epiWeekStartDay, int? nationalSocietyId = null, int? projectId = null);
 
     IQueryable<Report> GetKeptReportsInEscalatedAlertsQuery(ReportsFilter reportsFilter, int? nationalSocietyId = null, int? projectId = null);
 
@@ -38,7 +38,7 @@ public class ReportsDashboardService : IReportsDashboardService
         _dateTimeProvider = dateTimeProvider;
     }
 
-    public async Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(ReportsFilter reportsFilter, DatesGroupingType groupingType, DayOfWeek epiWeekStartDay, int? nationalSocietyId=null, int? projectId=null)
+    public async Task<ReportHistogramResponseDto> GetKeptReportsInEscalatedAlertsHistogramData(ReportsFilter reportsFilter, DatesGroupingType groupingType, DayOfWeek epiWeekStartDay, int? nationalSocietyId = null, int? projectId = null)
     {
         var reportsQuery = GetKeptReportsInEscalatedAlertsQuery(reportsFilter, nationalSocietyId, projectId);
 
@@ -104,21 +104,21 @@ public class ReportsDashboardService : IReportsDashboardService
         // Reduce Reports into only the necessary data
         var reducedReports = reports
             .Select(r => new
-        {
-            ReportId = r.Id,
-            HealthRiskId = r.ProjectHealthRisk.HealthRiskId,
-            HealthRiskName =
+            {
+                ReportId = r.Id,
+                HealthRiskId = r.ProjectHealthRisk.HealthRiskId,
+                HealthRiskName =
                 r.ProjectHealthRisk.HealthRisk.LanguageContents.FirstOrDefault(hr => hr.ContentLanguage.LanguageCode == r.ProjectHealthRisk.Project.NationalSociety.ContentLanguage.LanguageCode).Name,
-            Date = r.ReceivedAt.AddHours(utcOffset).Date, //Apply utc offset to Date
-        });
+                Date = r.ReceivedAt.AddHours(utcOffset).Date, //Apply utc offset to Date
+            });
 
         // Group Report based on healthRiskId and healthRiskName
         // Must be converted to a List as further groupBy operations causes errors with Linq
         var reportsGroupedByHealthRisk = reducedReports.GroupBy(r => new
-            {
-                HealthRiskId = r.HealthRiskId,
-                HealthRiskName = r.HealthRiskName,
-            })
+        {
+            HealthRiskId = r.HealthRiskId,
+            HealthRiskName = r.HealthRiskName,
+        })
             .Select(group => new
             {
                 HealthRiskId = group.Key.HealthRiskId,
@@ -151,23 +151,23 @@ public class ReportsDashboardService : IReportsDashboardService
         // Reduce Reports into only the necessary data
         var reducedReports = reports
             .Select(r => new
-                {
-                    ReportId = r.Id,
-                    HealthRiskId = r.ProjectHealthRisk.HealthRiskId,
-                    HealthRiskName =
+            {
+                ReportId = r.Id,
+                HealthRiskId = r.ProjectHealthRisk.HealthRiskId,
+                HealthRiskName =
                         r.ProjectHealthRisk.HealthRisk.LanguageContents
                             .FirstOrDefault(hr => hr.ContentLanguage.LanguageCode == r.ProjectHealthRisk.Project.NationalSociety.ContentLanguage.LanguageCode).Name,
-                    Date = r.ReceivedAt.AddHours(utcOffset).Date, //Apply utc offset to Date
-                    EpiWeekStartDay = r.RawReport.NationalSociety.EpiWeekStartDay
-                });
+                Date = r.ReceivedAt.AddHours(utcOffset).Date, //Apply utc offset to Date
+                EpiWeekStartDay = r.RawReport.NationalSociety.EpiWeekStartDay
+            });
 
         // Group Report based on healthRiskId and healthRiskName
         // Must be converted to a List as further groupBy operations causes errors with Linq
         var reportsGroupedByHealthRisk = reducedReports.GroupBy(r => new
-            {
-                HealthRiskId = r.HealthRiskId,
-                HealthRiskName = r.HealthRiskName,
-            })
+        {
+            HealthRiskId = r.HealthRiskId,
+            HealthRiskName = r.HealthRiskName,
+        })
             .Select(group => new
             {
                 HealthRiskId = group.Key.HealthRiskId,

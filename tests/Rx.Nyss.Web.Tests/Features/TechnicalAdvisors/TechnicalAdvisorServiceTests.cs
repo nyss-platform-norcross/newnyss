@@ -487,7 +487,7 @@ namespace RX.Nyss.Web.Tests.Features.TechnicalAdvisors
             await _technicalAdvisorService.Edit(123, editRequest);
 
             var editedUser = _nyssContext.Users.Single(u => u.Id == 123) as TechnicalAdvisorUser;
-            editedUser.EmailAddress= existingUserEmail;
+            editedUser.EmailAddress = existingUserEmail;
 
             editedUser.ShouldNotBeNull();
             editedUser.Name.ShouldBe(editRequest.Name);

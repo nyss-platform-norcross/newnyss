@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using RX.Nyss.Common.Services.StringsResources;
 using RX.Nyss.Common.Utils;
 using RX.Nyss.Common.Utils.DataContract;
+using RX.Nyss.Common.Utils.Logging;
 using RX.Nyss.Data;
 using RX.Nyss.Data.Concepts;
 using RX.Nyss.Data.Models;
@@ -22,7 +23,6 @@ using RX.Nyss.Web.Services.EidsrService;
 using RX.Nyss.Web.Utils.DataContract;
 using RX.Nyss.Web.Utils.Extensions;
 using static RX.Nyss.Common.Utils.DataContract.Result;
-using RX.Nyss.Common.Utils.Logging;
 
 namespace RX.Nyss.Web.Features.Reports;
 

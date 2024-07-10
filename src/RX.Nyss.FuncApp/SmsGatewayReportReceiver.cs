@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using RX.Nyss.FuncApp.Configuration;
 using RX.Nyss.Common.Utils.DataContract;
+using RX.Nyss.FuncApp.Configuration;
 using RX.Nyss.FuncApp.Contracts;
 using RX.Nyss.FuncApp.Services;
 

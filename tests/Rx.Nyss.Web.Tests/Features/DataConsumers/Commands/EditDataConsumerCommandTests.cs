@@ -7,7 +7,6 @@ using RX.Nyss.Data.Models;
 using RX.Nyss.Web.Features.DataConsumers.Commands;
 using RX.Nyss.Web.Features.Users;
 using RX.Nyss.Web.Services;
-using RX.Nyss.Web.Services.Authorization;
 using Shouldly;
 using Xunit;
 
@@ -100,7 +99,8 @@ namespace RX.Nyss.Web.Tests.Features.DataConsumers.Commands
 
             var existingUserEmail = "emailTest1@domain.com"; //From mockNyssContext setup in TestsBase
 
-            var request = new EditDataConsumerCommand(_dataConsumerId, new EditDataConsumerCommand.RequestBody{
+            var request = new EditDataConsumerCommand(_dataConsumerId, new EditDataConsumerCommand.RequestBody
+            {
                 Name = "New Name",
                 PhoneNumber = "432432",
                 AdditionalPhoneNumber = "123123"

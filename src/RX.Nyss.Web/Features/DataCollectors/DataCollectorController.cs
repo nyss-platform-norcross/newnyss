@@ -56,9 +56,11 @@ namespace RX.Nyss.Web.Features.DataCollectors
         [NeedsRole(Role.Administrator, Role.Manager, Role.TechnicalAdvisor, Role.Supervisor, Role.HeadSupervisor), NeedsPolicy(Policy.ProjectAccess)]
         public async Task<Result> Create([FromBody] CreateDataCollectorCommand cmd)
         {
-            try{
+            try
+            {
                 return await Sender.Send(cmd);
-            } catch (ValidationException e)
+            }
+            catch (ValidationException e)
             {
                 // Get the error message string key from the fluent validation exception or default error message
                 var errorMessage = e.Errors.FirstOrDefault()?.ErrorMessage.Split(":").Last()

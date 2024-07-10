@@ -177,9 +177,7 @@ public class NyssReportHandler : INyssReportHandler
             var receivedAt = _reportValidationService.ParseTimestamp(timestamp);
             _reportValidationService.ValidateReceivalTime(receivedAt);
             rawReport.ReceivedAt = receivedAt;
-
             var gatewaySetting = await _reportValidationService.ValidateGatewaySetting(apiKey);
-
             var dataCollector = await ValidateDataCollector(dataCollectorId, gatewaySetting.NationalSocietyId);
             rawReport.DataCollector = dataCollector;
             rawReport.NationalSociety = dataCollector?.Project.NationalSociety ?? gatewaySetting.NationalSociety;

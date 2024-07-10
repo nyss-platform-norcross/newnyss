@@ -207,7 +207,7 @@ namespace RX.Nyss.Web.Features.Managers
                 .Include(ns => ns.ContentLanguage)
                 .Include(ns => ns.DefaultOrganization)
                 .Where(ns => ns.Id == nationalSocietyId)
-                .Select(ns  => new
+                .Select(ns => new
                 {
                     NationalSociety = ns,
                     HasCoordinator = ns.NationalSocietyUsers.Any(nsu => nsu.User.Role == Role.Coordinator)

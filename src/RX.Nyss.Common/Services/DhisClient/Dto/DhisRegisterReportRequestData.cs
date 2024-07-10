@@ -1,6 +1,4 @@
-﻿
-using System;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 
 namespace RX.Nyss.Common.Services.DhisClient.Dto;
 public class DhisRegisterReportRequestData

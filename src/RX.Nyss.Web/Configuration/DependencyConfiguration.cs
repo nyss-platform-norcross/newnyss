@@ -23,7 +23,6 @@ using RX.Nyss.Common.Utils.DataContract;
 using RX.Nyss.Common.Utils.Logging;
 using RX.Nyss.Data;
 using RX.Nyss.Web.Data;
-using RX.Nyss.Web.Features.ProjectAlertRecipients.Access;
 using RX.Nyss.Web.Features.Alerts.Access;
 using RX.Nyss.Web.Features.Common;
 using RX.Nyss.Web.Features.Coordinators.Access;
@@ -34,6 +33,7 @@ using RX.Nyss.Web.Features.Managers.Access;
 using RX.Nyss.Web.Features.NationalSocieties.Access;
 using RX.Nyss.Web.Features.NationalSocietyStructure.Access;
 using RX.Nyss.Web.Features.Organizations.Access;
+using RX.Nyss.Web.Features.ProjectAlertRecipients.Access;
 using RX.Nyss.Web.Features.ProjectOrganizations.Access;
 using RX.Nyss.Web.Features.Projects.Access;
 using RX.Nyss.Web.Features.Reports.Access;
@@ -363,6 +363,6 @@ namespace RX.Nyss.Web.Configuration
                 .ToArray();
 
         //private static bool ValidatorsFilter(AssemblyScanner.AssemblyScanResult result) =>
-           // result.ValidatorType != typeof(DataCollectorLocationRequestDto.Validator);
+        // result.ValidatorType != typeof(DataCollectorLocationRequestDto.Validator);
     }
 }

@@ -194,7 +194,8 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
             {
                 OrganizationId = org.Organization.Id,
                 OrganizationName = org.Organization.Name,
-                Users = org.AlertNotHandledRecipients.Select(rec => new RecipientDto {
+                Users = org.AlertNotHandledRecipients.Select(rec => new RecipientDto
+                {
                     Name = rec.Name,
                     UserId = rec.Id
                 }).ToList()

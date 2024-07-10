@@ -18,7 +18,6 @@ using RX.Nyss.Web.Features.Supervisors.Dto;
 using RX.Nyss.Web.Features.Users;
 using RX.Nyss.Web.Services;
 using RX.Nyss.Web.Services.Authorization;
-using RX.Nyss.Web.Utils;
 using Shouldly;
 using Xunit;
 

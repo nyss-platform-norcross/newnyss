@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace RX.Nyss.Common.Utils.DataContract;
+﻿namespace RX.Nyss.Common.Utils.DataContract;
 
 public static class ResultKey
 {

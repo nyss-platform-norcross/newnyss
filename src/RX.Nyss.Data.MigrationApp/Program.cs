@@ -24,8 +24,8 @@ namespace RX.Nyss.Data.MigrationApp
             var password = args.FirstOrDefault(a => a.StartsWith("password="))?.Split("=")[1];
             var adminPassword = args.FirstOrDefault(a => a.StartsWith("adminPassword="))?.Split("=")[1];
             var groups = args.FirstOrDefault(a => a.StartsWith("groups="))?.Split("=")[1];
-            
-            if (new bool[]{createDemoData, createDemoWithoutMultipleOrgData, createTrainingData}.Where(arg => arg == true).ToArray().Length > 1)
+
+            if (new bool[] { createDemoData, createDemoWithoutMultipleOrgData, createTrainingData }.Where(arg => arg == true).ToArray().Length > 1)
             {
                 throw new ArgumentException("You can not use more than one of the following arguments together: 'createDemoData', 'createDemoWithoutMultipleOrgData', 'createTrainingData'");
             }
@@ -46,7 +46,8 @@ namespace RX.Nyss.Data.MigrationApp
                     DemoDataCreator.CreateDemoData(dbConnectionString, password);
                 }
 
-                if (createDemoWithoutMultipleOrgData) {
+                if (createDemoWithoutMultipleOrgData)
+                {
                     Console.WriteLine("About to add demo data without multiple organization access control ...");
                     DemoWithoutMultipleOrgCreator.CreateDemoWithoutMultipleOrgData(dbConnectionString, password);
                 }

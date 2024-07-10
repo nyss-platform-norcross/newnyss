@@ -12,7 +12,7 @@ public class HealthRiskReportsGroupedByDateDto
 
     public bool ValueEquals(object obj)
     {
-        var other = (HealthRiskReportsGroupedByDateDto) obj;
+        var other = (HealthRiskReportsGroupedByDateDto)obj;
         return HealthRiskId == other.HealthRiskId && HealthRiskName == other.HealthRiskName
             && Data.All(period => other.Data.Any(period.ValueEquals));
     }

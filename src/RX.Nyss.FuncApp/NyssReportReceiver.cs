@@ -17,7 +17,7 @@ namespace RX.Nyss.FuncApp;
 
 public class NyssReportReceiver
 {
-    private const string ApiKeyQueryParameterName = "apikey";
+    private const string _apiKeyQueryParameterName = "apikey";
     private readonly ILogger<NyssReportReceiver> _logger;
     private readonly IConfig _config;
     private readonly IReportPublisherService _reportPublisherService;
@@ -78,7 +78,7 @@ public class NyssReportReceiver
         }
 
         var authorizedApiKeyList = authorizedApiKeys.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-        var apiKey = HttpUtility.ParseQueryString(decodedHttpRequestContent)[ApiKeyQueryParameterName];
+        var apiKey = HttpUtility.ParseQueryString(decodedHttpRequestContent)[_apiKeyQueryParameterName];
 
         if (string.IsNullOrWhiteSpace(apiKey))
         {

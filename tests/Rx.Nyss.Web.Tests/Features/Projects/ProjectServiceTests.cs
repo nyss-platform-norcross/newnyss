@@ -668,7 +668,7 @@ namespace RX.Nyss.Web.Tests.Features.Projects
             result.Message.Key.ShouldBe(ResultKey.Project.ProjectDoesNotExist);
         }
 
-         [Fact]
+        [Fact]
         public async Task UpdateProject_HealthRisks_WhenProjectDoesNotExist_ShouldReturnError()
         {
             // Arrange

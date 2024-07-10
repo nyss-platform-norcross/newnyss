@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
@@ -9,8 +8,6 @@ using RX.Nyss.Common.Utils.DataContract;
 using RX.Nyss.Data.Repositories;
 using RX.Nyss.Web.Configuration;
 using RX.Nyss.Web.Services.EidsrService;
-using Serilog.Core;
-using SQLitePCL;
 using static RX.Nyss.Common.Utils.DataContract.Result;
 using EidsrApiProperties = RX.Nyss.Web.Services.EidsrClient.Dto.EidsrApiProperties;
 
@@ -82,7 +79,7 @@ public class ValidateEidsrReportsQuery : IRequest<Result<ValidateEidsrReportsRes
                     }
                 }
             }
-            catch 
+            catch
             {
                 res.IsEidsrApiConnectionRunning = false;
                 res.IsIntegrationConfigValid = false;

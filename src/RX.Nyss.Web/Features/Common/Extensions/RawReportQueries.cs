@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using RX.Nyss.Data.Concepts;
 using RX.Nyss.Data.Models;
 using RX.Nyss.Web.Features.Common.Dto;
-using RX.Nyss.Web.Features.Reports;
 
 namespace RX.Nyss.Web.Features.Common.Extensions
 {
@@ -140,9 +139,9 @@ namespace RX.Nyss.Web.Features.Common.Extensions
 
         public static bool ReportWasCrossCheckedBeforeAlertWasEscalated(RawReport report)
         {
-          Alert alert = GetRawReportAlert(report);
+            Alert alert = GetRawReportAlert(report);
 
-          return alert != null && (report.Report.AcceptedAt < alert.EscalatedAt || report.Report.RejectedAt < alert.EscalatedAt);
+            return alert != null && (report.Report.AcceptedAt < alert.EscalatedAt || report.Report.RejectedAt < alert.EscalatedAt);
         }
         public static IQueryable<RawReport> AllReportsCrossCheckedBeforeAlertEscalated(this IQueryable<RawReport> rawReports) =>
             rawReports.Where(r => ReportWasCrossCheckedBeforeAlertWasEscalated(r));

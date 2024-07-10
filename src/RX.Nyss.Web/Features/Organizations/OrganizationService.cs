@@ -99,7 +99,7 @@ namespace RX.Nyss.Web.Features.Organizations
 
             await _nyssContext.Organizations.AddAsync(organizationToAdd);
             await _nyssContext.SaveChangesAsync();
-            
+
             return Success(organizationToAdd.Id, ResultKey.NationalSociety.Organization.SuccessfullyAdded);
         }
 
@@ -163,7 +163,7 @@ namespace RX.Nyss.Web.Features.Organizations
             _nyssContext.Organizations.Remove(organizationToDelete.Organization);
 
             await _nyssContext.SaveChangesAsync();
-            
+
             return SuccessMessage(ResultKey.NationalSociety.Organization.SuccessfullyDeleted);
         }
 
@@ -257,12 +257,12 @@ namespace RX.Nyss.Web.Features.Organizations
             {
                 userNationalSocieties.Organization.HeadManager = userNationalSocieties.User;
             }
-            
+
             await _nyssContext.SaveChangesAsync();
 
             return Success();
         }
-        
+
         private async Task<Result> ValidateAccessToManageOrganizations(int nationalSocietyId)
         {
             if (_authorizationService.IsCurrentUserInRole(Role.Administrator))

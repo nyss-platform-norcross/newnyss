@@ -1,24 +1,24 @@
-﻿using RX.Nyss.Common.Services.StringsResources;
-using RX.Nyss.Common.Utils.Logging;
-using RX.Nyss.Common.Utils;
-using RX.Nyss.Data.Concepts;
-using RX.Nyss.Data.Models;
-using RX.Nyss.Data;
-using RX.Nyss.ReportApi.Features.Alerts;
-using RX.Nyss.ReportApi.Features.Common.Extensions;
-using RX.Nyss.ReportApi.Features.Reports.Exceptions;
-using RX.Nyss.ReportApi.Features.Reports.Models;
-using RX.Nyss.ReportApi.Services;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Web;
-using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Report = RX.Nyss.Data.Models.Report;
 using Newtonsoft.Json;
+using RX.Nyss.Common.Services.StringsResources;
+using RX.Nyss.Common.Utils;
+using RX.Nyss.Common.Utils.Logging;
+using RX.Nyss.Data;
+using RX.Nyss.Data.Concepts;
+using RX.Nyss.Data.Models;
+using RX.Nyss.ReportApi.Features.Alerts;
+using RX.Nyss.ReportApi.Features.Common.Extensions;
 using RX.Nyss.ReportApi.Features.Reports.Contracts;
+using RX.Nyss.ReportApi.Features.Reports.Exceptions;
+using RX.Nyss.ReportApi.Features.Reports.Models;
+using RX.Nyss.ReportApi.Services;
+using Report = RX.Nyss.Data.Models.Report;
 
 namespace RX.Nyss.ReportApi.Features.Reports.Handlers;
 
@@ -75,7 +75,7 @@ public class SmsGatewayMTNHandler : ISmsGatewayMTNHandler
     {
         var decodedQueryString = HttpUtility.UrlDecode(queryString);
         var mtnReportObject = JsonConvert.DeserializeObject<MTNReport>(decodedQueryString);
-        
+
         var senderAddress = mtnReportObject.SenderAddress;
         if (mtnReportObject.SenderAddress != null)
         {
@@ -346,7 +346,8 @@ public class SmsGatewayMTNHandler : ISmsGatewayMTNHandler
         try
         {
             dateTime = dateTime.AddSeconds(truncatedUnixTimeStamp).ToLocalTime();
-        }catch
+        }
+        catch
         { dateTime = DateTime.Now; }
 
         return dateTime;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using RX.Nyss.Data.Concepts;
-using RX.Nyss.Web.Features.Common;
 using RX.Nyss.Web.Features.Common.Dto;
 
 namespace RX.Nyss.Web.Features.Reports

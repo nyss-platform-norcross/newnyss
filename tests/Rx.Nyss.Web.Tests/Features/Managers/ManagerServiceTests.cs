@@ -16,7 +16,6 @@ using RX.Nyss.Web.Features.Organizations;
 using RX.Nyss.Web.Features.Users;
 using RX.Nyss.Web.Services;
 using RX.Nyss.Web.Services.Authorization;
-using RX.Nyss.Web.Utils;
 using Shouldly;
 using Xunit;
 
@@ -315,7 +314,7 @@ namespace RX.Nyss.Web.Tests.Features.Managers
             await _managerService.Edit(_managerId, editRequest);
 
             var editedUser = _nyssContext.Users.Single(u => u.Id == _managerId) as ManagerUser;
-            editedUser.EmailAddress= existingUserEmail;
+            editedUser.EmailAddress = existingUserEmail;
 
             editedUser.ShouldNotBeNull();
             editedUser.Name.ShouldBe(editRequest.Name);

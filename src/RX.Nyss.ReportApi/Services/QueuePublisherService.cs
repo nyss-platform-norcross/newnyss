@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
+using Newtonsoft.Json;
+using RX.Nyss.Common.Services;
 using RX.Nyss.Common.Utils;
 using RX.Nyss.Common.Utils.Logging;
 using RX.Nyss.Data.Models;
@@ -13,9 +16,6 @@ using RX.Nyss.ReportApi.Configuration;
 using RX.Nyss.ReportApi.Features.Common;
 using Telerivet.Client;
 using JsonSerializer = System.Text.Json.JsonSerializer;
-using RX.Nyss.Common.Services;
-using Newtonsoft.Json;
-using System.IO;
 
 namespace RX.Nyss.ReportApi.Services;
 
@@ -172,7 +172,7 @@ public class QueuePublisherService : IQueuePublisherService
 
             await SendSmsViaMTNGatewayRequest(gatewaySetting, jsonContent);
         }));
-    
+
 
     private async Task<bool> SendSmsViaMTNGatewayRequest(GatewaySetting gatewaySetting, StringContent strContent)
     {
@@ -192,7 +192,7 @@ public class QueuePublisherService : IQueuePublisherService
         ///////////////////////////////////////////////////
 
         var accessToken = GetApiKey(gatewaySetting.GatewayAuthUrl, gatewaySetting.GatewayApiKeyName, gatewayApiKey, gatewaySetting.GatewayExtraKeyName, gatewayExtraKey);
-        httpRequestMessage.Headers.Add("Authorization", "Bearer "+ accessToken);
+        httpRequestMessage.Headers.Add("Authorization", "Bearer " + accessToken);
         httpRequestMessage.Content = strContent;
 
         var res = await httpClient.SendAsync(httpRequestMessage);
@@ -332,47 +332,47 @@ public class QueuePublisherService : IQueuePublisherService
 }
 public class SendEmailMessage
 {
-public Contact To { get; set; }
+    public Contact To { get; set; }
 
-public string Subject { get; set; }
+    public string Subject { get; set; }
 
-public string Body { get; set; }
+    public string Body { get; set; }
 
-public bool SendAsTextOnly { get; set; }
+    public bool SendAsTextOnly { get; set; }
 }
 
 public class Contact
 {
-public string Name { get; set; }
+    public string Name { get; set; }
 
-public string Email { get; set; }
+    public string Email { get; set; }
 }
 
 public class SendSmsMessage
 {
-public string IotHubDeviceName { get; set; }
+    public string IotHubDeviceName { get; set; }
 
-public string PhoneNumber { get; set; }
+    public string PhoneNumber { get; set; }
 
-public string SmsMessage { get; set; }
+    public string SmsMessage { get; set; }
 
-public int? ModemNumber { get; set; }
+    public int? ModemNumber { get; set; }
 }
 
 public class SendGatewaySmsRecipient
 {
-public string PhoneNumber { get; set; }
+    public string PhoneNumber { get; set; }
 }
 
 
 public class SendSmsObject
 {
-[JsonPropertyName("senderId")]
-public string SenderId { get; set; }
-[JsonPropertyName("msisdn")]
-public string[] Msisdn { get; set; }
-[JsonPropertyName("message")]
-public string Message { get; set; }
+    [JsonPropertyName("senderId")]
+    public string SenderId { get; set; }
+    [JsonPropertyName("msisdn")]
+    public string[] Msisdn { get; set; }
+    [JsonPropertyName("message")]
+    public string Message { get; set; }
 
 }
 
