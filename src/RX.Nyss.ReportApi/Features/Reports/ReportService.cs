@@ -1,9 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using RX.Nyss.Common.Utils.DataContract;
 using RX.Nyss.Common.Utils.Logging;
 using RX.Nyss.ReportApi.Features.Reports.Contracts;
 using RX.Nyss.ReportApi.Features.Reports.Handlers;
-using RX.Nyss.Common.Utils.DataContract;
 using RX.Nyss.ReportApi.Features.Reports.Models;
 
 namespace RX.Nyss.ReportApi.Features.Reports;

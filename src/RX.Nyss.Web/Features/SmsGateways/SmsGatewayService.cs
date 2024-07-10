@@ -69,7 +69,7 @@ namespace RX.Nyss.Web.Features.SmsGateways
                     _nyssWebConfig.Key,
                     _nyssWebConfig.SupplementaryKey) : null;
             }
-            catch { telerivetApiKey = gatewaySetting?.TelerivetSendSmsApiKey;}
+            catch { telerivetApiKey = gatewaySetting?.TelerivetSendSmsApiKey; }
 
             var gatewayApiKey = "";
             try
@@ -80,7 +80,7 @@ namespace RX.Nyss.Web.Features.SmsGateways
                         _nyssWebConfig.Key,
                         _nyssWebConfig.SupplementaryKey) : null;
             }
-            catch { gatewayApiKey = gatewaySetting?.GatewayApiKey;}
+            catch { gatewayApiKey = gatewaySetting?.GatewayApiKey; }
 
             var gatewayExtraKey = "";
             try
@@ -92,33 +92,33 @@ namespace RX.Nyss.Web.Features.SmsGateways
                         _nyssWebConfig.SupplementaryKey) : null;
             }
             catch { gatewayExtraKey = gatewaySetting?.GatewayExtraKey; }
-            
+
             var gatewaySettingDto = new GatewaySettingResponseDto
-                {
-                    Id = gatewaySetting.Id,
-                    Name = gatewaySetting.Name,
-                    ApiKey = gatewaySetting.ApiKey,
-                    GatewayType = gatewaySetting.GatewayType,
-                    TelerivetApiKey = telerivetApiKey,
-                    TelerivetProjectId = gatewaySetting.TelerivetProjectId,
-                    GatewayApiKey = gatewayApiKey,
-                    GatewayApiKeyName = gatewaySetting.GatewayApiKeyName,
-                    GatewayExtraKey = gatewayExtraKey,
-                    GatewayExtraKeyName = gatewaySetting.GatewayExtraKeyName,
-                    GatewayUrl = gatewaySetting.GatewayUrl,
-                    GatewayAuthUrl = gatewaySetting.GatewayAuthUrl,
-                    GatewaySenderId = gatewaySetting.GatewaySenderId,
-                    EmailAddress = gatewaySetting.EmailAddress,
-                    IotHubDeviceName = gatewaySetting.IotHubDeviceName,
-                    ModemOneName = gatewaySetting.Modems != null && gatewaySetting.Modems.Any(gm => gm.ModemId == 1)
+            {
+                Id = gatewaySetting.Id,
+                Name = gatewaySetting.Name,
+                ApiKey = gatewaySetting.ApiKey,
+                GatewayType = gatewaySetting.GatewayType,
+                TelerivetApiKey = telerivetApiKey,
+                TelerivetProjectId = gatewaySetting.TelerivetProjectId,
+                GatewayApiKey = gatewayApiKey,
+                GatewayApiKeyName = gatewaySetting.GatewayApiKeyName,
+                GatewayExtraKey = gatewayExtraKey,
+                GatewayExtraKeyName = gatewaySetting.GatewayExtraKeyName,
+                GatewayUrl = gatewaySetting.GatewayUrl,
+                GatewayAuthUrl = gatewaySetting.GatewayAuthUrl,
+                GatewaySenderId = gatewaySetting.GatewaySenderId,
+                EmailAddress = gatewaySetting.EmailAddress,
+                IotHubDeviceName = gatewaySetting.IotHubDeviceName,
+                ModemOneName = gatewaySetting.Modems != null && gatewaySetting.Modems.Any(gm => gm.ModemId == 1)
                         ? gatewaySetting.Modems.First(gm => gm.ModemId == 1).Name
                         : null,
-                    ModemTwoName = gatewaySetting.Modems != null && gatewaySetting.Modems.Any(gm => gm.ModemId == 2)
+                ModemTwoName = gatewaySetting.Modems != null && gatewaySetting.Modems.Any(gm => gm.ModemId == 2)
                         ? gatewaySetting.Modems.First(gm => gm.ModemId == 2).Name
                         : null
-                };
+            };
 
-                var result = Success(gatewaySettingDto);
+            var result = Success(gatewaySettingDto);
             return result;
         }
 
@@ -160,19 +160,19 @@ namespace RX.Nyss.Web.Features.SmsGateways
                         editGatewaySettingRequestDto.TelerivetApiKey,
                         _nyssWebConfig.Key,
                         _nyssWebConfig.SupplementaryKey
-                    ):null,
+                    ) : null,
                     TelerivetProjectId = editGatewaySettingRequestDto.TelerivetProjectId,
                     GatewayApiKey = editGatewaySettingRequestDto.GatewayType == GatewayType.SmsGateway ? _cryptographyService.Encrypt(
                         editGatewaySettingRequestDto.GatewayApiKey,
                         _nyssWebConfig.Key,
                         _nyssWebConfig.SupplementaryKey
-                    ):null,
+                    ) : null,
                     GatewayApiKeyName = editGatewaySettingRequestDto.GatewayApiKeyName,
                     GatewayExtraKey = editGatewaySettingRequestDto.GatewayType == GatewayType.SmsGateway ? _cryptographyService.Encrypt(
                         editGatewaySettingRequestDto.GatewayExtraKey,
                         _nyssWebConfig.Key,
                         _nyssWebConfig.SupplementaryKey
-                    ):null,
+                    ) : null,
                     GatewayExtraKeyName = editGatewaySettingRequestDto.GatewayExtraKeyName,
                     GatewayUrl = editGatewaySettingRequestDto.GatewayUrl,
                     GatewayAuthUrl = editGatewaySettingRequestDto.GatewayAuthUrl,

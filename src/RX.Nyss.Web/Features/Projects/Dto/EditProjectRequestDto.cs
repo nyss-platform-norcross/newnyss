@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace RX.Nyss.Web.Features.Projects.Dto
 {

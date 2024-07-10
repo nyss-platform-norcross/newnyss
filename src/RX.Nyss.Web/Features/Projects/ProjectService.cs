@@ -304,7 +304,7 @@ namespace RX.Nyss.Web.Features.Projects
             }
         }
 
-         public async Task<Result> EditProjectHealthRisks(int projectId, EditHealthRisksRequestDto dto)
+        public async Task<Result> EditProjectHealthRisks(int projectId, EditHealthRisksRequestDto dto)
         {
             try
             {

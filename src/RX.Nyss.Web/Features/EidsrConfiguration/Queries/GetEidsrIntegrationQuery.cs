@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using RX.Nyss.Web.Features.EidsrConfiguration.Dto;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -8,6 +7,7 @@ using RX.Nyss.Common.Services;
 using RX.Nyss.Common.Utils.DataContract;
 using RX.Nyss.Data;
 using RX.Nyss.Web.Configuration;
+using RX.Nyss.Web.Features.EidsrConfiguration.Dto;
 
 namespace RX.Nyss.Web.Features.EidsrConfiguration.Queries;
 
@@ -95,7 +95,7 @@ public class GetEidsrIntegrationQuery : IRequest<Result<EidsrIntegrationResponse
             {
                 result.Add(new DistrictsWithOrganizationUnits
                 {
-                    DistrictId =  district.Id,
+                    DistrictId = district.Id,
                     DistrictName = district.Name,
                     OrganisationUnitId = district.EidsrOrganisationUnits?.OrganisationUnitId,
                     OrganisationUnitName = district.EidsrOrganisationUnits?.OrganisationUnitName,

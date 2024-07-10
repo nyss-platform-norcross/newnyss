@@ -111,7 +111,7 @@ namespace RX.Nyss.Web.Features.Projects
         /// <param name="projectId">An identifier of a project</param>
         /// <returns>List of error messages</returns>
         [HttpGet("{projectId:int}/errorMessages")]
-        [NeedsRole(Role.Administrator, Role.TechnicalAdvisor, Role.Manager,Role.Coordinator), NeedsPolicy(Policy.ProjectAccess)]
+        [NeedsRole(Role.Administrator, Role.TechnicalAdvisor, Role.Manager, Role.Coordinator), NeedsPolicy(Policy.ProjectAccess)]
         public async Task<IReadOnlyList<ProjectErrorMessageDto>> GetErrorMessages(int projectId) =>
             await Sender.Send(new GetProjectErrorMessagesQuery(projectId));
 
@@ -122,7 +122,7 @@ namespace RX.Nyss.Web.Features.Projects
         /// <param name="body">Key-value pair with messages</param>
         /// <returns></returns>
         [HttpPut("{projectId:int}/errorMessages")]
-        [NeedsRole(Role.Administrator, Role.TechnicalAdvisor, Role.Manager,Role.Coordinator), NeedsPolicy(Policy.ProjectAccess)]
+        [NeedsRole(Role.Administrator, Role.TechnicalAdvisor, Role.Manager, Role.Coordinator), NeedsPolicy(Policy.ProjectAccess)]
         public async Task<IReadOnlyList<ProjectErrorMessageDto>> UpdateErrorMessages([FromRoute] int projectId, [FromBody] Dictionary<string, string> body) =>
             await Sender.Send(new UpdateProjectErrorMessagesCommand(projectId, body));
     }

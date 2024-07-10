@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Web;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RX.Nyss.Common.Services.StringsResources;
 using RX.Nyss.Common.Utils;

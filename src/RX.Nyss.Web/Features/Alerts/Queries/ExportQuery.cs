@@ -171,7 +171,7 @@ public class ExportQuery : IRequest<byte[]>
         }
 
         private static IReadOnlyList<string> GetColumnLabels(StringsResourcesVault strings) =>
-            new []
+            new[]
             {
                 strings["alerts.export.id"],
                 strings["alerts.export.dateTriggered"],

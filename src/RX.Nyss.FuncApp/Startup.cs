@@ -19,12 +19,12 @@ public class Startup : FunctionsStartup
 
 public static class FunctionHostBuilderExtensions
 {
-    private const string LocalSettingsJsonFileName = "local.settings.json";
+    private const string _localSettingsJsonFileName = "local.settings.json";
 
     public static void AddConfiguration(this IFunctionsHostBuilder builder)
     {
         var currentDirectory = Directory.GetCurrentDirectory();
-        var localSettingsFile = Path.Combine(currentDirectory, LocalSettingsJsonFileName);
+        var localSettingsFile = Path.Combine(currentDirectory, _localSettingsJsonFileName);
 
         var provider = builder.Services.BuildServiceProvider();
         var configuration = provider.GetService<IConfiguration>();

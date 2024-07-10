@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using RX.Nyss.FuncApp.Configuration;
 using RX.Nyss.Common.Utils.DataContract;
+using RX.Nyss.FuncApp.Configuration;
 using RX.Nyss.FuncApp.Contracts;
 using RX.Nyss.FuncApp.Services;
 
@@ -17,7 +17,7 @@ namespace RX.Nyss.FuncApp;
 
 public class SmsEagleReportReceiver
 {
-    private const string ApiKeyQueryParameterName = "apikey";
+    private const string _apiKeyQueryParameterName = "apikey";
     private readonly ILogger<SmsEagleReportReceiver> _logger;
     private readonly IConfig _config;
     private readonly IReportPublisherService _reportPublisherService;
@@ -76,7 +76,7 @@ public class SmsEagleReportReceiver
         }
 
         var authorizedApiKeyList = authorizedApiKeys.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-        var apiKey = HttpUtility.ParseQueryString(decodedHttpRequestContent)[ApiKeyQueryParameterName];
+        var apiKey = HttpUtility.ParseQueryString(decodedHttpRequestContent)[_apiKeyQueryParameterName];
 
         if (string.IsNullOrWhiteSpace(apiKey))
         {

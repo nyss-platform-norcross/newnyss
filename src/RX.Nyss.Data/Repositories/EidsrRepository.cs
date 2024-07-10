@@ -42,11 +42,11 @@ public class EidsrRepository : IEidsrRepository
             EidsrDbReportData = aggregatedReport
         }).ToList();
     }
-    
+
     private List<EidsrDbReportData> GetReports(int alertId, DateTime alertDate, int englishContentLanguageId)
     {
         var reportsOfAlertIds = _nyssContext.AlertReports
-            .Where(x=>x.AlertId == alertId).Select(x => x.ReportId).ToList();
+            .Where(x => x.AlertId == alertId).Select(x => x.ReportId).ToList();
 
         var reports = GetReportFilterQuery()
             .Where(queriedReport => reportsOfAlertIds.Contains(queriedReport.Report.Id))
@@ -133,5 +133,5 @@ public class EidsrRepository : IEidsrRepository
 
         return template;
     }
-    
+
 }

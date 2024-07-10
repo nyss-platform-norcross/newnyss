@@ -27,7 +27,7 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
         /// <returns></returns>
         [HttpPost("create")]
         [NeedsRole(Role.Administrator, Role.Manager, Role.TechnicalAdvisor), NeedsPolicy(Policy.ProjectAccess)]
-        public async Task<Result> Create(int projectId, [FromBody]ProjectAlertNotHandledRecipientRequestDto dto) =>
+        public async Task<Result> Create(int projectId, [FromBody] ProjectAlertNotHandledRecipientRequestDto dto) =>
             await _projectAlertNotHandledRecipientService.Create(projectId, dto);
 
 
@@ -39,7 +39,7 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
         /// <returns></returns>
         [HttpPost("edit")]
         [NeedsRole(Role.Administrator, Role.Manager, Role.TechnicalAdvisor), NeedsPolicy(Policy.ProjectAccess)]
-        public async Task<Result> Edit(int projectId, [FromBody]ProjectAlertNotHandledRecipientsRequestDto dto) =>
+        public async Task<Result> Edit(int projectId, [FromBody] ProjectAlertNotHandledRecipientsRequestDto dto) =>
             await _projectAlertNotHandledRecipientService.Edit(projectId, dto);
 
         /// Deletes an alert not handled notification recipient for a project
@@ -49,7 +49,7 @@ namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients
         /// <returns></returns>
         [HttpPost("delete")]
         [NeedsRole(Role.Administrator, Role.Manager, Role.TechnicalAdvisor), NeedsPolicy(Policy.ProjectAccess)]
-        public async Task<Result> Edit(int projectId, [FromBody]ProjectAlertNotHandledRecipientRequestDto dto) =>
+        public async Task<Result> Edit(int projectId, [FromBody] ProjectAlertNotHandledRecipientRequestDto dto) =>
             await _projectAlertNotHandledRecipientService.Delete(projectId, dto);
 
         /// <summary>

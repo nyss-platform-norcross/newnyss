@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using RX.Nyss.Common.Services;
 using RX.Nyss.Common.Services.DhisClient;
+using RX.Nyss.Common.Services.DhisClient.Dto;
 using RX.Nyss.Common.Utils.Logging;
 using RX.Nyss.Data.Repositories;
 using RX.Nyss.ReportApi.Configuration;
-using EidsrApiProperties = RX.Nyss.Web.Services.EidsrClient.Dto.EidsrApiProperties;
 using DhisReport = RX.Nyss.ReportApi.Features.Reports.Models.DhisReport;
-using RX.Nyss.Common.Services.DhisClient.Dto;
+using EidsrApiProperties = RX.Nyss.Web.Services.EidsrClient.Dto.EidsrApiProperties;
 
 namespace RX.Nyss.ReportApi.Features.Reports.Handlers;
 
@@ -49,7 +49,8 @@ public class DhisReportHandler : IDhisReportHandler
             }
 
             var report = _dhisRepository.GetReportsForDhis(dhisReport.ReportId.Value);
-            var template = new DhisRegisterReportRequestTemplate {
+            var template = new DhisRegisterReportRequestTemplate
+            {
                 EidsrApiProperties = new EidsrApiProperties
                 {
                     Url = report.DhisDbReportTemplate.EidsrApiProperties.Url,

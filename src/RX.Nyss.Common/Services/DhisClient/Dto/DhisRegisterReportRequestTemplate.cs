@@ -1,6 +1,4 @@
-﻿using System;
-using RX.Nyss.Web.Services.EidsrClient.Dto;
-using NetTopologySuite.Geometries;
+﻿using RX.Nyss.Web.Services.EidsrClient.Dto;
 
 namespace RX.Nyss.Common.Services.DhisClient.Dto;
 public class DhisRegisterReportRequestTemplate

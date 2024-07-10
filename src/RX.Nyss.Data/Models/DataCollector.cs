@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using NetTopologySuite.Geometries;
 using RX.Nyss.Data.Concepts;
 
 namespace RX.Nyss.Data.Models

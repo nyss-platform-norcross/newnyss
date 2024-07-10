@@ -14,13 +14,13 @@ public class EidsrIntegrationResponseDto
 
     public string TrackerProgramId { get; set; }
 
-    public string LocationDataElementId	{ get; set; }
+    public string LocationDataElementId { get; set; }
 
     public string DateOfOnsetDataElementId { get; set; }
 
     public string PhoneNumberDataElementId { get; set; }
 
-    public string SuspectedDiseaseDataElementId	{ get; set; }
+    public string SuspectedDiseaseDataElementId { get; set; }
 
     public string EventTypeDataElementId { get; set; }
 
@@ -53,6 +53,6 @@ public class EidsrIntegrationResponseDto
     public string ReportTimeDataElementId { get; set; }
 
     public string ReportDataCollectorIdDataElementId { get; set; }
-    
+
     public List<DistrictsWithOrganizationUnits> DistrictsWithOrganizationUnits { get; set; }
 }

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace RX.Nyss.Data.Models
 {
     public class GatewayModem

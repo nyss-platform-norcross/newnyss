@@ -26,7 +26,7 @@ public class DistrictsOrgUnitsService : IDistrictsOrgUnitsService
         var res = await _nyssContext
             .Regions.Where(x => x.NationalSociety.Id == nationalSocietyId)
             .Include(x => x.Districts)
-            .ThenInclude(x=>x.EidsrOrganisationUnits)
+            .ThenInclude(x => x.EidsrOrganisationUnits)
             .SelectMany(x => x.Districts)
             .ToListAsync();
 

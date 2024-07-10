@@ -36,7 +36,7 @@ public class SmsPublisherService : ISmsPublisherService
             var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(sendSms)))
             {
                 Subject = "RX.Nyss.Web",
-                ApplicationProperties = { {"IoTHubDevice", iotHubDeviceName } }
+                ApplicationProperties = { { "IoTHubDevice", iotHubDeviceName } }
             };
 
             return _sender.SendMessageAsync(message);

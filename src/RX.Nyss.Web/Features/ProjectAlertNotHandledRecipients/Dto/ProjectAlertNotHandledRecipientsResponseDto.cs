@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using RX.Nyss.Data.Models;
 
 namespace RX.Nyss.Web.Features.ProjectAlertNotHandledRecipients.Dto
 {

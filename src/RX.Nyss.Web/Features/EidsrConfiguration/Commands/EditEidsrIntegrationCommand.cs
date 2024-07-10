@@ -169,7 +169,7 @@ public class EditEidsrIntegrationCommand : IRequest<Result>
             var nationalSocietyDistricts = await _districtsOrgUnitsService.GetNationalSocietyDistricts(nationalSocietyId);
 
             var dbEidsrOrganisationUnits = await _nyssContext.EidsrOrganisationUnits.Where(eidsrOrganisationUnit =>
-                nationalSocietyDistricts.Select(x=>x.Id).Contains(eidsrOrganisationUnit.DistrictId)
+                nationalSocietyDistricts.Select(x => x.Id).Contains(eidsrOrganisationUnit.DistrictId)
             ).ToListAsync(cancellationToken: cancellationToken);
 
             foreach (var nationalSocietyDistrict in nationalSocietyDistricts)
@@ -177,7 +177,7 @@ public class EditEidsrIntegrationCommand : IRequest<Result>
                 var reqEidsrOrganisationUnit = newDistrictsWithOrganizationUnits
                     .FirstOrDefault(x => x.DistrictId == nationalSocietyDistrict.Id);
 
-                if(reqEidsrOrganisationUnit == default)
+                if (reqEidsrOrganisationUnit == default)
                     continue;
 
                 var dbEidsrOrganisationUnit = dbEidsrOrganisationUnits
@@ -211,13 +211,13 @@ public class EditEidsrIntegrationCommand : IRequest<Result>
 
         public string TrackerProgramId { get; set; }
 
-        public string LocationDataElementId	{ get; set; }
+        public string LocationDataElementId { get; set; }
 
         public string DateOfOnsetDataElementId { get; set; }
 
         public string PhoneNumberDataElementId { get; set; }
 
-        public string SuspectedDiseaseDataElementId	{ get; set; }
+        public string SuspectedDiseaseDataElementId { get; set; }
 
         public string EventTypeDataElementId { get; set; }
 

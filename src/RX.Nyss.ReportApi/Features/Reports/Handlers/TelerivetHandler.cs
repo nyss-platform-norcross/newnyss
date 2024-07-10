@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Transactions;
 using System.Web;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 using RX.Nyss.Common.Services.StringsResources;
 using RX.Nyss.Common.Utils;
 using RX.Nyss.Common.Utils.Logging;
@@ -18,7 +17,6 @@ using RX.Nyss.ReportApi.Features.Reports.Exceptions;
 using RX.Nyss.ReportApi.Features.Reports.Models;
 using RX.Nyss.ReportApi.Services;
 using Report = RX.Nyss.Data.Models.Report;
-using RX.Nyss.Common.Services;
 
 namespace RX.Nyss.ReportApi.Features.Reports.Handlers;
 

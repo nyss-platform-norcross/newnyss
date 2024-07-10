@@ -8,36 +8,35 @@ using RX.Nyss.PublicApiFuncApp.Configuration;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 
-namespace RX.Nyss.PublicApiFuncApp
+namespace RX.Nyss.PublicApiFuncApp;
+
+public class Startup : FunctionsStartup
 {
-    public class Startup : FunctionsStartup
+    public override void Configure(IFunctionsHostBuilder builder) => builder.AddConfiguration();
+}
+
+public static class FunctionHostBuilderExtensions
+{
+    private const string _localSettingsJsonFileName = "local.settings.json";
+
+    public static void AddConfiguration(this IFunctionsHostBuilder builder)
     {
-        public override void Configure(IFunctionsHostBuilder builder) => builder.AddConfiguration();
-    }
+        var currentDirectory = Directory.GetCurrentDirectory();
+        var localSettingsFile = Path.Combine(currentDirectory, _localSettingsJsonFileName);
 
-    public static class FunctionHostBuilderExtensions
-    {
-        private const string LocalSettingsJsonFileName = "local.settings.json";
+        var provider = builder.Services.BuildServiceProvider();
+        var configuration = provider.GetService<IConfiguration>();
 
-        public static void AddConfiguration(this IFunctionsHostBuilder builder)
-        {
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var localSettingsFile = Path.Combine(currentDirectory, LocalSettingsJsonFileName);
+        var configurationBuilder = new ConfigurationBuilder()
+            .AddJsonFile(localSettingsFile, true, true)
+            .AddEnvironmentVariables()
+            .AddConfiguration(configuration)
+            .AddUserSecrets(Assembly.GetExecutingAssembly(), true);
 
-            var provider = builder.Services.BuildServiceProvider();
-            var configuration = provider.GetService<IConfiguration>();
-
-            var configurationBuilder = new ConfigurationBuilder()
-                .AddJsonFile(localSettingsFile, true, true)
-                .AddEnvironmentVariables()
-                .AddConfiguration(configuration)
-                .AddUserSecrets(Assembly.GetExecutingAssembly(), true);
-
-            var newConfiguration = configurationBuilder.Build();
-            var nyssPublicApiFuncAppConfig = newConfiguration.Get<NyssPublicApiFuncAppConfig>();
-            builder.Services.AddSingleton<IConfiguration>(newConfiguration);
-            builder.Services.AddSingleton<IConfig>(nyssPublicApiFuncAppConfig);
-            builder.Services.AddLogging();
-        }
+        var newConfiguration = configurationBuilder.Build();
+        var nyssPublicApiFuncAppConfig = newConfiguration.Get<NyssPublicApiFuncAppConfig>();
+        builder.Services.AddSingleton<IConfiguration>(newConfiguration);
+        builder.Services.AddSingleton<IConfig>(nyssPublicApiFuncAppConfig);
+        builder.Services.AddLogging();
     }
 }

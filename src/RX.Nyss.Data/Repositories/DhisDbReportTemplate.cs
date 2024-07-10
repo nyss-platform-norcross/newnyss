@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RX.Nyss.Data.Repositories;
+﻿namespace RX.Nyss.Data.Repositories;
 
 public class DhisDbReportTemplate
 {
@@ -8,13 +6,13 @@ public class DhisDbReportTemplate
 
     public EidsrApiProperties EidsrApiProperties { get; set; }
 
-    public string ReportLocationDataElementId	{ get; set; }
+    public string ReportLocationDataElementId { get; set; }
 
     public string ReportGeoLocationDataElementId { get; set; }
 
     public string ReportHealthRiskDataElementId { get; set; }
 
-    public string ReportSuspectedDiseaseDataElementId	{ get; set; }
+    public string ReportSuspectedDiseaseDataElementId { get; set; }
 
     public string ReportStatusDataElementId { get; set; }
 
