@@ -195,7 +195,7 @@ public class ReportValidationService : IReportValidationService
 
         if (gatewaySetting.GatewayType != GatewayType.SmsEagle && gatewaySetting.GatewayType != GatewayType.SmsGateway && gatewaySetting.GatewayType != GatewayType.Telerivet && gatewaySetting.GatewayType != GatewayType.MTNSmsGateway)
         {
-            throw new ReportValidationException($"A gateway type ('{gatewaySetting.GatewayType}') is different than '{GatewayType.SmsEagle}' or '{GatewayType.SmsGateway}' or '{GatewayType.Telerivet}'.", ReportErrorType.Gateway);
+            throw new ReportValidationException($"A gateway type ('{gatewaySetting.GatewayType}') is different than '{GatewayType.SmsEagle}' or '{GatewayType.SmsGateway}' or '{GatewayType.Telerivet}' or '{GatewayType.MTNSmsGateway}'.", ReportErrorType.Gateway);
         }
 
         return gatewaySetting;

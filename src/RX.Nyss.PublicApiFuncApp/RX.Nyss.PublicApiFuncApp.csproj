@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <RuntimeIdentifiers>win-x86</RuntimeIdentifiers>
         <AzureFunctionsVersion>V4</AzureFunctionsVersion>
         <UserSecretsId>a53b196f-5472-4183-8faa-92af93f592f4</UserSecretsId>
@@ -9,8 +9,7 @@
         <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
         <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.2.0" />
         <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="5.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.32" />
         <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.4.0" />
     </ItemGroup>
     <ItemGroup>
