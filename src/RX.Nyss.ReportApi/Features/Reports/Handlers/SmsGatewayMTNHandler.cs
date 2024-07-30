@@ -94,7 +94,7 @@ public class SmsGatewayMTNHandler : ISmsGatewayMTNHandler
             var rawReport = new RawReport
             {
                 Sender = senderAddress,
-                Timestamp = UnixTimeStampToDateTime(mtnReportObject.Created).ToString("yyyyMMddHHmmss"),
+                Timestamp = UnixTimeStampToDateTime((long)Convert.ToDouble(mtnReportObject.Created)).ToString("yyyyMMddHHmmss"),
                 ReceivedAt = _dateTimeProvider.UtcNow,
                 Text = mtnReportObject.Message,
                 ApiKey = mtnReportObject.ReceiverAddress,//We haven't apikey but we will keep short code value for using as a reference later
