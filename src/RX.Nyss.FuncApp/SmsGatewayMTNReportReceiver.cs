@@ -48,8 +48,17 @@ public class SmsGatewayMTNReportReceiver
             return new BadRequestResult();
         }
 
-        var report = JsonConvert.DeserializeObject<MTNReport>(httpRequestContent);
-        report.ReportSource = ReportSource.MTNSmsGateway;
+        var input = JsonConvert.DeserializeObject<MTNReport>(httpRequestContent);
+        var report = new MTNReport
+        {
+            SenderAddress = input.SenderAddress,
+            ReceiverAddress = input.ReceiverAddress,
+            SubmittedDate = input.SubmittedDate,
+            Message = input.Message,
+            Created = input.Created,
+            Id = input.Id,
+            ReportSource = ReportSource.MTNSmsGateway
+        };
 
         await _reportPublisherService.AddMTNReportToQueue(report);
         return new OkResult();
