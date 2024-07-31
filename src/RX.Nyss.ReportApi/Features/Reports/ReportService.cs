@@ -138,8 +138,8 @@ public class ReportService : IReportService
 
         if (mtnReport.ReportSource == ReportSource.MTNSmsGateway)
         {
-            var Content = "{\"senderAddress\":\"" + mtnReport.SenderAddress + "\",\"receiverAddress\":\"" + mtnReport.ReceiverAddress + "\",\"submittedDate\":" + mtnReport.SubmittedDate + ",\"message\":\"" + mtnReport.Message + "\",\"created\":" + mtnReport.Created +
-                ",\"id\":\"" + mtnReport.Id + "\"}";
+            var Content = "{\"senderAddress\":\"" + mtnReport.SenderAddress + "\",\"receiverAddress\":\"" + mtnReport.ReceiverAddress + "\",\"submittedDate\":\"" + mtnReport.SubmittedDate + "\",\"message\":\"" + mtnReport.Message + "\",\"created\":\"" + mtnReport.Created +
+                "\",\"id\":\"" + mtnReport.Id + "\"}";
             await _smsGatewayMTNHandler.Handle(Content);
         }
         else

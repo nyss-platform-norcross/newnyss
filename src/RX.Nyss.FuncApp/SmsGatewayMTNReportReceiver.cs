@@ -13,7 +13,6 @@ using RX.Nyss.Common.Utils.DataContract;
 using RX.Nyss.FuncApp.Configuration;
 using RX.Nyss.FuncApp.Contracts;
 using RX.Nyss.FuncApp.Services;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace RX.Nyss.FuncApp;
 
@@ -67,7 +66,7 @@ public class SmsGatewayMTNReportReceiver
     private HttpResponseMessage ReturnBadHttpResult(HttpRequestMessage httpRequest)
     {
         using StringContent jsonContent = new(
-                JsonSerializer.Serialize(new SendSuccessCallbackMessageObject
+                JsonConvert.SerializeObject(new SendSuccessCallbackMessageObject
                 {
                     Status = "Error",
                     TransactionId = null,
@@ -82,7 +81,7 @@ public class SmsGatewayMTNReportReceiver
     private HttpResponseMessage ReturnOkHttpResult(HttpRequestMessage httpRequest, string messageId)
     {
         using StringContent jsonContent = new(
-                JsonSerializer.Serialize(new SendSuccessCallbackMessageObject
+                JsonConvert.SerializeObject(new SendSuccessCallbackMessageObject
                 {
                     Status = "Processed",
                     TransactionId = messageId,
