@@ -223,7 +223,7 @@ const DataCollectorsCreatePageComponent = (props) => {
                   control={<Radio />}
                   label={strings(
                     stringKeys.dataCollectors.constants.dataCollectorType[
-                      dataCollectorType[type]
+                    dataCollectorType[type]
                     ],
                   )}
                   value={dataCollectorType[type]}
@@ -281,7 +281,7 @@ const DataCollectorsCreatePageComponent = (props) => {
                     <MenuItem key={`sex${type}`} value={type}>
                       {strings(
                         stringKeys.dataCollectors.constants.sex[
-                          type.toLowerCase()
+                        type.toLowerCase()
                         ],
                       )}
                     </MenuItem>
@@ -300,19 +300,19 @@ const DataCollectorsCreatePageComponent = (props) => {
                 defaultCountry={props.countryCode}
               />
             </Grid>
-            {type === dataCollectorType.human && (
-              <Grid item xs={12} md={3}>
-                <PhoneInputField
-                  label={strings(
-                    stringKeys.dataCollectors.form.additionalPhoneNumber,
-                  )}
-                  name="additionalPhoneNumber"
-                  field={form.fields.additionalPhoneNumber}
-                  defaultCountry={props.countryCode}
-                  rtl={useRtlDirection}
-                />
-              </Grid>
-            )}
+
+            <Grid item xs={12} md={3}>
+              <PhoneInputField
+                label={strings(
+                  stringKeys.dataCollectors.form.additionalPhoneNumber,
+                )}
+                name="additionalPhoneNumber"
+                field={form.fields.additionalPhoneNumber}
+                defaultCountry={props.countryCode}
+                rtl={useRtlDirection}
+              />
+            </Grid>
+
           </Grid>
           {!currentUserRoles.some((r) => r === Supervisor) && (
             <Grid container item xs={12} direction="column" style={{ marginTop: 30 }}>
@@ -335,7 +335,7 @@ const DataCollectorsCreatePageComponent = (props) => {
                 </SelectField>
               </Grid>
             </Grid>
-            )}
+          )}
         </Grid>
         <Typography variant="h5" style={{ marginTop: 50 }}>
           {strings(stringKeys.dataCollectors.form.locationsHeader)}
@@ -360,10 +360,10 @@ const DataCollectorsCreatePageComponent = (props) => {
         </Grid>
         <Grid className={classes.addLocationContainer} onClick={addDataCollectorLocation} container alignItems="center">
           <IconButton
-              color="primary"
-              variant="outlined"
-              >
-              <AddCircleOutlineIcon/>
+            color="primary"
+            variant="outlined"
+          >
+            <AddCircleOutlineIcon />
           </IconButton>
           <Typography style={{ color: theme.palette.primary.main }}>{strings(stringKeys.dataCollectors.form.addLocation)}</Typography>
         </Grid>
