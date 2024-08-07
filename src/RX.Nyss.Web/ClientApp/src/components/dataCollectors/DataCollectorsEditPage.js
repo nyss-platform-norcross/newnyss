@@ -199,26 +199,26 @@ const DataCollectorsEditPageComponent = (props) => {
         <ValidationMessage message={props.error.message} />
       )}
       <Form onSubmit={handleSubmit} fullWidth>
-          <Grid container>
-            <Grid item xs={12}>
-              <Typography variant="h5">
-                {strings(stringKeys.dataCollectors.filters.deployedMode)}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <CheckboxField
-                name="deployed"
-                label={strings(stringKeys.dataCollectors.form.deployed)}
-                field={form.fields.deployed}
-                color="primary"
-              />
-            </Grid>
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography variant="h5">
+              {strings(stringKeys.dataCollectors.filters.deployedMode)}
+            </Typography>
           </Grid>
-          <Typography variant="h5" style={{ marginTop: 50 }}>
-            {strings(stringKeys.dataCollectors.form.personalia)}
-          </Typography>
+          <Grid item xs={12}>
+            <CheckboxField
+              name="deployed"
+              label={strings(stringKeys.dataCollectors.form.deployed)}
+              field={form.fields.deployed}
+              color="primary"
+            />
+          </Grid>
+        </Grid>
+        <Typography variant="h5" style={{ marginTop: 50 }}>
+          {strings(stringKeys.dataCollectors.form.personalia)}
+        </Typography>
 
-          <Grid container spacing={4}>
+        <Grid container spacing={4}>
           <Grid container item xs={12} spacing={4}>
             <Grid item xs={12} md={3}>
               <TextInputField
@@ -251,7 +251,7 @@ const DataCollectorsEditPageComponent = (props) => {
                     <MenuItem key={`sex${type}`} value={type}>
                       {strings(
                         stringKeys.dataCollectors.constants.sex[
-                          type.toLowerCase()
+                        type.toLowerCase()
                         ],
                       )}
                     </MenuItem>
@@ -260,97 +260,95 @@ const DataCollectorsEditPageComponent = (props) => {
               </Grid>
             )}
           </Grid>
+        </Grid>
+        <Grid container item xs={12} spacing={4} style={{ marginTop: 16 }}>
+          <Grid item xs={12} md={3}>
+            <PhoneInputField
+              label={strings(stringKeys.dataCollectors.form.phoneNumber)}
+              name="phoneNumber"
+              field={form.fields.phoneNumber}
+              defaultCountry={props.data.nationalSocietyCountryCode}
+              rtl={useRtlDirection}
+            />
           </Grid>
-          <Grid container item xs={12} spacing={4} style={{ marginTop: 16 }}>
-            <Grid item xs={12} md={3}>
-              <PhoneInputField
-                label={strings(stringKeys.dataCollectors.form.phoneNumber)}
-                name="phoneNumber"
-                field={form.fields.phoneNumber}
-                defaultCountry={props.data.nationalSocietyCountryCode}
-                rtl={useRtlDirection}
-              />
-            </Grid>
-            {props.data.dataCollectorType === dataCollectorType.human && (
-              <Grid item xs={12} md={3}>
-                <PhoneInputField
-                  label={strings(
-                    stringKeys.dataCollectors.form.additionalPhoneNumber,
-                  )}
-                  name="additionalPhoneNumber"
-                  field={form.fields.additionalPhoneNumber}
-                  defaultCountry={props.data.nationalSocietyCountryCode}
-                  rtl={useRtlDirection}
-                />
-              </Grid>
-            )}
+          <Grid item xs={12} md={3}>
+            <PhoneInputField
+              label={strings(
+                stringKeys.dataCollectors.form.additionalPhoneNumber,
+              )}
+              name="additionalPhoneNumber"
+              field={form.fields.additionalPhoneNumber}
+              defaultCountry={props.data.nationalSocietyCountryCode}
+              rtl={useRtlDirection}
+            />
           </Grid>
-          {!currentUserRoles.some((r) => r === Supervisor) && (
-            <Grid container item xs={12} direction="column" style={{ marginTop: 62 }}>
-              <Typography variant="h5">{strings(stringKeys.dataCollectors.form.responsibleSupervisor)}</Typography>
-              <Grid item md={3}>
-                <SelectField
-                  label={strings(stringKeys.dataCollectors.form.supervisor)}
-                  field={form.fields.supervisorId}
-                  name="supervisorId"
-                  fieldRef={form.fields.supervisorId.ref}
-                >
-                  {props.data.formData.supervisors.map((supervisor) => (
-                    <MenuItem
-                      key={`supervisor_${supervisor.id}`}
-                      value={supervisor.id.toString()}
-                    >
-                      {supervisor.name}
-                    </MenuItem>
-                  ))}
-                </SelectField>
-              </Grid>
-            </Grid>
-          )}
-          <Typography variant="h5" style={{ marginTop: 50 }}>
-            {strings(stringKeys.dataCollectors.form.locationsHeader)}
-          </Typography>
-          <Grid container spacing={2} style={{ marginTop: 5 }}>
-            {locations.map((location, i) => (
-              <DataCollectorLocationItem
-                key={`location_${location.number}`}
-                form={form}
-                location={location}
-                locationNumber={location.number}
-                isLastLocation={i === locations.length - 1}
-                isOnlyLocation={locations.length === 1}
-                defaultLocation={centerLocation}
-                regions={props.data.formData.regions}
-                initialDistricts={location.initialFormData.districts}
-                initialVillages={location.initialFormData.villages}
-                initialZones={location.initialFormData.zones}
-                isDefaultCollapsed={allLocationsCollapsed}
-                removeLocation={removeDataCollectorLocation}
-                allLocations={locations}
-                rtl={useRtlDirection}
-              />
-            ))}
-          </Grid>
-          <Grid className={classes.addLocationContainer} onClick={addDataCollectorLocation} container alignItems="center">
-          <IconButton
-              color="primary"
-              variant="outlined"
+        </Grid>
+        {!currentUserRoles.some((r) => r === Supervisor) && (
+          <Grid container item xs={12} direction="column" style={{ marginTop: 62 }}>
+            <Typography variant="h5">{strings(stringKeys.dataCollectors.form.responsibleSupervisor)}</Typography>
+            <Grid item md={3}>
+              <SelectField
+                label={strings(stringKeys.dataCollectors.form.supervisor)}
+                field={form.fields.supervisorId}
+                name="supervisorId"
+                fieldRef={form.fields.supervisorId.ref}
               >
-              <AddCircleOutlineIcon/>
+                {props.data.formData.supervisors.map((supervisor) => (
+                  <MenuItem
+                    key={`supervisor_${supervisor.id}`}
+                    value={supervisor.id.toString()}
+                  >
+                    {supervisor.name}
+                  </MenuItem>
+                ))}
+              </SelectField>
+            </Grid>
+          </Grid>
+        )}
+        <Typography variant="h5" style={{ marginTop: 50 }}>
+          {strings(stringKeys.dataCollectors.form.locationsHeader)}
+        </Typography>
+        <Grid container spacing={2} style={{ marginTop: 5 }}>
+          {locations.map((location, i) => (
+            <DataCollectorLocationItem
+              key={`location_${location.number}`}
+              form={form}
+              location={location}
+              locationNumber={location.number}
+              isLastLocation={i === locations.length - 1}
+              isOnlyLocation={locations.length === 1}
+              defaultLocation={centerLocation}
+              regions={props.data.formData.regions}
+              initialDistricts={location.initialFormData.districts}
+              initialVillages={location.initialFormData.villages}
+              initialZones={location.initialFormData.zones}
+              isDefaultCollapsed={allLocationsCollapsed}
+              removeLocation={removeDataCollectorLocation}
+              allLocations={locations}
+              rtl={useRtlDirection}
+            />
+          ))}
+        </Grid>
+        <Grid className={classes.addLocationContainer} onClick={addDataCollectorLocation} container alignItems="center">
+          <IconButton
+            color="primary"
+            variant="outlined"
+          >
+            <AddCircleOutlineIcon />
           </IconButton>
           <Typography style={{ color: theme.palette.primary.main }}>{strings(stringKeys.dataCollectors.form.addLocation)}</Typography>
         </Grid>
-          <FormActions>
-            <CancelButton
-              variant="outlined"
-              onClick={() => props.goToList(props.projectId)}
-            >
-              {strings(stringKeys.form.cancel)}
-            </CancelButton>
-            <SubmitButton isFetching={props.isSaving}>
-              {strings(stringKeys.common.buttons.update)}
-            </SubmitButton>
-          </FormActions>
+        <FormActions>
+          <CancelButton
+            variant="outlined"
+            onClick={() => props.goToList(props.projectId)}
+          >
+            {strings(stringKeys.form.cancel)}
+          </CancelButton>
+          <SubmitButton isFetching={props.isSaving}>
+            {strings(stringKeys.common.buttons.update)}
+          </SubmitButton>
+        </FormActions>
       </Form>
     </Fragment>
   );
