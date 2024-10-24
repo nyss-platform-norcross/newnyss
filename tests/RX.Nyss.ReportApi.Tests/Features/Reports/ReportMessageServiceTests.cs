@@ -152,7 +152,6 @@ public class ReportMessageServiceTests
     [Theory]
     [InlineData("10#20#30#40#50#60", 10, 20, 30, 40, 50, 60)]
     [InlineData("10*20*30*40*50*60", 10, 20, 30, 40, 50, 60)]
-    [InlineData("10*20*30*40*50*60", 10, 20, 30, 40, 50, 60)]
     public async Task ParseReport_WhenDataCollectionPointReportSent_ShouldParseCorrectly(string reportMessage, int healthRiskCode,
         int malesBelowFive, int malesAtLeastFive, int femalesBelowFive, int femalesAtLeastFive, int referredCount)
     {

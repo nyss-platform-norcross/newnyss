@@ -69,6 +69,12 @@ public class EidsrRepository : IEidsrRepository
             .ThenInclude(x => x.District)
             .ThenInclude(x => x.Region)
 
+            // Access LanguageContents of Health Risk of Report
+            .Include(r => r.Report)
+            .ThenInclude(x => x.ProjectHealthRisk)
+            .ThenInclude(x => x.HealthRisk)
+            .ThenInclude(x => x.LanguageContents)
+
             // Access LanguageContents of SuspectedDisease of Health Risk of Report
             .Include(r => r.Report)
             .ThenInclude(x => x.ProjectHealthRisk)

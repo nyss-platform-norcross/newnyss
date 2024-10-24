@@ -56,7 +56,8 @@ public class ReportsConverter : IReportsConverter
             DateOfOnset = rawReport?.Report?.ReceivedAt.ToString("u"),
             PhoneNumber = rawReport?.Report?.PhoneNumber,
             SuspectedDisease = ExtractSuspectedDiseases(englishContentLanguageId, rawReport?.Report),
-            EventType = rawReport?.Report?.ProjectHealthRisk?.HealthRisk?.HealthRiskType.ToString(),
+            EventType = ExtractHealthRisk(englishContentLanguageId,rawReport?.Report),
+            //EventType = rawReport?.Report?.ProjectHealthRisk?.HealthRisk?.HealthRiskType.ToString(),
             Gender = ExtractGender(report: rawReport?.Report)
         };
     }
@@ -122,16 +123,15 @@ public class ReportsConverter : IReportsConverter
         }
     }
 
-    private static string ExtractHealthRisk(int englishContentLanguageId, RawReport rawReport)
+    private static string ExtractHealthRisk(int englishContentLanguageId, Report report)
     {
         try
         {
-            var healthRiskLanguageContent = rawReport
-                .Report
+            var healthRiskLanguageContent = report
                 .ProjectHealthRisk
                 .HealthRisk
                 .LanguageContents
-                .SelectMany(s => s.HealthRisk.LanguageContents
+                .SelectMany(s => s.HealthRisk.LanguageContents 
                     .Where(c => c.ContentLanguageId == englishContentLanguageId))
                 .Select(x => x.Name);
 
@@ -160,7 +160,7 @@ public class ReportsConverter : IReportsConverter
                     EventDate = orgUnitGroup.Key.EventDate,
                     Gender = CreateValuesAndCountsString(orgUnitGroup.Select(x => x.Gender).ToList()),
                     Location = CreateValuesAndString(orgUnitGroup.Select(x => x.Location).ToList()),
-                    EventType = CreateValuesAndCountsString(orgUnitGroup.Select(x => x.EventType).ToList()),
+                    EventType = CreateValuesAndString(orgUnitGroup.Select(x => x.EventType).ToList()),
                     PhoneNumber = CreateValuesAndCountsString(orgUnitGroup.Select(x => x.PhoneNumber).ToList()),
                     SuspectedDisease = CreateValuesAndString(orgUnitGroup.Select(x => x.SuspectedDisease).ToList()),
                     DateOfOnset = CreateValuesAndCountsString(orgUnitGroup.Select(x => x.DateOfOnset).ToList())
@@ -211,7 +211,7 @@ public class ReportsConverter : IReportsConverter
             ReportLocation = $"{rawReport?.Village?.District?.Region?.Name}/{rawReport?.Village?.District?.Name}/{rawReport?.Village?.Name}",
             ReportGeoLocation = rawReport.Report.Location,
             ReportSuspectedDisease = ExtractSuspectedDiseases(englishContentLanguageId, rawReport?.Report),
-            ReportHealthRisk = ExtractHealthRisk(englishContentLanguageId, rawReport),
+            ReportHealthRisk = ExtractHealthRisk(englishContentLanguageId, rawReport?.Report),
             ReportStatus = rawReport?.Report?.Status.ToString(),
             ReportGender = rawReport?.Report?.ReportedCase.CountFemalesAtLeastFive > 0 || rawReport?.Report?.ReportedCase.CountFemalesBelowFive > 0
                 ? "Female"

@@ -140,20 +140,18 @@ const EidsrIntegrationPageComponent = (props) => {
             </Typography>
           </Grid>
 
-          <div hidden={true}>
-            <Grid item xs={12}>
-              <Typography variant="h6">
-                {strings(
-                  stringKeys.eidsrIntegration.form.eventTypeDataElementId,
-                )}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                {props.data.eventTypeDataElementId ??
-                  strings(stringKeys.eidsrIntegration.form.dataNotSet)}
-              </Typography>
-            </Grid>
-          </div>
-
+          <Grid item xs={12}>
+            <Typography variant="h6">
+              {strings(
+                stringKeys.eidsrIntegration.form.eventTypeDataElementId,
+              )}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {props.data.eventTypeDataElementId ??
+                strings(stringKeys.eidsrIntegration.form.dataNotSet)}
+            </Typography>
+          </Grid>
+          
           <Grid item xs={12}>
             <Typography variant="h6">
               {strings(stringKeys.eidsrIntegration.form.genderDataElementId)}
