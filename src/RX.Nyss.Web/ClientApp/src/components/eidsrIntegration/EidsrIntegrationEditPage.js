@@ -321,18 +321,18 @@ const EidsrIntegrationEditPageComponent = (props) => {
               field={form.fields.suspectedDiseaseDataElementId}
             />
           </Grid>
-          <div hidden={true}>
-            <Grid item xs={4}>
-              <TextInputField
-                disabled={integrationEditingDisabled}
-                label={strings(
-                  stringKeys.eidsrIntegration.form.eventTypeDataElementId,
-                )}
-                name="eventTypeDataElementId"
-                field={form.fields.eventTypeDataElementId}
-              />
-            </Grid>
-          </div>
+
+          <Grid item xs={4}>
+            <TextInputField
+              disabled={integrationEditingDisabled}
+              label={strings(
+                stringKeys.eidsrIntegration.form.eventTypeDataElementId,
+              )}
+              name="eventTypeDataElementId"
+              field={form.fields.eventTypeDataElementId}
+            />
+          </Grid>
+
           <Grid item xs={4}>
             <TextInputField
               disabled={integrationEditingDisabled}
