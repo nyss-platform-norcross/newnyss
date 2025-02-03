@@ -115,6 +115,7 @@ namespace RX.Nyss.Web.Features.Reports
                         .Select(ar => ar.AlertId)
                         .FirstOrDefault(),
                 ErrorType = GetReportErrorTypeString(strings, r.ErrorType),
+                Message = r.Text,
             })
                 //ToDo: order base on filter.OrderBy property
                 .OrderBy(r => r.DateTime, filter.SortAscending);
