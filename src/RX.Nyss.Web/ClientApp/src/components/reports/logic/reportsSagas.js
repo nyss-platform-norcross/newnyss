@@ -13,6 +13,7 @@ import {
 import { DateColumnName } from "./reportsConstants";
 import { formatDate, getUtcOffset } from "../../../utils/date";
 import { trackTrace } from "../../../utils/tracking";
+import dayjs from "dayjs";
 
 export const reportsSagas = () => [
   takeEvery(consts.OPEN_CORRECT_REPORTS_LIST.INVOKE, openCorrectReportsList),
@@ -87,29 +88,39 @@ function* openIncorrectReportsList({ projectId }) {
 }
 
 function* getCorrectReports({ projectId, pageNumber, filters, sorting }) {
+
+  const localDate = dayjs();
+  const utcOffset = getUtcOffset();
+  let endDate = localDate.add(-utcOffset, "hour");
+  endDate = endDate.set("hour", 0);
+  endDate = endDate.set("minute", 0);
+  endDate = endDate.set("second", 0);
+
   const requestFilters = filters ||
     (yield select((state) => state.reports.correctReportsFilters)) || {
-      dataCollectorType: DataCollectorType.human,
-      errorType: null,
-      healthRisks: [],
-      locations: null,
-      formatCorrect: true,
-      isTraining: false,
-      reportStatus: {
-        kept: true,
-        dismissed: true,
-        notCrossChecked: true,
-      },
-      reportType: null,
-      utcOffset: getUtcOffset(),
-      trainingStatus: "Trained",
-    };
+    dataCollectorType: DataCollectorType.human,
+    errorType: null,
+    healthRisks: [],
+    locations: null,
+    formatCorrect: true,
+    isTraining: false,
+    reportStatus: {
+      kept: true,
+      dismissed: true,
+      notCrossChecked: true,
+    },
+    reportType: null,
+    utcOffset: getUtcOffset(),
+    startDate: endDate.add(-30, "day"),
+    endDate: endDate,
+    trainingStatus: "Trained",
+  };
 
   const requestSorting = sorting ||
     (yield select((state) => state.reports.correctReportsSorting)) || {
-      orderBy: DateColumnName,
-      sortAscending: false,
-    };
+    orderBy: DateColumnName,
+    sortAscending: false,
+  };
 
   const page =
     pageNumber ||
@@ -143,27 +154,37 @@ function* getCorrectReports({ projectId, pageNumber, filters, sorting }) {
 }
 
 function* getIncorrectReports({ projectId, pageNumber, filters, sorting }) {
+
+  const localDate = dayjs();
+  const utcOffset = getUtcOffset();
+  let endDate = localDate.add(-utcOffset, "hour");
+  endDate = endDate.set("hour", 0);
+  endDate = endDate.set("minute", 0);
+  endDate = endDate.set("second", 0);
+
   const requestFilters = filters ||
     (yield select((state) => state.reports.incorrectReportsFilters)) || {
-      dataCollectorType: DataCollectorType.human,
-      errorType: ReportErrorFilterType.all,
-      area: null,
-      formatCorrect: false,
-      isTraining: false,
-      reportStatus: null,
-      correctedState: "All",
-      reportType: {
-        real: true,
-        corrected: false,
-      },
-      utcOffset: getUtcOffset(),
-      trainingStatus: "Trained",
-    };
+    dataCollectorType: DataCollectorType.human,
+    errorType: ReportErrorFilterType.all,
+    area: null,
+    formatCorrect: false,
+    isTraining: false,
+    reportStatus: null,
+    correctedState: "All",
+    reportType: {
+      real: true,
+      corrected: false,
+    },
+    utcOffset: getUtcOffset(),
+    startDate: endDate.add(-30, "day"),
+    endDate: endDate,
+    trainingStatus: "Trained",
+  };
   const requestSorting = sorting ||
     (yield select((state) => state.reports.incorrectReportsSorting)) || {
-      orderBy: DateColumnName,
-      sortAscending: false,
-    };
+    orderBy: DateColumnName,
+    sortAscending: false,
+  };
 
   const page =
     pageNumber ||

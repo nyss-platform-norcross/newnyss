@@ -26,6 +26,8 @@ import { HealthRiskFilter } from "../../common/filters/HealthRiskFilter";
 import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";
 import { DrawerFilter } from "./DrawerFilter";
+import { DatePicker } from "../../forms/DatePicker";
+import { convertToLocalDate, convertToUtc } from "../../../utils/date";
 
 const useStyles = makeStyles((theme) => ({
   selectFilterItem: {
@@ -90,6 +92,12 @@ const Filter = ({
       trainingStatus: event.target.value,
     });
 
+  const handleDateFromChange = (date) =>
+    handleFiltersChange({ startDate: convertToUtc(date) });
+
+  const handleDateToChange = (date) =>
+    handleFiltersChange({ endDate: convertToUtc(date) });
+
   return (
     <Grid
       container
@@ -98,6 +106,26 @@ const Filter = ({
       justifyContent="flex-start"
       spacing={2}
     >
+      <Grid item xs={isSmallScreen ? 6 : null}>
+        <DatePicker
+          select
+          label={strings(stringKeys.dashboard.filters.startDate)}
+          value={convertToLocalDate(localFilters.startDate)}
+          onChange={handleDateFromChange}
+          className={classes.selectFilterItem}
+          InputLabelProps={{ shrink: true }}
+        ></DatePicker>
+      </Grid>
+      <Grid item xs={isSmallScreen ? 6 : null}>
+        <DatePicker
+          select
+          label={strings(stringKeys.dashboard.filters.endDate)}
+          value={convertToLocalDate(localFilters.endDate)}
+          onChange={handleDateToChange}
+          className={classes.selectFilterItem}
+          InputLabelProps={{ shrink: true }}
+        ></DatePicker>
+      </Grid>
       {/* Material UI v4 lacks some key features for Grids and breakpoints, so the reordering of components in the grid must be done with css order properties and ternaries using isSmallScreen */}
       <Grid item style={{ order: 1 }} xs={isSmallScreen ? 6 : null}>
         <LocationFilter

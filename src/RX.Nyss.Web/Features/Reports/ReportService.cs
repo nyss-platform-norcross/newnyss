@@ -355,6 +355,7 @@ public class ReportService : IReportService
                 .FilterByHealthRisks(filter.HealthRisks)
                 .FilterByErrorType(filter.ErrorType)
                 .FilterByArea(filter.Locations)
+                .FilterByDate(filter.StartDate, filter.EndDate)
                 .FilterByReportStatus(filter.ReportStatus)
                 .FilterByTrainingMode(filter.TrainingStatus)
                 .FilterByCorrectedState(filter.CorrectedState);
@@ -369,6 +370,7 @@ public class ReportService : IReportService
             .FilterByHealthRisks(filter.HealthRisks)
             .FilterByDataCollectorType(filter.DataCollectorType)
             .FilterByArea(filter.Locations)
+            .FilterByDate(filter.StartDate, filter.EndDate)
             .FilterByErrorType(filter.ErrorType)
             .FilterByReportStatus(filter.ReportStatus)
             .FilterByTrainingMode(filter.TrainingStatus)
