@@ -125,3 +125,4 @@ public class Startup
         });
     }
 }
+//Add this just to deploy demo with default settings!
