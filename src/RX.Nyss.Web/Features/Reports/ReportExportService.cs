@@ -176,7 +176,7 @@ namespace RX.Nyss.Web.Features.Reports
                     .FilterByHealthRisks(filter.HealthRisks)
                     .FilterByErrorType(filter.ErrorType)
                     .FilterByArea(filter.Locations)
-                    .FilterByDate(filter.StartDate, filter.EndDate)
+                    .FilterByDate(filter.StartDate, filter.EndDate.AddDays(1))
                     .FilterByReportStatus(filter.ReportStatus)
                     .FilterByTrainingMode(filter.TrainingStatus);
             }
@@ -189,7 +189,7 @@ namespace RX.Nyss.Web.Features.Reports
                 .FilterByHealthRisks(filter.HealthRisks)
                 .FilterByDataCollectorType(filter.DataCollectorType)
                 .FilterByArea(filter.Locations)
-                .FilterByDate(filter.StartDate, filter.EndDate)
+                .FilterByDate(filter.StartDate, filter.EndDate.AddDays(1))
                 .FilterByErrorType(filter.ErrorType)
                 .FilterByReportStatus(filter.ReportStatus)
                 .FilterByTrainingMode(filter.TrainingStatus);
