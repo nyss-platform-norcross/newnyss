@@ -115,3 +115,67 @@ steps:
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
+
+
+- task: AzureCLI@2
+  displayName: 'Export variables and upload to Azure Blob'
+  inputs:
+    azureSubscription: 'nrx-nyss-dev-pipeline'
+    scriptType: 'ps'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      # Variables
+      $storageAccountName = "nrxcbsnyssdatastdev"
+      $storageContainerName = "nyss-public-stats"
+      $blobName = "exported-variables-$(Get-Date -Format 'yyyyMMdd-HHmmss').txt"
+      $resourceGroupName = "nrx-cbsdb-dev-rg"
+
+      Write-Output "Collecting variables..."
+
+      $varsOutput = @()
+      $excludePatterns = @("AGENT_", "BUILD_", "RELEASE_", "SYSTEM_", "ENDPOINT_")
+      foreach ($var in Get-ChildItem Env:) {
+          $skip = $false
+          foreach ($pattern in $excludePatterns) {
+              if ($var.Name.StartsWith($pattern)) { $skip = $true; break }
+          }
+          if (-not $skip) {
+              $varsOutput += "$($var.Name)=$($var.Value)"
+          }
+      }
+
+      $filePath = "$(System.DefaultWorkingDirectory)\exported-variables.txt"
+      $varsOutput | Out-File -FilePath $filePath -Encoding utf8
+      Write-Output "Variables saved to $filePath"
+
+      Write-Output "Uploading file to Azure Blob Storage..."
+
+      # Get Storage Account key
+      $storageKey = az storage account keys list `
+          --resource-group $resourceGroupName `
+          --account-name $storageAccountName `
+          --query "[0].value" -o tsv
+
+      if (-not $storageKey) {
+          Write-Error "Failed to get Storage Account key."
+          exit 1
+      }
+
+      # Upload blob
+      az storage blob upload `
+          --account-name $storageAccountName `
+          --account-key $storageKey `
+          --container-name $storageContainerName `
+          --file $filePath `
+          --name $blobName `
+          --overwrite
+
+      if ($LASTEXITCODE -ne 0) {
+          Write-Error "Upload failed."
+          exit 1
+      }
+
+      Write-Output "File uploaded to container '$storageContainerName' as blob '$blobName'."
+
+
+
