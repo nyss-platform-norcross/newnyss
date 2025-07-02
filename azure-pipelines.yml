@@ -25,6 +25,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'dotnet gitversion /l console /output buildserver /updateAssemblyInfo'
+    pwsh: true
 
 - task: DotNetCoreCLI@2
   displayName: 'Run unit tests'
