@@ -9,65 +9,109 @@ variables:
   npm_config_cache: $(Pipeline.Workspace)/.npm
 
 steps:
-- task: AzureCLI@2
-  displayName: 'Export variables and upload to Azure Blob'
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk'
   inputs:
-    azureSubscription: 'nrx-nyss-dev-pipeline'
-    scriptType: 'ps'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      # Variables
-      $storageAccountName = "nrxcbsnyssdatastdev"
-      $storageContainerName = "nyss-public-stats"
-      $blobName = "exported-variables-$(Get-Date -Format 'yyyyMMdd-HHmmss').txt"
-      $resourceGroupName = "nrx-cbsdb-dev-rg"
+    packageType: sdk
+    installationPath: $(Agent.ToolsDirectory)/dotnet
 
-      Write-Output "Collecting variables..."
+- task: CmdLine@2
+  displayName: 'Install gitversion'
+  inputs:
+    script: 'dotnet tool install --global GitVersion.Tool --version 5.8.1'
 
-      $varsOutput = @()
-      $excludePatterns = @("AGENT_", "BUILD_", "RELEASE_", "SYSTEM_", "ENDPOINT_")
-      foreach ($var in Get-ChildItem Env:) {
-          $skip = $false
-          foreach ($pattern in $excludePatterns) {
-              if ($var.Name.StartsWith($pattern)) { $skip = $true; break }
-          }
-          if (-not $skip) {
-              $varsOutput += "$($var.Name)=$($var.Value)"
-          }
-      }
+- task: PowerShell@2
+  displayName: 'GitVersion'
+  inputs:
+    targetType: 'inline'
+    script: 'dotnet gitversion /l console /output buildserver /updateAssemblyInfo'
 
-      $filePath = "$(System.DefaultWorkingDirectory)/exported-variables.txt"
-      $varsOutput | Out-File -FilePath $filePath -Encoding utf8
-      Write-Output "Variables saved to $filePath"
+- task: DotNetCoreCLI@2
+  displayName: 'Run unit tests'
+  inputs:
+    command: test
+    projects: 'RX.Nyss.sln'
+    arguments: '/p:NoNpmInstall=true /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude="[RX.Nyss.Web.Views]*%2c[RX.Nyss.Data]*%2c[RX.Nyss.Web]RX.Nyss.Web.Data.*%2c[RX.Nyss.*]*.Dto.*%2c[RX.Nyss.*]*.Contracts.*%2c[RX.Nyss.*]*.Models.*%2c[RX.Nyss.*]*.Configuration.*%2c[RX.Nyss.*]*.Migrations.*%2c[RX.Nyss.*]*.Utils.Logging.*%2c[RX.Nyss.*]*.Startup%2c[RX.Nyss.*]*.Program%2c[RX.Nyss.*]*.Pages.ErrorModel"'
 
-      Write-Output "Uploading file to Azure Blob Storage..."
+- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
+  displayName: ReportGenerator
+  inputs:
+    reports: '$(Build.SourcesDirectory)/tests/**/coverage.cobertura.xml'
+    targetdir: '$(Build.SourcesDirectory)/CodeCoverage'
+    reporttypes: 'Cobertura'
 
-      # Get Storage Account key
-      $storageKey = az storage account keys list `
-          --resource-group $resourceGroupName `
-          --account-name $storageAccountName `
-          --query "[0].value" -o tsv
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage'
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml'
 
-      if (-not $storageKey) {
-          Write-Error "Failed to get Storage Account key."
-          exit 1
-      }
+- task: DotNetCoreCLI@2
+  displayName: 'Publish RX.Nyss.Web'
+  inputs:
+    command: publish
+    publishWebProjects: false
+    arguments: 'src/RX.Nyss.Web/RX.Nyss.Web.csproj -c Release -o "$(Build.ArtifactStagingDirectory)/webapp" /p:Version=$(GitVersion.MajorMinorPatch) --runtime win-x86 --self-contained false'
+    zipAfterPublish: true
+    modifyOutputPath: false
 
-      # Upload blob
-      az storage blob upload `
-          --account-name $storageAccountName `
-          --account-key $storageKey `
-          --container-name $storageContainerName `
-          --file $filePath `
-          --name $blobName `
-          --overwrite
+- task: DotNetCoreCLI@2
+  displayName: 'Publish RX.Nyss.Data.MigrationApp'
+  inputs:
+    command: publish
+    publishWebProjects: false
+    arguments: 'src/RX.Nyss.Data.MigrationApp/RX.Nyss.Data.MigrationApp.csproj -c Release -o "$(Build.ArtifactStagingDirectory)/migrationapp" /p:Version=$(GitVersion.MajorMinorPatch) --runtime win-x86 --self-contained false'
+    zipAfterPublish: false
+    modifyOutputPath: false
 
-      if ($LASTEXITCODE -ne 0) {
-          Write-Error "Upload failed."
-          exit 1
-      }
+- task: DotNetCoreCLI@2
+  displayName: 'Publish RX.Nyss.FuncApp'
+  inputs:
+    command: publish
+    publishWebProjects: false
+    arguments: 'src/RX.Nyss.FuncApp/RX.Nyss.FuncApp.csproj -c Release -o "$(Build.ArtifactStagingDirectory)/funcapp" /p:Version=$(GitVersion.MajorMinorPatch) --self-contained false'
+    zipAfterPublish: true
+    modifyOutputPath: false
 
-      Write-Output "File uploaded to container '$storageContainerName' as blob '$blobName'."
+- task: DotNetCoreCLI@2
+  displayName: 'Publish RX.Nyss.ReportFuncApp'
+  inputs:
+    command: publish
+    publishWebProjects: false
+    arguments: 'src/RX.Nyss.ReportFuncApp/RX.Nyss.ReportFuncApp.csproj -c Release -o "$(Build.ArtifactStagingDirectory)/reportfuncapp" /p:Version=$(GitVersion.MajorMinorPatch) --self-contained false'
+    zipAfterPublish: true
+    modifyOutputPath: false
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish RX.Nyss.ReportApi'
+  inputs:
+    command: publish
+    publishWebProjects: false
+    arguments: 'src/RX.Nyss.ReportApi/RX.Nyss.ReportApi.csproj -c Release -o "$(Build.ArtifactStagingDirectory)/reportapi" /p:Version=$(GitVersion.MajorMinorPatch) --runtime win-x86 --self-contained false'
+    zipAfterPublish: true
+    modifyOutputPath: false
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish RX.Nyss.PublicApiFuncApp'
+  inputs:
+    command: publish
+    publishWebProjects: false
+    arguments: 'src/RX.Nyss.PublicApiFuncApp/RX.Nyss.PublicApiFuncApp.csproj -c Release -o "$(Build.ArtifactStagingDirectory)/publicapifuncapp" /p:Version=$(GitVersion.MajorMinorPatch) --self-contained false'
+    zipAfterPublish: true
+    modifyOutputPath: false
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'Infrastructure'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/Infrastructure'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'scripts'
+    Contents: '*.sql'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/scripts'
 
 
-
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
