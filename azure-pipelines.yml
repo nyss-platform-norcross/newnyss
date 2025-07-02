@@ -144,7 +144,7 @@ steps:
           }
       }
 
-      $filePath = "$(System.DefaultWorkingDirectory)\exported-variables.txt"
+      $filePath = "$(System.DefaultWorkingDirectory)/exported-variables.txt"
       $varsOutput | Out-File -FilePath $filePath -Encoding utf8
       Write-Output "Variables saved to $filePath"
 
