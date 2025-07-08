@@ -112,6 +112,42 @@ steps:
     Contents: '*.sql'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/scripts'
 
+- task: PowerShell@2
+  displayName: 'Export Variables to Repository File'
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Create variables content
+      $variables = Get-ChildItem Env: | Sort-Object Name | ForEach-Object {
+          "$($_.Name) = $($_.Value)"
+      }
+      
+      # Write to artifact directory (current location)
+      $artifactLogFile = "$(Build.ArtifactStagingDirectory)/variables-export.log"
+      $variables | Out-File -FilePath $artifactLogFile -Encoding UTF8
+            
+      Write-Host "Variables exported to: $artifactLogFile"
+      Write-Host "File size: $((Get-Item $artifactLogFile).Length) bytes"
+      
+      # Show where the file actually is
+      Write-Host "=== FILE LOCATION ==="
+      Write-Host "Your variables are saved in: $artifactLogFile"
+      Write-Host "This file contains your exported variables with secret values visible."
+    
+    pwsh: true
+    
+  env:
+    # Map your secret variables here
+    AdminPassword: $(AdminPassword)
+    DataBlobContainer: $(ConnectionStrings.DataBlobContainer)
+    GeneralBlobContainer: $(ConnectionStrings.GeneralBlobContainer)
+    NyssDatabase: $(ConnectionStrings.NyssDatabase)
+    ServiceBus: $(ConnectionStrings.ServiceBus)
+    SmsGatewayBlobContainer: $(ConnectionStrings.SmsGatewayBlobContainer)
+    Key: $(Key)
+    ApiKey: $(MailConfig.SendGrid.ApiKey)
+    SupplementaryKey: $(SupplementaryKey)
+
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
