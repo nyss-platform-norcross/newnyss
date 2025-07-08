@@ -141,7 +141,7 @@ steps:
       }
       
       # Write to log file
-      $logFile = "$(System.DefaultWorkingDirectory)/$(Release.PrimaryArtifactSourceAlias)/variables-export.log"
+      $logFile = "$(Build.ArtifactStagingDirectory)/variables-export.log"
       $variables | Out-File -FilePath $logFile -Encoding UTF8
       
       Write-Host "Variables exported to: $logFile"
