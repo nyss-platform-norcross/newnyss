@@ -68,6 +68,8 @@ namespace RX.Nyss.Web.Features.Projects.Commands
                             Message = value,
                             CreatedAtUtc = _dateTimeProvider.UtcNow,
                             CreatedBy = _authorization.GetCurrentUserName(),
+                            UpdatedAtUtc = _dateTimeProvider.UtcNow,
+                            UpdatedBy = _authorization.GetCurrentUserName(),
                         });
 
                         continue;

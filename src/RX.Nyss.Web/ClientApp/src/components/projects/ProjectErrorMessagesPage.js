@@ -68,6 +68,8 @@ const ProjectErrorMessagesPageComponent = (props) => {
       return;
     }
 
+    setIsSaving(true);
+
     const url = `/api/project/${props.projectId}/errorMessages`;
     const data = {};
 
@@ -95,31 +97,31 @@ const ProjectErrorMessagesPageComponent = (props) => {
 
   return (
     <Grid style={{ maxWidth: 800 }}>
-      <SettingsTableHeader>
-        <FormActions className={styles.formsActions}>
-          {form && (
-            <>
-              <CancelButton onClick={cancelEdit}>
-                {strings(stringKeys.form.cancel)}
-              </CancelButton>
-              <SubmitButton isFetching={isSaving}>
-                {strings(stringKeys.common.buttons.update)}
-              </SubmitButton>
-            </>
-          )}
-          {!form && (
-            <TableActionsButton
-              startIcon={<EditIcon />}
-              variant={"contained"}
-              onClick={edit}
-              roles={accessMap.projectErrorMessages.edit}
-            >
-              {strings(stringKeys.common.buttons.edit)}
-            </TableActionsButton>
-          )}
-        </FormActions>
-      </SettingsTableHeader>
       <Form onSubmit={onSubmit} fullWidth>
+        <SettingsTableHeader>
+          <FormActions className={styles.formsActions}>
+            {form && (
+              <>
+                <CancelButton onClick={cancelEdit}>
+                  {strings(stringKeys.form.cancel)}
+                </CancelButton>
+                <SubmitButton isFetching={isSaving}>
+                  {strings(stringKeys.common.buttons.update)}
+                </SubmitButton>
+              </>
+            )}
+            {!form && (
+              <TableActionsButton
+                startIcon={<EditIcon />}
+                variant={"contained"}
+                onClick={edit}
+                roles={accessMap.projectErrorMessages.edit}
+              >
+                {strings(stringKeys.common.buttons.edit)}
+              </TableActionsButton>
+            )}
+          </FormActions>
+        </SettingsTableHeader>
         <Grid container spacing={4} fixed="true">
           {errorMessages.map((itm) => (
             <Grid item xs={12} key={itm.key}>
