@@ -10,6 +10,7 @@ import {
 } from "../../common/filters/logic/reportFilterConstsants";
 import { DateColumnName } from "./nationalSocietyReportsConstants";
 import { getUtcOffset } from "../../../utils/date";
+import dayjs from "dayjs";
 
 export const nationalSocietyReportsSagas = () => [
   takeEvery(
@@ -43,6 +44,13 @@ function* openNationalSocietyCorrectReportsList({ nationalSocietyId }) {
       http.get,
       `/api/nationalSocietyReport/filters?nationalSocietyId=${nationalSocietyId}`,
     );
+    const localDate = dayjs();
+    const utcOffset = getUtcOffset();
+    let endDate = localDate.add(-utcOffset, "hour");
+    endDate = endDate.set("hour", 0);
+    endDate = endDate.set("minute", 0);
+    endDate = endDate.set("second", 0);
+
     const filters = {
       dataCollectorType: DataCollectorType.human,
       healthRisks: [],
@@ -54,6 +62,8 @@ function* openNationalSocietyCorrectReportsList({ nationalSocietyId }) {
         notCrossChecked: true,
       },
       utcOffset: getUtcOffset(),
+      startDate: endDate.add(-30, "day"),
+      endDate: endDate,
     };
     const sorting = (yield select(
       (state) => state.nationalSocietyReports.correctReportsSorting,
@@ -87,6 +97,13 @@ function* openNationalSocietyIncorrectReportsList({ nationalSocietyId }) {
   try {
     yield openNationalSocietyReportsModule(nationalSocietyId);
 
+    const localDate = dayjs();
+    const utcOffset = getUtcOffset();
+    let endDate = localDate.add(-utcOffset, "hour");
+    endDate = endDate.set("hour", 0);
+    endDate = endDate.set("minute", 0);
+    endDate = endDate.set("second", 0);
+
     const filters = (yield select(
       (state) => state.nationalSocietyReports.incorrectReportsFilters,
     )) || {
@@ -95,6 +112,8 @@ function* openNationalSocietyIncorrectReportsList({ nationalSocietyId }) {
       area: null,
       formatCorrect: false,
       utcOffset: getUtcOffset(),
+      startDate: endDate.add(-30, "day"),
+      endDate: endDate,
     };
     const sorting = (yield select(
       (state) => state.nationalSocietyReports.incorrectReportsSorting,

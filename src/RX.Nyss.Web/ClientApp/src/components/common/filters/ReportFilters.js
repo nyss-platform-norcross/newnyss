@@ -27,7 +27,8 @@ import useLocalFilters from "../../common/filters/useLocalFilters";
 import useLocationFilter from "../../common/filters/useLocationFilter";
 import { DrawerFilter } from "./DrawerFilter";
 import { DatePicker } from "../../forms/DatePicker";
-import { convertToLocalDate, convertToUtc } from "../../../utils/date";
+import dayjs from "dayjs";
+import { convertToLocalDate } from "../../../utils/date";
 
 const useStyles = makeStyles((theme) => ({
   selectFilterItem: {
@@ -93,10 +94,10 @@ const Filter = ({
     });
 
   const handleDateFromChange = (date) =>
-    handleFiltersChange({ startDate: convertToUtc(date) });
+    handleFiltersChange({ startDate: dayjs(date) });
 
   const handleDateToChange = (date) =>
-    handleFiltersChange({ endDate: convertToUtc(date) });
+    handleFiltersChange({ endDate: dayjs(date) });
 
   return (
     <Grid

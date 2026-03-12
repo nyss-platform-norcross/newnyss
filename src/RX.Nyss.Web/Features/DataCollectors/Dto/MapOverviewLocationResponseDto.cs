@@ -1,10 +1,15 @@
-﻿using RX.Nyss.Web.Features.Common.Dto;
+using RX.Nyss.Web.Features.Common.Dto;
 
 namespace RX.Nyss.Web.Features.DataCollectors.Dto
 {
     public class MapOverviewLocationResponseDto
     {
         public LocationDto Location { get; set; }
+
+        public int DataCollectorId { get; set; }
+
+        public string DisplayName { get; set; }
+
         public int CountReportingCorrectly { get; set; }
         public int CountReportingWithErrors { get; set; }
         public int CountNotReporting { get; set; }

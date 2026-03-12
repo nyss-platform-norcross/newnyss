@@ -39,12 +39,8 @@ const DataCollectorsMapOverviewPageComponent = (props) => {
         filters={props.filters}
       />
       <DataCollectorsPerformanceMap
-        projectId={props.projectId}
         centerLocation={props.centerLocation}
         dataCollectorLocations={props.dataCollectorLocations}
-        getMapDetails={props.getMapDetails}
-        details={props.details}
-        detailsFetching={props.detailsFetching}
       />
       <DataCollectorsPerformanceMapLegend rtl={useRtlDirection} />
     </Fragment>

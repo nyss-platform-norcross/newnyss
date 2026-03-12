@@ -129,6 +129,7 @@ export const DataCollectorMap = ({
         length={4}
         zoom={zoomLevel}
         scrollWheelZoom={false}
+        maxZoom={17}
       >
         <MapEventHandler
           onMarkerClick={handleLocationFound}

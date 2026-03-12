@@ -3,15 +3,8 @@
   overflow-y: auto;
 }
 
-.dataCollectorDetails {
-  display: flex;
-  align-items: center;
-  margin: 10px 0;
+.popupContent {
   min-width: 200px;
-
-  > span {
-    margin-right: 5px;
-  }
 }
 
 .map {

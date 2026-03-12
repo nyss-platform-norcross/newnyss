@@ -105,11 +105,6 @@ const NationalSocietyDashboardPageComponent = ({
             DashboardReportsMap={
               <DashboardReportsMap
                 data={props.reportsGroupedByLocation}
-                detailsFetching={props.reportsGroupedByLocationDetailsFetching}
-                details={props.reportsGroupedByLocationDetails}
-                getReportHealthRisks={(lat, long) =>
-                  props.getReportHealthRisks(nationalSocietyId, lat, long)
-                }
               />
             }
             isMapExpanded={isMapExpanded}

@@ -34,6 +34,7 @@ import useLocationFilter from "../../common/filters/useLocationFilter";
 import { useEffect } from "react";
 import { trackEvent } from "../../../utils/appInsightsHelper";
 import { DrawerFilter } from "../../common/filters/DrawerFilter";
+import dayjs from "dayjs";
 
 const useStyles = makeStyles((theme) => ({
   selectFilterItem: {
@@ -74,6 +75,17 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "auto",
   },
 }));
+
+const isDateRangeValid = (filters) => {
+  if (!filters || !filters.startDate || !filters.endDate) {
+    return true;
+  }
+
+  const start = dayjs(filters.startDate);
+  const end = dayjs(filters.endDate);
+
+  return !start.isAfter(end);
+};
 
 const Filter = ({
   localFilters,
@@ -274,17 +286,20 @@ export const NationalSocietyDashboardFilters = ({
   }, [filters]);
 
   //Fetches new data based on changes in filters
-  const handleFiltersChange = (filters) => {
-    trackEvent("NsDashboardFilterChange", { filters });
-    if (isMediumScreen) {
-      updateLocalFilters(filters);
-    } else {
-      onChange(updateLocalFilters(filters));
+  const handleFiltersChange = (change) => {
+    const newFilters = updateLocalFilters(change);
+    trackEvent("NsDashboardFilterChange", { filters: newFilters });
+
+    if (!isMediumScreen && isDateRangeValid(newFilters)) {
+      onChange(newFilters);
     }
   };
 
   const showResults = () => {
-    onChange(updateLocalFilters(localFilters));
+    const newFilters = updateLocalFilters(localFilters);
+    if (isDateRangeValid(newFilters)) {
+      onChange(newFilters);
+    }
   };
 
   //Syncs locations from redux store with filter state and sets label for location filter to 'All' or "Region (+n)"

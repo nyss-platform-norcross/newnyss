@@ -391,6 +391,11 @@ namespace RX.Nyss.Web.Features.DataCollectors
             var dataCollectorsWithReports = dataCollectors
                 .Select(r => new
                 {
+                    r.Id,
+                    r.DataCollectorType,
+                    r.DisplayName,
+                    r.Name,
+                    r.PhoneNumber,
                     r.DataCollectorLocations.First().Location.X,
                     r.DataCollectorLocations.First().Location.Y,
                     InvalidReports = r.RawReports
@@ -404,6 +409,10 @@ namespace RX.Nyss.Web.Features.DataCollectors
             var locations = await dataCollectorsWithReports
                 .Select(dc => new MapOverviewLocationResponseDto
                 {
+                    DataCollectorId = dc.Id,
+                    DisplayName = dc.DataCollectorType == DataCollectorType.Human
+                        ? $"{dc.DisplayName}: {dc.PhoneNumber}"
+                        : $"{dc.Name}: {dc.PhoneNumber}",
                     Location = new LocationDto
                     {
                         Latitude = dc.Y,

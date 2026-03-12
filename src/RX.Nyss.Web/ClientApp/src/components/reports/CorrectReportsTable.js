@@ -197,7 +197,7 @@ export const CorrectReportsTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {list.sort(sortByReportStatus).map((row) => (
+            {list.map((row) => (
               <TableRow key={row.id} hover>
                 <TableCell>
                   <span>{dayjs(row.dateTime).format("YYYY-MM-DD HH:mm")}</span>

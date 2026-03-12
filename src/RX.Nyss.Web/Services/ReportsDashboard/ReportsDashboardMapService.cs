@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -41,8 +41,8 @@ namespace RX.Nyss.Web.Services.ReportsDashboard
             var reportsSummaryMap = await reports
                 .GroupBy(report => new
                 {
-                    report.Location.X,
-                    report.Location.Y
+                    report.Location!.X,
+                    report.Location!.Y
                 })
                 .Select(grouping => new ReportsSummaryMapResponseDto
                 {
@@ -53,7 +53,23 @@ namespace RX.Nyss.Web.Services.ReportsDashboard
                         Longitude = grouping.Key.X
                     }
                 })
+                .AsSplitQuery()
                 .ToListAsync();
+
+            var withReports = reportsSummaryMap.Where(x => x.ReportsCount > 0).ToList();
+
+            if (withReports.Any())
+            {
+                foreach (var dto in withReports)
+                {
+                    dto.HealthRisks = (await GetProjectReportHealthRisks(filters, dto.Location.Latitude, dto.Location.Longitude)).ToList();
+                }
+            }
+
+            foreach (var dto in reportsSummaryMap.Where(x => x.HealthRisks == null))
+            {
+                dto.HealthRisks = new List<ReportsSummaryHealthRiskResponseDto>();
+            }
 
             if (!reportsSummaryMap.Any())
             {
@@ -69,20 +85,23 @@ namespace RX.Nyss.Web.Services.ReportsDashboard
 
                 var location = await _geolocationService.GetLocationFromCountry(countryName);
 
+                var mapLocation = location.IsSuccess
+                    ? new ReportsSummaryMapResponseDto.MapReportLocation
+                    {
+                        Latitude = location.Value.Latitude,
+                        Longitude = location.Value.Longitude
+                    }
+                    : new ReportsSummaryMapResponseDto.MapReportLocation
+                    {
+                        Latitude = DefaultLatitude,
+                        Longitude = DefaultLongitude
+                    };
+
                 reportsSummaryMap.Add(new ReportsSummaryMapResponseDto
                 {
                     ReportsCount = 0,
-                    Location = location.IsSuccess
-                        ? new ReportsSummaryMapResponseDto.MapReportLocation
-                        {
-                            Latitude = location.Value.Latitude,
-                            Longitude = location.Value.Longitude
-                        }
-                        : new ReportsSummaryMapResponseDto.MapReportLocation
-                        {
-                            Latitude = DefaultLatitude,
-                            Longitude = DefaultLongitude
-                        }
+                    Location = mapLocation,
+                    HealthRisks = new List<ReportsSummaryHealthRiskResponseDto>()
                 });
             }
 

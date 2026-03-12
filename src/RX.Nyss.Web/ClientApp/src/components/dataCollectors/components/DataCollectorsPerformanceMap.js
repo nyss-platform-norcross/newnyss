@@ -15,6 +15,8 @@ import { SignIcon } from "../../common/map/MarkerIcon";
 import { getIconFromStatus } from "../logic/dataCollectorsService";
 import { performanceStatus } from "../logic/dataCollectorsConstants";
 
+const JITTER_RADIUS_DEGREES = 0.00012;
+
 const createClusterIcon = (cluster) => {
   const data = cluster
     .getAllChildMarkers()
@@ -58,13 +60,47 @@ const getAggregatedStatus = (info) => {
   return performanceStatus.reportingCorrectly;
 };
 
+const locationsWithDisplayPositions = (dataCollectorLocations) => {
+  const groups = dataCollectorLocations.reduce((acc, dc) => {
+    const key = `${dc.location.latitude}:${dc.location.longitude}`;
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(dc);
+    return acc;
+  }, {});
+
+  const result = [];
+
+  Object.values(groups).forEach((group) => {
+    if (group.length === 1) {
+      result.push(group[0]);
+      return;
+    }
+
+    const angleStep = (2 * Math.PI) / group.length;
+
+    group.forEach((dc, index) => {
+      const angle = index * angleStep;
+      const offsetLat = JITTER_RADIUS_DEGREES * Math.sin(angle);
+      const offsetLng = JITTER_RADIUS_DEGREES * Math.cos(angle);
+
+      result.push({
+        ...dc,
+        displayPosition: {
+          lat: dc.location.latitude + offsetLat,
+          lng: dc.location.longitude + offsetLng,
+        },
+      });
+    });
+  });
+
+  return result;
+};
+
 export const DataCollectorsPerformanceMap = ({
   centerLocation,
   dataCollectorLocations,
-  projectId,
-  details,
-  getMapDetails,
-  detailsFetching,
 }) => {
   const [center, setCenter] = useState(null);
   const [bounds, setBounds] = useState(null);
@@ -79,29 +115,9 @@ export const DataCollectorsPerformanceMap = ({
     setBounds(hasLocations ? calculateBounds(dataCollectorLocations) : null);
   }, [dataCollectorLocations, centerLocation]);
 
-  const handleMarkerClick = (e) =>
-    getMapDetails(projectId, e.latlng.lat, e.latlng.lng);
-
-  const combineStatus = (dataCollectorList, dc) => {
-    let current = dataCollectorList[0];
-    current.countNotReporting += dc.countNotReporting;
-    current.countReportingWithErrors += dc.countReportingWithErrors;
-    current.countReportingCorrectly += dc.countReportingCorrectly;
-    return [current];
-  };
-
-  const distinctLocations = (dataCollectors) =>
-    dataCollectors.reduce(
-      (a, c) =>
-        a.some(
-          (dc) =>
-            dc.location.latitude === c.location.latitude &&
-            dc.location.longitude === c.location.longitude,
-        )
-          ? combineStatus(a, c)
-          : [...a, c],
-      [],
-    );
+  const markersWithPosition = locationsWithDisplayPositions(
+    dataCollectorLocations,
+  );
 
   return (
     (!!center || !!bounds) && (
@@ -110,7 +126,7 @@ export const DataCollectorsPerformanceMap = ({
         length={4}
         bounds={bounds}
         zoom={5}
-        maxZoom={19}
+        maxZoom={17}
         className={styles.map}
       >
         <TileLayer
@@ -122,42 +138,30 @@ export const DataCollectorsPerformanceMap = ({
           showCoverageOnHover={false}
           iconCreateFunction={createClusterIcon}
         >
-          {distinctLocations(dataCollectorLocations).map((dc, i) => (
+          {markersWithPosition.map((dc, i) => (
             <Marker
               className={`${styles.marker} ${
                 dc.countNotReporting || dc.countReportingWithErrors
                   ? styles.markerInvalid
                   : styles.markerValid
               }`}
-              key={`marker_${i}`}
+              key={`marker_${dc.dataCollectorId ?? i}`}
               position={{
-                lat: dc.location.latitude,
-                lng: dc.location.longitude,
+                lat: dc.displayPosition
+                  ? dc.displayPosition.lat
+                  : dc.location.latitude,
+                lng: dc.displayPosition
+                  ? dc.displayPosition.lng
+                  : dc.location.longitude,
               }}
               icon={createIcon(dc)}
-              eventHandlers={{
-                click: handleMarkerClick,
-              }}
               dataCollectorInfo={dc}
             >
               <Popup>
                 <div className={styles.popup}>
-                  {!detailsFetching ? (
-                    <div>
-                      {details &&
-                        details.map((d) => (
-                          <div
-                            key={`dataCollector_${d.id}`}
-                            className={styles.dataCollectorDetails}
-                          >
-                            <Icon>{getIconFromStatus(d.status)}</Icon>
-                            {d.displayName}
-                          </div>
-                        ))}
-                    </div>
-                  ) : (
-                    <Loading inline noWait />
-                  )}
+                  <div className={styles.popupContent}>
+                    {dc.displayName ?? ""}
+                  </div>
                 </div>
               </Popup>
             </Marker>

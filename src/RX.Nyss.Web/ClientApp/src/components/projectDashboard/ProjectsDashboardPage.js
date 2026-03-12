@@ -104,11 +104,6 @@ const ProjectDashboardPageComponent = ({
             DashboardReportsMap={
               <DashboardReportsMap
                 data={props.reportsGroupedByLocation}
-                detailsFetching={props.reportsGroupedByLocationDetailsFetching}
-                details={props.reportsGroupedByLocationDetails}
-                getReportHealthRisks={(lat, long) =>
-                  props.getReportHealthRisks(projectId, lat, long)
-                }
               />
             }
             isMapExpanded={isMapExpanded}

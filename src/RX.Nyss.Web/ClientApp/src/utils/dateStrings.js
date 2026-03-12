@@ -6,10 +6,12 @@ export const getDateStringInterval = (startDateString, endDateString) => {
   const startDate = parseISO(startDateString);
   const endDate = parseISO(endDateString);
 
-  return eachDayOfInterval({
-    start: startDate,
-    end: endDate,
-  }).map((day) => format(day, "yyyy-MM-dd"));
+  const interval =
+    startDate <= endDate
+      ? { start: startDate, end: endDate }
+      : { start: endDate, end: startDate };
+
+  return eachDayOfInterval(interval).map((day) => format(day, "yyyy-MM-dd"));
 };
 
 // Expects epiWeekStrings with the format "YYYY/W"
